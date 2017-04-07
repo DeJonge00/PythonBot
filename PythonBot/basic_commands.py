@@ -1,4 +1,4 @@
-import asyncio, discord, responses, send_random
+import asyncio, discord, responses, send_random, wikipedia
 from discord.ext import commands
 from discord.ext.commands import Bot
 from random import randint
@@ -92,3 +92,41 @@ class Basics:
         if ctx.message.content == "":
             return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a hug? Haha, so lonely...")
         await send_random.string(self.bot, ctx.message.channel, responses.hug, ctx.message.author.mention, " ".join(args))
+
+    # {prefix}userinfo <query>
+    @commands.command(pass_context=1, help="Get a user's information!", aliases=["user"])
+    async def userinfo(self, ctx, *args):
+        await self.bot.delete_message(ctx.message)
+        if len(ctx.message.mentions)<=0:
+            user = ctx.message.author
+        else:
+            user = ctx.message.mentions[0]
+        m = "Stats for **" + user.name + "**```"
+        if user.bot:
+            m += "\nUser is a bot"
+        if user.nick:
+            m += "\nNickname:       " + user.nick
+        m += "\nId:             " + user.id
+        m += "\nDiscriminator:  " + user.discriminator
+        m += "\nStatus:         " + user.status.name
+        if user.game:
+            m += "\nGame:           " + str(user.game)
+        m += "\nUser Joined at: " + user.joined_at.strftime("%D/%M/%Y at %H:%M:%S")
+        m += "\nRoles:          " + user.roles[0].name
+        for r in range(1,len(user.roles)):
+            m += ", " + user.roles[r].name
+        m += "```"
+        await self.bot.send_message(ctx.message.channel, m)
+
+    # {prefix}wikipedia <query>
+    @commands.command(pass_context=1, help="Search the wiki!", aliases=["wiki"])
+    async def wikipedia(self, ctx, *args):
+        await self.bot.delete_message(ctx.message)
+        q = " ".join(args)
+        if q == "":
+            return await self.bot.send_message(ctx.message.channel, "...")
+        try:
+            s = wikipedia.summary(q, sentences=2)
+            return await self.bot.send_message(ctx.message.channel, "Your query **" + q + "** has the following wikipedia result:\n" + s)
+        except Exception as e:
+            return await self.bot.send_message(ctx.message.channel, "There are too much answers to give you the correct one...")

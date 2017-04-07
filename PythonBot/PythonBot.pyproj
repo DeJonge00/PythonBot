@@ -61,6 +61,7 @@
     <Folder Include="ded\" />
     <Folder Include="60\" />
     <Folder Include="language\" />
+    <Folder Include="memes\" />
     <Folder Include="ytho\" />
     <Folder Include="railgun\" />
     <Folder Include="sun\" />
@@ -126,6 +127,9 @@
     <Content Include="language\7.jpg" />
     <Content Include="language\8.jpg" />
     <Content Include="language\9.jpg" />
+    <Content Include="memes\Brian.jpg" />
+    <Content Include="memes\OneDoesNotSimply.jpg" />
+    <Content Include="memes\VBaby.png" />
     <Content Include="railgun\railgun1.png" />
     <Content Include="railgun\railgun2.png" />
     <Content Include="railgun\railgun3.jpg" />

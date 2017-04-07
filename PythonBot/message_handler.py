@@ -22,11 +22,14 @@ async def new_pic(my_bot, message):
     url = message.attachments[0]["url"]
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    if img.height > 200:
-        f = 200/img.height
-        img = img.resize(((int)(img.height*f),(int)(img.width*f)))
-    i=0
-    while os.path.isfile("./pics/" + str(i) + ".png"):
-        i+=1
-    img.save("./pics/" + str(i) + ".png")
+    i = 0
+    if url.split(".")[len(url.split("."))-1] == "gif":
+        while os.path.isfile("./pics/" + str(i) + ".gif"):
+            i+=1
+        img.save("./pics/" + str(i) + ".gif", save_all=1)
+    else:
+        while os.path.isfile("./pics/" + str(i) + ".png"):
+            i+=1
+        img.save("./pics/" + str(i) + ".png")
+    
     await log.message(message, "pic", i)
