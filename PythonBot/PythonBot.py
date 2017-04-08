@@ -1,21 +1,13 @@
-import asyncio
-import discord
+import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import constants
-import datetime
-import init
-import log
-import logging
-import message_handler
-import random
-import responses
-import sys
+import constants, datetime, init, log, logging, message_handler, random, responses, sys
 
 # Basic configs
 pi = 3.14159265358979323846264
 
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1)
+bot.praise = datetime.datetime.utcnow()
 logging.basicConfig()
 
 @bot.event
@@ -66,7 +58,10 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     await log.error("Member " + member.name + " just left " + member.server.name)
-    await bot.send_message(member.server.default_channel, "\"" + member.name + "\" just left. Byebye, you will not be missed!")
+    try:
+        await bot.send_message(member.server.default_channel, "\"" + member.name + "\" just left. Byebye, you will not be missed!")
+    except Exception as e:
+        await log.error(str(e))
 @bot.event
 async def on_channel_delete(channel):
     await log.error("deleted channel: " + channel.name)
