@@ -12,6 +12,7 @@ async def file(my_bot, channel, folder):
 
 async def string(my_bot, channel, list, start="", end=""):
     i = randint(0,len(list)-1)
-    if (len(start)>0) & (start[len(start)-1] != " "):
-        start += " "
+    if (len(start)>0):
+        if (start[len(start)-1] != " "):
+            start += " "
     await my_bot.send_message(channel, start + list[i] + end)

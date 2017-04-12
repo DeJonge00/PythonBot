@@ -68,6 +68,22 @@ compliments = [
             "you're even better than a unicorn, because you're real"
         ]
 
+ded = [
+            "But I am here :/",
+            "No you are ded *hmpf*",
+            "Then go talk about something maybe?",
+            "I wish I had more friends",
+            ">resurrect",
+            "Ehhmm.. Talk about your day?",
+            "Ehhmm.. Why don't you talk about the color blue?",
+            "How about we talk about unicorns?",
+            "Why don't we play a game?",
+            "Sooooo... Lets do lewd stuff now?",
+            "Just like your love life :smile:",
+            "You look like you want to do my homework?",
+            "Let's talk about your mom then!"
+        ]
+
 faces = [
             "(づ◔ ͜ʖ◔)づ",
             "ヾ(๑╹◡╹)ﾉ\"",
@@ -78,7 +94,12 @@ faces = [
             "乁( ⁰͡ Ĺ̯ ⁰͡ ) ㄏ",
             "( ͡⌐■ ͜ʖ ͡-■)",
             "( ͡° ͜ʖ ͡°)>⌐■-■",
-            "( ˊ̱˂˃ˋ̱ )"
+            "( ˊ̱˂˃ˋ̱ )",
+            "̿̿ ̿̿ ̿̿ ̿'̿'\̵͇̿̿\з= ( ▀ ͜͞ʖ▀) =ε/̵͇̿̿/’̿’̿ ̿ ̿̿ ̿̿ ̿̿",
+            "(▀̿Ĺ̯▀̿ ̿)",
+            "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
+            "ლ(ಠ益ಠლ)",
+            "(｡◕‿‿◕｡)"
         ]
 
 hug = [

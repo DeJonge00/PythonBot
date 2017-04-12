@@ -22,13 +22,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="comm\minesweeper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="constants.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="basic_commands.py">
+    <Compile Include="comm\basic_commands.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="image_commands.py">
+    <Compile Include="comm\image_commands.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="init.py">
@@ -40,13 +43,16 @@
     <Compile Include="log.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rpggame\rpgmain.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="send_random.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="mod_commands.py">
+    <Compile Include="comm\mod_commands.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="music.py">
+    <Compile Include="comm\music.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="responses.py">
@@ -62,6 +68,8 @@
     <Folder Include="60\" />
     <Folder Include="language\" />
     <Folder Include="memes\" />
+    <Folder Include="comm\" />
+    <Folder Include="rpggame\" />
     <Folder Include="ytho\" />
     <Folder Include="railgun\" />
     <Folder Include="sun\" />
@@ -135,6 +143,7 @@
     <Content Include="railgun\railgun3.jpg" />
     <Content Include="railgun\railgun4.jpg" />
     <Content Include="railgun\railgun5.jpg" />
+    <Content Include="sun\sun15.jpg" />
     <Content Include="sun\sun1.jpg" />
     <Content Include="sun\sun10.png" />
     <Content Include="sun\sun11.png" />

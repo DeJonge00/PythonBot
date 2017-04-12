@@ -7,7 +7,9 @@ import constants, datetime, init, log, logging, message_handler, random, respons
 pi = 3.14159265358979323846264
 
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1)
+bot.lastmessage = ""
 bot.praise = datetime.datetime.utcnow()
+bot.spamlist = []
 logging.basicConfig()
 
 @bot.event
@@ -21,14 +23,16 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name='with lolis <3'), status=discord.Status.do_not_disturb)
 
 # Add commands
-import basic_commands
-bot.add_cog(basic_commands.Basics(bot))
-import music
-bot.add_cog(music.Music(bot))
-import image_commands
-bot.add_cog(image_commands.Images(bot))
-import mod_commands
-bot.add_cog(mod_commands.Mod(bot))
+import comm.basic_commands
+bot.add_cog(comm.basic_commands.Basics(bot))
+import comm.minesweeper
+bot.add_cog(comm.minesweeper.Minesweeper(bot))
+import comm.music
+bot.add_cog(comm.music.Music(bot))
+import comm.image_commands
+bot.add_cog(comm.image_commands.Images(bot))
+import comm.mod_commands
+bot.add_cog(comm.mod_commands.Mod(bot))
 
 # Handle incoming messages
 @bot.event
@@ -41,6 +45,7 @@ async def on_message(message):
         await message_handler.new_pic(bot, message)
     # Commands in the message
     await bot.process_commands(message)
+    bot.lastmessage = message
 
 # Logging
 #@bot.event
@@ -82,10 +87,13 @@ async def on_channel_update(before, after):
     await log.error(m)
 @bot.event
 async def on_member_update(before, after):
-    m = "member " + before.name + " updated: "
+    changed = False
+    m = before.server.name + " | member " + before.name + " updated: "
     if before.name != after.name:
         m += " name from: " + before.name + " to: " + after.name
+        changed = True
     if before.nick != after.nick:
+        changed = True
         if not before.nick:
             m += " nick from nothing to: " + after.nick
         else:
@@ -96,12 +104,15 @@ async def on_member_update(before, after):
     for r in before.roles:
         if not r in after.roles:
             m += " -role: " + r.name
+            changed = True
     for r in after.roles:
         if not r in before.roles:
             m += " +role: " + r.name
+            changed = True
     if before.avatar != after.avatar:
         m += " avatar changed"
-    if not m == "member " + before.name + " updated: ":
+        changed = True
+    if changed:
         await log.error(m)
 @bot.event
 async def on_server_update(before, after):
@@ -133,7 +144,7 @@ async def on_server_role_update(before, after):
         await log.error(m)
 @bot.event
 async def on_server_emojis_update(before, after):
-    m = "emojis " + before.name + " updated: "
+    m = "emojis updated: "
     if len(before) != len(after):
         m += " size from: " + len(before) + " to: " + len(after)
     if not m == "emojis " + before.name + " updated: ":

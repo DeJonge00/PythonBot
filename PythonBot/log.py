@@ -1,12 +1,11 @@
-import datetime
-import discord
+import datetime,  discord, unicodedata
 
 async def error(event, message=None):
     try:
         file = open("logs/errors.txt","a+")
-        file.write(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | error: " + event)
+        file.write(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + event)
         file.close
-        print(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | error: " + event)
+        print(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + event)
     except Exception as e:
         print("log error: " + str(e))
 async def message(message, action, number=0):
@@ -31,4 +30,4 @@ async def message(message, action, number=0):
             print(message.timestamp.strftime("%H:%M:%S") + " | " + message.server.name + " | " + message.channel.name + " | " + message.author.name + " " + action + ": " + cont)
         file.close
     except Exception as e:
-        print("log message: " + str(e))
+        print("log on_message: " + str(e))
