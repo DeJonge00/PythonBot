@@ -19,10 +19,7 @@ class Images:
             user = ctx.message.author
         else:
             user = ctx.message.mentions[0]
-        name = "temp/" + user.id + ".png"
-        if not os.path.isfile(name):
-            self.save_img(user.avatar_url, name)
-        return await self.bot.send_file(ctx.message.channel, name)
+        return await self.bot.send_file(ctx.message.channel, str(user.avatar_url))
     
     # {prefix}meme <meme> <toptext>|<bottomtext>
     @commands.command(pass_context=1, help="Make a meme out of the arguments")

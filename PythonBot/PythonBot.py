@@ -1,7 +1,7 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import constants, datetime, init, log, logging, message_handler, random, responses, sys
+import constants, datetime, log, logging, message_handler, random, responses, sys
 
 # Basic configs
 pi = 3.14159265358979323846264
@@ -14,7 +14,7 @@ logging.basicConfig()
 
 @bot.event
 async def on_ready():
-    print('Started bot')
+    print('\nStarted bot')
     print("User: " + bot.user.name)
     print("ID: " + bot.user.id)
     print("Started at: " + datetime.datetime.utcnow().strftime("%H:%M:%S") + "\n")
@@ -33,6 +33,9 @@ import comm.image_commands
 bot.add_cog(comm.image_commands.Images(bot))
 import comm.mod_commands
 bot.add_cog(comm.mod_commands.Mod(bot))
+import rpggame.rpgmain
+rpggameinstance = rpggame.rpgmain.RPGgame(bot)
+bot.add_cog(rpggameinstance)
 
 # Handle incoming messages
 @bot.event
@@ -59,10 +62,10 @@ async def on_message_delete(message):
     await message_handler.deleted(message)
 @bot.event
 async def on_member_join(member):
-    await log.error("Member " + member.name + " just joined " + member.server.name)
+    await log.error(member.server.name + " | Member " + member.name + " just joined")
 @bot.event
 async def on_member_remove(member):
-    await log.error("Member " + member.name + " just left " + member.server.name)
+    await log.error(member.server.name + " | Member " + member.name + " just left")
     try:
         await bot.send_message(member.server.default_channel, "\"" + member.name + "\" just left. Byebye, you will not be missed!")
     except Exception as e:
@@ -136,12 +139,16 @@ async def on_server_role_update(before, after):
         m += " name from: " + before.name + " to: " + after.name
     for r in before.permissions:
         if not r in after.permissions:
-            m += " -permission: " + r.name
+            x, y = r
+            if y:
+                m += " -permission: " + x
     for r in after.permissions:
         if not r in before.permissions:
-            m += " +permission: " + r.name
+            x, y = r
+            if y:
+                m += " +permission: " + x
     if not m == "role " + before.name + " updated: ":
-        await log.error(m)
+        await log.error(before.server.name + " | " + m)
 @bot.event
 async def on_server_emojis_update(before, after):
     m = "emojis updated: "

@@ -167,18 +167,6 @@ class Basics:
         except Exception as e:
             await log.error("cmd echo: " + str(e))
 
-    # {prefix}evaluate <math>
-    @commands.command(pass_context=1, aliases=["eval", "calc"], help="Do the math!")
-    async def evaluate(self, ctx, *args):
-        try:
-            try:
-                await self.bot.delete_message(ctx.message)
-            except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
-            return await self.bot.send_message(ctx.message.channel, " ".join(args) + " = " + eval(" ".join(args)))
-        except Exception as e:
-            await log.error("cmd eval: " + str(e))
-
     # {prefix}face
     @commands.command(pass_context=1, help="Make a random face!")
     async def face(self, ctx, *args):
@@ -199,11 +187,22 @@ class Basics:
                 await self.bot.delete_message(ctx.message)
             except discord.Forbidden:
                 print(ctx.message.server + " | No permission to delete messages")
-            if ctx.message.content == "":
+            if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
                 return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a hug? Haha, so lonely...")
             await send_random.string(self.bot, ctx.message.channel, responses.hug, ctx.message.author.mention, " ".join(args))
         except Exception as e:
             await log.error("cmd hug: " + str(e))
+
+     # {prefix}kick
+    @commands.command(pass_context=1, help="kick someone for funzies")
+    async def kick(self, ctx, *args):
+        try:
+            if len(ctx.message.mentions) > 0:
+                if (ctx.message.author == ctx.message.mentions[0]):
+                    return await self.bot.send_message(ctx.message.channel, "You could just leave yourself if you want to go :thinking:")
+                await self.bot.send_message(ctx.message.channel, "User \"" + ctx.message.mentions[0].name + "\" has left the server, baibai <3");
+        except Exception as e:
+            await log.error("cmd kick: " + str(e))
 
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death!")
@@ -213,8 +212,8 @@ class Basics:
                 await self.bot.delete_message(ctx.message)
             except discord.Forbidden:
                 print(ctx.message.server + " | No permission to delete messages")
-            if ctx.message.content == "":
-                return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a kill? Haha, so lonely...")
+            if (ctx.message.content == "" | ctx.message.content.lower() == ctx.message.author.name.lower() | ctx.message.author in ctx.message.mentions):
+                return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
             await send_random.string(self.bot, ctx.message.channel, responses.kill, " ".join(args))
         except Exception as e:
             await log.error("cmd kill: " + str(e))
@@ -253,14 +252,14 @@ class Basics:
             m += "\nStatus:         " + user.status.name
             if user.game:
                 m += "\nGame:           " + str(user.game)
-            m += "\nUser Joined at: " + user.joined_at.strftime("%D/%M/%Y at %H:%M:%S")
+            m += "\nUser Joined at: " + user.joined_at.strftime("%D at %H:%M:%S")
             m += "\nRoles:          " + user.roles[0].name
             for r in range(1,len(user.roles)):
                 m += ", " + user.roles[r].name
             m += "```"
             await self.bot.send_message(ctx.message.channel, m)
         except Exception as e:
-            await log.error("cmd userinffo: " + str(e))
+            await log.error("cmd userinfo: " + str(e))
 
     # {prefix}wikipedia <query>
     @commands.command(pass_context=1, help="Search the wiki!", aliases=["wiki"])

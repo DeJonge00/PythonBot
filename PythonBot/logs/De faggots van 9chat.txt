@@ -47,3 +47,69 @@
 20:28:19 | botstuff | NYA-CHAN deleted: >ms new
 20:29:27 | botstuff | NYA-CHAN deleted: >ms new
 14:40:14 | botstuff | NYA-CHAN deleted: >quit
+14:55:10 | general | NYA-CHAN deleted: >quit
+14:55:28 | botstuff | NYA-CHAN deleted: >ms new
+14:56:38 | botstuff | NYA-CHAN deleted: >ms new
+14:57:41 | botstuff | NYA-CHAN deleted: >quit
+14:57:53 | botstuff | NYA-CHAN deleted: >ms
+14:58:00 | botstuff | NYA-CHAN deleted: >ms new
+14:59:06 | botstuff | NYA-CHAN deleted: >quit
+14:59:19 | botstuff | NYA-CHAN deleted: >ms new
+14:59:32 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:00:00 | botstuff | NYA-CHAN deleted: >quit
+15:00:17 | botstuff | NYA-CHAN deleted: >ms new
+15:00:21 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:00:45 | botstuff | NYA-CHAN deleted: >quit
+15:00:55 | botstuff | NYA-CHAN deleted: >ms new
+15:01:08 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:01:44 | botstuff | NYA-CHAN deleted: >quit
+15:01:53 | botstuff | NYA-CHAN deleted: >ms new
+15:01:58 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:02:25 | botstuff | NYA-CHAN deleted: >quit
+15:02:38 | botstuff | NYA-CHAN deleted: >ms new
+15:02:45 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:03:16 | botstuff | NYA-CHAN deleted: >quit
+15:03:37 | botstuff | NYA-CHAN deleted: >ms new
+15:03:44 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:06:10 | botstuff | NYA-CHAN deleted: >quit
+15:06:20 | botstuff | NYA-CHAN deleted: >ms new
+15:06:26 | botstuff | NYA-CHAN deleted: >ms 2 2
+15:07:33 | botstuff | NYA-CHAN deleted: >quit
+15:07:45 | botstuff | NYA-CHAN deleted: >ms new
+15:07:51 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:12:58 | botstuff | NYA-CHAN deleted: >quit
+15:13:10 | botstuff | NYA-CHAN deleted: >ms new
+15:13:15 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:14:02 | botstuff | NYA-CHAN deleted: >quit
+15:14:09 | botstuff | NYA-CHAN deleted: >ms new
+15:14:13 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:14:26 | botstuff | NYA-CHAN deleted: >quit
+15:14:36 | botstuff | NYA-CHAN deleted: >ms new
+15:14:40 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:14:52 | botstuff | NYA-CHAN deleted: >ms 10 10
+15:15:02 | botstuff | NYA-CHAN deleted: >ms 0 9
+15:16:11 | botstuff | NYA-CHAN deleted: >ms new 5 5 2
+15:18:12 | botstuff | NYA-CHAN deleted: >quit
+15:18:26 | botstuff | NYA-CHAN deleted: >ms new 5 5 2
+15:18:58 | botstuff | NYA-CHAN deleted: >ms 0 1
+15:19:11 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:19:40 | botstuff | NYA-CHAN deleted: >ms quit
+15:21:56 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:22:03 | botstuff | NYA-CHAN deleted: >ms quit
+15:22:54 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:22:58 | botstuff | NYA-CHAN deleted: >ms quit
+15:23:11 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:23:17 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:23:21 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:25:09 | botstuff | NYA-CHAN deleted: >quit
+15:25:19 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:25:25 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:28:33 | botstuff | NYA-CHAN deleted: >quit
+15:28:43 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:28:49 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:29:46 | botstuff | NYA-CHAN deleted: >quit
+15:29:55 | botstuff | NYA-CHAN deleted: >ms new 5 5 5
+15:30:00 | botstuff | NYA-CHAN deleted: >ms 0 0
+15:30:56 | botstuff | NYA-CHAN deleted: >ms 1 1
+15:31:03 | botstuff | NYA-CHAN deleted: >ms 0 1
+15:31:09 | botstuff | NYA-CHAN deleted: >ms 1 0

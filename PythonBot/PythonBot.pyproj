@@ -34,9 +34,6 @@
     <Compile Include="comm\image_commands.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="init.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="message_handler.py">
       <SubType>Code</SubType>
     </Compile>
@@ -122,6 +119,7 @@
     <Content Include="ded\7.jpg" />
     <Content Include="ded\8.jpg" />
     <Content Include="ded\9.jpg" />
+    <Content Include="ded\15.jpg" />
     <Content Include="language\0.gif" />
     <Content Include="language\1.png" />
     <Content Include="language\10.gif" />

@@ -116,7 +116,7 @@ hug = [
             " practices a new more cuddly type of hug on ",
             " stabs a lot of people to be the only one to hug ",
             " morphs into a hugmonster and attacks ",
-            " uses the whole love-bar to hug ",
+            " uses a love power-up to hug ",
             " used special move \"HUG\" on ",
             " orders a hug-airstrike on ",
             "'s hugtrap was sprung by ",
@@ -146,6 +146,7 @@ kill = [
             "Imma tie your limbs with a rope so tight, they will die and fall off",
             "Imma insert superglue in every hole on your body I can find",
             "Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat"
+            "Imma hang you by your ballz from the ceiling fan and use you as a pinyata"
         ]
 
 spell = [

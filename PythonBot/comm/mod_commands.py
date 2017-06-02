@@ -1,4 +1,4 @@
-import discord, constants, log
+import asyncio, discord, constants, log
 from discord.ext import commands
 from random import randint
 
@@ -6,6 +6,21 @@ from random import randint
 class Mod:
     def __init__(self, my_bot):
         self.bot = my_bot
+
+    # {prefix}banish <@person>
+    @commands.command(pass_context=1, hidden=1, help="BANHAMMER")
+    async def banish(self, ctx, *args):
+        try:
+            try:
+                await self.bot.delete_message(ctx.message)
+            except discord.Forbidden:
+                print(ctx.message.server + " | No permission to delete messages")
+            if ctx.message.author.id != constants.NYAid:
+                return await self.bot.send_message(ctx.message.channel, "Hahaha, no.")
+            for user in ctx.message.mentions:
+                self.bot.kick(user)
+        except Exception as e:
+            await log.error("cmd banish: " + str(e))
 
     # {prefix}purge <amount>
     @commands.command(pass_context=1, hidden=1, help="Lets me go to sleep")
@@ -46,6 +61,24 @@ class Mod:
         except Exception as e:
             await log.error("cmd emojispam: " + str(e))
 
+    # {prefix}nickname <@person>
+    @commands.command(pass_context=1, hidden=1, help="Nickname a person", aliases=["nick", "nn"])
+    async def nickname(self, ctx, *args):
+        try:
+            try:
+                await self.bot.delete_message(ctx.message)
+            except discord.Forbidden:
+                print(ctx.message.server + " | No permission to delete messages")
+            if ctx.message.author.id != constants.NYAid:
+                return await self.bot.send_message(ctx.message.channel, "Hahaha, no.")
+            if len(ctx.message.mentions) > 0:
+                if len(args) > 1:
+                    await self.bot.change_nickname(ctx.message.mentions[0], " ".join(args[1:]))
+                else:
+                    await self.bot.change_nickname(ctx.message.mentions[0], "")
+        except Exception as e:
+            await log.error("cmd nickname: " + str(e))
+
     # {prefix}spam <amount> <user>
     @commands.command(pass_context=1, hidden=1, help="Spam a user messages")
     async def spam(self, ctx, *args):
@@ -66,7 +99,7 @@ class Mod:
                     for i in range(a):
                         await self.bot.send_message(user, "Have a random number: " + str(randint(0,10000)) + " :heart:")
         except Exception as e:
-            await log.error("cmd emojispam: " + str(e))
+            await log.error("cmd spam: " + str(e))
 
     # {prefix}quit
     @commands.command(pass_context=1, hidden=1, help="Lets me go to sleep")
@@ -78,6 +111,8 @@ class Mod:
                 print(ctx.message.server + " | No permission to delete messages")
             if ctx.message.author.id != constants.NYAid:
                 return await self.bot.send_message(ctx.message.channel, "Hahaha, no.")
+            await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
+            rpggameinstance.running = False
             await self.bot.logout()
             await self.bot.close()
         except Exception as e:
