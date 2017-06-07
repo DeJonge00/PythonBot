@@ -112,7 +112,8 @@ class Mod:
             if ctx.message.author.id != constants.NYAid:
                 return await self.bot.send_message(ctx.message.channel, "Hahaha, no.")
             await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
-            rpggameinstance.running = False
+            await self.bot.rpggameinstance.quit()
+            asyncio.sleep(3)
             await self.bot.logout()
             await self.bot.close()
         except Exception as e:

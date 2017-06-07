@@ -40,6 +40,9 @@
     <Compile Include="log.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rpggame\rpgcharacter.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rpggame\rpgmain.py">
       <SubType>Code</SubType>
     </Compile>

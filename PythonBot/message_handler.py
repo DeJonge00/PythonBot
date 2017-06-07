@@ -1,11 +1,20 @@
-import constants, discord, datetime, log, requests, responses, send_random, string, urllib, comm.image_commands, os.path
+import constants, discord, datetime, log, requests, random, responses, send_random, string, urllib, comm.image_commands, os.path
 from discord.ext.commands import Bot
 from PIL import Image
 from io import BytesIO
 
+def cl(x):
+    if random.randint(0,1)<=0:
+        return x.lower()
+    else:
+        return x.capitalize()
+
 async def new(bot, message):
     #if ((message.author.id == "226782069747875842") & ("s" in message.content)):
     #    await bot.send_message(message.channel, "*" + message.content.replace("s", "ß"))
+    #if ((message.author.id in ["226782069747875842", "214708282864959489"]) & (random.randint(0,4)<=0) & (message.server.name.lower()=="9chat") & (len(message.content)>5)):
+    #    m = [ cl(x) for x in message.content.lower()]
+    #    await bot.send_message(message.channel, ''.join(m) + " <:sponge:321748484405592064>")
     if message.content == "\\o/":
         if (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
             try:

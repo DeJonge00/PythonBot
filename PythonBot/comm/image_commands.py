@@ -19,7 +19,10 @@ class Images:
             user = ctx.message.author
         else:
             user = ctx.message.mentions[0]
-        return await self.bot.send_file(ctx.message.channel, str(user.avatar_url))
+        embed = discord.Embed(colour=0x000000)
+        embed.set_author(name=str(user.name))
+        embed.set_image(url=user.avatar_url)
+        return await self.bot.send_message(ctx.message.channel, embed=embed)
     
     # {prefix}meme <meme> <toptext>|<bottomtext>
     @commands.command(pass_context=1, help="Make a meme out of the arguments")

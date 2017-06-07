@@ -34,8 +34,8 @@ bot.add_cog(comm.image_commands.Images(bot))
 import comm.mod_commands
 bot.add_cog(comm.mod_commands.Mod(bot))
 import rpggame.rpgmain
-rpggameinstance = rpggame.rpgmain.RPGgame(bot)
-bot.add_cog(rpggameinstance)
+bot.rpggameinstance = rpggame.rpgmain.RPGgame(bot)
+bot.add_cog(bot.rpggameinstance)
 
 # Handle incoming messages
 @bot.event
@@ -48,6 +48,8 @@ async def on_message(message):
         await message_handler.new_pic(bot, message)
     # Commands in the message
     await bot.process_commands(message)
+    #Send message to rpggame for exp
+    await bot.rpggameinstance.handle(message)
     bot.lastmessage = message
 
 # Logging
@@ -66,10 +68,14 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     await log.error(member.server.name + " | Member " + member.name + " just left")
+    embed = discord.Embed(colour=0xFF0000)
+    embed.add_field(name="User left", value="\"" + member.name + "\" just left. Byebye, you will not be missed!")
+    m = await bot.send_message(member.server.default_channel, embed=embed)
+    await asyncio.sleep(30)
     try:
-        await bot.send_message(member.server.default_channel, "\"" + member.name + "\" just left. Byebye, you will not be missed!")
-    except Exception as e:
-        await log.error(str(e))
+        await self.bot.delete_message(m)
+    except discord.Forbidden:
+        print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_channel_delete(channel):
     await log.error("deleted channel: " + channel.name)
@@ -153,7 +159,7 @@ async def on_server_role_update(before, after):
 async def on_server_emojis_update(before, after):
     m = "emojis updated: "
     if len(before) != len(after):
-        m += " size from: " + len(before) + " to: " + len(after)
+        m += " size from: " + str(len(before)) + " to: " + str(len(after))
     if not m == "emojis " + before.name + " updated: ":
         await log.error(m)
 @bot.event
