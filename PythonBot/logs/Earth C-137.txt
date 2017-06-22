@@ -591,3 +591,104 @@
 12:08:40 | general | NYA-CHAN deleted: >rpgparty
 12:08:54 | general | NYA-CHAN deleted: >rpgjoin
 12:08:59 | general | NYA-CHAN deleted: >rpgparty
+12:17:42 | general | NYA-CHAN deleted: >quit
+12:18:14 | general | NYA-CHAN deleted: >rpgbattle @Biribiri
+12:18:40 | general | NYA-CHAN deleted: >rpgbattle @NYA-CHAN
+12:25:53 | general | NYA-CHAN deleted: >rpgtop
+12:26:07 | general | NYA-CHAN deleted: >rpgtop 2
+12:26:12 | general | NYA-CHAN deleted: >rpgtop 4
+12:26:18 | general | NYA-CHAN deleted: >rpgtop
+15:33:53 | general | NYA-CHAN deleted: >quit
+16:33:44 | general | NYA-CHAN deleted: >hug @Biribiri
+16:34:20 | general | NYA-CHAN deleted: >quit
+16:34:29 | general | NYA-CHAN deleted: >hug @Biribiri
+16:34:42 | general | NYA-CHAN deleted: >quit
+16:34:54 | general | NYA-CHAN deleted: >hug @Biribiri
+16:35:14 | general | NYA-CHAN deleted: >hug @Biribiri
+16:35:19 | general | NYA-CHAN deleted: >hug @Biribiri
+18:37:30 | general | NYA-CHAN deleted: >hug @Biribiri
+18:37:34 | general | NYA-CHAN deleted: >hug @Biribiri
+18:37:39 | general | NYA-CHAN deleted: >hug @Biribiri
+18:37:45 | general | NYA-CHAN deleted: >hug @Biribiri
+18:37:55 | general | NYA-CHAN deleted: >hug @Biribiri
+19:02:32 | general | NYA-CHAN deleted: >quit
+19:04:02 | general | NYA-CHAN deleted: >quit
+20:06:04 | general | NYA-CHAN deleted: >quit
+23:05:48 | general | NYA-CHAN deleted: >quit
+15:05:56 | general | NYA-CHAN deleted: >echo @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN @NYA-CHAN
+16:37:37 | general | NYA-CHAN deleted: >echo xs
+23:34:27 | general | NYA-CHAN deleted: >quit
+12:27:27 | general | NYA-CHAN deleted: >quit
+12:54:25 | general | NYA-CHAN deleted: >quit
+13:10:54 | general | NYA-CHAN deleted: >play dragon maid op
+13:13:01 | general | NYA-CHAN deleted: >play dragon maid op
+13:13:59 | general | NYA-CHAN deleted: >quit
+13:21:13 | general | NYA-CHAN deleted: >quit
+13:22:57 | general | NYA-CHAN deleted: >quit
+13:23:30 | general | NYA-CHAN deleted: >quit
+13:24:02 | general | NYA-CHAN deleted: >quit
+13:25:07 | general | NYA-CHAN deleted: >quit
+13:26:26 | general | NYA-CHAN deleted: >quit
+13:27:58 | general | NYA-CHAN edited: >play https://www.youtube.com/watch?v=JhupVCSCNOs
+13:30:29 | general | NYA-CHAN edited: >play https://www.youtube.com/watch?v=AcplQ-zyca0
+13:33:32 | general | NYA-CHAN deleted: >quit
+14:00:12 | general | NYA-CHAN deleted: >quit
+14:08:00 | general | NYA-CHAN deleted: >quit
+14:08:49 | general | NYA-CHAN deleted: >quit
+14:09:21 | general | NYA-CHAN deleted: >quit
+14:10:07 | general | NYA-CHAN deleted: >quit
+14:11:06 | general | NYA-CHAN deleted: >quit
+14:12:31 | general | NYA-CHAN deleted: >quit
+14:17:18 | general | NYA-CHAN deleted: >quit
+14:17:47 | general | Biribiri deleted: ```
+You don't have permission to use that command.
+Reason: This command is not enabled for your group (Default).
+```
+14:20:11 | general | NYA-CHAN deleted: >quit
+14:20:56 | general | NYA-CHAN deleted: >quit
+14:29:03 | general | Biribiri deleted: @NYA-CHAN, your id is `143037788969762816`
+14:33:19 | general | NYA-CHAN deleted: >quit
+14:34:22 | general | NYA-CHAN edited: >play https://www.youtube.com/watch?v=AcplQ-zyca0
+14:35:25 | general | NYA-CHAN deleted: >quit
+14:43:59 | general | NYA-CHAN deleted: >quit
+22:52:22 | general | NYA-CHAN deleted: >rpgtop
+23:54:48 | general | NYA-CHAN deleted: >quit
+23:17:54 | general | NYA-CHAN deleted: >quit
+01:51:42 | general | NYA-CHAN deleted: >quit
+16:44:53 | general | NYA-CHAN deleted: >quit
+16:46:57 | general | NYA-CHAN deleted: >quit
+16:51:33 | general | NYA-CHAN deleted: >quit
+16:52:26 | general | NYA-CHAN deleted: >quit
+16:54:11 | general | NYA-CHAN deleted: >quit
+16:56:32 | general | NYA-CHAN deleted: >quit
+16:59:11 | general | NYA-CHAN deleted: >quit
+21:43:26 | general | NYA-CHAN deleted: >quit
+21:43:53 | general | NYA-CHAN deleted: >rpgstats
+21:46:02 | general | NYA-CHAN deleted: >quit
+21:46:14 | general | NYA-CHAN deleted: >rpgstats
+21:46:33 | general | NYA-CHAN deleted: >quit
+21:46:44 | general | NYA-CHAN deleted: >rpgstats @Biribiri
+23:15:42 | general | NYA-CHAN deleted: >quit
+23:15:50 | general | NYA-CHAN deleted: >kill @Biribiri
+23:15:58 | general | NYA-CHAN deleted: >kill @NYA-CHAN
+23:17:26 | general | NYA-CHAN deleted: >kill me
+23:17:55 | general | NYA-CHAN deleted: >quit
+23:18:03 | general | NYA-CHAN deleted: >kill @Biribiri
+23:18:11 | general | NYA-CHAN deleted: >kill @Biribiri
+23:25:45 | general | NYA-CHAN deleted: >quit
+23:25:58 | general | NYA-CHAN deleted: >kill @NYA-CHAN the god-senpai
+23:26:16 | general | NYA-CHAN deleted: >kill @Biribiri bot bb ?
+01:34:36 | general | NYA-CHAN deleted: >quit
+10:46:19 | general | NYA-CHAN deleted: >hug @Biribiri
+10:47:06 | general | NYA-CHAN deleted: >quit
+10:47:16 | general | NYA-CHAN deleted: >kill @Biribiri
+10:47:26 | general | NYA-CHAN deleted: >kill @Biribiri
+10:48:47 | general | NYA-CHAN deleted: >quit
+10:48:59 | general | NYA-CHAN deleted: >kill @Biribiri
+12:06:21 | general | NYA-CHAN deleted: >quit
+12:19:21 | general | NYA-CHAN deleted: >quit
+13:41:02 | general | NYA-CHAN deleted: >rpgstats
+13:42:26 | general | NYA-CHAN deleted: >rpgstats
+14:28:49 | general | NYA-CHAN deleted: >rpgtop
+14:29:27 | general | NYA-CHAN deleted: >rpgtop 2
+14:29:48 | general | NYA-CHAN deleted: >rpgtop 3

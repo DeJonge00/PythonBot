@@ -17,80 +17,77 @@ class Minesweeper:
     # {prefix}minesweeper
     @commands.command(pass_context=1, help="Minesweeper game", aliases=["ms"])
     async def minesweeper(self, ctx, *args):
-        #try:
-            try:
-                await self.bot.delete_message(ctx.message)
-            except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            print(ctx.message.server + " | No permission to delete messages")
 
-            if len(args) <= 0:
-                return await self.bot.send_message(ctx.message.channel, "Specify 'new' {height} {width} {mines} | <x> <y> | 'quit'")
-            if args[0] == "quit":
-                return await self.quit(ctx.message.channel)
-            if (not self.running):
-                if not args[0] == "new":
-                    return await self.bot.send_message(ctx.message.channel, "There is no game running right now. Try: >minesweeper new")
-                if len(args) >= 4:
-                    try:
-                        self.height = int(args[1])
-                    except ValueError:
-                        self.height = 10
-                    try:
-                        self.width = int(args[2])
-                    except ValueError:
-                        self.width = 15
-                    try:
-                        self.mineamount = int(args[3])
-                    except ValueError:
-                        self.mineamount = 20
-                    if (0 >= self.height) | (self.height > 30):
-                        return await self.bot.send_message(ctx.message.channel, "The height can be between 0 and 30")
-                    if (0 >= self.width) | (self.width > 30):
-                        return await self.bot.send_message(ctx.message.channel, "The width can be between 0 and 30")
-                    if (0 >= self.mineamount) | (self.mineamount > (self.height * self.width)):
-                        return await self.bot.send_message(ctx.message.channel, "Wowowow, that difficulty is not something you could handle...")
-                    if self.height > self.width:
-                        self.width += self.height
-                        self.height = self.width-self.height
-                        self.width -= self.height
-                else:
+        if len(args) <= 0:
+            return await self.bot.send_message(ctx.message.channel, "Specify 'new' {height} {width} {mines} | <x> <y> | 'quit'")
+        if args[0] == "quit":
+            return await self.quit(ctx.message.channel)
+        if (not self.running):
+            if not args[0] == "new":
+                return await self.bot.send_message(ctx.message.channel, "There is no game running right now. Try: >minesweeper new")
+            if len(args) >= 4:
+                try:
+                    self.height = int(args[1])
+                except ValueError:
                     self.height = 10
+                try:
+                    self.width = int(args[2])
+                except ValueError:
                     self.width = 15
+                try:
+                    self.mineamount = int(args[3])
+                except ValueError:
                     self.mineamount = 20
-                self.running = True
-                return await self.bot.send_message(ctx.message.channel, "Game initialized with a " + str(self.height) + "x" + str(self.width) + " board, glhf")
+                if (0 >= self.height) | (self.height > 30):
+                    return await self.bot.send_message(ctx.message.channel, "The height can be between 0 and 30")
+                if (0 >= self.width) | (self.width > 30):
+                    return await self.bot.send_message(ctx.message.channel, "The width can be between 0 and 30")
+                if (0 >= self.mineamount) | (self.mineamount > (self.height * self.width)):
+                    return await self.bot.send_message(ctx.message.channel, "Wowowow, that difficulty is not something you could handle...")
+                if self.height > self.width:
+                    self.width += self.height
+                    self.height = self.width-self.height
+                    self.width -= self.height
             else:
-                # Running = True
-                if len(args) > 0:
-                    if args[0] == "flag":
-                        if len(args) > 2:
-                            try:
-                                y = int(args[1])-1
-                                x = int(args[2])-1
-                            except ValueError:
-                                return await self.bot.send_message(ctx.message.channel, "Those x or y values are not numbers...")
-                            if (x <= 0) | (y <= 0) | (x >= self.height) | (y >= self.width):
-                                return await self.bot.send_message(ctx.message.channel, "Those x or y values are not on the board")
-                            self.image.paste(Image.open("./minesweeper/flag.jpg"), (20*y+10, 20*x+10))
-                            return await self.sendboard(ctx.message.channel)
-                        return await self.bot.send_message(ctx.message.channel, "Those x or y values are not even existent")
-                    else: 
-                        if len(args) < 2:
-                            return await self.bot.send_message(ctx.message.channel, "Specify a tile to check (<x> <y>)")
+                self.height = 10
+                self.width = 15
+                self.mineamount = 20
+            self.running = True
+            return await self.bot.send_message(ctx.message.channel, "Game initialized with a " + str(self.height) + "x" + str(self.width) + " board, glhf")
+        else:
+            # Running = True
+            if len(args) > 0:
+                if args[0] == "flag":
+                    if len(args) > 2:
                         try:
-                            y = int(args[0])-1
-                            x = int(args[1])-1
+                            y = int(args[1])-1
+                            x = int(args[2])-1
                         except ValueError:
-                            return await self.bot.send_message(ctx.message.channel, "Those x or y values are not even numbers")
-                        if (x < 0) | (y < 0) | (x >= self.height) | (y >= self.width):
+                            return await self.bot.send_message(ctx.message.channel, "Those x or y values are not numbers...")
+                        if (x <= 0) | (y <= 0) | (x >= self.height) | (y >= self.width):
                             return await self.bot.send_message(ctx.message.channel, "Those x or y values are not on the board")
-                        await self.bot.send_message(ctx.message.channel, "You guessed: (" + str(y+1) + "," + str(x+1) + "):")
-                        if not await self.guess(x, y):
-                            await self.bot.send_message(ctx.message.channel, "DEAD Hahaha (your score was: " + str(self.score) + "/" + str(self.width * self.height - self.mineamount) +  ")")
-                            return await self.sendboard(ctx.message.channel)
-            return await self.sendboard(ctx.message.channel)
-        #except Exception as e:
-            #await log.error("cmd minesweeper: " + str(e))
+                        self.image.paste(Image.open("./minesweeper/flag.jpg"), (20*y+10, 20*x+10))
+                        return await self.sendboard(ctx.message.channel)
+                    return await self.bot.send_message(ctx.message.channel, "Those x or y values are not even existent")
+                else: 
+                    if len(args) < 2:
+                        return await self.bot.send_message(ctx.message.channel, "Specify a tile to check (<x> <y>)")
+                    try:
+                        y = int(args[0])-1
+                        x = int(args[1])-1
+                    except ValueError:
+                        return await self.bot.send_message(ctx.message.channel, "Those x or y values are not even numbers")
+                    if (x < 0) | (y < 0) | (x >= self.height) | (y >= self.width):
+                        return await self.bot.send_message(ctx.message.channel, "Those x or y values are not on the board")
+                    await self.bot.send_message(ctx.message.channel, "You guessed: (" + str(y+1) + "," + str(x+1) + "):")
+                    if not await self.guess(x, y):
+                        await self.bot.send_message(ctx.message.channel, "DEAD Hahaha (your score was: " + str(self.score) + "/" + str(self.width * self.height - self.mineamount) +  ")")
+                        return await self.sendboard(ctx.message.channel)
+        return await self.sendboard(ctx.message.channel)
 
     async def gameover(self):
         self.hasboard = False

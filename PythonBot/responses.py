@@ -39,33 +39,34 @@ response = [
             "You want *me* to talk to *you*??",
             "Awwwn... such a cute voice",
             "You sound like a pretty nice person",
-            "I want you to treat me like a princess, pls!"
+            "I want you to treat me like a princess, pls!",
+            "You need more hugs in your life..."
         ]
 
 # random responses
 compliments = [
-            "you look lovely today <3",
-            "your smile is contagious",
-            "I like your style",
-            "you are the most perfect you there is",
-            "you're an awesome friend",
-            "you deserve a hug right now",
-            "is that your picture next to 'charming' in the dictionary?",
-            "you are a perfect 5/7",
-            "if cartoon bluebirds were real, a bunch of them would be sitting on your shoulders singing right now",
-            "you're like sunshine on a rainy day",
-            "everything would be better if more people were like you!",
-            "I bet you sweat glitter",
-            "being around you makes everything better!",
-            "you're better than a triple-scoop ice cream cone\nWith sprinkles",
-            "being around you is like being on a happy little vacation",
-            "you could survive a Zombie apocalypse just by smiling",
-            "you're more fun than bubble wrap",
-            "who raised you? They deserve a medal for a job well done",
-            "you're gorgeous -- and that's the least interesting thing about you, too",
-            "somehow you make time stop and fly at the same time",
-            "I bet you do the crossword puzzle in ink",
-            "you're even better than a unicorn, because you're real"
+            "{u[0]} you look lovely today <3",
+            "{u[0]} your smile is contagious",
+            "{u[0]} I like your style",
+            "{u[0]} you are the most perfect you there is",
+            "{u[0]} you're an awesome friend",
+            "{u[0]} you deserve a hug right now",
+            "Is that {u[0]}'s picture next to 'charming' in the dictionary?",
+            "{u[0]} is a perfect 5/7",
+            "{u[0]} if cartoon bluebirds were real, a bunch of them would be sitting on your shoulders singing right now",
+            "{u[0]} you're like sunshine on a rainy day",
+            "Everything would be better if more people were like {u[0]}!",
+            "I bet {u[0]} sweats glitter",
+            "Being around {u[0]} makes everything better!",
+            "{u[0]} you're better than a triple-scoop ice cream cone\nWith sprinkles",
+            "{u[0]} being around you is like being on a happy little vacation",
+            "{u[0]} could survive a Zombie apocalypse just by smiling",
+            "{u[0]} you're more fun than bubble wrap",
+            "{u[0]} who raised you? They deserve a medal for a job well done",
+            "{u[0]} you're gorgeous -- and that's the least interesting thing about you, too",
+            "Somehow {u[0]} makes time stop and fly at the same time",
+            "I bet {u[0]} does the crossword puzzle in ink",
+            "{u[0]} is even better than a unicorn, because {u[0]} is real"
         ]
 
 ded = [
@@ -102,52 +103,80 @@ faces = [
             "(｡◕‿‿◕｡)"
         ]
 
+hangmanwords = [
+            "This is sparta!",
+            "Memequeen",
+            "Extremely Autistic",
+            "Puppy Power",
+            "Dragon-maid",
+            "xXx-pussydestroyer-xXx",
+            "Praise the Sun!",
+            "Anime is love, anime is life",
+            "This sentence is false",
+            "Send nudes please",
+            "Lolicon intensifies"
+    ]
+
 hug = [
-            " gives a really big hug to ",
-            " teleports in to hug ",
-            " transforms into a pillow and hugs ",
-            " executes realBigHug.exe on ",
-            " immediately ceases doing important stuff to hug ",
-            " said: \"Let there be hugs\", and there were hugs for ",
-            "-chan hug hug ",
-            " blows a sweet pink kiss to ",
-            " stops fapping to kpop for a hug with ",
-            " fabulously flies in for a hug with ",
-            " practices a new more cuddly type of hug on ",
-            " stabs a lot of people to be the only one to hug ",
-            " morphs into a hugmonster and attacks ",
-            " uses a love power-up to hug ",
-            " used special move \"HUG\" on ",
-            " orders a hug-airstrike on ",
-            "'s hugtrap was sprung by ",
-            " finished the moment with a super cute hug for ",
-            " has some cuddle-time with "
+            "{u[0]} gives {u[1]} a really big hug",
+            "{u[0]} teleports in to hug {u[1]}",
+            "{u[0]} transforms into a pillow and hugs {u[1]}",
+            "{u[0]} executes realBigHug.exe on {u[1]}",
+            "{u[0]} immediately ceases doing important stuff to hug {u[1]}",
+            "{u[0]} said: \"Let there be hugs\", and {u[1]} got hugs",
+            "{u[0]}-chan hug hug {u[1]}",
+            "{u[0]} blows {u[1]} a sweet pink kiss",
+            "{u[0]} stops fapping to kpop for a hug with {u[1]}",
+            "{u[0]} fabulously flies in for a hug with {u[1]}",
+            "{u[0]} practices a new more cuddly type of hug on {u[1]}",
+            "{u[0]} stabs a lot of people to be the only one to hug {u[1]}",
+            "{u[0]} morphs into a hugmonster and attacks {u[1]}",
+            "{u[0]} uses a love power-up to hug {u[1]}",
+            "{u[0]} used special move \"HUG\" on {u[1]}",
+            "{u[0]} orders a hug-airstrike on {u[1]}",
+            "{u[1]} sprung {u[0]}'s hugtrap",
+            "{u[0]} finished the moment with a super cute hug for {u[1]}",
+            "{u[0]} has some cuddle-time with {u[1]}",
+            "{u[0]} *hugs {u[1]} lovingly*"
         ]
 
 kill = [
-            "Imma stab you so much, even the first plague of Egypt will be nothing in comparison",
-            "Imma torture you so hard, even the devil won't want you after",
-            "Imma cut off your arms and legs and burn you in lava. Then I'll make you into a robot that can only pass butter",
-            "Imma leave you in a musquito-cage, covered in syrup, untill you've been sucked dry",
-            "Imma tickle you in 'places' untill you kill yourself",
-            "Imma let an alien hatch in you, and when it bursts out, I'll funnel it into your mouth",
-            "Imma let you get eaten by a shark, limb by limb, slowly",
-            "SECTUMSEMPRA, CRUCIO, AVADA KEDAVRA",
-            "Imma write you out of the script of life, so you will be meaninglessly forgotten",
-            "Imma strangle you while slowly inserting burning needles in your body",
-            "Imma make you cum to boku no pico",
-            "Imma code a big bug in you",
-            "Imma suck your intestines out with a vacuum cleaner",
-            "Imma use chaos magic to suck you into the void",
-            "Imma put you in a room full of sweaty, greasy old people",
-            "Imma starve you in a completely silent room",
-            "Imma prepare you like I would a fish, using a lot of salt in the process",
-            "Imma slit your throat slowly, using a hot salted knife",
-            "Imma tie your limbs with a rope so tight, they will die and fall off",
-            "Imma insert superglue in every hole on your body I can find",
-            "Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat"
-            "Imma hang you by your ballz from the ceiling fan and use you as a pinyata"
+            "{u[0]}, Imma stab you so much, even the first plague of Egypt will be nothing in comparison",
+            "{u[0]}, Imma torture you so hard, even the devil won't want you after",
+            "{u[0]}, Imma cut off your arms and legs and burn you in lava. Then I'll make you into a robot that can only pass butter",
+            "{u[0]}, Imma leave you in a musquito-cage, covered in syrup, untill you've been sucked dry",
+            "{u[0]}, Imma tickle you in 'places' untill you kill yourself",
+            "{u[0]}, Imma let an alien hatch in you, and when it bursts out, I'll funnel it into your mouth",
+            "{u[0]}, Imma let you get eaten by a shark, limb by limb, slowly",
+            "{u[0]}, SECTUMSEMPRA, CRUCIO, AVADA KEDAVRA",
+            "{u[0]}, Imma write you out of the script of life, so you will be meaninglessly forgotten",
+            "{u[0]}, Imma strangle you while slowly inserting burning needles in your body",
+            "{u[0]}, Imma make you cum to boku no pico",
+            "{u[0]}, Imma code a big bug in you",
+            "{u[0]}, Imma suck your intestines out with a vacuum cleaner",
+            "{u[0]}, Imma use chaos magic to suck you into the void",
+            "{u[0]}, Imma put you in a room full of sweaty, greasy old people",
+            "{u[0]}, Imma starve you in a completely silent room",
+            "{u[0]}, Imma prepare you like I would a fish, using a lot of salt in the process",
+            "{u[0]}, Imma slit your throat slowly, using a hot salted knife",
+            "{u[0]}, Imma tie your limbs with a rope so tight, they will die and fall off",
+            "{u[0]}, Imma insert superglue in every hole on your body I can find",
+            "{u[0]}, Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat"
+            "{u[0]}, Imma hang you by your ballz from the ceiling fan and use you as a pinyata"
         ]
+
+lewd = [
+            "{u[0]} rubs {u[1]}'s exposed belly",
+            "{u[1]} gets a nice suprise from {u[0]}: *buttsex*",
+            "{u[0]} stares like never before at {u[1]}'s chest",
+            "{u[0]} is fapping to \"Boku no {u[1]}\"",
+            "{u[1]} SEND NUDES TO {u[0]}!!",
+            "{u[1]} was abducted by aliens to be probed on video",
+            "{u[1]} was abducted by {u[0]} and some candy",
+            "{u[0]} adds {u[0]} to the harem using a van and icecream",
+            "{u[0]} reads some lewd fanfiction about {u[1]}",
+            "All {u[0]}'s lolis are cuddling {u[1]} to death!!"
+    ]
 
 spell = [
             "Fireball",

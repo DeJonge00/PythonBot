@@ -81,8 +81,7 @@ class Images:
         else:
             user = ctx.message.mentions[0]
         name = "temp/" + user.id + ".png"
-        if not os.path.isfile(name):
-            self.save_img(user.avatar_url, name)
+        self.save_img(user.avatar_url, name)
         l = []
         image = Image.open("./" + name)
         c = (image.width/6, image.height/6, 5*(image.width/6), 5*(image.height/6))

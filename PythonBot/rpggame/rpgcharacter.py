@@ -16,7 +16,7 @@ class RPGCharacter:
         self.weaponskill = weaponskill
         
     # Add (negative) health, returns true if successful
-    async def AddHealth(self, n):
+    async def addHealth(self, n):
         if(n<-10000 | n>10000):
             print("AddHealth out of bounds")
             return False
@@ -30,17 +30,23 @@ class RPGCharacter:
         return True
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, user, role="Undead"):
+    def __init__(self, user : discord.User, role="Undead"):
         self.user = user
         self.role = role
         self.exp = 0
+        self.money = 0
         self.adventure = 0
         super(RPGPlayer, self).__init__(user.name)
 
     async def addExp(self, n):
+        if n<0:
+            return print("Warning: Exp add below zero (" + str(n) + ") on " + self.name)
         self.exp += n
+        self.money += n
+
     async def getLevel(self):
         return math.floor(math.sqrt(self.exp) / 20)
+
     async def setAdventure(self, n):
         if (self.adventure <= 0) & (5 < n < 120):
             self.adventure = n

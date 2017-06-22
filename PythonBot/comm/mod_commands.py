@@ -101,6 +101,21 @@ class Mod:
         except Exception as e:
             await log.error("cmd spam: " + str(e))
 
+    # {prefix}spongespam <user>
+    @commands.command(pass_context=1, hidden=1, help="Add a user to the spongespam list")
+    async def spongespam(self, ctx, *args):
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            print(ctx.message.server + " | No permission to delete messages")
+        if ctx.message.author.id != constants.NYAid:
+            return await self.bot.send_message(ctx.message.channel, "Hahaha, no.")
+        if len(ctx.message.mentions) > 0:
+            if ctx.message.mentions[0].id in self.bot.spongelist:
+                self.bot.spongelist.remove(ctx.message.mentions[0].id)
+            else:
+                self.bot.spongelist.append(ctx.message.mentions[0].id)
+
     # {prefix}quit
     @commands.command(pass_context=1, hidden=1, help="Lets me go to sleep")
     async def quit(self, ctx, *args):
@@ -122,5 +137,11 @@ class Mod:
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
     async def test(self, ctx, *args):
-        await self.bot.send_message(ctx.message.channel, "<:nya:256403423916720128>")
-        await self.bot.add_reaction(ctx.message, ":nya:256403423916720128")
+        ml = list(self.bot.messages)
+        m = ml.pop()
+        print(m)
+        print(m.content)
+        ml = list(self.bot.messages)
+        m = ml.pop()
+        print(m)
+        print(m.content)

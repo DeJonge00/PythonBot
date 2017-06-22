@@ -1,15 +1,15 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import constants, datetime, log, logging, message_handler, random, responses, sys
+import constants, customHelpFormatter, datetime, log, logging, message_handler, random, responses, sys
 
 # Basic configs
 pi = 3.14159265358979323846264
 
-bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1)
-bot.lastmessage = ""
+bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
+bot.spongelist = []
 logging.basicConfig()
 
 @bot.event
@@ -27,8 +27,8 @@ import comm.basic_commands
 bot.add_cog(comm.basic_commands.Basics(bot))
 import comm.minesweeper
 bot.add_cog(comm.minesweeper.Minesweeper(bot))
-import comm.music
-bot.add_cog(comm.music.Music(bot))
+import comm.hangman
+bot.add_cog(comm.hangman.Hangman(bot))
 import comm.image_commands
 bot.add_cog(comm.image_commands.Images(bot))
 import comm.mod_commands
@@ -42,15 +42,17 @@ bot.add_cog(bot.rpggameinstance)
 async def on_message(message):
     if (message.author.bot):
         return
-    if message.content:
-        await message_handler.new(bot, message)
+    if not (message.channel.is_private):
+        if message.content:
+            await message_handler.new(bot, message)
+    else:
+        print(message.author.name + " | said in dm's: " + message.content)
     if len(message.attachments) > 0:
         await message_handler.new_pic(bot, message)
     # Commands in the message
     await bot.process_commands(message)
     #Send message to rpggame for exp
     await bot.rpggameinstance.handle(message)
-    bot.lastmessage = message
 
 # Logging
 #@bot.event
@@ -65,15 +67,33 @@ async def on_message_delete(message):
 @bot.event
 async def on_member_join(member):
     await log.error(member.server.name + " | Member " + member.name + " just joined")
+    if member.server.id == constants.NINECHATid:
+        return
+    embed = discord.Embed(colour=0xFF0000)
+    emoji = ":heart:"
+    if member.server.id == constants.LEGITSOCIALid:
+       emoji = "<:pantsu:325978984716173312>"
+    embed.add_field(name="Family extended", value=emoji + " \"" + member.name + "\" just joined. Welcome to the family! " + emoji)
+    m = await bot.send_message(member.server.default_channel, embed=embed)
+    await asyncio.sleep(30)
+    try:
+        await bot.delete_message(m)
+    except discord.Forbidden:
+        print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_member_remove(member):
     await log.error(member.server.name + " | Member " + member.name + " just left")
     embed = discord.Embed(colour=0xFF0000)
-    embed.add_field(name="User left", value="\"" + member.name + "\" just left. Byebye, you will not be missed!")
+    emoji = ":heart:"
+    if member.server.id == "225995968703627265":
+       emoji = "<:cate:290483030227812353>"
+    if member.server.id == "319581059467575297":
+       emoji = "<:pantsu:325978984716173312>"
+    embed.add_field(name="User left", value=emoji + " \"" + member.name + "\" just left. Byebye, you will not be missed! " + emoji)
     m = await bot.send_message(member.server.default_channel, embed=embed)
     await asyncio.sleep(30)
     try:
-        await self.bot.delete_message(m)
+        await bot.delete_message(m)
     except discord.Forbidden:
         print(ctx.message.server + " | No permission to delete messages")
 @bot.event
@@ -160,7 +180,7 @@ async def on_server_emojis_update(before, after):
     m = "emojis updated: "
     if len(before) != len(after):
         m += " size from: " + str(len(before)) + " to: " + str(len(after))
-    if not m == "emojis " + before.name + " updated: ":
+    if not "emojis updated: ":
         await log.error(m)
 @bot.event
 async def on_member_ban(member):

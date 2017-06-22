@@ -22,6 +22,16 @@ class Basics:
         self.bot.fps = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "60")
 
+   # # {prefix}big <emoji>
+   # @commands.command(pass_context=1, help="Enlarge an emoji")
+   # async def biribiri(self, ctx, *args):
+   #     try:
+   #         await self.bot.delete_message(ctx.message)
+   #     except discord.Forbidden:
+   #         print(ctx.message.server + " | No permission to delete messages")
+   #
+
+
     # {prefix}biribiri
     @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
     async def biribiri(self, ctx, *args):
@@ -68,7 +78,7 @@ class Basics:
         except discord.Forbidden:
             print(ctx.message.server + " | No permission to delete messages")
         await self.bot.send_typing(ctx.message.channel)
-        return await send_random.string(self.bot, ctx.message.channel, responses.compliments, " ".join(args))
+        return await send_random.string(self.bot, ctx.message.channel, responses.compliments, [" ".join(args)])
     
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
@@ -164,7 +174,7 @@ class Basics:
         await self.bot.send_typing(ctx.message.channel)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a hug? Haha, so lonely...")
-        await send_random.string(self.bot, ctx.message.channel, responses.hug, ctx.message.author.mention, " ".join(args))
+        await send_random.string(self.bot, ctx.message.channel, responses.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick
     @commands.command(pass_context=1, help="kick someone for funzies")
@@ -174,7 +184,7 @@ class Basics:
             if (ctx.message.author == ctx.message.mentions[0]):
                 return await self.bot.send_message(ctx.message.channel, "You could just leave yourself if you want to go :thinking:")
             embed = discord.Embed(colour=0xFF0000)
-            embed.add_field(name="User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed! <:cate:290483030227812353> <:cate:290483030227812353>")
+            embed.add_field(name=" <:cate:290483030227812353> <:cate:290483030227812353> User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed! <:cate:290483030227812353> <:cate:290483030227812353>")
             m = await self.bot.say(embed=embed)
             await asyncio.sleep(30)
             try:
@@ -191,9 +201,9 @@ class Basics:
         except discord.Forbidden:
             print(ctx.message.server + " | No permission to delete messages")
         await self.bot.send_typing(ctx.message.channel)
-        if (ctx.message.content == "" | ctx.message.content.lower() == ctx.message.author.name.lower() | ctx.message.author in ctx.message.mentions):
+        if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
-        await send_random.string(self.bot, ctx.message.channel, responses.kill, " ".join(args))
+        await send_random.string(self.bot, ctx.message.channel, responses.kill, [" ".join(args)])
 
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
@@ -236,6 +246,23 @@ class Basics:
         mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.choice(lotterylist).name + " is the lucky winner!"
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
+
+    # {prefix}role <query>
+    @commands.command(pass_context=1, help="Add or remove roles!")
+    async def role(self, ctx, *args):
+        if len(args)<=0:
+            return await self.bot.say("Usage: >role <role> <user>")
+        else:
+            rolename = args[0]
+        if len(ctx.message.mentions)<=0:
+            users = ctx.message.author
+        else:
+            users = ctx.message.mentions[0]
+        
+        if (ctx.message.channel.permissions_for(ctx.message.author).manage_roles) | (rolename in 'Muted'):
+            print("WIP role")
+        else:
+            return await self.bot.say("You lack the permissions for that")
 
     # {prefix}urban <query>
     @commands.command(pass_context=1, help="Search the totally official wiki!", aliases=["ud", "urbandictionary"])
