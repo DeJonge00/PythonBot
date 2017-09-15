@@ -1,15 +1,32 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import constants, customHelpFormatter, datetime, log, logging, message_handler, random, responses, sys
+import constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys
 
 # Basic configs
 pi = 3.14159265358979323846264
+CLEAN_JOIN = False
+CLEAN_LEAVE = False
 
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
+bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.txt"
+bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.txt"
 bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
 bot.spongelist = []
+
+try:
+    with open (bot.WELCOMEMESSAGEFILE, 'rb') as fp:
+        bot.welcome = pickle.load(fp)
+except:
+    print("Loading welcome messages failed")
+    bot.welcome = {}
+try:
+    with open (bot.GOODBYEMESSAGEFILE, 'rb') as fp:
+        bot.goodbye = pickle.load(fp)
+except:
+    print("Loading goodbye messages failed")
+    bot.goodbye = {}
 logging.basicConfig()
 
 @bot.event
@@ -31,11 +48,16 @@ import comm.hangman
 bot.add_cog(comm.hangman.Hangman(bot))
 import comm.image_commands
 bot.add_cog(comm.image_commands.Images(bot))
-import comm.mod_commands
-bot.add_cog(comm.mod_commands.Mod(bot))
 import rpggame.rpgmain
 bot.rpggameinstance = rpggame.rpgmain.RPGgame(bot)
 bot.add_cog(bot.rpggameinstance)
+import comm.mod_commands
+bot.add_cog(comm.mod_commands.Mod(bot))
+
+# Logging
+#@bot.event
+#async def on_error(event, *args, **kwargs):
+#    await log.error(event, args)
 
 # Handle incoming messages
 @bot.event
@@ -53,11 +75,6 @@ async def on_message(message):
     await bot.process_commands(message)
     #Send message to rpggame for exp
     await bot.rpggameinstance.handle(message)
-
-# Logging
-#@bot.event
-#async def on_error(event, *args, **kwargs):
-#    await log.error(event, args)
 @bot.event
 async def on_message_edit(before, after):
     await message_handler.edit(before)
@@ -66,42 +83,36 @@ async def on_message_delete(message):
     await message_handler.deleted(message)
 @bot.event
 async def on_member_join(member):
-    await log.error(member.server.name + " | Member " + member.name + " just joined")
-    if member.server.id == constants.NINECHATid:
-        return
-    embed = discord.Embed(colour=0xFF0000)
-    emoji = ":heart:"
-    if member.server.id == constants.LEGITSOCIALid:
-       emoji = "<:pantsu:325978984716173312>"
-    embed.add_field(name="Family extended", value=emoji + " \"" + member.name + "\" just joined. Welcome to the family! " + emoji)
-    m = await bot.send_message(member.server.default_channel, embed=embed)
-    await asyncio.sleep(30)
-    try:
-        await bot.delete_message(m)
-    except discord.Forbidden:
-        print(ctx.message.server + " | No permission to delete messages")
+    await log.error(member.server.name + " | Member " + member.name + " just joined", filename=member.server.name)
+    if member.server.id in bot.welcome:
+        embed = discord.Embed(colour=0xFF0000)
+        embed.add_field(name="User joined!", value=bot.welcome[member.server.id].format(member.mention))
+        m = await bot.send_message(member.server.default_channel, embed=embed)
+        if CLEAN_JOIN:
+            await asyncio.sleep(30)
+            try:
+                await bot.delete_message(m)
+            except discord.Forbidden:
+                print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_member_remove(member):
-    await log.error(member.server.name + " | Member " + member.name + " just left")
-    embed = discord.Embed(colour=0xFF0000)
-    emoji = ":heart:"
-    if member.server.id == "225995968703627265":
-       emoji = "<:cate:290483030227812353>"
-    if member.server.id == "319581059467575297":
-       emoji = "<:pantsu:325978984716173312>"
-    embed.add_field(name="User left", value=emoji + " \"" + member.name + "\" just left. Byebye, you will not be missed! " + emoji)
-    m = await bot.send_message(member.server.default_channel, embed=embed)
-    await asyncio.sleep(30)
-    try:
-        await bot.delete_message(m)
-    except discord.Forbidden:
-        print(ctx.message.server + " | No permission to delete messages")
+    await log.error(member.server.name + " | Member " + member.name + " just left", filename=member.server.name)
+    if member.server.id in bot.goodbye:
+        embed = discord.Embed(colour=0xFF0000)
+        embed.add_field(name="User left!", value=bot.goodbye[member.server.id].format(member.mention))
+        m = await bot.send_message(member.server.default_channel, embed=embed)
+        if CLEAN_LEAVE:
+            await asyncio.sleep(30)
+            try:
+                await bot.delete_message(m)
+            except discord.Forbidden:
+                print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_channel_delete(channel):
-    await log.error("deleted channel: " + channel.name)
+    await log.error("deleted channel: " + channel.name, filename=channel.server.name)
 @bot.event
 async def on_channel_create(channel):
-    await log.error("created channel: " + channel.name)
+    await log.error("created channel: " + channel.name, filename=channel.server.name)
 @bot.event
 async def on_channel_update(before, after):
     m = "Channel updated:"
@@ -110,10 +121,10 @@ async def on_channel_update(before, after):
     if before.name != after.name:
         m += " name from: " + before.name + " to: " + after.name
     if before.position != after.position:
-        m += " position from: " + before.position + " to: " + after.position
+        m += " position from: " + str(before.position) + " to: " + str(after.position)
     if before._permission_overwrites != after._permission_overwrites:
         m += " _permission_overwrites changed"
-    await log.error(m)
+    await log.error(m, filename=before.server.name)
 @bot.event
 async def on_member_update(before, after):
     changed = False
@@ -142,7 +153,7 @@ async def on_member_update(before, after):
         m += " avatar changed"
         changed = True
     if changed:
-        await log.error(m)
+        await log.error(m, filename=before.server.name)
 @bot.event
 async def on_server_update(before, after):
     m = "server " + before.name + " updated: "
@@ -157,7 +168,7 @@ async def on_server_update(before, after):
     if before.region != after.region:
         m += " region from: " + before.region + " to: " + after.region
     if not m == "server " + before.name + " updated: ":
-        await log.error(m)
+        await log.error(m, filename=before.server.name)
 @bot.event
 async def on_server_role_update(before, after):
     m = "Role " + before.name + " updated: "
@@ -174,20 +185,20 @@ async def on_server_role_update(before, after):
             if y:
                 m += " +permission: " + x
     if not m == "role " + before.name + " updated: ":
-        await log.error(before.server.name + " | " + m)
+        await log.error(m, filename=before.server.name)
 @bot.event
 async def on_server_emojis_update(before, after):
     m = "emojis updated: "
     if len(before) != len(after):
         m += " size from: " + str(len(before)) + " to: " + str(len(after))
     if not "emojis updated: ":
-        await log.error(m)
+        await log.error(m, filename=before.server.name)
 @bot.event
 async def on_member_ban(member):
-    await log.error("user " + member.name + " banned")
+    await log.error("user " + member.name + " banned", filename=member.server.name)
 @bot.event
 async def on_member_unban(member):
-    await log.error("user " + member.name + " unbanned")
+    await log.error("user " + member.name + " unbanned", filename=member.server.name)
 
 # Actually run the bot
 bot.run(constants.bot_token)

@@ -1,4 +1,4 @@
-import asyncio, datetime, discord, log, random, responses, send_random, wikipedia
+import asyncio, datetime, constants, discord, log, random, responses, send_random, wikipedia
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
@@ -10,7 +10,7 @@ class Basics:
         self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
 
     # {prefix}60
-    @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
+    @commands.command(pass_context=1, help="\n\tHelp get cancer out of this world!", aliases=["60"])
     async def fps(self, ctx, *args):
         try:
             await self.bot.delete_message(ctx.message)
@@ -186,12 +186,6 @@ class Basics:
             embed = discord.Embed(colour=0xFF0000)
             embed.add_field(name=" <:cate:290483030227812353> <:cate:290483030227812353> User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed! <:cate:290483030227812353> <:cate:290483030227812353>")
             m = await self.bot.say(embed=embed)
-            await asyncio.sleep(30)
-            try:
-                await self.bot.delete_message(ctx.message)
-                await self.bot.delete_message(m)
-            except Exception as e:
-                print(ctx.message.server + " | No permission to delete messages")
 
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death!")
@@ -247,20 +241,39 @@ class Basics:
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
-    # {prefix}role <query>
+    # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
     async def role(self, ctx, *args):
+        try:
+            await self.bot.delete_message(ctx.message)
+        except discord.Forbidden:
+            print(ctx.message.server + " | No permission to delete messages")
+        await self.bot.send_typing(ctx.message.channel)
         if len(args)<=0:
             return await self.bot.say("Usage: >role <role> <user>")
         else:
             rolename = args[0]
         if len(ctx.message.mentions)<=0:
-            users = ctx.message.author
+            user = ctx.message.author
         else:
-            users = ctx.message.mentions[0]
-        
-        if (ctx.message.channel.permissions_for(ctx.message.author).manage_roles) | (rolename in 'Muted'):
-            print("WIP role")
+            user = ctx.message.mentions[0]
+        if (ctx.message.channel.permissions_for(ctx.message.author).manage_roles) | ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['Muted', 'nsfw', '1st Anniversary'])):
+            role = None
+            for r in ctx.message.server.roles:
+                if r.name == rolename:
+                    role = r
+            if role != None:
+                try:
+                    if role in ctx.message.author.roles:
+                        await self.bot.remove_roles(user, role)
+                        return await self.bot.send_message(ctx.message.channel, "Role " + role.name + " succesfully removed")
+                    else:
+                        await self.bot.add_roles(user, role)
+                        return await self.bot.send_message(ctx.message.channel, "Role " + role.name + " succesfully added")
+                except discord.Forbidden:
+                        return await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
+            else:
+                return await self.bot.send_message(ctx.message.channel, "Role not found (it's case sensitive)")
         else:
             return await self.bot.say("You lack the permissions for that")
 

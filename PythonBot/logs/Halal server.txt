@@ -55,3 +55,21 @@
 21:05:17 | general | NYA-CHAN edited: Awwwwn <#
 16:59:09 | general | Doge edited: @Ryuuk night ryuuki bi
 20:22:12 | general | Kappa deleted: \o/
+2017-07-11 20:45:31.381361 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-07-11 21:09:02.076887 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-07-12 14:19:20.658517 | Halal server | member Alice updated:  name from: Alice to: **Alice**
+2017-07-12 14:19:57.123160 | Halal server | member **Alice** updated:  name from: **Alice** to: Alice
+2017-07-13 19:11:20.352616 | Halal server | member ???? updated:  name from: ???? to: ???'?
+2017-07-13 22:50:28.859315 | Halal server | member Wizzy updated:  avatar changed
+2017-07-13 23:25:28.917295 | Halal server | member Wizzy updated:  avatar changed
+2017-07-14 13:49:57.108952 | Halal server | member Jovey updated:  avatar changed
+2017-07-20 00:43:08.787285 | Halal server | member ?( ?? ?? ??)????* updated:  avatar changed
+2017-07-20 00:45:33.165214 | Halal server | member ?( ?? ?? ??)????* updated:  avatar changed
+2017-07-20 14:57:20.571918 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-07-20 15:00:53.176460 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-07-20 17:36:20.823388 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-07-22 16:38:57.922414 | Halal server | member Jovey updated:  avatar changed
+2017-07-22 18:53:35.469571 | Halal server | member ailurophileCate updated:  avatar changed
+2017-07-22 23:20:57.852549 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-09-15 21:50:48.601924 | Halal server | member ailurophileCate updated:  avatar changed
+2017-09-15 21:56:36.061217 | Halal server | member ailurophileCate updated:  avatar changed

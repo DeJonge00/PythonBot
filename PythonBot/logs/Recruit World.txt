@@ -551,3 +551,604 @@
 15:44:31 | general | NYA-CHAN deleted: >quit
 15:44:44 | general | NYA-CHAN deleted: >rpgtop
 23:52:47 | general | NYA-CHAN deleted: >quit
+23:48:18 | general | NYA-CHAN deleted: >quit
+13:32:22 | general | NYA-CHAN deleted: >quit
+13:32:38 | general | NYA-CHAN deleted: >setgoodbye xd
+13:32:48 | general | NYA-CHAN deleted: >banish @<3
+13:33:10 | general | NYA-CHAN deleted: >quit
+13:33:24 | general | NYA-CHAN deleted: >banish @<3
+13:33:24 | general | Biribiri deleted: 
+13:34:12 | general | NYA-CHAN deleted: >banish @<3
+13:34:18 | general | NYA-CHAN deleted: >setwelcome XD
+13:34:13 | general | Biribiri deleted: 
+13:35:38 | general | NYA-CHAN deleted: >quit
+13:35:52 | general | NYA-CHAN deleted: >setgoodbye {} left
+13:36:00 | general | NYA-CHAN deleted: >setwelcome {} joined
+13:36:06 | general | NYA-CHAN deleted: >banish @<3
+13:36:30 | general | NYA-CHAN deleted: >quit
+13:37:20 | general | NYA-CHAN deleted: >setwelcome <:advNanya:215375932607692800> {} is ready to waste his life! Welcome ?
+13:37:42 | general | NYA-CHAN deleted: >setgoodbye Baibai {}, you will not be missed!
+13:37:49 | general | NYA-CHAN deleted: >banish @<3
+13:37:49 | general | Biribiri deleted: 
+13:37:57 | general | Biribiri deleted: 
+13:38:57 | general | NYA-CHAN deleted: >setwelcome <:nya:256403423916720128> Welcome {}, ready to waste your life too? <:nya:256403423916720128>
+13:39:24 | general | NYA-CHAN deleted: >setgoodbye Rip {}, you will not be missed! ?
+13:39:31 | general | NYA-CHAN deleted: >banish @<3
+13:39:50 | general | NYA-CHAN deleted: >quit
+13:42:28 | general | NYA-CHAN deleted: >quit
+13:52:46 | general | NYA-CHAN deleted: >quit
+15:40:26 | general | NYA-CHAN deleted: >quit
+19:17:46 | general | NYA-CHAN deleted: >rpgstats
+21:07:52 | general | NYA-CHAN deleted: >quit
+22:14:20 | general | NYA-CHAN deleted: >quit
+01:30:39 | general | NYA-CHAN deleted: >quit
+22:09:55 | general | NYA-CHAN deleted: >quit
+19:14:12 | general | NYA-CHAN deleted: >quit
+19:14:20 | general | NYA-CHAN deleted: >hm create
+19:14:47 | general | NYA-CHAN deleted: >quit
+19:14:59 | general | NYA-CHAN deleted: >hm create
+19:15:34 | general | NYA-CHAN deleted: >quit
+19:15:49 | general | NYA-CHAN deleted: >hm create
+19:16:54 | general | NYA-CHAN deleted: >quit
+19:17:02 | general | NYA-CHAN deleted: >hm create
+19:17:07 | general | NYA-CHAN deleted: >hm s
+19:17:03 | general | Biribiri deleted: 
+19:17:09 | general | NYA-CHAN deleted: >hm q
+19:17:07 | general | Biribiri deleted: 
+19:17:37 | general | NYA-CHAN deleted: >quit
+22:51:49 | general | NYA-CHAN deleted: >quit
+16:10:43 | general | NYA-CHAN deleted: >quit
+22:24:43 | general | NYA-CHAN deleted: >quit
+12:42:05 | general | NYA-CHAN deleted: >quit
+19:50:27 | general | NYA-CHAN deleted: >quit
+23:37:55 | general | NYA-CHAN deleted: >quit
+09:01:23 | general | NYA-CHAN deleted: >quit
+09:03:11 | general | Biribiri deleted: 
+09:03:22 | general | Biribiri deleted: 
+09:03:57 | general | Biribiri deleted: 
+09:05:07 | general | NYA-CHAN deleted: >quit
+2017-07-04 09:05:47.660000 | general | NYA-CHAN deleted: >quit
+2017-07-04 20:44:06.963000 | general | NYA-CHAN deleted: >quit
+2017-07-05 22:47:28.783000 | general | NYA-CHAN deleted: >quit
+2017-07-10 22:30:25.458000 | general | NYA-CHAN deleted: >quit
+2017-07-11 19:42:46.571000 | general | NYA-CHAN edited: 2
+2017-07-11 19:42:57.847000 | general | NYA-CHAN edited: 2
+2017-07-11 19:42:57.847000 | general | NYA-CHAN edited: @<3
+2017-07-11 19:43:34.871000 | general | NYA-CHAN edited: 2
+2017-07-11 20:45:31.082307 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-07-11 21:09:02.061878 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-07-11 22:00:35.241000 | general | NYA-CHAN deleted: >quit
+2017-07-12 13:34:47.772000 | general | NYA-CHAN deleted: >quit
+2017-07-12 18:37:32.392000 | general | NYA-CHAN deleted: >quit
+2017-07-14 02:53:05.131000 | general | NYA-CHAN deleted: >quit
+2017-07-14 14:42:11.863000 | general | NYA-CHAN deleted: >quit
+2017-07-20 01:07:07.737000 | general | NYA-CHAN deleted: >quit
+2017-07-20 14:57:20.563912 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-07-20 15:00:53.162451 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-07-20 17:36:20.653995 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-07-20 22:00:06.867310 | Channel updated: _permission_overwrites changed
+2017-07-20 22:00:53.087746 | Channel updated: _permission_overwrites changed
+2017-07-21 01:26:41.280000 | general | NYA-CHAN deleted: >quit
+2017-07-22 11:01:30.594000 | general | Tatsumaki deleted: ?  |  **Badge Grid**
+
+Enter the grid number which you would like to add/edit the badge of.
+Enter `cancel` to exit the menu.
+```xl
+[01] [02] [03]
+[04] [05] [06]
+[07] [08] [09]
+[10] [11] [12]
+```
+2017-07-22 11:01:46.255000 | general | Tatsumaki deleted: ?  |  **Badge Redemptions**
+
+```rb
+Please select the type of badge you would like to obtain.
+
+[1] # Redeemable
+[2] # Purchasable
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:01:49.822000 | general | Tatsumaki deleted: ?  |  **Badge Selection**
+
+```rb
+Please select the badge you would like to obtain.
+
+[1] # Commands Used - Tier 1
+[2] # Dailies Used - Tier 2
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:01.356000 | general | Tatsumaki deleted: ?  |  **Badge Redemptions**
+
+```rb
+Please select the type of badge you would like to obtain.
+
+[1] # Redeemable
+[2] # Purchasable
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:03.225000 | general | Tatsumaki deleted: ?  |  **Badge Selection**
+
+```rb
+Please select the badge you would like to obtain.
+
+[1] # Dailies Used - Tier 2
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:13.948000 | general | Tatsumaki deleted: ?  |  **Badge Redemptions**
+
+```rb
+Please select the type of badge you would like to obtain.
+
+[1] # Redeemable
+[2] # Purchasable
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:35.591000 | general | Tatsumaki deleted: ?  |  **Badge Selection**
+
+```rb
+Please select the category.
+
+[1] # Country Flags
+[2] # Game Icons
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:38.347000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 1/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Arma 3 - 2500 credits
+[2] # Assassin's Creed - 2500 credits
+[3] # Armello - 2500 credits
+[4] # Battlefield 4 - 2500 credits
+[5] # Bravely Default - 2500 credits
+[6] # Brawlhalla - 2500 credits
+[7] # Banished - 2500 credits
+[8] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:02:46.907000 | general | Tatsumaki deleted: ?  |  **Badge Purchase**
+
+Are you sure you want to purchase the badge **Assassin's Creed** for **2500** credits?
+
+?  |  Type in `6883` to confirm your purchase or `cancel` to cancel.
+2017-07-22 11:03:19.397000 | general | Tatsumaki deleted: ?  |  **Badge Grid**
+
+Enter the grid number which you would like to add/edit the badge of.
+Enter `cancel` to exit the menu.
+```xl
+[01] [02] [03]
+[04] [05] [06]
+[07] [08] [09]
+[10] [11] [12]
+```
+2017-07-22 11:03:22.100000 | general | Tatsumaki deleted: ?  |  **Badge Equipper** - Page 1/2
+
+```rb
+Please select the badge you would like to equip.
+
+[1] # gameico_shadowofmordor_badge
+[2] # gameico_portal_badge
+[3] # commands-used_t1
+[4] # gameico_patapon_badge
+[5] # credits-gained_t1
+[6] # reached-lvl_t1
+[7] # gameico_xbox_badge
+[8] # Leave this square empty
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:03:33.866000 | general | Tatsumaki deleted: ?  |  **Badge Equipper** - Page 2/2
+
+```rb
+Please select the badge you would like to equip.
+
+[1] # dailys-used_t1
+[2] # reached-lvl_t2
+[3] # gameico_asscreed_badge
+[4] # gameico_osu_badge
+[5] # dailys-used_t2
+[6] # gameico_hearthstone_badge
+[7] # Leave this square empty
+[8] # Go to previous page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:03:45.253000 | general | Tatsumaki deleted: **NYA-CHAN**, please cool down! (**25** seconds left)
+2017-07-22 11:04:02.218000 | general | Tatsumaki deleted: ?  |  **Badge Redemptions**
+
+```rb
+Please select the type of badge you would like to obtain.
+
+[1] # Redeemable
+[2] # Purchasable
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:04.264000 | general | Tatsumaki deleted: ?  |  **Badge Selection**
+
+```rb
+Please select the category.
+
+[1] # Country Flags
+[2] # Game Icons
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:06.518000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 1/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Arma 3 - 2500 credits
+[2] # Armello - 2500 credits
+[3] # Battlefield 4 - 2500 credits
+[4] # Bravely Default - 2500 credits
+[5] # Brawlhalla - 2500 credits
+[6] # Banished - 2500 credits
+[7] # Battlefield - 2500 credits
+[8] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:12.621000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 2/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Binding of Isaac - 2500 credits
+[2] # Counter Strike - 2500 credits
+[3] # Cooking Mama - 2500 credits
+[4] # Crypt of the Necrodancer - 2500 credits
+[5] # Diablo - 2500 credits
+[6] # The Division - 2500 credits
+[7] # Destiny - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:21.559000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 3/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Don't Starve - 2500 credits
+[2] # Dragon Age - 2500 credits
+[3] # Euro Truck Simulator - 2500 credits
+[4] # EVE Online - 2500 credits
+[5] # Fallout - 2500 credits
+[6] # God Eater - 2500 credits
+[7] # Grand Theft Auto V - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:26.931000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 4/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Geometry Dash - 2500 credits
+[2] # Half Life - 2500 credits
+[3] # Hyperdimension Neptunia - 2500 credits
+[4] # Insurgency - 2500 credits
+[5] # Killing Floor 2 - 2500 credits
+[6] # League of Legends - 2500 credits
+[7] # Left 4 Dead - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:29.949000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 5/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Limbo - 2500 credits
+[2] # Love Live School Idol Festival - 2500 credits
+[3] # Mario - 2500 credits
+[4] # Mass Effect - 2500 credits
+[5] # Minecraft - 2500 credits
+[6] # Neko Atsume - 2500 credits
+[7] # Origin - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:31.892000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 6/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Overwatch - 2500 credits
+[2] # Playstation - 2500 credits
+[3] # PC Master Race - 2500 credits
+[4] # Pokemon - 2500 credits
+[5] # Rocket League - 2500 credits
+[6] # Rust - 2500 credits
+[7] # Starcraft II - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:37.965000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 7/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Steam - 2500 credits
+[2] # SWTOR - 2500 credits
+[3] # Smite - 2500 credits
+[4] # Splatoon - 2500 credits
+[5] # Spore - 2500 credits
+[6] # Stardew Valley - 2500 credits
+[7] # Super Smash Bros - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:42.242000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 8/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Team Fortress - 2500 credits
+[2] # Titanfall 2 - 2500 credits
+[3] # The Elder Scrolls - 2500 credits
+[4] # Town of Salem - 2500 credits
+[5] # UPlay - 2500 credits
+[6] # Undertale - 2500 credits
+[7] # Warframe - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:45.527000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 9/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Wii U - 2500 credits
+[2] # Watch Dogs - 2500 credits
+[3] # The Witcher - 2500 credits
+[4] # World of Warcraft - 2500 credits
+[5] # XCOM - 2500 credits
+[6] # Go to previous page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:55.031000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 8/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Team Fortress - 2500 credits
+[2] # Titanfall 2 - 2500 credits
+[3] # The Elder Scrolls - 2500 credits
+[4] # Town of Salem - 2500 credits
+[5] # UPlay - 2500 credits
+[6] # Undertale - 2500 credits
+[7] # Warframe - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:56.502000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 7/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Steam - 2500 credits
+[2] # SWTOR - 2500 credits
+[3] # Smite - 2500 credits
+[4] # Splatoon - 2500 credits
+[5] # Spore - 2500 credits
+[6] # Stardew Valley - 2500 credits
+[7] # Super Smash Bros - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:04:57.810000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 6/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Overwatch - 2500 credits
+[2] # Playstation - 2500 credits
+[3] # PC Master Race - 2500 credits
+[4] # Pokemon - 2500 credits
+[5] # Rocket League - 2500 credits
+[6] # Rust - 2500 credits
+[7] # Starcraft II - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:00.729000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 5/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Limbo - 2500 credits
+[2] # Love Live School Idol Festival - 2500 credits
+[3] # Mario - 2500 credits
+[4] # Mass Effect - 2500 credits
+[5] # Minecraft - 2500 credits
+[6] # Neko Atsume - 2500 credits
+[7] # Origin - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:04.502000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 4/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Geometry Dash - 2500 credits
+[2] # Half Life - 2500 credits
+[3] # Hyperdimension Neptunia - 2500 credits
+[4] # Insurgency - 2500 credits
+[5] # Killing Floor 2 - 2500 credits
+[6] # League of Legends - 2500 credits
+[7] # Left 4 Dead - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:09.591000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 3/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Don't Starve - 2500 credits
+[2] # Dragon Age - 2500 credits
+[3] # Euro Truck Simulator - 2500 credits
+[4] # EVE Online - 2500 credits
+[5] # Fallout - 2500 credits
+[6] # God Eater - 2500 credits
+[7] # Grand Theft Auto V - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:13.129000 | general | Tatsumaki deleted: ?  |  **Badge Selection** - Page 2/9
+
+```rb
+Please select the badge you would like to buy.
+
+[1] # Binding of Isaac - 2500 credits
+[2] # Counter Strike - 2500 credits
+[3] # Cooking Mama - 2500 credits
+[4] # Crypt of the Necrodancer - 2500 credits
+[5] # Diablo - 2500 credits
+[6] # The Division - 2500 credits
+[7] # Destiny - 2500 credits
+[8] # Go to previous page
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:16.859000 | general | Tatsumaki deleted: ?  |  **Badge Purchase**
+
+Are you sure you want to purchase the badge **Binding of Isaac** for **2500** credits?
+
+?  |  Type in `8531` to confirm your purchase or `cancel` to cancel.
+2017-07-22 11:05:29.607000 | general | Tatsumaki deleted: ?  |  **Badge Grid**
+
+Enter the grid number which you would like to add/edit the badge of.
+Enter `cancel` to exit the menu.
+```xl
+[01] [02] [03]
+[04] [05] [06]
+[07] [08] [09]
+[10] [11] [12]
+```
+2017-07-22 11:05:32.111000 | general | Tatsumaki deleted: ?  |  **Badge Equipper** - Page 1/2
+
+```rb
+Please select the badge you would like to equip.
+
+[1] # gameico_shadowofmordor_badge
+[2] # gameico_portal_badge
+[3] # commands-used_t1
+[4] # gameico_patapon_badge
+[5] # credits-gained_t1
+[6] # reached-lvl_t1
+[7] # gameico_xbox_badge
+[8] # Leave this square empty
+[9] # Go to next page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 11:05:40.077000 | general | Tatsumaki deleted: ?  |  **Badge Equipper** - Page 2/2
+
+```rb
+Please select the badge you would like to equip.
+
+[1] # dailys-used_t1
+[2] # reached-lvl_t2
+[3] # gameico_bindingofisaac_badge
+[4] # gameico_asscreed_badge
+[5] # gameico_osu_badge
+[6] # dailys-used_t2
+[7] # gameico_hearthstone_badge
+[8] # Leave this square empty
+[9] # Go to previous page
+
+Type the appropriate number to access the menu.
+Type 'exit' to leave the menu.
+```
+2017-07-22 23:20:57.832035 | RECRUIT WORLD | member NYA-CHAN updated:  avatar changed
+2017-09-15 20:14:12.362000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:10:49.657000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:11:25.390000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:19:29.280000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:19:53.699421 | RECRUIT WORLD | member NYA-CHAN updated:  -role: DJ
+2017-09-15 21:21:05.126000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:21:28.857000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:24:38.434000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:26:18.920000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:27:23.888000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:27:33.853892 | RECRUIT WORLD | member NYA-CHAN updated:  +role: DJ
+2017-09-15 21:28:21.479000 | general | NYA-CHAN deleted: >quit
+2017-09-15 21:28:36.404781 | RECRUIT WORLD | member NYA-CHAN updated:  -role: DJ
+2017-09-15 21:28:40.523748 | RECRUIT WORLD | member NYA-CHAN updated:  +role: DJ
+2017-09-15 21:34:25.422000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:16:25.875000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:24:30.136000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:25:32.865000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:27:44.441000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:28:49 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:29:40.098000 | general | NYA-CHAN deleted: >quit
+2017-09-15 23:32:32.559000 | general | NYA-CHAN deleted: >quit

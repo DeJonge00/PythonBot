@@ -93,17 +93,17 @@ async def deleted(message):
 async def new_pic(bot, message):
     if message.author.id == constants.NYAid:
         return
-    url = message.attachments[0]["url"]
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    i = 0
-    if url.split(".")[len(url.split("."))-1] == "gif":
-        while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif"):
-            i+=1
-        img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif", save_all=1)
-    else:
-        while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png"):
-            i+=1
-        img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png")
-    
-    await log.message(message, "pic", i)
+    for pic in message.attachments:
+        url = pic["url"]
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        i = 0
+        if url.split(".")[len(url.split("."))-1] == "gif":
+            while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif"):
+                i+=1
+            img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif", save_all=1)
+        else:
+            while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png"):
+                i+=1
+            img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png")
+        await log.message(message, "pic", i)

@@ -112,7 +112,12 @@ class Hangman:
                 if game.faults==5:
                     embed.set_thumbnail(url="http://i.imgur.com/ZHXq151.png")
         
-                embed.add_field(name="Guessed so far", value=str(game))
+                embed.add_field(name="Guessed so far", value=str(game), inline=False)
+                if len(game.wrongguesses)>0:
+                    s = ""
+                    for i in game.wrongguesses:
+                        s += i + " "
+                    embed.add_field(name="Letters guessed wrong", value=s)
                 embed.add_field(name="Faults", value=str(game.faults) + "/6")
         m = await self.bot.send_message(channel, embed=embed)
         if channel.server.id in self.prev:
