@@ -9161,3 +9161,985 @@ Type 'exit' to leave the menu.
 2017-09-15 23:01:09.878000 | lobby | NYA-CHAN deleted: >ded
 2017-09-15 23:13:04.632943 | 9CHAT | member Some Creepy Dude updated:  avatar changed
 2017-09-15 23:14:44.467000 | botspam | Tatsumaki deleted: **Joris**, please cool down! (**6** seconds left)
+2017-09-15 23:39:50.562658 | 9CHAT | member Secks updated:  avatar changed
+2017-09-16 11:14:14.349350 | 9CHAT | member Alice updated:  +role: 1st Anniversary
+2017-09-16 11:17:03.215655 | 9CHAT | member ailurophileCate updated:  +role: Love Birds of the Day
+2017-09-16 11:17:05.895150 | 9CHAT | member Alice updated:  +role: Love Birds of the Day
+2017-09-16 11:17:13.372815 | 9CHAT | member ailurophileCate updated:  -role: cate sama
+2017-09-16 11:27:54.679000 | lobby | ailurophileCate deleted: \o/
+2017-09-16 11:30:49.782000 | lobby | Alice edited: XD biribir ?
+2017-09-16 11:48:01.286000 | lobby | Zebo ~ ?????????????? edited: And my bots are edad
+2017-09-16 11:49:16.531000 | lobby | Dark Sakura deleted: *how do i become a futa loli <:oldguy:292229250369716235>
+2017-09-16 11:49:43.604000 | lobby | NYA-CHAN edited: Id love to be heunted by lolis
+2017-09-16 11:50:54.059817 | 9CHAT | member revol_reltih updated:  name from: revol_reltih to: K9_EliteCat avatar changed
+2017-09-16 11:51:14.335000 | lobby | Dark Sakura deleted: https://hentai-image.com/search/tag/loli/
+2017-09-16 11:55:16.335000 | lobby | Dark Sakura edited: we need moreppl
+2017-09-16 11:57:20.240000 | lobby | ailurophileCate deleted: I take it out occassionally and caress with it
+2017-09-16 12:09:27.078000 | lobby | Dark Sakura edited: what if you just live a normal life but use alll your spare time for anime
+2017-09-16 12:13:52.643000 | lobby | Dark Sakura edited: what if you the things you need to do and spend all your spare time in your room
+2017-09-16 12:18:42.918000 | lobby | NYA-CHAN edited: 8 is waay too old
+2017-09-16 12:29:59.917849 | 9CHAT | member LilMenme ? updated:  +role: 1st Anniversary
+2017-09-16 12:33:01.936365 | Role 1st Anniversary updated: 
+2017-09-16 12:36:27.245000 | botspam | Dark Sakura deleted: lol
+2017-09-16 12:52:47.444943 | 9CHAT | member PagingDrFaggot updated:  avatar changed
+2017-09-16 12:58:45.345445 | 9CHAT | member Pirate King updated:  avatar changed
+2017-09-16 13:05:44.342000 | lobby | Dark Sakura edited: http://www.dailymotion.com/video/x5vassu
+2017-09-16 13:06:42.834000 | lobby | Badmin posted a pic, saved as 25
+2017-09-16 13:07:39.992000 | lobby | Badmin edited: When I evacuated the hurrocane
+2017-09-16 13:07:48.585000 | lobby | Dark Sakura edited: ikr
+2017-09-16 13:09:06.200247 | Role Love Birds of the Day updated:  name from: Love Birds of the Day to: :heart: Love Birds of the Day
+2017-09-16 13:09:25.556000 | lobby | Badmin posted a pic, saved as 26
+2017-09-16 13:11:42.089196 | Role Red Memetopus updated:  name from: Red Memetopus to: ? Red Memetopus
+2017-09-16 13:11:42.390390 | Role :heart: Love Birds of the Day updated:  name from: :heart: Love Birds of the Day to: ? Love Birds of the Day
+2017-09-16 13:13:03.475595 | Role cate sama updated:  name from: cate sama to: ? cate sama
+2017-09-16 13:13:16.095355 | 9CHAT | member ailurophileCate updated:  +role: ? cate sama
+2017-09-16 13:13:18.598628 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-16 13:16:47.372023 | Role MemeLord updated:  name from: MemeLord to: ? MemeLord
+2017-09-16 13:16:47.626204 | Role Meme Sensei updated:  name from: Meme Sensei to: ???? Meme Sensei
+2017-09-16 13:16:47.876484 | Role Meme Moderators updated:  name from: Meme Moderators to: ? Meme Moderators
+2017-09-16 13:16:48.148189 | Role Archbishops of Memes updated:  name from: Archbishops of Memes to: ? Archbishops of Memes
+2017-09-16 13:16:48.405885 | Role Tsundere updated:  name from: Tsundere to: ? Tsundere
+2017-09-16 13:16:48.686952 | Role Golden Meme Award updated:  name from: Golden Meme Award to: ? Golden Meme Award
+2017-09-16 13:16:48.935437 | Role ? Red Memetopus updated:  name from: ? Red Memetopus to: ? Red Memetopus
+2017-09-16 13:17:41.321013 | Role Invitationist updated:  name from: Invitationist to: ? Invitationist
+2017-09-16 13:20:27.556467 | Role nsfw updated:  name from: nsfw to: ?nsfw
+2017-09-16 13:20:27.728576 | Role 1st Anniversary updated:  name from: 1st Anniversary to: ?1st Anniversary
+2017-09-16 13:20:27.996957 | Role MUTED updated:  name from: MUTED to: ? MUTED
+2017-09-16 13:20:28.234632 | Role Memeist updated:  name from: Memeist to: ?? Memeist
+2017-09-16 13:20:28.532046 | Role Votarist updated:  name from: Votarist to: ??Votarist
+2017-09-16 13:20:28.749650 | Role Da?k updated:  name from: Da?k to: ? Da?k
+2017-09-16 13:20:28.997843 | Role Daikazoku updated:  name from: Daikazoku to: ? Daikazoku
+2017-09-16 13:20:52.030782 | Channel updated: name from: [POP] RADIO AREA to: ? [POP] RADIO AREA
+2017-09-16 13:21:05.004541 | Channel updated:
+2017-09-16 13:21:30.565017 | Channel updated: name from: ? [POP] RADIO AREA to: ? [POP] RADIO AREA
+2017-09-16 13:22:42.195852 | 9CHAT | member ailurophileCate updated:  +role: ? cate sama
+2017-09-16 13:22:54.332264 | 9CHAT | member ailurophileCate updated:  +role: ? MemeLord
+2017-09-16 13:22:54.691626 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-16 13:23:08.472587 | 9CHAT | member ailurophileCate updated:  -role: ? MemeLord
+2017-09-16 13:23:08.650694 | 9CHAT | member ailurophileCate updated:  +role: ? MemeLord +role: ? cate sama
+2017-09-16 13:23:09.115111 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-16 13:23:10.666989 | 9CHAT | member ailurophileCate updated:  -role: ? MemeLord
+2017-09-16 13:23:55.023000 | lobby | ailurophileCate posted a pic, saved as 90
+2017-09-16 13:24:15.437000 | lobby | ailurophileCate posted a pic, saved as 91
+2017-09-16 13:25:06.956592 | Role ? cate sama updated:  name from: ? cate sama to: ? cate sama
+2017-09-16 13:25:07.232835 | Role ???? Meme Sensei updated:  name from: ???? Meme Sensei to: ???? Meme Sensei
+2017-09-16 13:26:06.397389 | Role Tatsumaki updated:  name from: Tatsumaki to: ? Tatsumaki
+2017-09-16 13:26:06.682654 | Role Bot Commander updated:  name from: Bot Commander to: ? Bot Commander
+2017-09-16 13:26:25.114000 | lobby | Ded Wizzy posted a pic, saved as 0
+2017-09-16 13:26:54.593729 | 9CHAT | member ailurophileCate updated:  +role: ? cate sama
+2017-09-16 13:26:55.200605 | 9CHAT | member ailurophileCate updated:  -role: ? Love Birds of the Day
+2017-09-16 13:27:51.454519 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-16 13:28:01.024524 | 9CHAT | member ailurophileCate updated:  -role: ? Da?k
+2017-09-16 13:28:03.805210 | 9CHAT | member ailurophileCate updated:  +role: ? Love Birds of the Day
+2017-09-16 13:28:37.876604 | 9CHAT | member ailurophileCate updated:  -role: ? Love Birds of the Day
+2017-09-16 13:28:39.943341 | 9CHAT | member ailurophileCate updated:  +role: ? Da?k
+2017-09-16 13:28:42.259619 | 9CHAT | member ailurophileCate updated:  -role: ? Da?k
+2017-09-16 13:28:43.236227 | 9CHAT | member ailurophileCate updated:  +role: ? MUTED
+2017-09-16 13:29:27.514263 | 9CHAT | member ailurophileCate updated:  -role: ? MUTED
+2017-09-16 13:29:31.355438 | 9CHAT | member ailurophileCate updated:  +role: ? cate sama
+2017-09-16 13:29:56.733776 | Role ? cate sama updated:  name from: ? cate sama to: ? cate sama
+2017-09-16 13:29:24.398000 | lobby | Doge deleted: I always wonder
+2017-09-16 13:30:49.254000 | lobby | ailurophileCate posted a pic, saved as 92
+2017-09-16 13:31:25.872000 | lobby | ailurophileCate posted a pic, saved as 93
+2017-09-16 13:33:09.684546 | 9CHAT | member ailurophileCate updated:  nick from nothing to: puckchan
+2017-09-16 13:33:12.611175 | 9CHAT | member ailurophileCate updated:  nick reset
+2017-09-16 13:33:25.852898 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-16 13:33:28.918490 | 9CHAT | member ailurophileCate updated:  +role: ? Love Birds of the Day
+2017-09-17 15:28:02.325000 | petlovers | kaori posted a pic, saved as 15
+2017-09-17 15:32:24.283000 | lobby | Tristan edited: https://www.youtube.com/watch?v=IsTFQnpZ2xY
+2017-09-17 15:32:33.282000 | lobby | Sketchy.arc edited: That sounds like narcissism with a extra steps
+2017-09-17 16:06:16.593336 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-17 16:16:18.409000 | lobby | NYA-CHAN deleted: >hug @PastorofthechurchofthestunneDhen
+2017-09-17 16:21:09.471237 | 9CHAT | member Tech Support updated:  name from: Tech Support to: you wanted it stop bitching
+2017-09-17 16:23:13.815112 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-17 16:30:48.938059 | 9CHAT | member TheRockyDoo updated:  avatar changed
+2017-09-17 16:58:17.658785 | 9CHAT | member Bioe updated:  avatar changed
+2017-09-17 17:02:17.687133 | 9CHAT | member Bioe updated:  avatar changed
+2017-09-17 17:09:52.052074 | 9CHAT | member Bioe updated:  avatar changed
+2017-09-17 17:34:19.078777 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-17 17:38:43.728943 | 9CHAT | member you wanted it stop bitching updated:  name from: you wanted it stop bitching to: Tech Support
+2017-09-17 17:38:18.262000 | lobby | Doge deleted: <@242602757561909249> ohayo
+2017-09-17 17:41:29.197454 | 9CHAT | member Astrodoge updated:  name from: Astrodoge to: Rippleshoe
+2017-09-17 17:41:47.791454 | 9CHAT | member Rippleshoe updated:  name from: Rippleshoe to: Astrodoge
+2017-09-17 18:21:41.393000 | lobby | Doge edited: Hello therr
+2017-09-17 18:27:44.832000 | lobby | Doge edited: I wonder if <@194835657305096204> is that kind of person that just talks autisticly about anime irl even though nobody is interestef in that
+2017-09-17 18:34:43.926000 | nsfw-thighs | Zebo ~ ?????????????? posted a pic, saved as 0
+2017-09-17 18:43:49.243000 | lobby | Doge deleted: How about drinking NaClO
+2017-09-17 18:44:53.728722 | 9CHAT | member - ??  ??????   ??- updated:  avatar changed
+2017-09-17 18:45:58.029279 | 9CHAT | member - ??  ??????   ??- updated:  avatar changed
+2017-09-17 18:51:36.585000 | lobby | NYA-CHAN deleted: LOVE ME DOGE
+2017-09-17 18:52:54.321000 | lobby | Doge edited: Uhm I'm going I guess, bye :<:notlikethis:290790824676163584>
+2017-09-17 19:18:37.301553 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-17 19:19:25.668000 | lobby | ailurophileCate posted a pic, saved as 94
+2017-09-17 19:21:50.966000 | lobby | ailurophileCate posted a pic, saved as 95
+2017-09-17 19:22:17.704000 | lobby | Zebo ~ ?????????????? edited: I read a manga where naruto fuck sasuke and sakura's kid
+2017-09-17 19:22:49.414000 | lobby | ailurophileCate edited: @menme ? http://sethlui.com/buta-kin-ramen-singapore/
+2017-09-17 19:23:56.413000 | lobby | ailurophileCate edited: 1st ramen obviously belongs to a store I tried in Japan
+2017-09-17 18:34:43.926000 | nsfw-thighs | Zebo ~ ?????????????? deleted: @Onii-chan
+2017-09-17 19:31:45.341000 | lobby | ailurophileCate edited: Talking about food, i'm starving like a 8 year old african child
+2017-09-17 19:39:43.932000 | lobby | ailurophileCate edited: Come on papi, most of them have life stories that lead them to be homelss
+2017-09-17 19:46:32.135000 | lobby | ailurophileCate posted a pic, saved as 96
+2017-09-17 19:47:26.753443 | 9CHAT | member Zebo ~ ?????????????? updated:  +role: ? Love Birds of the Day
+2017-09-17 19:47:29.426054 | Role ?1st Anniversary updated: 
+2017-09-17 19:47:53.341037 | 9CHAT | member Tristan updated:  +role: ? Love Birds of the Day
+2017-09-17 19:48:14.274090 | 9CHAT | member Tristan updated:  -role: ? Meme Moderators
+2017-09-17 19:49:22.015000 | lobby | NYA-CHAN deleted: `eggplant
+2017-09-17 19:52:18.288368 | 9CHAT | member Tristan updated:  +role: ? Meme Moderators
+2017-09-17 19:52:50.759213 | 9CHAT | member dx ?? updated:  +role: ? Love Birds of the Day
+2017-09-17 19:53:00.529291 | Role ? Love Birds of the Day updated: 
+2017-09-17 19:53:02.124217 | 9CHAT | member dx ?? updated:  -role: ? Love Birds of the Day
+2017-09-17 19:53:11.255921 | 9CHAT | member Onii-chan updated:  +role: ? Love Birds of the Day
+2017-09-17 19:59:13.911915 | 9CHAT | member Onii-chan updated:  -role: ? Love Birds of the Day
+2017-09-17 19:59:16.426283 | 9CHAT | member Doge updated:  +role: ? Love Birds of the Day
+2017-09-17 19:59:19.146730 | 9CHAT | member Doge updated:  -role: ? Golden Meme Award
+2017-09-17 19:59:20.122223 | 9CHAT | member Doge updated:  +role: ? Golden Meme Award
+2017-09-17 19:59:17.918000 | lobby | Zebo ~ ?????????????? deleted: like
+2017-09-17 19:59:30.239614 | 9CHAT | member Onii-chan updated:  +role: ? Love Birds of the Day
+2017-09-17 19:59:19.368000 | lobby | Zebo ~ ?????????????? deleted: nothing
+2017-09-17 19:59:06.868000 | lobby | Zebo ~ ?????????????? deleted: I'm just a troll
+2017-09-17 19:59:16.631000 | lobby | Zebo ~ ?????????????? deleted: don't take anything I say serious
+2017-09-17 19:59:36.181971 | 9CHAT | member Doge updated:  -role: ? Love Birds of the Day
+2017-09-17 20:05:10.448178 | 9CHAT | member BroToast updated:  name from: BroToast to: Liam avatar changed
+2017-09-17 20:06:04.698846 | 9CHAT | Member Liam just left
+2017-09-17 20:06:05.909000 | lobby | Doge edited: Yes weirs
+2017-09-17 20:10:15.762000 | memes | Onii-chan edited: https://m.youtube.com/watch?v=H4CCYEzlYwA
+2017-09-17 20:13:06.017000 | lobby | Doge edited: I guess homour was never my strenght <:cri:321907398476431360>
+2017-09-17 20:18:16.194000 | lobby | Doge edited: The price of human fertility?
+2017-09-17 20:26:09.173000 | lobby | ailurophileCate posted a pic, saved as 97
+2017-09-17 20:26:48.395000 | lobby | Tristan posted a pic, saved as 230
+2017-09-17 20:40:17.890000 | lobby | ailurophileCate edited: https://www.youtube.com/watch?v=nhgvUy9xsIo
+2017-09-17 20:41:11.678000 | lobby | ailurophileCate posted a pic, saved as 98
+2017-09-17 20:44:37.162000 | lobby | ailurophileCate posted a pic, saved as 99
+2017-09-17 20:53:42.900000 | lobby | ailurophileCate posted a pic, saved as 100
+2017-09-17 20:53:42.900000 | lobby | ailurophileCate deleted: 
+2017-09-17 20:53:59.817000 | lobby | ailurophileCate edited: ;haha
+2017-09-17 20:57:15.403000 | lobby | Tristan deleted: cant wait to hug my old friendly giant
+2017-09-17 21:00:19.839000 | lobby | ailurophileCate posted a pic, saved as 101
+2017-09-17 21:00:19.839000 | lobby | ailurophileCate deleted: 
+2017-09-17 21:00:59.010000 | lobby | ailurophileCate posted a pic, saved as 102
+2017-09-17 21:02:55.387000 | lobby | Tristan posted a pic, saved as 231
+2017-09-17 21:05:40.359000 | lobby | Joris edited: Ausschwitz nani
+2017-09-17 21:06:35.591000 | lobby | Joris deleted: <:ResidentSleeper:313723900741812224>
+2017-09-17 21:08:46.309241 | 9CHAT | member Saynara updated:  avatar changed
+2017-09-17 21:10:36.742000 | lobby | Joris edited: :monkaS;
+2017-09-17 21:11:29.144478 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-17 21:12:09.060000 | lobby | Tristan posted a pic, saved as 232
+2017-09-17 21:12:49.959000 | lobby | Tristan edited: lyrical myricle
+2017-09-17 21:13:31.893185 | 9CHAT | member ???Pandzy??? updated:  avatar changed
+2017-09-17 21:14:06.122432 | Role new role updated: 
+2017-09-17 21:14:06.128932 | Role ??Votarist updated: 
+2017-09-17 21:14:06.133947 | Role ? Invitationist updated: 
+2017-09-17 21:14:06.140440 | Role BOT PERMS updated: 
+2017-09-17 21:14:06.148456 | Role ? Daikazoku updated: 
+2017-09-17 21:14:06.193476 | Role ? Da?k updated: 
+2017-09-17 21:14:06.197980 | Role Stella updated: 
+2017-09-17 21:14:06.201482 | Role ? Golden Meme Award updated: 
+2017-09-17 21:14:06.206002 | Role ? Red Memetopus updated: 
+2017-09-17 21:14:06.209987 | Role ? Tsundere updated: 
+2017-09-17 21:14:06.216004 | Role ? Love Birds of the Day updated: 
+2017-09-17 21:14:06.220011 | Role ? Meme Moderators updated: 
+2017-09-17 21:14:06.227503 | Role ? Archbishops of Memes updated: 
+2017-09-17 21:14:06.232504 | Role ???? Meme Sensei updated: 
+2017-09-17 21:14:06.238008 | Role ? MemeLord updated: 
+2017-09-17 21:14:06.243515 | Role ? cate sama updated: 
+2017-09-17 21:14:06.652860 | Role ??Votarist updated: 
+2017-09-17 21:14:06.952442 | Role new role updated:  name from: new role to: Loyalist
+2017-09-17 21:15:50.333257 | Role Loyalist updated:  name from: Loyalist to: ?Loyalist
+2017-09-17 21:15:50.591938 | Role ??Votarist updated: 
+2017-09-17 21:15:50.116000 | lobby | ailurophileCate posted a pic, saved as 103
+2017-09-17 21:16:22.302000 | announcements | Tristan deleted: new role k bye
+2017-09-17 21:17:54.425862 | Role ?Loyalist updated: 
+2017-09-17 21:18:37.999000 | lobby | ailurophileCate posted a pic, saved as 104
+2017-09-17 21:19:05.686743 | 9CHAT | member Killerz - Lord of Turtles updated:  +role: ?Loyalist
+2017-09-17 21:19:16.330153 | 9CHAT | member YummyCookies updated:  +role: ?Loyalist
+2017-09-17 21:19:27.296894 | 9CHAT | member Pickles updated:  +role: ?Loyalist
+2017-09-17 21:19:47.137773 | 9CHAT | member Sketchy.arc updated:  +role: ?Loyalist
+2017-09-17 21:20:09.662569 | 9CHAT | member RegulasLight updated:  +role: ?Loyalist
+2017-09-17 21:21:19.433875 | Role ??Votarist updated: 
+2017-09-17 21:21:52.641216 | 9CHAT | member Raziel updated:  +role: ? MUTED
+2017-09-17 21:21:56.185896 | 9CHAT | member Joris updated:  +role: ? MUTED
+2017-09-17 21:22:13.320444 | 9CHAT | member Joris updated:  -role: ? MUTED
+2017-09-17 21:22:16.946103 | 9CHAT | member Raziel updated:  -role: ? MUTED
+2017-09-17 21:22:53.909102 | Role ? cate sama updated:  name from: ? cate sama to: ?cate sama
+2017-09-17 21:22:58.979296 | Role ? Red Memetopus updated: 
+2017-09-17 21:23:16.620139 | Role ?cate sama updated:  name from: ?cate sama to: ? cate sama
+2017-09-17 21:25:24.402000 | lobby | ailurophileCate posted a pic, saved as 105
+2017-09-17 21:25:24.402000 | lobby | ailurophileCate deleted: 
+2017-09-17 21:27:49.286000 | lobby | ailurophileCate posted a pic, saved as 106
+2017-09-17 21:27:49.286000 | lobby | ailurophileCate deleted: 
+2017-09-17 21:28:45.586000 | lobby | ailurophileCate posted a pic, saved as 107
+2017-09-17 21:30:33.100601 | Role ?Loyalist updated: 
+2017-09-17 21:31:09.783000 | lobby | ailurophileCate posted a pic, saved as 108
+2017-09-17 21:32:04.343000 | botspam | Joris deleted: T!rank
+2017-09-17 21:32:02.349000 | botspam | Joris deleted: T!ran
+2017-09-17 21:32:55.976000 | lobby | Joris deleted: bitch you hella dull
+2017-09-17 21:33:08.675000 | lobby | ailurophileCate posted a pic, saved as 109
+2017-09-17 21:34:09.235000 | lobby | ailurophileCate posted a pic, saved as 110
+2017-09-17 21:34:09.235000 | lobby | ailurophileCate deleted: 
+2017-09-17 21:35:34.086000 | lobby | ailurophileCate posted a pic, saved as 111
+2017-09-17 21:35:57.623934 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-17 21:39:49.104808 | 9CHAT | member Raziel updated:  +role: ? MUTED
+2017-09-17 21:39:53.305088 | 9CHAT | member Raziel updated:  -role: ? MUTED
+2017-09-17 21:40:11.505652 | 9CHAT | member Joris updated:  +role: ? MUTED
+2017-09-17 21:40:19.034022 | 9CHAT | member Joris updated:  -role: ? MUTED
+2017-09-17 21:41:21.765981 | Role ?? Memeist updated: 
+2017-09-17 21:41:21.769483 | Role ?Loyalist updated: 
+2017-09-17 21:41:21.779993 | Role ??Votarist updated: 
+2017-09-17 21:41:21.788496 | Role ? Invitationist updated: 
+2017-09-17 21:41:21.792511 | Role BOT PERMS updated: 
+2017-09-17 21:41:21.798505 | Role ? Daikazoku updated: 
+2017-09-17 21:41:21.805006 | Role ? Da?k updated: 
+2017-09-17 21:41:21.809012 | Role Stella updated: 
+2017-09-17 21:41:21.815015 | Role ? Golden Meme Award updated: 
+2017-09-17 21:41:21.819016 | Role ? Red Memetopus updated: 
+2017-09-17 21:41:21.823520 | Role ? Tsundere updated: 
+2017-09-17 21:41:21.829024 | Role ? Love Birds of the Day updated: 
+2017-09-17 21:41:21.836530 | Role ? MUTED updated: 
+2017-09-17 21:41:53.679417 | Role ? MUTED updated: 
+2017-09-17 21:41:53.685907 | Role ? Invitationist updated: 
+2017-09-17 21:41:53.692420 | Role BOT PERMS updated: 
+2017-09-17 21:41:53.699427 | Role ? Daikazoku updated: 
+2017-09-17 21:41:53.703429 | Role ? Da?k updated: 
+2017-09-17 21:41:53.706931 | Role Stella updated: 
+2017-09-17 21:41:53.713939 | Role ? Golden Meme Award updated: 
+2017-09-17 21:41:53.718930 | Role ? Red Memetopus updated: 
+2017-09-17 21:41:53.722932 | Role ? Tsundere updated: 
+2017-09-17 21:41:53.726935 | Role ? Love Birds of the Day updated: 
+2017-09-17 21:42:02.975827 | Role ? Invitationist updated: 
+2017-09-17 21:42:02.982332 | Role BOT PERMS updated: 
+2017-09-17 21:42:02.986334 | Role ? Daikazoku updated: 
+2017-09-17 21:42:02.992841 | Role ? Da?k updated: 
+2017-09-17 21:42:03.002345 | Role ? MUTED updated: 
+2017-09-17 21:42:14.542000 | lobby | ailurophileCate posted a pic, saved as 112
+2017-09-17 21:42:42.966967 | 9CHAT | member ailurophileCate updated:  +role: ? Da?k
+2017-09-17 21:42:44.167447 | 9CHAT | member ailurophileCate updated:  -role: ? cate sama
+2017-09-17 21:42:54.353000 | lobby | ailurophileCate posted a pic, saved as 113
+2017-09-17 21:43:02.865239 | 9CHAT | member ailurophileCate updated:  -role: ? Da?k
+2017-09-17 21:43:04.043498 | 9CHAT | member ailurophileCate updated:  +role: ? cate sama
+2017-09-17 21:47:17.646703 | 9CHAT | member Rad updated:  avatar changed
+2017-09-17 21:47:53.530216 | 9CHAT | member Rad updated:  name from: Rad to: Ron
+2017-09-17 21:48:11.216153 | 9CHAT | member Ron updated:  name from: Ron to: Rad
+2017-09-17 21:50:20.094000 | lobby | ailurophileCate posted a pic, saved as 114
+2017-09-17 21:51:32.722000 | lobby | Darkstorm deleted: <:feelsgood:295871564178784256>
+2017-09-17 21:52:37.713000 | lobby | Darkstorm deleted: ??????????????????????????
+??????????????????????????
+?????????????????????????
+????????????????????????
+????????????????????????
+2017-09-17 21:55:20.990000 | lobby | Darkstorm deleted: Noice
+2017-09-17 21:55:53.947000 | lobby | Darkstorm deleted: This is for u blush Read till the end! I sent an angel to watch over you last night, but it came back and I asked "why?" The angel said, "angels don't watch over angels!" Twenty angels are in your world. Ten are sleeping, nine of them are playing and one is reading this message. God has seen you struggling with some things and God says it's over. A blessing is coming your way. If you believe in God send this message to 14 friends including me, if I don't get it back I guess I'm not one of them. As soon as you get 5 replies, someone you love will quietly surprise you... Not joking. Pass this message on. Please don't ignore it. you are being tested and God is going to fix two big things tonight in your favor. If you believe in God drop everything and pass it on TOMORROW WILL BE THE BEST DAY OF YOUR LIFE. DON'T BREAK THIS.WHOEVER SENT THIS TO YOU MUST CARE ABOUT YOU
+:3333
+2017-09-17 21:59:07.336000 | lobby | Raziel edited: https://9gag.com/gag/a248BP1?ref=ios.s.cp cannyou guys see my comment?
+2017-09-17 21:59:42.559000 | lobby | ailurophileCate posted a pic, saved as 115
+2017-09-17 22:00:54.604000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 63
+2017-09-17 22:01:00.229000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 64
+2017-09-17 22:01:01.571000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 65
+2017-09-17 22:01:04.037000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 66
+2017-09-17 22:01:14.560000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 67
+2017-09-17 22:01:16.826000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 68
+2017-09-17 22:01:18.097000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 69
+2017-09-17 22:01:20.420000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 70
+2017-09-17 22:01:32.452000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 71
+2017-09-17 22:01:34.729000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 72
+2017-09-17 22:01:38.444000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 73
+2017-09-17 22:01:41.881000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 74
+2017-09-17 22:01:53.499000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 75
+2017-09-17 22:01:57.703000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 76
+2017-09-17 22:01:59.734000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 77
+2017-09-17 22:02:03.172000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 78
+2017-09-17 22:02:05.199000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 79
+2017-09-17 22:02:08.370000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 80
+2017-09-17 22:02:16.762000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 81
+2017-09-17 22:02:19.308000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 82
+2017-09-17 22:02:21.978000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 83
+2017-09-17 22:02:24.516000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 84
+2017-09-17 22:02:26.537000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 85
+2017-09-17 22:02:28.051000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 86
+2017-09-17 22:02:33.691000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 87
+2017-09-17 22:02:44.372000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 88
+2017-09-17 22:02:46.787000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 89
+2017-09-17 22:02:57.383000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 90
+2017-09-17 22:02:59.030000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 91
+2017-09-17 22:03:03.550000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 92
+2017-09-17 22:03:06.360000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 93
+2017-09-17 22:03:07.292000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 94
+2017-09-17 22:03:10.821000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 95
+2017-09-17 22:03:13.344000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 96
+2017-09-17 22:03:15.862000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 97
+2017-09-17 22:03:20.976000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 98
+2017-09-17 22:03:35.166000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 99
+2017-09-17 22:03:37.425000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 100
+2017-09-17 22:03:40.369000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 101
+2017-09-17 22:03:47.620000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 102
+2017-09-17 22:03:49.972000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 103
+2017-09-17 22:03:56.507000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 104
+2017-09-17 22:03:57.086000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 105
+2017-09-17 22:04:00.053000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 106
+2017-09-17 22:04:02.952000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 107
+2017-09-17 22:04:04.350000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 108
+2017-09-17 22:04:08.103000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 109
+2017-09-17 22:04:18.203000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 110
+2017-09-17 22:04:30.053000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 111
+2017-09-17 22:04:37.982000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 112
+2017-09-17 22:04:40.133000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 113
+2017-09-17 22:04:41.651000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 114
+2017-09-17 22:04:47.060000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 115
+2017-09-17 22:04:54.592000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 116
+2017-09-17 22:04:58.253000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 117
+2017-09-17 22:05:13.147000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 118
+2017-09-17 22:05:14.901000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 119
+2017-09-17 22:05:16.382000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 120
+2017-09-17 22:05:18.026000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 121
+2017-09-17 22:05:19.480000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 122
+2017-09-17 22:05:24.358000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 123
+2017-09-17 22:05:26.156000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 124
+2017-09-17 22:05:28.710000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 125
+2017-09-17 22:05:43.253000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 126
+2017-09-17 22:05:47.758000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 127
+2017-09-17 22:05:57.086000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 128
+2017-09-17 22:05:59.898000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 129
+2017-09-17 22:06:01.782000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 130
+2017-09-17 22:06:03.747000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 131
+2017-09-17 22:06:12.326000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 132
+2017-09-17 22:06:13.916000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 133
+2017-09-17 22:06:15.133000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 134
+2017-09-17 22:06:22.751000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 135
+2017-09-17 22:06:29.301000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 136
+2017-09-17 22:06:30.273000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 137
+2017-09-17 22:06:32.338000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 138
+2017-09-17 22:06:34.654000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 139
+2017-09-17 22:06:43.192000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 140
+2017-09-17 22:06:45.943000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 141
+2017-09-17 22:06:48.321000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 142
+2017-09-17 22:06:52.273000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 143
+2017-09-17 22:06:57.326000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 144
+2017-09-17 22:06:59.112000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 145
+2017-09-17 22:07:04.981000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 146
+2017-09-17 22:07:07.597000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 147
+2017-09-17 22:07:22.604000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 148
+2017-09-17 22:07:26.446000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 149
+2017-09-17 22:07:37.127000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 150
+2017-09-17 22:07:42.802000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 151
+2017-09-17 22:07:46.578000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 152
+2017-09-17 22:07:56.065000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 153
+2017-09-17 22:08:04.471000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 154
+2017-09-17 22:08:10.632000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 155
+2017-09-17 22:08:10.695000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 156
+2017-09-17 22:08:12.590000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 157
+2017-09-17 22:08:24.281000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 158
+2017-09-17 22:08:30.276000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 159
+2017-09-17 22:08:44.293000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 160
+2017-09-17 22:08:51.829000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 161
+2017-09-17 22:09:04.282000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 162
+2017-09-17 22:10:34.290516 | Role ?1st Anniversary updated: 
+2017-09-17 22:10:34.295033 | Role ?NSFW updated: 
+2017-09-17 22:10:34.299523 | Role Listen.moe Streaming Bot updated: 
+2017-09-17 22:10:34.304527 | Role dabBot updated: 
+2017-09-17 22:10:34.309030 | Role (????)????*?spoo.py?*????(???)? updated: 
+2017-09-17 22:10:34.313034 | Role Ayana updated: 
+2017-09-17 22:10:34.317536 | Role ErisBot updated: 
+2017-09-17 22:10:34.326543 | Role ? Bot Commander updated: 
+2017-09-17 22:10:34.330545 | Role ? Tatsumaki updated: 
+2017-09-17 22:10:34.338553 | Role ?? Memeist updated: 
+2017-09-17 22:10:34.345055 | Role ?Loyalist updated: 
+2017-09-17 22:10:34.350060 | Role ??Votarist updated: 
+2017-09-17 22:10:34.356063 | Role ? Invitationist updated: 
+2017-09-17 22:10:34.362568 | Role BOT PERMS updated: 
+2017-09-17 22:10:34.366570 | Role ? Daikazoku updated: 
+2017-09-17 22:10:34.374076 | Role ? Da?k updated: 
+2017-09-17 22:10:34.377578 | Role ? MUTED updated: 
+2017-09-17 22:10:34.382081 | Role Stella updated: 
+2017-09-17 22:10:34.386585 | Role ? Golden Meme Award updated: 
+2017-09-17 22:10:34.390587 | Role ? Red Memetopus updated: 
+2017-09-17 22:10:34.394090 | Role ? Tsundere updated: 
+2017-09-17 22:10:34.397592 | Role ? Love Birds of the Day updated: 
+2017-09-17 22:10:34.402597 | Role ? Meme Moderators updated: 
+2017-09-17 22:10:34.408600 | Role ? Archbishops of Memes updated: 
+2017-09-17 22:10:34.412102 | Role ???? Meme Sensei updated: 
+2017-09-17 22:10:34.416105 | Role ? MemeLord updated: 
+2017-09-17 22:10:34.423111 | Role ? cate sama updated: 
+2017-09-17 22:10:34.876895 | Role new role updated:  name from: new role to: Ass Meister
+2017-09-17 22:10:43.089001 | 9CHAT | member Fancy RaZe updated:  +role: Ass Meister
+2017-09-17 22:10:50.846000 | nsfw-thighs | ailurophileCate posted a pic, saved as 116
+2017-09-17 22:13:06.207000 | nsfw-thighs | Darkstorm edited: Mumm
+2017-09-17 22:13:51.437114 | Role Ass Meister updated:  name from: Ass Meister to: ? Ass Meister
+2017-09-17 22:14:04.475000 | nsfw-thighs | ailurophileCate posted a pic, saved as 117
+2017-09-17 22:14:59.253214 | 9CHAT | member Cera updated:  +role: ?Loyalist
+2017-09-17 22:14:59.967530 | 9CHAT | member Cera updated:  -role: ?Loyalist
+2017-09-17 22:15:09.322769 | 9CHAT | member Cera updated:  +role: ?1st Anniversary
+2017-09-17 22:15:32.261783 | 9CHAT | member Cera updated:  +role: ?Loyalist
+2017-09-17 22:15:41.590000 | nsfw-thighs | Fancy RaZe edited: http://prntscr.com/gmdjaw
+2017-09-17 22:15:44.030000 | lobby | ailurophileCate posted a pic, saved as 118
+2017-09-17 22:17:22.276797 | Role ?1st Anniversary updated: 
+2017-09-17 22:17:44.154734 | 9CHAT | member NYA-CHAN updated:  +role: ?NSFW
+2017-09-17 22:17:59.132989 | 9CHAT | member Cera updated:  +role: ?NSFW
+2017-09-17 22:18:27.170370 | Role ?NSFW updated: 
+2017-09-17 22:18:56.358526 | Role ?NSFW updated: 
+2017-09-17 22:21:29.271000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 163
+2017-09-17 22:21:33.095000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 164
+2017-09-17 22:21:34.404000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 165
+2017-09-17 22:21:36.348000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 166
+2017-09-17 22:21:36.702000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 167
+2017-09-17 22:21:38.415000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 168
+2017-09-18 13:07:50.263000 | lobby | Zebo ~ ?????????????? edited: And how everyone
+2017-09-18 13:17:43.869000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 1
+2017-09-18 13:18:27.207000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 2
+2017-09-18 13:18:32.971000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 3
+2017-09-18 13:18:37.873000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 4
+2017-09-18 13:18:44.423000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 5
+2017-09-18 13:22:05.640000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 6
+2017-09-18 13:25:35.305000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 7
+2017-09-18 13:26:03.304000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 8
+2017-09-18 13:26:36.713000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 9
+2017-09-18 13:28:04.352000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 10
+2017-09-18 13:28:13.996000 | nsfw-thighs | Zebo ~ ?????????????? posted a pic, saved as 11
+2017-09-18 13:28:37.152000 | nsfw-thighs | Zebo ~ ?????????????? posted a pic, saved as 12
+2017-09-18 13:29:00.542000 | lobby | NYA-CHAN deleted: >hug @PastorofthechurchofthestunneDhen
+2017-09-18 13:31:38.545000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 13
+2017-09-18 13:37:35.977000 | lobby | Tristan deleted: just not really how its supposed to work up there
+2017-09-18 13:41:55.793000 | botspam | NYA-CHAN deleted: >role "1st Anniversary" @( ?? ?? ??)???.*???? ? ? ? ? ? ?#7925
+2017-09-18 13:42:42.287000 | lobby | Sketchy.arc edited: Think if boobs like its a magnificent tail of a peacock
+2017-09-18 13:46:57.816000 | lobby | Sketchy.arc deleted: What if i do <:smug:358565714795298827>
+2017-09-18 13:51:15.762000 | lobby | Zebo ~ ?????????????? edited: https://images-ext-2.discordapp.net/external/hHzffJfj__s1FpxCM43kK3OVVTeT2Lb7mxke13_UTls/https/cdn.discordapp.com/attachments/116612182115876872/337676266801070080/yfjyJlW.png?width=369&height=474
+2017-09-18 13:51:44.452000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 14
+2017-09-18 13:52:38.318000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 15
+2017-09-18 13:53:15.295000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 16
+2017-09-18 13:56:06.385457 | 9CHAT | member iJeanPaul updated:  avatar changed
+2017-09-18 13:57:04.945000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 17
+2017-09-18 13:57:33.691000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 18
+2017-09-18 14:24:47.682892 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-18 14:33:55.587000 | lobby | Sketchy.arc deleted: Im a pedo btw
+2017-09-18 15:12:39.250000 | nsfw-thighs | Zebo ~ ?????????????? edited: @Dark Sakura http://seiroganmania.com/blog-entry-10300.html I'm trying to figure out this server
+2017-09-18 15:20:09.132946 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-18 15:54:56.394000 | art_n_pics | Roko ????? posted a pic, saved as 0
+2017-09-18 15:56:27.509000 | lobby | Churroman edited: You better name on of your bois Angel  @Tristan
+2017-09-18 15:57:36.610000 | lobby | Tristan edited: <:monkaS:357261724203876352> '
+2017-09-18 15:57:28.949000 | lobby | Churroman deleted: Van See Heijden
+2017-09-18 15:57:40.253000 | lobby | Churroman deleted: Der*
+2017-09-18 16:16:14.220000 | art_n_pics | Roko ????? posted a pic, saved as 1
+2017-09-18 17:16:28.631709 | 9CHAT | member Joris updated:  +role: ?Loyalist
+2017-09-18 17:16:38.637477 | 9CHAT | member Joris updated:  -role: ?Loyalist
+2017-09-18 17:16:41.892379 | 9CHAT | member Joris updated:  +role: ??Votarist
+2017-09-18 17:16:46.321945 | 9CHAT | member Joris updated:  -role: ??Votarist
+2017-09-18 17:16:47.496411 | 9CHAT | member Joris updated:  +role: ? Da?k
+2017-09-18 17:16:51.292444 | 9CHAT | member Joris updated:  -role: ? Da?k
+2017-09-18 17:58:09.403706 | 9CHAT | member Astrodoge updated:  name from: Astrodoge to: Hatzz
+2017-09-18 17:58:40.522401 | 9CHAT | member Hatzz updated:  name from: Hatzz to: Astrodoge
+2017-09-18 18:42:58.026449 | 9CHAT | member Rad updated:  avatar changed
+2017-09-18 18:48:34.205629 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-18 19:18:29.885321 | 9CHAT | Member PlatinumWhistle just joined
+2017-09-18 19:22:46.251000 | memes | PlatinumWhistle posted a pic, saved as 0
+2017-09-18 19:30:02.981859 | 9CHAT | member Bonfire updated:  +role: ? MUTED
+2017-09-18 19:30:23.718000 | memes | PlatinumWhistle posted a pic, saved as 1
+2017-09-18 19:31:40.410000 | memes | PlatinumWhistle posted a pic, saved as 2
+2017-09-18 19:31:57.268000 | lobby | NYA-CHAN deleted: >hug @PastorofthechurchofthestunneDhen
+2017-09-18 19:35:05.173000 | memes | PlatinumWhistle posted a pic, saved as 3
+2017-09-18 19:40:38.396000 | memes | PlatinumWhistle posted a pic, saved as 4
+2017-09-18 19:40:30.120000 | lobby | Churroman edited: minimum quota us 5 per link
+2017-09-18 19:43:03.038000 | memes | PlatinumWhistle posted a pic, saved as 5
+2017-09-18 19:44:01.409000 | lobby | Tristan deleted: *i wouldnt mind to only have dank*
+2017-09-18 19:47:32.588243 | 9CHAT | member Raziel updated:  +role: ? MUTED
+2017-09-18 19:48:22.491657 | 9CHAT | member Raziel updated:  -role: ? MUTED
+2017-09-18 19:50:42.568000 | memes | PlatinumWhistle posted a pic, saved as 6
+2017-09-18 19:54:06.349000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 169
+2017-09-18 19:54:15.971000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 170
+2017-09-18 19:54:17.988000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 171
+2017-09-18 19:54:20.137000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 172
+2017-09-18 19:54:22.363000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 173
+2017-09-18 19:54:25.326000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 174
+2017-09-18 19:54:46.363000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 175
+2017-09-18 19:54:52.084000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 176
+2017-09-18 19:54:53.278000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 177
+2017-09-18 19:55:04.712000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 178
+2017-09-18 19:55:06.352000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 179
+2017-09-18 19:55:11.690000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 180
+2017-09-18 19:55:14.317000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 181
+2017-09-18 19:55:25.929000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 182
+2017-09-18 19:55:27.387000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 183
+2017-09-18 19:55:30.161000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 184
+2017-09-18 19:55:40.443000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 185
+2017-09-18 19:55:42.884000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 186
+2017-09-18 19:55:44.757000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 187
+2017-09-18 19:55:47.388000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 188
+2017-09-18 19:55:50.732000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 189
+2017-09-18 19:55:53.491000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 190
+2017-09-18 19:55:55.713000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 191
+2017-09-18 19:56:04.226000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 192
+2017-09-18 19:58:54.508000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 193
+2017-09-18 19:58:57.380000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 194
+2017-09-18 19:59:02.710000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 195
+2017-09-18 19:59:06.929000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 196
+2017-09-18 19:59:13.844000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 197
+2017-09-18 19:59:16.135000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 198
+2017-09-18 19:59:19.943000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 199
+2017-09-18 19:59:21.848000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 200
+2017-09-18 19:59:23.259000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 201
+2017-09-18 19:59:26.666000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 202
+2017-09-18 19:59:27.974000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 203
+2017-09-18 20:00:01.157000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 204
+2017-09-18 20:00:03.044000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 205
+2017-09-18 20:00:03.654000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 206
+2017-09-18 20:00:08.151000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 207
+2017-09-18 20:00:22.008000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 208
+2017-09-18 20:00:26.660000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 209
+2017-09-18 20:00:27.547000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 210
+2017-09-18 20:00:30.019000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 211
+2017-09-18 20:00:30.903000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 212
+2017-09-18 20:00:32.773000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 213
+2017-09-18 20:00:34.576000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 214
+2017-09-18 20:00:36.958000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 215
+2017-09-18 20:00:40.424000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 216
+2017-09-18 20:00:44.856000 | nsfw-thighs | Fancy RaZe posted a pic, saved as 217
+2017-09-18 20:13:04.507909 | 9CHAT | member Biribiri updated:  +role: ?1st Anniversary
+2017-09-18 20:13:05.230067 | 9CHAT | member Biribiri updated:  -role: ?NSFW
+2017-09-18 20:16:38.139780 | 9CHAT | member Fortiare updated:  +role: ?NSFW
+2017-09-18 20:17:43.915144 | 9CHAT | member iJeanPaul updated:  avatar changed
+2017-09-18 20:49:02.755000 | lobby | NYA-CHAN deleted: 
+2017-09-18 20:51:19.697082 | 9CHAT | member Bonfire updated:  -role: ? MUTED
+2017-09-18 20:58:06.464000 | memes | PlatinumWhistle posted a pic, saved as 7
+2017-09-18 20:59:27.362000 | memes | PlatinumWhistle posted a pic, saved as 8
+2017-09-18 20:59:45.391000 | memes | PlatinumWhistle posted a pic, saved as 9
+2017-09-18 21:00:50.572000 | memes | Snusky posted a pic, saved as 1
+2017-09-18 21:01:35.109000 | memes | PlatinumWhistle posted a pic, saved as 10
+2017-09-18 21:01:35.109000 | memes | PlatinumWhistle posted a pic, saved as 11
+2017-09-18 21:01:35.109000 | memes | PlatinumWhistle posted a pic, saved as 12
+2017-09-18 21:01:35.109000 | memes | PlatinumWhistle posted a pic, saved as 13
+2017-09-18 21:02:33.005000 | memes | Snusky posted a pic, saved as 2
+2017-09-18 21:03:04.122000 | memes | Snusky posted a pic, saved as 3
+2017-09-18 21:03:42.187000 | memes | Snusky edited: and platinum ur memes are a bit old but they goo
+2017-09-18 21:03:56.907000 | memes | Snusky posted a pic, saved as 4
+2017-09-18 21:04:22.924000 | memes | Raziel posted a pic, saved as 20
+2017-09-18 21:05:07.441000 | memes | Snusky posted a pic, saved as 5
+2017-09-18 21:05:53.051000 | memes | Snusky posted a pic, saved as 6
+2017-09-18 21:06:28.434000 | memes | PlatinumWhistle posted a pic, saved as 14
+2017-09-18 21:06:28.434000 | memes | PlatinumWhistle posted a pic, saved as 15
+2017-09-18 21:06:43.154000 | memes | Snusky posted a pic, saved as 7
+2017-09-18 21:12:44.087000 | botspam | Tatsumaki deleted: ?  |  **Credit Transfer**
+
+```ruby
+Transferring ? 420 to user Tristan
+
+Amount due after tax:        ? 336
+Current credits balance:     ? 12338
+Balance after transfer:      ? 11918
+
+# Confirmation Pin: 2499
+```
+?  |  To confirm, type `2499` or type `cancel` to close the transaction
+2017-09-18 21:20:00.971000 | memes | Roko ????? posted a pic, saved as 2
+2017-09-18 21:22:52.960000 | memes | PlatinumWhistle posted a pic, saved as 16
+2017-09-18 21:25:47.899000 | lobby | ailurophileCate posted a pic, saved as 119
+2017-09-18 21:28:34.854788 | 9CHAT | member PlatinumWhistle updated:  +role: ?1st Anniversary
+2017-09-18 21:29:03.669335 | 9CHAT | member ( ?? ?? ??)???.*???? ? ? ? ? ? ? updated:  +role: ?1st Anniversary
+2017-09-18 21:30:16.003251 | Role ?1st Anniversary updated: 
+2017-09-18 21:31:24.336724 | 9CHAT | member ( ?? ?? ??)???.*???? ? ? ? ? ? ? updated:  nick from nothing to: Blueredpenguin
+2017-09-18 21:31:51.858086 | Role ?1st Anniversary updated: 
+2017-09-18 21:31:56.435665 | 9CHAT | member ( ?? ?? ??)???.*???? ? ? ? ? ? ? updated:  nick from: Blueredpenguin to: bluered3
+2017-09-18 21:32:58.948000 | lobby | ailurophileCate posted a pic, saved as 120
+2017-09-18 21:35:40.542279 | Role ?1st Anniversary updated: 
+2017-09-18 21:36:31.723000 | memes | PlatinumWhistle posted a pic, saved as 17
+2017-09-18 21:36:31.723000 | memes | PlatinumWhistle posted a pic, saved as 18
+2017-09-18 21:36:31.723000 | memes | PlatinumWhistle posted a pic, saved as 19
+2017-09-18 21:36:57.320000 | lobby | Raziel edited: @Snusky be a G O OD B O Y E when I'm sleeping
+2017-09-18 21:38:41.092000 | lobby | ailurophileCate posted a pic, saved as 121
+2017-09-18 21:40:18.903660 | Role ?1st Anniversary updated: 
+2017-09-18 21:43:21.197000 | art_n_pics | TheRockyDoo posted a pic, saved as 55
+2017-09-18 22:13:24.424000 | lobby | Doge edited: Oh hog
+2017-09-18 22:18:45.178000 | lobby | NYA-CHAN edited: But what I know, compared to google
+2017-09-18 22:19:36.808000 | lobby | Killerz - Lord of Turtles edited: i wanted to know know but ezok
+2017-09-19 10:39:33.298000 | memes | menme ? posted a pic, saved as 0
+2017-09-19 11:34:13.453950 | 9CHAT | member Zoid? updated:  avatar changed
+2017-09-19 12:49:48.840000 | lobby | Cera posted a pic, saved as 5
+2017-09-19 12:49:48.840000 | lobby | Cera deleted: Moeee??
+2017-09-19 12:50:42.886000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 19
+2017-09-19 12:52:04.950000 | lobby | Cera posted a pic, saved as 6
+2017-09-19 12:52:04.950000 | lobby | Cera deleted: 
+2017-09-19 12:53:30.884544 | 9CHAT | member Cera updated:  avatar changed
+2017-09-19 12:53:52.780000 | lobby | ( ?? ?? ??)???.*???? ? ? ? ? ? ? deleted: But what if im into necro
+2017-09-19 13:07:15.629000 | lobby | Tristan edited: with some pinl vibes
+2017-09-19 14:40:17.397000 | lobby | ailurophileCate posted a pic, saved as 122
+2017-09-19 14:40:49.796000 | lobby | ailurophileCate deleted: https://www.youtube.com/watch?v=DtVBCG6ThDk
+2017-09-19 14:40:54.315000 | lobby | ailurophileCate deleted: ^ lmao
+2017-09-19 14:52:30.532000 | lobby | Hades/Yash edited: Fine only sausage
+2017-09-19 14:53:16.649000 | memes | PlatinumWhistle posted a pic, saved as 20
+2017-09-19 14:53:16.649000 | memes | PlatinumWhistle posted a pic, saved as 21
+2017-09-19 14:53:16.649000 | memes | PlatinumWhistle posted a pic, saved as 22
+2017-09-19 14:55:52.284000 | memes | PlatinumWhistle posted a pic, saved as 23
+2017-09-19 14:58:27.261000 | memes | PlatinumWhistle edited: The ting goes skrrra - Parrot edition https://9gag.com/gag/aEBVL69?ref=android.s
+2017-09-19 15:02:12.923000 | memes | PlatinumWhistle posted a pic, saved as 24
+2017-09-19 15:02:12.923000 | memes | PlatinumWhistle posted a pic, saved as 25
+2017-09-19 15:09:44.207000 | lobby | Kappa edited: until you think you cuaght a weedle but its just some weirdo's weiner
+2017-09-19 15:11:12.527000 | lobby | Kappa posted a pic, saved as 5
+2017-09-19 15:22:47.556000 | memes | PastorofthechurchofthestunneDhen edited: @PlatinumWhistle#5072 thanks bby. I'm honoured
+2017-09-19 15:34:41.719000 | lobby | ailurophileCate posted a pic, saved as 123
+2017-09-19 16:29:23.638000 | lobby | ailurophileCate posted a pic, saved as 124
+2017-09-19 16:36:12.262000 | lobby | Doge edited: Hello thete
+2017-09-19 16:56:22.900000 | lobby | ailurophileCate posted a pic, saved as 125
+2017-09-19 17:01:39.687944 | 9CHAT | member SirLurksALot updated:  avatar changed
+2017-09-19 17:12:42.024756 | 9CHAT | member Zoid? updated:  name from: Zoid? to: Zoid
+2017-09-19 17:23:09.070000 | lobby | NYA-CHAN edited: Treats it audience like kids
+2017-09-19 17:23:36.027000 | lobby | NYA-CHAN edited: @menme ? Sure thing sweethard
+2017-09-19 17:23:36.027000 | lobby | NYA-CHAN edited: @menme ?#4519 Sure thing sweethearth
+2017-09-19 17:28:34.357000 | lobby | Dark Sakura edited: she was pretty powefull against shin uchiha even without the 100 healings jutsu
+2017-09-19 17:29:54.305000 | lobby | Dark Sakura edited: she could hold her own agains someone with his body covered in mangekyou sharingan
+2017-09-19 17:31:30.698000 | lobby | ailurophileCate edited: 50 episodes in on eweek
+2017-09-19 17:35:57.034714 | 9CHAT | member NYA-CHAN updated:  -role: ?NSFW
+2017-09-19 17:36:22.091000 | botspam | Dark Sakura deleted: !rank
+2017-09-19 17:47:39.345000 | lobby | Kappa posted a pic, saved as 6
+2017-09-19 17:50:28.161000 | lobby | Zebo ~ ?????????????? edited: I can suck your dick and you don;t have to call nohome
+2017-09-19 17:50:36.297000 | lobby | Zebo ~ ?????????????? edited: I do haveboobs
+2017-09-19 17:55:59.938000 | lobby | NYA-CHAN deleted: >60
+2017-09-19 18:01:00.868000 | lobby | NYA-CHAN edited: @Doge Im watching silence of the lambs
+That grown up enough ?
+2017-09-19 18:01:39.436000 | lobby | Dark Sakura edited: @menme ? just watch apocrypha till the last new ep, it has impoved a lot
+2017-09-19 18:03:14.600561 | 9CHAT | member ( ?? ?? ??)???.*???? ? ? ? ? ? ? updated:  name from: ( ?? ?? ??)???.*???? ? ? ? ? ? ? to: bluered3
+2017-09-19 18:08:46.314000 | lobby | Dark Sakura edited: https://www.youtube.com/watch?v=2NfUq-PYUaU
+2017-09-19 18:13:55.270000 | lobby | ailurophileCate edited: tfw when you are skipping on a different wavelength
+2017-09-19 18:15:13.569000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 20
+2017-09-19 18:15:13.569000 | lobby | Zebo ~ ?????????????? deleted: 
+2017-09-19 18:16:11.287000 | lobby | Zebo ~ ?????????????? deleted: I grew up sucking my uncle's fat dick
+2017-09-19 18:16:46.224000 | lobby | Roko ????? posted a pic, saved as 3
+2017-09-19 18:17:34.821000 | lobby | ailurophileCate edited: but so overrated m
+2017-09-19 18:17:47.850000 | lobby | Roko ????? posted a pic, saved as 4
+2017-09-19 18:26:18.895000 | lobby | Kappa deleted: And ryuuk
+2017-09-19 18:28:32.492000 | lobby | kaori edited: I don't think well tho
+2017-09-19 18:28:32.492000 | lobby | kaori edited: I don't sing $well tho
+2017-09-19 18:37:53.262000 | lobby | Dark Sakura deleted: he is the ruler servant from the previous grail was and rulers are more powerfull plus he defeated vlad in his vampire form while the rest couldn't even do that while they worked as a team
+2017-09-19 18:42:26.868000 | lobby | Dark Sakura edited: boku no hero academia, dbs, boruto, gintama,
+2017-09-19 18:43:46.139000 | lobby | Kappa edited: @menme ? and wouldn't like nyas nudes
+2017-09-19 18:48:39.953000 | lobby | Dark Sakura edited: https://youtu.be/M2ApQrCn_AY
+2017-09-19 18:50:07.180000 | lobby | Dark Sakura edited: except archer ofc
+2017-09-19 18:51:24.085000 | lobby | Dark Sakura edited: irk
+2017-09-19 18:55:33.766000 | lobby | Dark Sakura deleted: but my pfp and pic says enough
+2017-09-19 18:55:35.678000 | lobby | SirLurksALot edited: Oh hij hampw
+2017-09-19 19:00:02.220000 | lobby | Dark Sakura edited: you gave zero a 8.5 so you think it's good lmao don't talk shit about it now
+2017-09-19 19:01:28.493000 | lobby | Dark Sakura posted a pic, saved as 0
+2017-09-19 19:01:31.893000 | lobby | Dark Sakura edited: heh
+2017-09-19 19:06:25.125000 | lobby | Dark Sakura posted a pic, saved as 1
+2017-09-19 19:08:39.909000 | lobby | Dark Sakura edited: ^^^^
+2017-09-19 19:12:48.484894 | 9CHAT | member menme ? updated:  avatar changed
+2017-09-19 19:16:42.622000 | lobby | ailurophileCate posted a pic, saved as 126
+2017-09-19 19:18:02.014000 | lobby | ailurophileCate posted a pic, saved as 127
+2017-09-19 19:18:30.348000 | lobby | Dark Sakura edited: playing fate/extalla in class <:hyperthink:358575851475959808>
+2017-09-19 19:18:30.348000 | lobby | Dark Sakura edited: playing fate/extella in class <:hyperthink:358575851475959808>
+2017-09-19 19:20:09.099000 | lobby | Dark Sakura edited: should i get extella btw? seems repetitive <:hyperthonk:358575667505266688>
+2017-09-19 19:20:09.099000 | lobby | Dark Sakura edited: should i get extella btw? seems repetitive <:hyperthonk:358575667505266688> @menme ?
+2017-09-19 19:21:32.059000 | lobby | Dark Sakura edited: when people can't appriciate quality anime
+2017-09-19 19:24:16.820000 | lobby | Dark Sakura edited: yyus
+2017-09-19 19:26:06.803000 | lobby | Dark Sakura deleted: i only have the realta nua vn
+2017-09-19 19:27:14.806000 | lobby | Dark Sakura edited: i torrented then lmao
+2017-09-19 19:30:23.961000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 21
+2017-09-19 19:30:23.961000 | lobby | Zebo ~ ?????????????? deleted: 
+2017-09-19 19:30:48.837167 | 9CHAT | member Zebo ~ ?????????????? updated:  avatar changed
+2017-09-19 19:32:47.550000 | lobby | NYA-CHAN deleted: `lewd
+2017-09-19 19:33:11.587000 | lobby | Dark Sakura edited: same to you fapi
+2017-09-19 19:36:29.419000 | lobby | Dark Sakura edited: well she is a ruler servant after all
+2017-09-19 19:39:42.734000 | memes | Onii-chan posted a pic, saved as 0
+2017-09-19 19:41:35.911000 | lobby | Dark Sakura edited: much weaker than alter but more hp
+2017-09-19 19:44:48.307000 | lobby | Doge edited: Just to be sure, I think I have said some rude things in the past time
+2017-09-19 19:46:05.840000 | lobby | Doge edited: Uhm thanka
+2017-09-19 19:52:52.320000 | lobby | Doge edited: @
+
+@menme ?
+2017-09-19 19:55:01.106422 | 9CHAT | member bluered3 updated:  avatar changed
+2017-09-19 19:56:44.157000 | lobby | Doge edited: It got close fot both sides though during the wat
+2017-09-19 19:56:32.170000 | lobby | Doge edited: At the end of the war the original borders have barely moved
+2017-09-19 20:00:24.755000 | lobby | Doge edited: Yes Tristab
+2017-09-19 20:02:27.658597 | 9CHAT | member hug me daddy updated:  avatar changed
+2017-09-19 20:03:35.189000 | lobby | Doge deleted: Aight fam I walked 15km and I am very tired
+2017-09-19 20:05:26.307464 | 9CHAT | member hug me daddy updated:  avatar changed
+2017-09-19 20:08:54.446284 | 9CHAT | member chaseyourface. updated:  name from: chaseyourface. to: chaseyou'reface.
+2017-09-19 20:38:22.348656 | 9CHAT | member Fancy RaZe updated:  nick from: Fancy Dave to: AssMeister Dave
+2017-09-19 21:05:06.614000 | lobby | NYA-CHAN deleted: >ded
+2017-09-19 21:48:29.073575 | 9CHAT | member dx ?? updated:  avatar changed
+2017-09-19 21:54:29.742941 | 9CHAT | member dx ?? updated:  avatar changed
+2017-09-19 22:11:34.157922 | 9CHAT | member dx ?? updated:  avatar changed
+2017-09-19 22:40:37.999000 | memes | Lithusei edited: https://cdn.discordapp.com/attachments/220552322055405578/359672418161393665/FB_IMG_1505817442216.jpg
+2017-09-19 23:19:48.300000 | lobby | Churroman edited: Everyone had mean feelings mean thoughts. What defines you is if you do it or not. @Saynara
+2017-09-20 10:24:45.179000 | lobby | NYA-CHAN deleted: o/
+2017-09-20 10:37:54.793000 | lobby | Snusky edited: of both
+2017-09-20 11:47:42.877077 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-20 13:47:45.561767 | 9CHAT | member Secks updated:  avatar changed
+2017-09-20 14:10:54.944630 | 9CHAT | member Secks updated:  avatar changed
+2017-09-20 15:09:02.041915 | 9CHAT | member - ??  ??????   ??- updated:  name from: - ??  ??????   ??- to: ?????? ??-
+2017-09-20 15:09:27.421243 | 9CHAT | member ?????? ??- updated:  name from: ?????? ??- to: - ??  ??????   ??-
+2017-09-20 15:13:35.452307 | 9CHAT | member Killerz - Lord of Turtles updated:  +role: ?NSFW
+2017-09-20 15:14:42.124000 | lobby | Doge edited: Good day fella
+2017-09-20 15:15:41.883000 | lobby | Doge edited: I'm.ein ?ire
+2017-09-20 15:27:02.690000 | lobby | Dark Sakura edited: dacht t wel
+2017-09-20 15:28:05.441000 | lobby | Doge edited: We have Telekom, Vodafone, O2 and uhm Like a couple cheaper ones
+2017-09-20 15:31:59.434000 | lobby | Tristan edited: that suck dont it @Doge
+2017-09-20 15:38:02.281000 | lobby | Tristan posted a pic, saved as 233
+2017-09-20 15:38:58.367000 | lobby | Dark Sakura posted a pic, saved as 2
+2017-09-20 15:59:35.316000 | lobby | Fancy RaZe posted a pic, saved as 218
+2017-09-20 15:59:36.533000 | lobby | Fancy RaZe posted a pic, saved as 219
+2017-09-20 15:59:37.820000 | lobby | Fancy RaZe posted a pic, saved as 220
+2017-09-20 15:59:37.820000 | lobby | Fancy RaZe deleted: 
+2017-09-20 15:59:36.533000 | lobby | Fancy RaZe deleted: 
+2017-09-20 15:59:35.316000 | lobby | Fancy RaZe deleted: 
+2017-09-20 16:25:11.193000 | lobby | PastorofthechurchofthestunneDhen deleted: !hug @kisamehameha
+2017-09-20 16:25:31.823000 | lobby | NYA-CHAN deleted: >hug @Tristan
+2017-09-20 16:27:13.778000 | lobby | Lithusei deleted: >hug @Lithusei
+2017-09-20 16:28:44.520000 | lobby | Zebo ~ ?????????????? deleted: >hug @Biribiri
+2017-09-20 16:29:04.087000 | lobby | Zebo ~ ?????????????? deleted: >cuddle
+2017-09-20 16:29:19.760000 | lobby | Zebo ~ ?????????????? deleted: <:puke:358574630665060352>
+2017-09-20 16:41:51.104000 | lobby | Doge edited: Well I had some problems with minor sleep paralysis so I wont attempting sleep paralysis
+2017-09-20 16:42:16.607000 | lobby | Dark Sakura edited: just write your dreams down everytime you wake up, like everything you can remember, check the time regularly, because if you look at the time twice in a dream it's always different the second time. don't panic if you are in a dream
+2017-09-20 16:43:27.680000 | lobby | Joris edited: @Zebo ~ ?????????????? it's not fun getting reaped by a 6"6 black bald guy ?
+2017-09-20 16:48:20.744000 | lobby | Joris edited: You cant answer all of my question with a questioni
+2017-09-20 16:52:19.772000 | lobby | Doge deleted: Not to be assholes mostly
+2017-09-20 16:53:01.911000 | lobby | Joris edited: we riot :rage;
+2017-09-20 16:56:40.455000 | lobby | Dark Sakura edited: REMEMBER IT
+2017-09-20 17:07:28.374000 | lobby | Joris edited: where you fooled over like 50 peopole
+2017-09-20 17:07:46.949000 | lobby | Kappa deleted: That'd*
+2017-09-20 17:09:36.230000 | lobby | Zebo ~ ?????????????? deleted: Sieg heil
+2017-09-20 17:09:58.187000 | lobby | Dark Sakura edited: bai dog
+2017-09-20 17:12:16.765000 | lobby | Dark Sakura edited: peeps
+2017-09-20 17:18:06.427000 | lobby | NYA-CHAN deleted: >kill @menme ?
+2017-09-20 17:19:09.203000 | lobby | Dark Sakura deleted: ~~want me to post some futa ass?~~ everyone happy <:haHAA:313724207278194688>
+2017-09-20 17:20:44.233000 | lobby | NYA-CHAN deleted: >echo ?
+2017-09-20 17:50:08.363127 | 9CHAT | member menme ? updated:  avatar changed
+2017-09-20 17:50:49.562023 | 9CHAT | member menme ? updated:  avatar changed
+2017-09-20 18:34:50.750000 | lobby | Zebo ~ ?????????????? deleted: @Nyaa-kawaii
+2017-09-20 18:35:56.093000 | lobby | Zebo ~ ?????????????? deleted: @Nyaa-kawaii
+2017-09-20 18:49:31.844931 | 9CHAT | member dx ?? updated:  avatar changed
+2017-09-20 19:00:47.254000 | lobby | Doge edited: There was chicken in it but it tasted like it had been cooked for 4 hourse
+2017-09-20 19:05:16.089000 | lobby | Doge edited: We all neee to be more grateful
+2017-09-20 19:08:40.440000 | lobby | Doge edited: Oh my bad
+2017-09-20 19:14:38.740000 | lobby | Doge edited: O.o this is fucked up
+2017-09-20 19:42:10.898133 | Role ?1st Anniversary updated: 
+2017-09-20 19:42:10.902629 | Role ?NSFW updated: 
+2017-09-20 19:42:10.907631 | Role Listen.moe Streaming Bot updated: 
+2017-09-20 19:42:10.912146 | Role dabBot updated: 
+2017-09-20 19:42:10.915636 | Role (????)????*?spoo.py?*????(???)? updated: 
+2017-09-20 19:42:10.919640 | Role Ayana updated: 
+2017-09-20 19:42:10.925642 | Role ErisBot updated: 
+2017-09-20 19:42:10.929646 | Role ? Bot Commander updated: 
+2017-09-20 19:42:10.933648 | Role ? Tatsumaki updated: 
+2017-09-20 19:42:10.937659 | Role ?? Memeist updated: 
+2017-09-20 19:42:10.960168 | Role ?Loyalist updated: 
+2017-09-20 19:42:10.966671 | Role ??Votarist updated: 
+2017-09-20 19:42:10.972675 | Role ? Invitationist updated: 
+2017-09-20 19:42:10.978180 | Role BOT PERMS updated: 
+2017-09-20 19:42:10.983183 | Role ? Daikazoku updated: 
+2017-09-20 19:42:10.986685 | Role ? Da?k updated: 
+2017-09-20 19:42:10.992189 | Role ? MUTED updated: 
+2017-09-20 19:42:10.998695 | Role Stella updated: 
+2017-09-20 19:42:11.001696 | Role ? Golden Meme Award updated: 
+2017-09-20 19:42:11.009205 | Role ? Red Memetopus updated: 
+2017-09-20 19:42:11.014705 | Role ? Tsundere updated: 
+2017-09-20 19:42:11.019209 | Role ? Love Birds of the Day updated: 
+2017-09-20 19:42:11.024712 | Role ? Meme Moderators updated: 
+2017-09-20 19:42:11.031218 | Role ? Ass Meister updated: 
+2017-09-20 19:41:55.785000 | lobby | Doge edited: <@143037788969762816> I do not want to get into.NSFW group, why would somone use Discord to share porn anyway
+2017-09-20 19:43:56.944684 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-20 19:48:43.688000 | lobby | Tristan posted a pic, saved as 234
+2017-09-20 19:49:39.921000 | lobby | Tristan posted a pic, saved as 235
+2017-09-20 19:51:46.259000 | lobby | Doge edited: Do I smell roated Chicken
+2017-09-20 19:54:41.248000 | lobby | Churroman posted a pic, saved as 175
+2017-09-20 19:55:56.823000 | lobby | Churroman posted a pic, saved as 176
+2017-09-20 19:56:37.922000 | lobby | Churroman posted a pic, saved as 177
+2017-09-20 20:02:06.008894 | 9CHAT | member Ella updated:  avatar changed
+2017-09-20 20:11:48.472000 | lobby | Tristan posted a pic, saved as 236
+2017-09-20 20:14:22.158000 | lobby | Badmin posted a pic, saved as 27
+2017-09-20 20:14:22.158000 | lobby | Badmin deleted: 
+2017-09-20 20:16:00.168000 | lobby | Churroman posted a pic, saved as 178
+2017-09-20 20:16:43.384000 | lobby | Churroman deleted: Es
+2017-09-20 20:18:02.137000 | lobby | Badmin posted a pic, saved as 28
+2017-09-20 20:19:10.144481 | 9CHAT | member Saynara updated:  avatar changed
+2017-09-21 18:34:45.267000 | lobby | Doge deleted: Why would I
+2017-09-21 18:37:38.732000 | lobby | Doge edited: Uhm keep you conchita covered
+2017-09-21 18:49:38.196000 | lobby | Doge edited: Oh wait does this saying makes sense in English
+2017-09-21 18:49:55.535477 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-21 18:54:03.495000 | lobby | ailurophileCate edited: Countries most singaporeans migrate too
+2017-09-21 19:01:43.677000 | lobby | Zebo ~ ?????????????? posted a pic, saved as 22
+2017-09-21 19:09:05.890000 | lobby | Doge edited: Same Problem in Germany, we got one of ghe lowest birthrates in the world but our country compensates it through immigration, also birth rates go a little up again
+2017-09-21 19:10:06.632000 | lobby | Doge edited: But yeah it is getting better again which is goof
+2017-09-21 19:10:57.242000 | lobby | Doge deleted: Exactly
+2017-09-21 19:12:31.891745 | 9CHAT | member goddessmith updated:  name from: goddessmith to: goddessmith ?
+2017-09-21 19:14:54.490000 | lobby | Doge posted a pic, saved as 43
+2017-09-21 19:18:04.581000 | lobby | Doge edited: To stage twp
+2017-09-21 19:19:38.471000 | lobby | Doge posted a pic, saved as 44
+2017-09-21 19:19:51.043000 | lobby | Doge edited: Just took that one 30 Minutes ago
+2017-09-21 19:19:38.471000 | lobby | Doge deleted: 
+2017-09-21 19:21:23.900000 | lobby | Doge posted a pic, saved as 45
+2017-09-21 19:21:42.106000 | lobby | ailurophileCate posted a pic, saved as 128
+2017-09-21 19:21:32.741000 | lobby | Doge edited: That was in Trinity College
+2017-09-21 19:21:23.900000 | lobby | Doge deleted: 
+2017-09-21 19:21:32.741000 | lobby | Doge deleted: That was in Trinity College <@224620110277509120>
+2017-09-21 19:23:19.342063 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-21 19:25:49.835000 | lobby | Doge edited: @menme ? Actually Japan consist out of Prefectures and not States
+2017-09-21 19:34:12.469000 | lobby | ailurophileCate posted a pic, saved as 129
+2017-09-21 19:34:28.835000 | lobby | ailurophileCate posted a pic, saved as 130
+2017-09-21 19:34:12.469000 | lobby | ailurophileCate deleted: 
+2017-09-21 19:34:48.080000 | lobby | Doge edited: phew why need to be westernised to eat cerea?
+2017-09-21 19:44:43.827000 | lobby | ailurophileCate posted a pic, saved as 131
+2017-09-21 19:46:10.832000 | lobby | ailurophileCate posted a pic, saved as 132
+2017-09-21 19:50:07.946000 | lobby | menme ? deleted: :disloyalguy: your dakis <:disloyal1:360510829717618688> irl girls
+2017-09-21 20:01:42.871000 | lobby | ailurophileCate deleted: YAMATEH
+2017-09-21 20:01:41.535000 | lobby | ailurophileCate deleted: ALFRED
+2017-09-21 20:01:46.326000 | lobby | ailurophileCate deleted: unnnnngh
+2017-09-21 20:01:52.127000 | lobby | ailurophileCate deleted: white juice explodes
+2017-09-21 20:30:47.500000 | lobby | ailurophileCate posted a pic, saved as 133
+2017-09-21 21:31:27.908148 | 9CHAT | member Badmin updated:  avatar changed
+2017-09-21 21:47:04.360891 | 9CHAT | member - ??  ??????   ??- updated:  name from: - ??  ??????   ??- to: -??????-
+2017-09-21 21:47:16.801144 | 9CHAT | member Tech Support updated:  name from: Tech Support to: Gembah avatar changed
+2017-09-21 21:50:38.476052 | 9CHAT | member Gembah updated:  name from: Gembah to: *not pink ;-;* avatar changed
+2017-09-21 21:55:45.672258 | 9CHAT | member Goaty~ updated:  avatar changed
+2017-09-21 22:00:47.286301 | 9CHAT | member Onii-chan updated:  -role: ? Love Birds of the Day
+2017-09-21 22:00:49.589332 | 9CHAT | member Zebo ~ ?????????????? updated:  -role: ? Love Birds of the Day
+2017-09-21 22:41:36.213591 | 9CHAT | member jinkz. updated:  avatar changed
+2017-09-21 22:44:26.440991 | 9CHAT | member Secks updated:  avatar changed
+2017-09-22 08:14:23.770760 | 9CHAT | member *not pink ;-;* updated:  name from: *not pink ;-;* to: Gembah (pink) avatar changed
+2017-09-22 08:42:00.762194 | 9CHAT | member Astrodoge updated:  name from: Astrodoge to: PolyBoy
+2017-09-22 08:42:25.580002 | 9CHAT | member PolyBoy updated:  name from: PolyBoy to: Astrodoge
+2017-09-22 11:37:27.638236 | 9CHAT | member jinkz. updated:  avatar changed
+2017-09-22 12:02:06.427000 | lobby | NYA-CHAN deleted: >echo <insert shittalk here>
+2017-09-22 12:20:28.460392 | 9CHAT | member jinkz. updated:  name from: jinkz. to: jinkz. [downtown]
+2017-09-22 12:39:12.024000 | lobby | Sketchy.arc deleted: I like watching you sleep
+2017-09-22 12:39:43.328000 | lobby | ailurophileCate edited: Well that's understandablwe
+2017-09-22 12:48:58.655000 | lobby | dx ?? edited: sp?ttifei
+2017-09-22 13:05:11.069000 | lobby | dx ?? edited: the red army stancds
+2017-09-22 13:06:38.483000 | lobby | dx ?? edited: @menme https://www.youtube.com/watch?v=qxQ6E1v2Rq4
+2017-09-22 13:12:01.538000 | lobby | dx ?? edited: their 11 albums
+2017-09-22 13:13:33.807000 | lobby | dx ?? edited: you behave like an indina and this is your street
+2017-09-22 13:18:34.597000 | lobby | dx ?? edited: https://www.youtube.com/watch?v=JPm46Qgyn24
+2017-09-22 13:41:06.467000 | lobby | Joris deleted: ~~sabaton is trash~~
+2017-09-22 13:46:41.804000 | lobby | Tristan posted a pic, saved as 237
+2017-09-22 13:46:45.047000 | lobby | dx ?? posted a pic, saved as 0
+2017-09-22 13:46:45.670000 | lobby | Tristan posted a pic, saved as 238
+2017-09-22 13:49:36.435869 | 9CHAT | member Bonfire updated:  +role: ? MUTED
+2017-09-22 13:49:36.884074 | 9CHAT | member Bonfire updated:  -role: ? MUTED
+2017-09-22 13:50:04.770000 | lobby | NYA-CHAN deleted: >kill @PastorofthechurchofthestunneDhen
+2017-09-22 13:50:14.066000 | lobby | PastorofthechurchofthestunneDhen deleted: >hug <@143037788969762816>
+2017-09-22 13:51:00.208000 | memes | PastorofthechurchofthestunneDhen posted a pic, saved as 0
+2017-09-22 13:53:37.349000 | lobby | Tristan edited: <:distracted:360512487336050688> <:upset:360510829717618688> social contact
+             
+                internet
+2017-09-22 13:55:03.958000 | lobby | Joris edited: Creamalicous
+2017-09-22 14:20:33.849000 | lobby | Joris edited: ?
+2017-09-22 14:23:15.779000 | lobby | Churroman posted a pic, saved as 179
+2017-09-22 15:19:06.165596 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-22 15:53:35.282000 | memes | Dark Sakura posted a pic, saved as 3
+2017-09-22 16:18:34.891520 | 9CHAT | member butter updated:  avatar changed
+2017-09-22 16:50:42.422111 | 9CHAT | member Verd. (???) updated:  avatar changed
+2017-09-22 17:07:50.872718 | 9CHAT | Member Stoffie ^_^ just left
+2017-09-22 18:14:56.637324 | 9CHAT | member jinkz. [downtown] updated:  name from: jinkz. [downtown] to: jinkz.
+2017-09-22 19:06:02.566000 | memes | Zebo ~ ?????????????? posted a pic, saved as 23
+2017-09-22 20:07:23.441210 | 9CHAT | member hug me daddy updated:  name from: hug me daddy to: ?? avatar changed
+2017-09-22 20:18:46.796650 | 9CHAT | member ?? updated:  name from: ?? to: ??~ avatar changed
+2017-09-22 20:35:30.805000 | lobby | ailurophileCate posted a pic, saved as 134
+2017-09-22 20:39:30.162000 | lobby | Doge deleted: No you chinese ching chang chong eat dog @ailurophileCate
+2017-09-22 20:40:26.924000 | lobby | ailurophileCate edited: actually contemplated once of thinking my eat
+2017-09-22 20:43:21.883000 | lobby | Kappa deleted: Or yo mama
+2017-09-22 20:43:21.394000 | lobby | Dark Sakura edited: well does it have good developed charaters with good story development etc?
+2017-09-22 20:44:03.612000 | lobby | ailurophileCate edited: It's mostly focused on the individual devlopment of each kid
+2017-09-22 20:50:39.502000 | lobby | ailurophileCate posted a pic, saved as 135
+2017-09-22 21:01:10.094000 | lobby | ailurophileCate edited: https://www.youtube.com/watch?v=s5DKOMpYm3o
+2017-09-22 21:03:47.718000 | lobby | ailurophileCate posted a pic, saved as 136
+2017-09-22 21:06:11.620346 | 9CHAT | member Goaty~ updated:  avatar changed
+2017-09-22 21:06:28.521000 | lobby | Dark Sakura edited: it's not gay as long as you find the feminine attractive
+2017-09-22 21:09:56.756000 | lobby | ailurophileCate posted a pic, saved as 137
+2017-09-22 21:10:09.733000 | lobby | ailurophileCate posted a pic, saved as 138
+2017-09-22 21:10:48.206000 | lobby | Dark Sakura posted a pic, saved as 4
+2017-09-22 21:10:48.206000 | lobby | Dark Sakura deleted: not the best but the first i found
+2017-09-22 21:11:22.827000 | lobby | ailurophileCate edited: http://i.imgur.com/ySUwCyl.gif
+2017-09-22 21:11:33.704000 | lobby | Dark Sakura posted a pic, saved as 5
+2017-09-22 21:11:33.704000 | lobby | Dark Sakura deleted: <:smug:358565714795298827>
+2017-09-22 21:12:35.873000 | lobby | ailurophileCate posted a pic, saved as 139
+2017-09-22 21:12:50.004000 | lobby | Dark Sakura deleted: but i have a whole collection that i need to share here
+2017-09-22 21:13:17.231000 | lobby | ailurophileCate posted a pic, saved as 140
+2017-09-22 21:14:09.208000 | lobby | ailurophileCate edited: you inbredf
+2017-09-22 21:15:52.489000 | lobby | Dark Sakura deleted: ~~real life futas~~
+2017-09-22 21:16:13.520000 | lobby | ailurophileCate edited: dedication in making $$$
+2017-09-22 21:21:44.406000 | botspam | Kappa deleted: <:wAiTwHaT:290477388670959617>
+2017-09-22 21:21:52.407000 | lobby | Dark Sakura deleted: like this server will survive till then
+2017-09-22 21:22:43.859000 | botspam | Kappa deleted: <:hyperthink:358575851475959808>
+2017-09-22 21:22:56.090000 | botspam | Kappa deleted: <:monkaS:357261724203876352>
+2017-09-22 21:31:24.125000 | lobby | Dark Sakura edited: now im curious <:smug:358565714795298827>
+2017-09-22 21:34:32.923000 | lobby | Dark Sakura deleted: a dick pic?
+2017-09-22 21:34:27.420000 | lobby | Dark Sakura deleted: so...
+2017-09-22 21:38:44.789000 | lobby | Raziel posted a pic, saved as 21
+2017-09-22 21:40:27.872000 | lobby | Dark Sakura deleted: @ailurophileCate
+2017-09-22 21:50:00.687000 | botspam | Kappa deleted: <:feelshyperrage:358574597542772737>
+2017-09-22 21:50:12.759000 | botspam | Kappa deleted: <:haHAA:313724207278194688>
+2017-09-22 21:50:22.265000 | botspam | Kappa deleted: <:gunpepe:290482488005099520>
+2017-09-22 21:59:04.032000 | botspam | Kappa deleted: <:pepey:357233008509583360>
+2017-09-22 22:19:18.913000 | lobby | Raziel posted a pic, saved as 22
+2017-09-22 22:19:18.913000 | lobby | Raziel deleted: Dis guy, he's basicly a fucking meme in our team he has so many nicknames and so many ugly pics
+2017-09-25 18:19:23.921000 | lobby | NYA-CHAN deleted: `weeb
+2017-09-25 18:21:29.153000 | lobby | Zebo ~ ?????????????? deleted: like for real most of the times I'm joking and saying random shit but the fact that I'm wasting so much time instead of (realises that he's doing exactly what he's complaining about) fucking doing something that I truly want is slowly eating at me
+2017-09-25 18:52:57.646031 | 9CHAT | member NYA-CHAN updated:  avatar changed
+2017-09-25 19:15:11.659000 | lobby | Tristan posted a pic, saved as 239
+2017-09-25 20:02:05.728000 | lobby | Tristan posted a pic, saved as 240
+2017-09-25 20:04:38.646000 | lobby | NYA-CHAN deleted: *I do*
+2017-09-25 20:05:14.978000 | lobby | Doge edited: *Every Answer except Netherlands will help remembering!
+2017-09-25 20:07:24.697000 | lobby | SirLiam deleted: AFD 13.5 EZ
+2017-09-25 20:08:52.714000 | lobby | Doge edited: Ich bin aus Baden-W?rttemberg ._-
+2017-09-25 20:09:51.771000 | lobby | SirLiam deleted: schei? hinterw?ldler
+2017-09-25 20:09:54.306000 | lobby | SirLiam deleted: spa?
+2017-09-25 20:11:14.054000 | lobby | Raziel deleted: <#239393472069500928>
+2017-09-25 20:15:41.465000 | lobby | SirLiam edited: searching for friends
+2017-09-25 20:17:14.832000 | lobby | SirLiam edited: was just curious cus you wrote that ... several times
+2017-09-25 20:17:46.505000 | lobby | SirLiam edited: that ...
+2017-09-25 20:19:37.536000 | lobby | Doge deleted: ^
+2017-09-25 20:19:40.977000 | lobby | Doge deleted: Bye
+2017-09-25 20:20:01.076000 | lobby | Doge deleted: @nya
+2017-09-25 20:20:09.722000 | lobby | Doge deleted: <@143037788969762816>
+2017-09-25 20:20:29.969000 | lobby | Doge deleted: <@143037788969762816>
+2017-09-25 20:20:51.888000 | lobby | Doge deleted: Jk
+2017-09-25 20:21:23.074987 | 9CHAT | member Congrole updated:  avatar changed
+2017-09-25 20:24:47.830000 | lobby | Doge edited: Isn't it more a medical thing thp
+2017-09-25 20:32:22.599000 | lobby | NYA-CHAN deleted: So I should do lolis?
+2017-09-25 20:39:25.261000 | lobby | Raziel edited: Feelsrazma
+2017-09-25 21:05:20.149000 | lobby | Doge edited: Never read youtube comments on american news reports on german politics ? my brain hurts
+2017-09-25 21:23:40.195000 | lobby | Doge edited: Dank dem Tag dee Deutschein Einheit und einem Br?ckentag
+2017-09-25 21:26:22.882000 | lobby | dx ?? edited: aber nur den montag freu
+2017-09-25 21:26:44.256000 | lobby | dx ?? edited: jo ich werds geniesen
+2017-09-25 21:28:21.602000 | lobby | dx ?? edited: Ich hab meine Tastatur extra umgestelt <:IrisStare:356552400020045826>
+2017-09-25 21:28:36.562000 | lobby | Doge deleted: Wow
+2017-09-25 21:28:53.767000 | lobby | Doge deleted: Nur so?
+2017-09-26 11:11:07.231867 | 9CHAT | member FancyCookies updated:  name from: FancyCookies to: YummyCookies
+2017-09-26 11:16:56.419678 | 9CHAT | member YummyCookies updated:  name from: YummyCookies to: FancyCookies
+2017-09-26 11:23:36.198000 | lobby | Doge edited: Ubd ihr redet dort ?ber Hunde und Katzen?
+2017-09-26 11:27:32.338000 | lobby | Doge edited: What did you not understood about it
+2017-09-26 11:53:33.005000 | lobby | Doge edited: German grades is 1 (best) to 6 (worst) what I'm talking about is the average grade of my Abitur
+2017-09-26 11:58:00.236000 | lobby | Doge edited: There are ways to get accepted with a little lower grades too but that is very time consuming
+2017-09-26 12:32:03.520084 | 9CHAT | member Skureem updated:  name from: Skureem to: Ocean Man
+2017-09-26 12:33:33.835158 | 9CHAT | member Linox updated:  avatar changed
+2017-09-26 14:13:41.026916 | 9CHAT | member Daishax updated:  avatar changed
+2017-09-26 14:34:46.429000 | lobby | Doge deleted: @ailurophileCate Dixon will kill himself if I understood his swiss gibberish
+2017-09-26 14:35:23.749000 | lobby | Doge deleted: <:ResidentSleeper:313723900741812224>
+2017-09-26 14:40:13.562000 | lobby | Doge deleted: <@143037788969762816>
+2017-09-26 14:42:20.687000 | lobby | Doge deleted: <:pat:290789859663282176>
+2017-09-26 15:09:18.850198 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2017-09-26 15:13:34.477608 | 9CHAT | member ailurophileCate updated:  avatar changed
+2017-09-26 15:27:45.019881 | 9CHAT | member Verd. (???) updated:  avatar changed
+2017-09-26 15:44:08.242640 | 9CHAT | member just potato updated:  avatar changed
+2017-09-26 16:00:08.794160 | 9CHAT | member 3?? updated:  avatar changed
+2017-09-26 16:35:50.351492 | 9CHAT | member Tristan updated:  avatar changed
+2017-09-26 16:36:34.614978 | 9CHAT | member Tristan updated:  avatar changed
+2017-09-26 17:46:04.257113 | 9CHAT | member FancyCookies updated:  name from: FancyCookies to: YummyCookies
+2017-09-26 17:49:11.815316 | 9CHAT | member YummyCookies updated:  name from: YummyCookies to: FancyCookies
+2017-09-26 21:23:06.240560 | 9CHAT | member Darkstorm updated:  avatar changed
+2017-09-26 21:28:54.455908 | 9CHAT | member Darkstorm updated:  avatar changed
+2017-09-27 13:13:52.603000 | lobby | NYA-CHAN deleted: >hug @PastorofthechurchofthestunneDhen
+2017-09-27 16:00:59.357000 | memes | Doge deleted: <:cate:290483030227812353>
+2017-09-27 15:40:34.134000 | lobby | Doge deleted: Eto
+2017-09-27 17:27:40.209000 | art_n_pics | TheRockyDoo edited: Anyone, anythong?
+2017-09-27 17:31:46.516000 | art_n_pics | TheRockyDoo edited: Wow, hanks
+2017-09-27 17:36:05.615518 | 9CHAT | member jinkz. updated:  avatar changed
+2017-09-27 17:58:34.512762 | 9CHAT | member Satan updated:  name from: Satan to: Effffffffffffffff
+2017-09-27 18:38:00.811000 | lobby | Zebo ~ ?????????????? edited: I mean there area mangas not suitable for begginer
+2017-09-27 19:02:02.747176 | 9CHAT | member Spirit8008 updated:  avatar changed
+2017-09-27 19:37:34.308000 | lobby | ailurophileCate edited: ? ? ?
+2017-09-27 19:39:39.129000 | lobby | ailurophileCate posted a pic, saved as 141
+2017-09-27 19:54:11.945544 | 9CHAT | member ?almy updated:  avatar changed
+2017-09-27 19:53:10.971000 | lobby | Churroman edited: The more you fill you have in your skills the better
+2017-09-27 19:58:10.591000 | lobby | Doge edited: To get effienct resulta
+2017-09-27 20:03:18.786000 | lobby | ailurophileCate edited: x10 the profits ack
+2017-09-27 20:18:52.842294 | 9CHAT | member jinkz. updated:  name from: jinkz. to: papa jehn
+2017-09-27 20:20:10.940000 | lobby | NYA-CHAN deleted: >emoji pat
+2017-09-27 21:47:13.340274 | 9CHAT | member Churroman updated:  avatar changed
+2017-09-27 22:15:50.421720 | 9CHAT | member Syrpent updated:  name from: Syrpent to: f????????????????????-Syrpent
+2017-09-27 22:31:39.919068 | 9CHAT | member Some Creepy Dude updated:  avatar changed

@@ -73,3 +73,13 @@
 2017-07-22 23:20:57.852549 | Halal server | member NYA-CHAN updated:  avatar changed
 2017-09-15 21:50:48.601924 | Halal server | member ailurophileCate updated:  avatar changed
 2017-09-15 21:56:36.061217 | Halal server | member ailurophileCate updated:  avatar changed
+2017-09-19 12:53:30.885535 | Halal server | member Cera updated:  avatar changed
+2017-09-19 18:03:14.601062 | Halal server | member ( ?? ?? ??)???.*???? ? ? ? ? ? ? updated:  name from: ( ?? ?? ??)???.*???? ? ? ? ? ? ? to: bluered3
+2017-09-19 19:55:01.110930 | Halal server | member bluered3 updated:  avatar changed
+2017-09-19 21:48:29.104970 | Halal server | member dx ?? updated:  avatar changed
+2017-09-19 21:54:29.743442 | Halal server | member dx ?? updated:  avatar changed
+2017-09-19 22:11:34.158422 | Halal server | member dx ?? updated:  avatar changed
+2017-09-20 18:49:31.845932 | Halal server | member dx ?? updated:  avatar changed
+2017-09-22 16:18:34.907082 | Halal server | member butter updated:  avatar changed
+2017-09-25 18:52:57.747177 | Halal server | member NYA-CHAN updated:  avatar changed
+2017-09-26 15:13:34.479611 | Halal server | member ailurophileCate updated:  avatar changed
