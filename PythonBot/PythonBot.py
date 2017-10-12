@@ -5,8 +5,8 @@ import constants, customHelpFormatter, datetime, log, logging, message_handler, 
 
 # Basic configs
 pi = 3.14159265358979323846264
-CLEAN_JOIN = False
-CLEAN_LEAVE = False
+REMOVE_JOIN_MESSAGE = False
+REMOVE_LEAVE_MESSAGE = False
 
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.txt"
@@ -54,12 +54,7 @@ bot.add_cog(bot.rpggameinstance)
 import comm.mod_commands
 bot.add_cog(comm.mod_commands.Mod(bot))
 
-# Logging
-#@bot.event
-#async def on_error(event, *args, **kwargs):
-#    await log.error(event, args)
-
-# Handle incoming messages
+# Handle incoming events
 @bot.event
 async def on_message(message):
     if (message.author.bot):
@@ -88,7 +83,7 @@ async def on_member_join(member):
         embed = discord.Embed(colour=0xFF0000)
         embed.add_field(name="User joined!", value=bot.welcome[member.server.id].format(member.mention))
         m = await bot.send_message(member.server.default_channel, embed=embed)
-        if CLEAN_JOIN:
+        if REMOVE_JOIN_MESSAGE:
             await asyncio.sleep(30)
             try:
                 await bot.delete_message(m)
@@ -101,7 +96,7 @@ async def on_member_remove(member):
         embed = discord.Embed(colour=0xFF0000)
         embed.add_field(name="User left!", value=bot.goodbye[member.server.id].format(member.mention))
         m = await bot.send_message(member.server.default_channel, embed=embed)
-        if CLEAN_LEAVE:
+        if REMOVE_LEAVE_MESSAGE:
             await asyncio.sleep(30)
             try:
                 await bot.delete_message(m)

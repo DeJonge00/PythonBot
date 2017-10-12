@@ -1206,3 +1206,25 @@ Type 'exit' to leave the menu.
 2017-09-28 09:06:26.809000 | general | NYA-CHAN deleted: >emoji cate
 2017-09-28 09:06:52.516000 | general | NYA-CHAN deleted: >emoji kannaWoah
 2017-09-28 09:07:05.055000 | general | NYA-CHAN deleted: >emoji <:GWowoKannaBear:358701785617268738>
+2017-09-28 15:31:09.187000 | general | NYA-CHAN deleted: >emoji 230340006219087873
+2017-09-28 15:34:42.813000 | general | NYA-CHAN deleted: >emoji baka
+2017-09-28 15:35:59.661000 | general | NYA-CHAN deleted: >emoji 262272070291816449
+2017-09-28 15:37:52.923000 | general | NYA-CHAN deleted: >emoji 359887796879622154
+2017-09-28 15:41:16.773000 | general | NYA-CHAN deleted: >emoji 356735628005736448
+2017-09-28 15:41:25.385000 | general | NYA-CHAN deleted: >emoji 356733404508717057
+2017-09-28 18:27:31.264000 | general | NYA-CHAN deleted: >quit
+2017-09-28 21:01:49.789000 | general | NYA-CHAN deleted: >emoji 357585634925477889
+2017-09-28 21:01:56.364000 | general | NYA-CHAN deleted: >emoji 356735880947302406
+2017-09-28 21:03:33.635000 | general | NYA-CHAN deleted: >emoji 299636293481267200
+2017-09-28 21:05:19.386000 | general | NYA-CHAN deleted: >emoji 356902302524637206
+2017-09-28 21:05:30.118000 | general | NYA-CHAN deleted: >emoji 356902302747197440
+2017-09-28 21:05:36.826000 | general | NYA-CHAN deleted: >emoji 356902302369710082
+2017-09-28 21:12:18.948000 | general | NYA-CHAN deleted: >emoji 356732242246107138
+2017-09-28 21:12:25.827000 | general | NYA-CHAN deleted: >emoji 356732461511737347
+2017-10-03 09:17:17.563000 | general | NYA-CHAN deleted: >emoji 332831765284651008
+2017-10-03 14:58:40.116000 | general | NYA-CHAN deleted: >getServerList
+2017-10-03 22:42:37.098000 | general | NYA-CHAN deleted: >quit
+2017-10-04 11:43:03.805000 | general | NYA-CHAN deleted: >quit
+2017-10-08 21:26:40.349000 | general | NYA-CHAN deleted: >quit
+2017-10-09 22:04:48.509000 | general | NYA-CHAN deleted: >quit
+2017-10-11 22:11:55.233000 | general | NYA-CHAN deleted: >quit

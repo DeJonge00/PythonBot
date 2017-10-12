@@ -19,16 +19,6 @@ class Basics:
         self.bot.fps = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "60")
 
-   # # {prefix}big <emoji>
-   # @commands.command(pass_context=1, help="Enlarge an emoji")
-   # async def biribiri(self, ctx, *args):
-   #     try:
-   #         await self.bot.delete_message(ctx.message)
-   #     except discord.Forbidden:
-   #         print(ctx.message.server + " | No permission to delete messages")
-   #
-
-
     # {prefix}biribiri
     @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
     async def biribiri(self, ctx, *args):
@@ -208,9 +198,9 @@ class Basics:
     async def role(self, ctx, *args):
         await self.deleteMessage(ctx);
         if len(args)<=0:
-            return await self.bot.say("Usage: >role <role> <user>")
+            return await self.bot.say("Usage: >role <rolename without spaces> [{user}]")
         else:
-            rolename = args[0]
+            rolename = args[0].toLower()
         authorhasperms = (ctx.message.channel.permissions_for(ctx.message.author).manage_roles)
         if len(ctx.message.mentions)<=0:
             user = ctx.message.author
@@ -218,11 +208,12 @@ class Basics:
             if not authorhasperms:
                 return await self.bot.send_message(ctx.message.channel, "You do not have the permissions to give other people roles")
             user = ctx.message.mentions[0]
-        if (authorhasperms) | ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['nsfw', '1st Anniversary'])):
+        if (authorhasperms) | ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['nsfw', 'muted'])):
             role = None
             for r in ctx.message.server.roles:
-                if r.name == rolename:
+                if r.name.toLower().replace(' ','') == rolename:
                     role = r
+                    break
             if role != None:
                 try:
                     if role in ctx.message.author.roles:

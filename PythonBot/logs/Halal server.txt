@@ -83,3 +83,8 @@
 2017-09-22 16:18:34.907082 | Halal server | member butter updated:  avatar changed
 2017-09-25 18:52:57.747177 | Halal server | member NYA-CHAN updated:  avatar changed
 2017-09-26 15:13:34.479611 | Halal server | member ailurophileCate updated:  avatar changed
+2017-10-03 15:59:48.062400 | Halal server | member [Doge] updated:  name from: [Doge] to: .d
+2017-10-03 17:37:57.427709 | Halal server | member Jovey updated:  avatar changed
+2017-10-03 20:47:17.213787 | Halal server | member .d updated:  name from: .d to: ;d
+2017-10-11 22:05:44.585112 | Halal server | member Kit | Will Gib Massages For Food updated:  name from: Kit | Will Gib Massages For Food to: Kit'
+2017-10-11 22:06:27.725578 | Halal server | member Kit' updated:  avatar changed
