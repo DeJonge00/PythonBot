@@ -241,5 +241,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-*.jpg
-*.png
+*/pics/*
+*/picsC#/*
