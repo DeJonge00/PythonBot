@@ -50,3 +50,11 @@ class RPGPlayer(RPGCharacter):
     async def setAdventure(self, n):
         if (self.adventure <= 0) & (5 < n < 120):
             self.adventure = n
+
+    async def decreaseMoney(self, n):
+        if n<0:
+            return False
+        if money - n < 0:
+            return False
+        self.money -= n
+        return True

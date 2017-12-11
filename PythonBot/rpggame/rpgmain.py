@@ -201,6 +201,7 @@ class RPGgame:
             return print("buy health")
         if args[0] in ["2", "damage", "dam"]:
             return print("buy damage")
+        return print("Item " + args[0] + " not found") 
 
     # {prefix}rpgstats <user>
     @commands.command(pass_context=1, aliases=['rpgstatus'], help="Show the character stats!")

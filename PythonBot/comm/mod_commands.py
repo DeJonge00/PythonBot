@@ -25,6 +25,10 @@ class Mod:
                 l = 10
         else:
             l = 10
+        if len(ctx.message.mentions)>0:
+            def c(message):
+                return message.author in ctx.message.mentions
+            return await self.bot.purge_from(ctx.message.channel, check=c, limit=l)
         await self.bot.purge_from(ctx.message.channel, limit=l)
 
     # {prefix}emojispam <user>

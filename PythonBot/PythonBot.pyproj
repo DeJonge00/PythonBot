@@ -55,6 +55,12 @@
     <Compile Include="rpggame\rpgmain.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rpggame\rpgshop.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rpggame\rpgshopitem.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="send_random.py">
       <SubType>Code</SubType>
     </Compile>
