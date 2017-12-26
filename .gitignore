@@ -246,4 +246,5 @@ ModelManifest.xml
 */constants.py
 */secret/*
 constants.py
+*/__pycache__/*
 *.pyc
