@@ -1263,3 +1263,10 @@ Type 'exit' to leave the menu.
 2017-11-22 11:26:06.488000 | general | Nya deleted: >quit
 2017-12-06 00:34:10.858000 | general | Nya deleted: >quit
 2017-12-06 23:34:19.288000 | general | Nya deleted: >quit
+2017-12-11 11:29:45.334533 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2017-12-11 11:30:13.612689 | RECRUIT WORLD | member Biribiri updated:  +role: Adeptus Mechanicus
+2017-12-11 11:30:19.769181 | RECRUIT WORLD | Member SimpleMagicalBird just left
+2017-12-11 11:30:47.882714 | RECRUIT WORLD | member Biribiri updated:  +role: Loyal Marines
+2017-12-11 11:31:02.876209 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2017-12-11 11:32:29.740349 | RECRUIT WORLD | member Nya updated:  avatar changed
+2017-12-11 11:46:23.636000 | general | Nya deleted: >quit

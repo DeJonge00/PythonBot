@@ -244,3 +244,5 @@ ModelManifest.xml
 */pics/*
 */picsC#/*
 */constants.py
+constants.py
+*.pyc

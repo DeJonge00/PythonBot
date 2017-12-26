@@ -1,4 +1,5 @@
 # general
+bot_token = "Mzg5NzM3NjM1NzY3MTIzOTY4.DSP8mA.KfQuXStNNTjEvGv3kegWtT6j3AY"
 
 
 # User Id's
