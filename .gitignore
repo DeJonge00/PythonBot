@@ -242,7 +242,8 @@ ModelManifest.xml
 .fake/
 
 */pics/*
-*/picsC#/*
+*/picsC\#/*
 */constants.py
+*/secret/*
 constants.py
 *.pyc

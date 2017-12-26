@@ -31,7 +31,7 @@
     <Compile Include="comm\minesweeper.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="constants.py">
+    <Compile Include="secret\constants.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="comm\basic_commands.py">
@@ -84,6 +84,7 @@
     <Folder Include="language\" />
     <Folder Include="memes\" />
     <Folder Include="comm\" />
+    <Folder Include="secret\" />
     <Folder Include="rpggame\" />
     <Folder Include="ytho\" />
     <Folder Include="railgun\" />
