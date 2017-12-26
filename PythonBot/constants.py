@@ -1,5 +1,5 @@
 # general
-bot_token = "Mzg5NzM3NjM1NzY3MTIzOTY4.DSP8mA.KfQuXStNNTjEvGv3kegWtT6j3AY"
+bot_token = "Mzg5NzM3NjM1NzY3MTIzOTY4.DSP-Lg.Fv_nhAcN4aNmV4AJTKdKRHR6NCI"
 
 
 # User Id's
