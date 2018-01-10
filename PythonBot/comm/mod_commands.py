@@ -1,4 +1,4 @@
-import asyncio, discord, constants, log, pickle
+import asyncio, discord, secret.constants as constants, log, pickle
 from discord.ext import commands
 from random import randint
 
@@ -82,7 +82,7 @@ class Mod:
                 try:
                     a = int(args[0])
                 except ValueError:
-                    a = 1
+                    a = 10
                 for i in range(a):
                     await self.bot.send_message(user, "Have a random number: " + str(randint(0,10000)) + " :heart:")
 
@@ -106,6 +106,8 @@ class Mod:
             pickle.dump(self.bot.welcome, fp)
         with open(self.bot.GOODBYEMESSAGEFILE, 'wb') as fp:
             pickle.dump(self.bot.goodbye, fp)
+        with open(self.bot.PATFILE, 'wb') as fp:
+            pickle.dump(self.bot.pat, fp)
         asyncio.sleep(3)
         await self.bot.logout()
         await self.bot.close()
@@ -119,7 +121,6 @@ class Mod:
             if(e.name == emoji):
                 return await self.bot.send_message(ctx.message.channel, url(e))
                 
-
     async def deleteAndCheck(self, ctx):
         try:
             await self.bot.delete_message(ctx.message)

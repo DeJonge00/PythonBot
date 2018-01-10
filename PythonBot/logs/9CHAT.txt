@@ -10995,3 +10995,24 @@ That grown up enough ?
 2017-12-07 21:55:39.968013 | 9CHAT | member Brigu updated:  avatar changed
 2017-12-07 23:16:44.088345 | 9CHAT | member Some Creepy Dude updated:  avatar changed
 2017-12-07 23:32:53.063015 | 9CHAT | member Jinkz. updated:  avatar changed
+2018-01-10 20:34:41.589200 | 9CHAT | member Biribiri updated:  +role: BOT PERMS
+2018-01-10 20:34:59.433040 | 9CHAT | member Biribiri updated:  +role: ? Bot Commander
+2018-01-10 20:35:05.291000 | lobby | Tristan deleted: \o/
+2018-01-10 20:38:41.454000 | lobby | Dani edited: trump#8years
+2018-01-10 20:40:25.169000 | music | Nya deleted: >pat @Dafaq-Man
+2018-01-10 20:40:41.038000 | music | Dafaq-Man deleted: >pat @Nya
+2018-01-10 20:51:37.537000 | music | Nya deleted: >pat @Dafaq-Man
+2018-01-10 20:52:19.110000 | music | Dafaq-Man deleted: >pat @Nya
+2018-01-10 20:52:01.220000 | lobby | ;d edited: @Tristan What do you think about the judge reform in Polan which is the reason for the attempted EU sanctions
+2018-01-10 20:52:31.427000 | music | Dafaq-Man edited: For me its 1 time
+2018-01-10 20:53:06.253000 | lobby | ;d edited: Those reforms are thretening the seperation of powers
+2018-01-10 20:55:30.582000 | lobby | Tristan edited: ?
+2018-01-10 20:59:11.294000 | lobby | Kappa edited: fine wnu
+2018-01-10 21:00:16.818000 | lobby | Dafaq-Man edited: It's only a 710
+2018-01-10 21:03:24.439000 | music | Nya deleted: >pat @Nya
+2018-01-10 21:04:52.393000 | music | Dafaq-Man deleted: >pat @Nya
+2018-01-10 21:06:58.258000 | music | Dafaq-Man deleted: >pat @Nya
+2018-01-10 21:08:55.011000 | music | Nya deleted: >spam 30 @Dafaq-Man
+2018-01-10 21:09:11.023000 | music | Dafaq-Man edited: Yeo
+2018-01-10 21:10:06.857000 | music | Dafaq-Man edited: In C++ we use for(;;) or while(ture)
+2018-01-10 21:10:14.974000 | lobby | Joris edited: how weird is it to not try to offend people

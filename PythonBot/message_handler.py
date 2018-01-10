@@ -1,4 +1,4 @@
-import constants, discord, datetime, log, requests, random, responses, send_random, string, urllib, comm.image_commands, os.path
+import secret.constants as constants, discord, datetime, log, requests, random, responses, send_random, string, urllib, comm.image_commands, os.path
 from discord.ext.commands import Bot
 from PIL import Image
 from io import BytesIO

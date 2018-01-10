@@ -1,7 +1,7 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys
+import secret.constants as constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys
 
 # Basic configs
 pi = 3.14159265358979323846264
@@ -11,6 +11,7 @@ REMOVE_LEAVE_MESSAGE = False
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.txt"
 bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.txt"
+bot.PATFILE = "logs/pats.txt"
 bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
 bot.spongelist = []
@@ -27,6 +28,14 @@ try:
 except:
     print("Loading goodbye messages failed")
     bot.goodbye = {}
+# pats
+try:
+    with open (bot.PATFILE, 'rb') as fp:
+        bot.pat = pickle.load(fp)
+except:
+    print("Loading pats failed")
+    bot.pat = {}
+
 logging.basicConfig()
 
 @bot.event
@@ -69,7 +78,7 @@ async def on_message(message):
     # Commands in the message
     await bot.process_commands(message)
     #Send message to rpggame for exp
-    await bot.rpggameinstance.handle(message)
+    #await bot.rpggameinstance.handle(message)
 @bot.event
 async def on_message_edit(before, after):
     await message_handler.edit(before)

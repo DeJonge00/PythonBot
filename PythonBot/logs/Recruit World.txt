@@ -1270,3 +1270,47 @@ Type 'exit' to leave the menu.
 2017-12-11 11:31:02.876209 | RECRUIT WORLD | Member SimpleMagicalBird just joined
 2017-12-11 11:32:29.740349 | RECRUIT WORLD | member Nya updated:  avatar changed
 2017-12-11 11:46:23.636000 | general | Nya deleted: >quit
+2018-01-09 22:55:52.696000 | general | Nya edited: ?
+2018-01-09 22:56:17.590681 | RECRUIT WORLD | member Nya updated:  avatar changed
+2018-01-10 20:38:19.432644 | RECRUIT WORLD | member Biribiri updated:  +role: Adeptus Mechanicus
+2018-01-10 20:38:23.678000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:39:32.745000 | general | Nya deleted: >quit
+2018-01-10 20:39:55.800000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:47:57.823000 | general | Nya deleted: >quit
+2018-01-10 20:48:29.318000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:49:10.117000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:50:01.505000 | general | Nya deleted: >quit
+2018-01-10 20:51:15.846000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:51:21.468000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:51:25.858000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:53:36.283000 | general | Nya deleted: >quit
+2018-01-10 20:54:14.106000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:55:51.845000 | general | Nya deleted: >quit
+2018-01-10 20:59:01.904000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:06.301000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:10.244000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:33.697000 | general | Nya deleted: >quit
+2018-01-10 20:59:45.574000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:48.968000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:52.349000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 20:59:56.921000 | general | Nya deleted: >pat @Nya
+2018-01-10 21:00:02.990000 | general | Nya deleted: >quit
+2018-01-10 21:00:13.575000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:02:02.091000 | general | Nya deleted: >pat @spoo.py(????)
+2018-01-10 21:02:06.909000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:02:13.162000 | general | Nya deleted: >quit
+2018-01-10 21:05:58.255000 | general | Nya deleted: >quit
+2018-01-10 21:06:11.580000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:06:17.452000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:06:22.766000 | general | Nya deleted: >quit
+2018-01-10 21:06:34.331000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:16:30.073000 | general | Nya deleted: >quit
+2018-01-10 21:16:44.898000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:17:07.598000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:18:08.909000 | general | Nya deleted: >quit
+2018-01-10 21:18:21.162000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:18:28.154000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:18:34.119000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:19:29.460000 | general | Nya deleted: >quit
+2018-01-10 21:19:39.378000 | general | Nya deleted: >pat @Biribiri
+2018-01-10 21:19:43.958000 | general | Nya deleted: >pat @Biribiri

@@ -1,7 +1,9 @@
-import asyncio, datetime, constants, discord, log, random, re, responses, send_random, wikipedia
+import asyncio, datetime, secret.constants as constants, discord, log, random, re, responses, send_random, wikipedia
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
+
+
 
 # Normal commands
 class Basics:
@@ -192,6 +194,30 @@ class Basics:
         mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.choice(lotterylist).name + " is the lucky winner!"
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
+
+    # {prefix}pat <name>
+    @commands.command(pass_context=1, help="PAT ALL THE THINGS")
+    async def pat(self, ctx, *args):
+        await self.deleteMessage(ctx);
+        if len(ctx.message.mentions) <= 0:
+            return await self.bot.say("You cant pat air lmao")
+        if ctx.message.mentions[0].id == ctx.message.author.id:
+            return await self.bot.say("One does not simply pat ones own head")
+        try:
+            d = self.bot.pat[ctx.message.author.id]
+        except KeyError:
+            d = {}
+            self.bot.pat[ctx.message.author.id] = d
+        time = datetime.datetime.utcnow()
+        try:
+            [n,t] = d[ctx.message.mentions[0].id]
+            if (time-t).total_seconds() < 60:
+                return await self.bot.say("Not so fast, b-b-baka!") 
+            d[ctx.message.mentions[0].id] = (n+1, time)
+        except KeyError:
+            d[ctx.message.mentions[0].id] = (1, time)
+            
+        return await self.bot.say(ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(d[ctx.message.mentions[0].id][0]) + " times now");
 
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
