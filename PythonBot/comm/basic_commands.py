@@ -1,4 +1,4 @@
-import asyncio, datetime, secret.constants as constants, discord, log, random, re, responses, send_random, wikipedia
+import asyncio, datetime, secret.constants as constants, discord, log, random, re, responses, removeMessage, send_random, wikipedia, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
@@ -12,9 +12,9 @@ class Basics:
         self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
 
     # {prefix}60
-    @commands.command(pass_context=1, help="\n\tHelp get cancer out of this world!", aliases=["60"])
+    @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
     async def fps(self, ctx, *args):
-        await self.deleteMessage(ctx, istyping=false)
+        await removeMessage.deleteMessage(self.bot, ctx)
         if (datetime.datetime.utcnow() - self.bot.fps).seconds < (2*60):
             return
         await self.bot.send_typing(ctx.message.channel)
@@ -24,7 +24,7 @@ class Basics:
     # {prefix}biribiri
     @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
     async def biribiri(self, ctx, *args):
-        await self.deleteMessage(ctx, istyping=false);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if (datetime.datetime.utcnow() - self.bot.biri).seconds < (2*60):
             return
         await self.bot.send_typing(ctx.message.channel)
@@ -34,7 +34,7 @@ class Basics:
     # {prefix}cast <user>
     @commands.command(pass_context=1, help="Cast a spell!")
     async def cast(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
         return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + responses.spell[randint(0, len(responses.spell)-1)] + "** on " + " ".join(args) + ".\n" +  responses.spellresult[randint(0, len(responses.spellresult)-1)])
@@ -42,27 +42,27 @@ class Basics:
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
     async def cat(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         self.bot.cat = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
     
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         return await send_random.string(self.bot, ctx.message.channel, responses.compliments, [" ".join(args)])
     
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
     async def cuddle(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         self.bot.cuddle = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cuddle")
 
     # {prefix}ded
     @commands.command(pass_context=1, help="Ded chat reminder!")
     async def ded(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         await send_random.file(self.bot, ctx.message.channel, "ded")
 
     # {prefix}delete
@@ -83,7 +83,7 @@ class Basics:
     # {prefix}echo <words>
     @commands.command(pass_context=1, help="I'll be a parrot!")
     async def echo(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if ctx.message.content == "":
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
         return await self.bot.send_message(ctx.message.channel, " ".join(args))
@@ -91,7 +91,7 @@ class Basics:
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")
     async def emoji(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS");
         embed = discord.Embed(colour=0x000000)
@@ -111,7 +111,7 @@ class Basics:
     # {prefix}emojify <words>
     @commands.command(pass_context=1, help="Use emojis to instead of ascii to spell!")
     async def emojify(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         text = " ".join(args).lower()
         etext = ""
         for c in text:
@@ -131,19 +131,19 @@ class Basics:
     # {prefix}face
     @commands.command(pass_context=1, help="Make a random face!")
     async def face(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         await send_random.string(self.bot, ctx.message.channel, responses.faces)
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
     async def hug(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a hug? Haha, so lonely...")
         await send_random.string(self.bot, ctx.message.channel, responses.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick
-    @commands.command(pass_context=1, help="kick someone for funzies")
+    @commands.command(pass_context=1, help="Kick someone for funzies")
     async def kick(self, ctx, *args):
         if len(ctx.message.mentions) > 0:
             await self.bot.send_typing(ctx.message.channel)
@@ -156,7 +156,7 @@ class Basics:
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death!")
     async def kill(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
         await send_random.string(self.bot, ctx.message.channel, responses.kill, [" ".join(args)])
@@ -164,13 +164,13 @@ class Basics:
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
     async def lenny(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         return await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
     async def lottery(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args)<1:
             desc = "Something something LOTTERY!!"
         else:
@@ -196,33 +196,53 @@ class Basics:
         await self.bot.say(embed=embed)
 
     # {prefix}pat <name>
-    @commands.command(pass_context=1, help="PAT ALL THE THINGS")
+    @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
     async def pat(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             return await self.bot.say("You cant pat air lmao")
         if ctx.message.mentions[0].id == ctx.message.author.id:
             return await self.bot.say("One does not simply pat ones own head")
-        try:
-            d = self.bot.pat[ctx.message.author.id]
-        except KeyError:
-            d = {}
-            self.bot.pat[ctx.message.author.id] = d
         time = datetime.datetime.utcnow()
-        try:
-            [n,t] = d[ctx.message.mentions[0].id]
-            if (time-t).total_seconds() < 60:
-                return await self.bot.say("Not so fast, b-b-baka!") 
-            d[ctx.message.mentions[0].id] = (n+1, time)
-        except KeyError:
-            d[ctx.message.mentions[0].id] = (1, time)
+
+        conn = sqlite3.connect(self.bot.PATSDB)
+        c = conn.cursor()
+        c.execute("SELECT time FROM author WHERE authorID =" + ctx.message.author.id)
+        t = c.fetchone()
+        conn.commit()
+        conn.close()
+
+       # (t, d) = self.bot.pat[ctx.message.author.id]
+        if (t != None):
+            t = datetime.datetime.fromtimestamp(t[0])
+            if ((time-t).total_seconds() < 60):
+                return await self.bot.say("Not so fast, b-b-baka!")
+
+        authorID = ctx.message.author.id
+
+        conn = sqlite3.connect(self.bot.PATSDB)
+        c = conn.cursor()
+        if t == None:
+            c.execute("INSERT INTO author VALUES ('" + authorID + "', '" + str(time.timestamp()) + "')")
+        else:
+            c.execute("UPDATE author SET time="+ str(time.timestamp()) +" WHERE authorID=" + authorID + "")
+        c.execute("SELECT pats FROM pats WHERE authorID =" + authorID + " AND userID=" + ctx.message.mentions[0].id)
+        n = c.fetchone()
+        if n == None:
+            c.execute("INSERT INTO pats VALUES ('" + authorID + "', '" + ctx.message.mentions[0].id + "', '" + str(1) + "')")
+            n=1
+        else:
+            n = n[0]+1
+            c.execute("UPDATE pats SET pats="+ str(n) +" WHERE authorID=" + authorID + " AND userID=" + ctx.message.mentions[0].id)
+        conn.commit()
+        conn.close()
             
-        return await self.bot.say(ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(d[ctx.message.mentions[0].id][0]) + " times now");
+        return await self.bot.say(ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(n) + " times now");
 
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
     async def role(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args)<=0:
             return await self.bot.say("Usage: >role <rolename without spaces> [{user}]")
         else:
@@ -258,7 +278,7 @@ class Basics:
     # {prefix}urban <query>
     @commands.command(pass_context=1, help="Search the totally official wiki!", aliases=["ud", "urbandictionary"])
     async def urban(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         q = " ".join(args)
         if q == "":
             return await self.bot.send_message(ctx.message.channel, "...")
@@ -279,7 +299,7 @@ class Basics:
     # {prefix}userinfo <query>
     @commands.command(pass_context=1, help="Get a user's information!", aliases=["user"])
     async def userinfo(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)<=0:
             user = ctx.message.author
         else:
@@ -316,7 +336,7 @@ class Basics:
     # {prefix}wikipedia <query>
     @commands.command(pass_context=1, help="Search the wiki!", aliases=["wiki"])
     async def wikipedia(self, ctx, *args):
-        await self.deleteMessage(ctx);
+        await removeMessage.deleteMessage(self.bot, ctx)
         q = " ".join(args)
         if q == "":
             return await self.bot.send_message(ctx.message.channel, "...")
@@ -328,11 +348,3 @@ class Basics:
         except Exception as e:
             embed.add_field(name="Query: " + q, value="There are too much answers to give you the correct one...")
             return await self.bot.send_message(ctx.message.channel, embed=embed)
-
-    async def deleteMessage(self, ctx, istyping=True):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server + " | No permission to delete messages")
-        if istyping:
-            await self.bot.send_typing(ctx.message.channel);

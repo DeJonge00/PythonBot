@@ -1,7 +1,7 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import secret.constants as constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys
+import secret.constants as constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys, sqlite3
 
 # Basic configs
 pi = 3.14159265358979323846264
@@ -9,32 +9,14 @@ REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
 bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
-bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.txt"
-bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.txt"
-bot.PATFILE = "logs/pats.txt"
+bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
+bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
+bot.PATSDB = "logs/pats.db"
 bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
 bot.spongelist = []
-
-try:
-    with open (bot.WELCOMEMESSAGEFILE, 'rb') as fp:
-        bot.welcome = pickle.load(fp)
-except:
-    print("Loading welcome messages failed")
-    bot.welcome = {}
-try:
-    with open (bot.GOODBYEMESSAGEFILE, 'rb') as fp:
-        bot.goodbye = pickle.load(fp)
-except:
-    print("Loading goodbye messages failed")
-    bot.goodbye = {}
-# pats
-try:
-    with open (bot.PATFILE, 'rb') as fp:
-        bot.pat = pickle.load(fp)
-except:
-    print("Loading pats failed")
-    bot.pat = {}
+bot.MUSIC = True
+bot.RPGGAME = False
 
 logging.basicConfig()
 
@@ -57,28 +39,37 @@ import comm.hangman
 bot.add_cog(comm.hangman.Hangman(bot))
 import comm.image_commands
 bot.add_cog(comm.image_commands.Images(bot))
-import rpggame.rpgmain
-bot.rpggameinstance = rpggame.rpgmain.RPGgame(bot)
-bot.add_cog(bot.rpggameinstance)
+if bot.MUSIC:
+    import musicPlayer
+    bot.musicplayer = musicPlayer.MusicPlayer(bot)
+    bot.add_cog(bot.musicplayer)
+if bot.RPGGAME:
+    import rpggame.rpgmain
+    bot.rpggameinstance = rpggame.rpgmain.RPGgame(bot)
+    bot.add_cog(bot.rpggameinstance)
 import comm.mod_commands
 bot.add_cog(comm.mod_commands.Mod(bot))
 
 # Handle incoming events
 @bot.event
 async def on_message(message):
-    if (message.author.bot):
-        return
-    if not (message.channel.is_private):
-        if message.content:
-            await message_handler.new(bot, message)
-    else:
-        print(message.author.name + " | said in dm's: " + message.content)
-    if len(message.attachments) > 0:
-        await message_handler.new_pic(bot, message)
-    # Commands in the message
-    await bot.process_commands(message)
-    #Send message to rpggame for exp
-    #await bot.rpggameinstance.handle(message)
+    try:
+        if (message.author.bot):
+            return
+        if not (message.channel.is_private):
+            if message.content:
+                await message_handler.new(bot, message)
+        else:
+            print(message.author.name + " | said in dm's: " + message.content)
+        if len(message.attachments) > 0:
+            await message_handler.new_pic(bot, message)
+        # Commands in the message
+        await bot.process_commands(message)
+        # Send message to rpggame for exp
+        if bot.RPGGAME:
+            await bot.rpggameinstance.handle(message)
+    except discord.ext.commands.errors.CommandInvokeError:
+        bot.say("Muh permissions though :cry:")
 @bot.event
 async def on_message_edit(before, after):
     await message_handler.edit(before)
@@ -88,29 +79,45 @@ async def on_message_delete(message):
 @bot.event
 async def on_member_join(member):
     await log.error(member.server.name + " | Member " + member.name + " just joined", filename=member.server.name)
-    if member.server.id in bot.welcome:
-        embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User joined!", value=bot.welcome[member.server.id].format(member.mention))
-        m = await bot.send_message(member.server.default_channel, embed=embed)
-        if REMOVE_JOIN_MESSAGE:
-            await asyncio.sleep(30)
-            try:
-                await bot.delete_message(m)
-            except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
+    conn = sqlite3.connect(bot.WELCOMEMESSAGEFILE)
+    c = conn.cursor()
+    c.execute("SELECT message FROM welcome WHERE serverID=" + member.server.id)
+    mes = c.fetchone()
+    conn.commit()
+    conn.close()
+    if mes == None:
+        return
+    mes = mes[0]
+    embed = discord.Embed(colour=0xFF0000)
+    embed.add_field(name="User joined!", value=mes.format(member.mention))
+    m = await bot.send_message(member.server.default_channel, embed=embed)
+    if REMOVE_JOIN_MESSAGE:
+        await asyncio.sleep(30)
+        try:
+            await bot.delete_message(m)
+        except discord.Forbidden:
+            print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_member_remove(member):
     await log.error(member.server.name + " | Member " + member.name + " just left", filename=member.server.name)
-    if member.server.id in bot.goodbye:
-        embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User left!", value=bot.goodbye[member.server.id].format(member.mention))
-        m = await bot.send_message(member.server.default_channel, embed=embed)
-        if REMOVE_LEAVE_MESSAGE:
-            await asyncio.sleep(30)
-            try:
-                await bot.delete_message(m)
-            except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
+    conn = sqlite3.connect(bot.GOODBYEMESSAGEFILE)
+    c = conn.cursor()
+    c.execute("SELECT message FROM goodbye WHERE serverID=" + member.server.id)
+    mes = c.fetchone()
+    conn.commit()
+    conn.close()
+    if mes == None:
+        return
+    mes = mes[0]
+    embed = discord.Embed(colour=0xFF0000)
+    embed.add_field(name="User left!", value=mes.format(member.mention))
+    m = await bot.send_message(member.server.default_channel, embed=embed)
+    if REMOVE_LEAVE_MESSAGE:
+        await asyncio.sleep(30)
+        try:
+            await bot.delete_message(m)
+        except discord.Forbidden:
+            print(ctx.message.server + " | No permission to delete messages")
 @bot.event
 async def on_channel_delete(channel):
     await log.error("deleted channel: " + channel.name, filename=channel.server.name)
@@ -129,6 +136,23 @@ async def on_channel_update(before, after):
     if before._permission_overwrites != after._permission_overwrites:
         m += " _permission_overwrites changed"
     await log.error(m, filename=before.server.name)
+@bot.event
+async def on_voice_state_update(before, after):
+    if bot.MUSIC:
+        if before.id == constants.NYAid:
+            channel = after.voice.voice_channel
+            if (channel != None) & (before.voice.voice_channel != channel):
+                state = bot.musicplayer.get_voice_state(before.server)
+                
+                if bot.musicplayer.bot.is_voice_connected(before.server):
+                    if channel == bot.musicplayer.bot.voice_client_in(before.server):
+                        return
+                    state.voice = await state.voice.move_to(channel)
+                    print(1)
+                    print(state.voice)
+                else:
+                    state.voice = await bot.musicplayer.bot.join_voice_channel(channel)
+                    print(state.voice)
 @bot.event
 async def on_member_update(before, after):
     changed = False

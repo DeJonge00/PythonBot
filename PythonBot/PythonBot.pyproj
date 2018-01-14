@@ -31,6 +31,12 @@
     <Compile Include="comm\minesweeper.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="musicPlayer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="removeMessage.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="secret\constants.py">
       <SubType>Code</SubType>
     </Compile>

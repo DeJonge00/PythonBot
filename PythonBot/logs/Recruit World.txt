@@ -1314,3 +1314,370 @@ Type 'exit' to leave the menu.
 2018-01-10 21:19:29.460000 | general | Nya deleted: >quit
 2018-01-10 21:19:39.378000 | general | Nya deleted: >pat @Biribiri
 2018-01-10 21:19:43.958000 | general | Nya deleted: >pat @Biribiri
+2018-01-11 15:41:15.012000 | general | Nya deleted: >quit
+2018-01-11 15:45:25.786000 | general | Nya deleted: >pat @Biribiri
+2018-01-11 18:43:04.618000 | general | Nya deleted: >quit
+2018-01-11 18:43:25.626000 | general | Nya deleted: >quit
+2018-01-11 18:46:22.657000 | general | Nya deleted: >quit
+2018-01-11 18:51:12.205000 | general | Nya deleted: >quit
+2018-01-11 18:52:11.818000 | general | Nya deleted: >quit
+2018-01-11 18:54:43.787000 | general | Nya deleted: >quit
+2018-01-11 18:56:25.143000 | general | Nya deleted: >quit
+2018-01-11 18:56:44.637000 | general | Nya deleted: >quit
+2018-01-11 18:57:28.578000 | general | Nya deleted: >quit
+2018-01-11 18:58:46.090000 | general | Nya deleted: >quit
+2018-01-11 19:00:09.219000 | general | Nya deleted: >quit
+2018-01-11 19:02:45.460000 | general | Nya deleted: >quit
+2018-01-11 19:03:09.356000 | general | Nya deleted: >quit
+2018-01-11 19:05:08.657000 | general | Nya deleted: >quit
+2018-01-11 19:06:18.192000 | general | Nya deleted: >quit
+2018-01-11 19:07:35.603000 | general | Nya deleted: >quit
+2018-01-11 19:09:04.071000 | general | Nya deleted: >quit
+2018-01-11 19:09:25.291000 | general | Nya deleted: >music join
+2018-01-11 19:10:45.496000 | general | Nya deleted: >quit
+2018-01-11 19:10:59.868000 | general | Nya deleted: >music join
+2018-01-11 19:13:57.690000 | general | Nya deleted: >quit
+2018-01-11 19:14:10.850000 | general | Nya deleted: >music join
+2018-01-11 19:14:37.846000 | general | Nya deleted: >quit
+2018-01-11 19:15:00.854000 | general | Nya deleted: >quit
+2018-01-11 19:19:25.863000 | general | Nya deleted: >music join
+2018-01-11 19:19:32.660000 | general | Nya deleted: >quit
+2018-01-11 19:20:32.750000 | general | Nya deleted: >music join
+2018-01-11 19:20:38.993000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=MRHo0UdDA8w
+2018-01-11 19:21:25.951000 | general | Nya deleted: >quit
+2018-01-11 19:21:42.402000 | general | Nya deleted: >music join
+2018-01-11 19:21:50.654000 | general | Nya deleted: >music queue self.musicClient = None
+2018-01-11 19:22:06.353000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=MRHo0UdDA8w
+2018-01-11 19:22:25.137000 | general | Nya deleted: >quit
+2018-01-11 19:22:39.697000 | general | Nya deleted: >music join
+2018-01-11 19:22:43.783000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=MRHo0UdDA8w
+2018-01-11 19:23:20.622000 | general | Nya deleted: >quit
+2018-01-11 19:23:32.446000 | general | Nya deleted: >music join
+2018-01-11 19:23:39.816000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=MRHo0UdDA8w
+2018-01-11 19:23:59.107000 | general | Nya deleted: >music queue bananya op
+2018-01-11 19:24:33.955000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=SBjQ9tuuTJQ&list=RDMMSBjQ9tuuTJQ
+2018-01-11 19:24:52.779000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=SBjQ9tuuTJQ&list=RDMMSBjQ9tuuTJQ
+2018-01-11 19:25:36.511000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=SBjQ9tuuTJQ
+2018-01-11 19:26:21.773000 | general | Nya deleted: >del xd
+2018-01-11 19:26:24.250000 | general | Nya deleted: >del xd
+2018-01-11 19:26:29.945000 | general | Nya deleted: >music queue https://www.youtube.com/watch?v=SBjQ9tuuTJQ
+2018-01-11 19:27:37.195000 | general | Nya deleted: >del xd
+2018-01-12 00:26:32.113000 | general | Nya deleted: >quit
+2018-01-12 12:27:49.134000 | general | Nya deleted: >quit
+2018-01-12 12:28:35.498000 | general | Nya deleted: >quit
+2018-01-12 12:30:12.769000 | general | Nya deleted: >quit
+2018-01-12 12:32:59.431000 | general | Nya deleted: >quit
+2018-01-12 12:36:44.047000 | general | Nya deleted: >quit
+2018-01-12 12:39:26.237000 | general | Nya deleted: >quit
+2018-01-12 12:39:58.243000 | general | Nya deleted: >quit
+2018-01-12 12:41:35.031000 | general | Nya deleted: >quit
+2018-01-12 12:43:51.603000 | general | Nya deleted: >music leave
+2018-01-12 12:44:12.265000 | general | Nya deleted: >quit
+2018-01-12 12:44:30.999000 | general | Nya deleted: >music leave
+2018-01-12 12:49:56.514000 | general | Nya deleted: >quit
+2018-01-12 12:50:39.713000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=TRqiFPpw2fY
+2018-01-12 12:53:18.161000 | general | Nya deleted: >quit
+2018-01-12 12:54:30.399000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=TRqiFPpw2fY
+2018-01-12 12:54:48.431000 | general | Nya deleted: >quit
+2018-01-12 12:54:58.436000 | general | Nya deleted: >music join
+2018-01-12 12:55:14.006000 | general | Nya deleted: >quit
+2018-01-12 12:55:23.521000 | general | Nya deleted: >music join
+2018-01-12 12:55:28.568000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=TRqiFPpw2fY
+2018-01-12 12:55:52.977000 | general | Nya deleted: >quit
+2018-01-12 12:56:01.724000 | general | Nya deleted: >music join
+2018-01-12 12:56:46.480000 | general | Nya deleted: >music play  https://www.youtube.com/watch?v=TRqiFPpw2fY
+2018-01-12 12:57:03.847000 | general | Nya deleted: >quit
+2018-01-12 12:57:46.876000 | general | Nya deleted: >music join
+2018-01-12 12:57:58.628000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=TRqiFPpw2fY
+2018-01-12 13:12:11.005000 | general | Nya deleted: >quit
+2018-01-12 13:14:44.730000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 13:18:57.247000 | general | Nya deleted: >quit
+2018-01-12 13:19:19.521000 | general | Nya deleted: >music join
+2018-01-12 13:19:24.663000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 13:19:45.928000 | general | Nya deleted: >quit
+2018-01-12 13:42:09.565000 | general | Nya deleted: >music join
+2018-01-12 13:42:21.016000 | general | Nya deleted: >quit
+2018-01-12 13:42:53.903000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 13:43:35.166000 | general | Nya deleted: >quit
+2018-01-12 13:44:25.314000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 13:44:49.606000 | general | Nya deleted: >quit
+2018-01-12 13:44:59.427000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 13:46:07.909000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=D9ioyEvdggk&list=RDD9ioyEvdggk
+2018-01-12 15:28:01.179000 | general | Nya deleted: >quit
+2018-01-13 13:56:12.563000 | general | Nya deleted: >quit
+2018-01-13 13:56:53.517000 | general | Nya deleted: >music play self.songQueue[ctx.server.id].append(player)
+2018-01-13 13:57:35.933000 | general | Nya deleted: >quit
+2018-01-13 13:57:57.601000 | general | Nya deleted: >music join
+2018-01-13 13:58:03.794000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 13:58:43.426000 | general | Nya deleted: >quit
+2018-01-13 13:58:56.245000 | general | Nya deleted: >music join
+2018-01-13 13:59:00.813000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:00:23.909000 | general | Nya deleted: >quit
+2018-01-13 14:00:37.335000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:03:12.410000 | general | Nya deleted: >quit
+2018-01-13 14:03:36.339000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:04:02.444000 | general | Nya deleted: >quit
+2018-01-13 14:04:12.442000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:07:19.388000 | general | Nya deleted: >quit
+2018-01-13 14:07:35.461000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:08:44.327000 | general | Nya deleted: >quit
+2018-01-13 14:08:55.326000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:10:31.175000 | general | Nya deleted: >quit
+2018-01-13 14:10:49.621000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:11:22.965000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:13:08.167000 | general | Nya deleted: >quit
+2018-01-13 14:13:23.782000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:14:03.691000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:14:59.291000 | general | Nya deleted: >quit
+2018-01-13 14:15:38.359000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:16:14.606000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:18:42.130000 | general | Nya deleted: >quit
+2018-01-13 14:19:02.398000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:19:57.434000 | general | Nya deleted: >music join
+2018-01-13 14:27:33.328000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:30:53.942000 | general | Nya deleted: >quit
+2018-01-13 14:31:18.177000 | general | Nya edited: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:31:18.177000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:34:06.154000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:34:17.530000 | general | Nya deleted: >quit
+2018-01-13 14:34:31.691000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:34:34.075000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:34:36.269000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:35:25.670000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:01.622000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:08.764000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:10.724000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:12.580000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:21.288000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:47:36.098000 | general | Nya deleted: >quit
+2018-01-13 14:49:43.317000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:49:44.835000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:49:46.085000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:49:48.381000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:53:46.135000 | general | Nya deleted: >quit
+2018-01-13 14:54:12.171000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:54:14.188000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:54:16.471000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:54:18.260000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:55:50.756000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 14:56:08.048000 | general | Nya deleted: >quit
+2018-01-13 14:59:57.237000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:02:34.585000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:02:40.230000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:03:00.200000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:07:25.346000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:07:31.255000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:07:49.257000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:08:32.926000 | general | Nya deleted: >quit
+2018-01-13 15:08:57.645000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:13:27.244000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:13:29.235000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:15:25.364000 | general | Nya deleted: >quit
+2018-01-13 15:15:47.947000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:16:13.117000 | general | Nya deleted: >quit
+2018-01-13 15:16:23.390000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:16:30.117000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:17:09.710000 | general | Nya deleted: >quit
+2018-01-13 15:22:30.934000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:22:33.883000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:22:35.885000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:22:56.027000 | general | Nya deleted: >quit
+2018-01-13 15:23:07.505000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:25:04.609000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:25:10.818000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:25:15.892000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:27:09.813000 | general | Nya deleted: >quit
+2018-01-13 15:27:30.357000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:27:35.091000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:28:05.366000 | general | Nya deleted: >quit
+2018-01-13 15:35:41.771000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:37:02.234000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:37:18.391000 | general | Nya deleted: >quit
+2018-01-13 15:37:29.079000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:38:37.037000 | general | Nya deleted: >quit
+2018-01-13 15:38:51.062000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:38:56.241000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 15:39:55.135000 | general | Nya deleted: >music leave
+2018-01-13 16:12:20.689000 | general | Nya deleted: >music leave
+2018-01-13 17:39:30.556000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:39:37.137000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:40:56.377000 | general | Nya deleted: >quit
+2018-01-13 17:41:08.015000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:41:52.419000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:43:01.854000 | general | Nya deleted: >quit
+2018-01-13 17:43:15.051000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:44:01.214000 | general | Nya deleted: >quit
+2018-01-13 17:44:14.615000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:45:29.228000 | general | Nya deleted: >quit
+2018-01-13 17:45:43.219000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:46:06.039000 | general | Nya deleted: >quit
+2018-01-13 17:46:16.250000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:46:55.216000 | general | Nya deleted: >quit
+2018-01-13 17:47:14.756717 | RECRUIT WORLD | member Biribiri updated:  +role: Honour Guard
+2018-01-13 17:47:16.727000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:47:25.288000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 17:47:31.899000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 18:01:35.959000 | general | Nya deleted: >quit
+2018-01-13 18:06:29.179000 | general | Nya deleted: >quit
+2018-01-13 18:08:41.684000 | general | Nya deleted: >quit
+2018-01-13 18:09:22.385000 | general | Nya deleted: >quit
+2018-01-13 18:09:34.479000 | general | Nya edited: >music play https://www.youtube.com/watch?v=l8GAtNAsagc
+2018-01-13 18:12:42.445000 | general | Nya deleted: >quit
+2018-01-13 18:13:36.830000 | general | Nya deleted: >quit
+2018-01-13 18:14:15.420000 | general | Nya deleted: >quit
+2018-01-13 18:15:33.061000 | general | Nya deleted: >quit
+2018-01-13 18:30:38.962000 | general | Nya deleted: >quit
+2018-01-13 18:34:50.660000 | general | Nya edited: >music play https://www.youtube.com/watch?v=SBjQ9tuuTJQ&list=RDEMx2SPzeaRXiOzpOe0SxPVJA
+2018-01-13 18:35:54.193000 | general | Nya deleted: >quit
+2018-01-13 20:19:18.455000 | general | Nya deleted: >quit
+2018-01-13 20:19:40.504000 | general | Nya edited: >music play https://www.youtube.com/watch?v=SBjQ9tuuTJQ&list=RDEMx2SPzeaRXiOzpOe0SxPVJA
+2018-01-13 20:25:55.997000 | general | Nya deleted: >quit
+2018-01-13 20:26:37.795000 | general | Nya deleted: >quit
+2018-01-13 20:27:27.764000 | general | Nya deleted: >quit
+2018-01-13 20:29:11.180000 | general | Nya deleted: >quit
+2018-01-13 20:31:56.976000 | general | Nya deleted: >quit
+2018-01-13 20:32:36.900000 | general | Nya deleted: >quit
+2018-01-13 20:33:40.415000 | general | Nya edited: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:34:34.619000 | general | Nya deleted: >quit
+2018-01-13 20:35:24.180000 | general | Nya deleted: >quit
+2018-01-13 20:36:09.280000 | general | Nya deleted: >quit
+2018-01-13 20:37:38.993000 | general | Nya deleted: >quit
+2018-01-13 20:37:49.850000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:38:41.876000 | general | Nya deleted: >quit
+2018-01-13 20:38:52.156000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:40:21.707000 | general | Nya deleted: >quit
+2018-01-13 20:40:37.431000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:41:55.517000 | general | Nya deleted: >quit
+2018-01-13 20:42:16.234000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:43:10.609000 | general | Nya deleted: >quit
+2018-01-13 20:43:28.724000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:46:06.402000 | general | Nya deleted: >quit
+2018-01-13 20:46:29.305000 | general | Nya deleted: >music play  https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 20:47:30.133000 | general | Nya deleted: >quit
+2018-01-13 20:47:42.768000 | general | Nya deleted: >music play  https://www.youtube.com/watch?v=eBG7P-K-r1Y&list=RDEMx2SPzeaRXiOzpOe0SxPVJA&index=2
+2018-01-13 21:20:37.794000 | general | Nya deleted: >quit
+2018-01-13 21:26:34.916000 | general | Nya deleted: >music play the pretender
+2018-01-13 21:28:41.497000 | general | Nya deleted: >music play the pretender
+2018-01-14 11:28:02.895000 | general | Nya deleted: >quit
+2018-01-14 11:28:15.227000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:28:52.851000 | general | Nya deleted: >quit
+2018-01-14 11:29:06.240000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:30:00.888000 | general | Nya deleted: >quit
+2018-01-14 11:30:15.534000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:30:51.060000 | general | Nya deleted: >quit
+2018-01-14 11:31:02.558000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:31:16.219000 | general | Nya deleted: >quit
+2018-01-14 11:31:39.429000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:32:15.631000 | general | Nya deleted: >quit
+2018-01-14 11:32:36.625000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:33:05.656000 | general | Nya deleted: >quit
+2018-01-14 11:33:20.016000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:33:33.832000 | general | Nya deleted: >quit
+2018-01-14 11:33:43.046000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:33:47.100000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:33:51.103000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:35:11.323000 | general | Nya deleted: >quit
+2018-01-14 11:36:08.938000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:36:13.132000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 11:36:17.460000 | general | Nya deleted: >pat @Nya
+2018-01-14 11:36:24.420000 | general | Nya deleted: >pat @SimpleMagicalBird
+2018-01-14 18:11:41.458000 | general | Nya deleted: >quit
+2018-01-14 18:12:06.636000 | general | Nya deleted: >createPatDB
+2018-01-14 18:13:33.486000 | general | Nya deleted: >quit
+2018-01-14 18:14:03.709000 | general | Nya deleted: >createPatDB
+2018-01-14 18:14:12.978000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:17:44.164000 | general | Nya deleted: >quit
+2018-01-14 18:18:23.651000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:19:07.528000 | general | Nya deleted: >quit
+2018-01-14 18:19:18.363000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:20:02.809000 | general | Nya deleted: >quit
+2018-01-14 18:20:12.001000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:28:03.972000 | general | Nya deleted: >quit
+2018-01-14 18:28:14.001000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:28:37.078000 | general | Nya deleted: >quit
+2018-01-14 18:28:45.940000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:28:59.076000 | general | Nya deleted: >quit
+2018-01-14 18:30:50.180000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:31:29.539000 | general | Nya deleted: >quit
+2018-01-14 18:31:41.198000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:32:49.146000 | general | Nya deleted: >quit
+2018-01-14 18:32:57.646000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:33:02.533000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:33:07.403000 | general | Nya deleted: >pat @Nya
+2018-01-14 18:33:12.365000 | general | Nya deleted: >pat @SimpleMagicalBird
+2018-01-14 18:33:23.263000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:33:39.502000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:33:54.861000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:33:59.651000 | general | Nya deleted: >pat @Biribiri
+2018-01-14 18:47:54.355000 | general | Nya deleted: >quit
+2018-01-14 18:48:26.191000 | general | Nya deleted: >resetgoodbye
+2018-01-14 18:50:36.260000 | general | Nya deleted: >quit
+2018-01-14 18:51:25.768000 | general | Nya deleted: >resetwelcome
+2018-01-14 18:51:31.849000 | general | Nya deleted: >resetgoodbye
+2018-01-14 18:52:35.020000 | general | Nya deleted: >resetwelcome
+2018-01-14 18:54:10.060000 | general | Nya deleted: >quit
+2018-01-14 18:54:19.506000 | general | Nya deleted: >resetpats
+2018-01-14 18:56:13.335000 | general | Nya deleted: >quit
+2018-01-14 18:56:25.346000 | general | Nya deleted: >resetpats
+2018-01-14 18:56:33.246000 | general | Nya deleted: >resetwelcome
+2018-01-14 18:56:43.960000 | general | Nya deleted: >resetgoodbye
+2018-01-14 18:57:36.805000 | general | Nya deleted: >setwelcome Say hello to the latest recruit: {}
+2018-01-14 18:59:10.964000 | general | Nya deleted: >setgoodbye Rejoice, for the heretic {} has left this place! <:kannaRoar:363070834178392075>
+2018-01-14 18:59:37.417000 | general | Nya deleted: >setwelcome Say hello to the latest recruit: {} <:kannaWave:362987523141795847>
+2018-01-14 19:00:08.471000 | general | Nya deleted: >setwelcome Say hello to the latest recruit: {}
+2018-01-14 19:00:36.613000 | general | Nya deleted: >setgoodbye Say hello to the latest recruit:
+2018-01-14 19:01:19.276000 | general | Nya deleted: >quit
+2018-01-14 19:01:43.001000 | general | Nya deleted: >setwelcome Say hello to the latest recruit: {} <:kagaHi:363070818990948363>
+2018-01-14 19:01:56.693850 | RECRUIT WORLD | Member SimpleMagicalBird just left
+2018-01-14 19:02:13.330000 | general | Nya deleted: >quit
+2018-01-14 19:02:50.756353 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2018-01-14 19:03:24.783000 | general | Nya deleted: >quit
+2018-01-14 19:03:49.127699 | RECRUIT WORLD | Member SimpleMagicalBird just left
+2018-01-14 19:04:24.005000 | general | Nya deleted: >quit
+2018-01-14 19:04:41.763022 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2018-01-14 19:05:31.339080 | Channel updated: position from: 4 to: 0 _permission_overwrites changed
+2018-01-14 19:05:31.345088 | Channel updated: position from: 0 to: 1
+2018-01-14 19:05:31.348090 | Channel updated: position from: 1 to: 2
+2018-01-14 19:05:31.351089 | Channel updated: position from: 2 to: 3
+2018-01-14 19:05:31.367101 | Channel updated: position from: 3 to: 4
+2018-01-14 19:05:33.946703 | Channel updated: position from: 2 to: 1
+2018-01-14 19:05:33.962290 | Channel updated: position from: 3 to: 2
+2018-01-14 19:05:34.001846 | Channel updated: position from: 1 to: 3
+2018-01-14 19:05:45.204511 | Channel updated: name from: modstuff to: general
+2018-01-14 19:05:57.628230 | Channel updated: name from: general to: modstuff
+2018-01-14 19:06:29.023433 | Channel updated: _permission_overwrites changed
+2018-01-14 19:06:39.522475 | RECRUIT WORLD | Member SimpleMagicalBird just left
+2018-01-14 19:07:07.769686 | Channel updated: position from: 3 to: 0 _permission_overwrites changed
+2018-01-14 19:07:07.785691 | Channel updated: position from: 0 to: 1
+2018-01-14 19:07:07.786686 | Channel updated: position from: 1 to: 2
+2018-01-14 19:07:07.788688 | Channel updated: position from: 2 to: 3
+2018-01-14 19:07:16.290845 | Channel updated: position from: 2 to: 1
+2018-01-14 19:07:16.291846 | Channel updated: position from: 3 to: 2
+2018-01-14 19:07:16.308858 | Channel updated: position from: 1 to: 3 _permission_overwrites changed
+2018-01-14 19:07:27.091708 | Channel updated: name from: modstuff to: general
+2018-01-14 19:08:17.055629 | Role Honour Guard updated:  +permission: add_reactions +permission: attach_files +permission: embed_links
+2018-01-14 19:08:30.187900 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2018-01-14 19:08:40.111809 | RECRUIT WORLD | Member SimpleMagicalBird just left
+2018-01-14 19:08:51.496586 | RECRUIT WORLD | Member SimpleMagicalBird just joined
+2018-01-14 19:21:12.383000 | general | Nya deleted: >quit
+2018-01-14 19:21:52.001000 | general | Nya deleted: >quit
+2018-01-14 19:23:03.810000 | general | Nya deleted: >quit
+2018-01-14 19:24:46.047000 | general | Nya deleted: >quit
+2018-01-14 19:28:14.882000 | general | Nya deleted: >quit
+2018-01-14 19:28:39.656000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:31:10.375000 | general | Nya deleted: >quit
+2018-01-14 19:31:31.246000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:32:13.465000 | general | Nya deleted: >quit
+2018-01-14 19:32:30.839000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:33:21.219000 | general | Nya deleted: >quit
+2018-01-14 19:39:42.131000 | general | Nya deleted: >quit
+2018-01-14 19:40:41.245000 | general | Nya deleted: >quit
+2018-01-14 19:41:44.075000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:42:19.334000 | general | Nya deleted: >quit
+2018-01-14 19:44:03.367000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:44:46.045000 | general | Nya deleted: >quit
+2018-01-14 19:45:06.853000 | general | Nya deleted: >music p https://www.youtube.com/watch?v=aHjpOzsQ9YI&index=5&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:45:36.017000 | general | Nya deleted: >quit
+2018-01-14 19:45:54.315000 | general | Nya deleted: >music play https://www.youtube.com/watch?v=v2AC41dglnM&index=8&list=RDMMeBG7P-K-r1Y
+2018-01-14 19:46:39.914000 | general | Nya deleted: >m leave
+2018-01-14 19:47:47.981000 | general | Nya deleted: >quit
