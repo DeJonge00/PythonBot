@@ -15,6 +15,8 @@ async def new(bot, message):
     if ((message.author.id in bot.spongelist) & (random.randint(0,4)<=0) & (len(message.content)>5)):
         m = [ cl(x) for x in message.content.lower()]
         await bot.send_message(message.channel, ''.join(m))
+    if (message.server.id == constants.NINECHATid) & ("just" in message.content.lower().split(' ')) & (len(message.content.split(' '))==2):
+        await bot.add_reaction(message, ":Just:402575695508668427")
     if message.content == "\\o/":
         if (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
             try:
@@ -80,6 +82,12 @@ async def new(bot, message):
             await bot.add_reaction(message, ":notlikethis:290790824676163584")
             await bot.add_reaction(message, ":wut:292659646014160908")
             await bot.add_reaction(message, ":ytho:290796028347809792")
+            await bot.add_reaction(message, ":smug:358565714795298827")
+            await bot.add_reaction(message, ":weebrage:290800474255261708")
+            await bot.add_reaction(message, ":fetdoge:375987462553731073")
+            await bot.add_reaction(message, ":pat:290789859663282176")
+            await bot.add_reaction(message, ":nut:348350754974728193")
+            await bot.add_reaction(message, ":hand:348350777661587466")
         else:
             await bot.add_reaction(message, "\u2764")
 

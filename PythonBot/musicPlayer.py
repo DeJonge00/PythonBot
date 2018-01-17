@@ -77,6 +77,7 @@ class MusicPlayer:
         if state is None:
             state = VoiceState(self.bot)
             self.voice_states[server.id] = state
+        state.voice = self.bot.voice_client_in(server)
         return state
 
     @commands.group(pass_context=1, aliases=["m"])

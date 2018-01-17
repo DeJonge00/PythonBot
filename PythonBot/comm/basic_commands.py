@@ -180,13 +180,13 @@ class Basics:
         mess = desc + "\nAdd a 👍 reaction to participate!"
         embed.add_field(name="Be in it to win it!", value=mess)
         m = await self.bot.say(embed=embed)
-        lotterylist = []
+        lotterylist = set()
         await self.bot.add_reaction(m, "👍")
         i = self.bot.user
         while not (i == ctx.message.author):
             r = await self.bot.wait_for_reaction(['👍'], message=m)
             if not ((self.bot.user == r.user) | (r.user.id in lotterylist)):
-                lotterylist.append(r.user)
+                lotterylist.add(r.user)
             i = r.user
         # Select winner
         embed = discord.Embed(colour=0xFF0000)
@@ -200,9 +200,9 @@ class Basics:
     async def pat(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
-            return await self.bot.say("You cant pat air lmao")
+            return await self.bot.say(ctx.message.author.mention + " You cant pat air lmao")
         if ctx.message.mentions[0].id == ctx.message.author.id:
-            return await self.bot.say("One does not simply pat ones own head")
+            return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
         time = datetime.datetime.utcnow()
 
         conn = sqlite3.connect(self.bot.PATSDB)
@@ -212,11 +212,10 @@ class Basics:
         conn.commit()
         conn.close()
 
-       # (t, d) = self.bot.pat[ctx.message.author.id]
         if (t != None):
             t = datetime.datetime.fromtimestamp(t[0])
             if ((time-t).total_seconds() < 60):
-                return await self.bot.say("Not so fast, b-b-baka!")
+                return await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
 
         authorID = ctx.message.author.id
 
@@ -236,8 +235,10 @@ class Basics:
             c.execute("UPDATE pats SET pats="+ str(n) +" WHERE authorID=" + authorID + " AND userID=" + ctx.message.mentions[0].id)
         conn.commit()
         conn.close()
-            
-        return await self.bot.say(ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(n) + " times now");
+        m = ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(n) + " times now"
+        if n%10==0:
+            m += "\nSugoi!"
+        return await self.bot.say(m);
 
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
