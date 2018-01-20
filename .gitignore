@@ -246,5 +246,8 @@ ModelManifest.xml
 */constants.py
 */secret/*
 constants.py
-*/__pycache__/*
+**/__pycache__/*
 *.pyc
+**/*.pyc
+*.cpython-36.pyc
+**/*.cpython-36.pyc
