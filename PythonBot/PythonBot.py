@@ -24,6 +24,7 @@ logging.basicConfig()
 async def on_ready():
     print('\nStarted bot')
     print("User: " + bot.user.name)
+    print("Disc: " + bot.user.discriminator)
     print("ID: " + bot.user.id)
     print("Started at: " + datetime.datetime.utcnow().strftime("%H:%M:%S") + "\n")
     if not hasattr(bot, 'uptime'):
@@ -68,8 +69,10 @@ async def on_message(message):
         # Send message to rpggame for exp
         if bot.RPGGAME:
             await bot.rpggameinstance.handle(message)
-    except discord.ext.commands.errors.CommandInvokeError:
-        bot.say("Muh permissions though :cry:")
+    except discord.ext.commands.errors.CommandInvokeError as e:
+        print(e)
+    except discord.ext.commands.errors.CommandNotFoundError:
+        pass
 @bot.event
 async def on_message_edit(before, after):
     await message_handler.edit(before)
@@ -148,11 +151,8 @@ async def on_voice_state_update(before, after):
                     if channel == bot.musicplayer.bot.voice_client_in(before.server):
                         return
                     state.voice = await state.voice.move_to(channel)
-                    print(1)
-                    print(state.voice)
                 else:
                     state.voice = await bot.musicplayer.bot.join_voice_channel(channel)
-                    print(state.voice)
 @bot.event
 async def on_member_update(before, after):
     changed = False

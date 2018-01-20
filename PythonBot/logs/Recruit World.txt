@@ -1691,3 +1691,141 @@ Type 'exit' to leave the menu.
 2018-01-16 21:34:08.606000 | general | Nya deleted: >quit
 2018-01-16 21:57:07.766000 | general | Nya deleted: >quit
 2018-01-17 00:38:19.591000 | general | Nya deleted: >quit
+2018-01-18 00:27:59.121000 | botstuff | Nya deleted: >quit
+2018-01-18 15:24:33.832000 | botstuff | Nya deleted: >resetwelcome
+2018-01-18 16:32:14.676000 | botstuff | Nya deleted: >quit
+2018-01-18 20:47:18.367000 | botstuff | Nya deleted: >quit
+2018-01-18 20:48:42.246000 | botstuff | Nya deleted: >quit
+2018-01-18 20:48:58.097000 | botstuff | Nya deleted: >m p https://www.youtube.com/watch?v=506NS0tDylw
+2018-01-18 20:51:55.125000 | botstuff | Nya deleted: >quit
+2018-01-18 20:52:29.297000 | general | SimpleMagicalBird deleted: >m p https://www.youtube.com/watch?v=506NS0tDylw
+2018-01-18 20:54:22.291000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=SBjQ9tuuTJQ
+2018-01-18 20:55:50.597000 | general | SimpleMagicalBird deleted: >m l
+2018-01-18 20:56:13.592694 | Channel updated: _permission_overwrites changed
+2018-01-18 23:11:30.035000 | general | Nya deleted: >quit
+2018-01-18 23:12:51.518000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=xQ04WbgI9rg&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w&index=5
+2018-01-18 23:13:05.351000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=YDVAQI-4lto&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w&index=6
+2018-01-18 23:13:25.910000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=yZIummTz9mM&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w&index=10
+2018-01-18 23:13:45.556000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=8sgycukafqQ&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w&index=12
+2018-01-18 23:14:06.022000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=8sgycukafqQ&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:14:19.706000 | general | Nya deleted: >m p 8sgycukafqQ&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:14:30.989000 | general | Nya deleted: >m p pretender
+2018-01-18 23:14:41.302000 | general | Nya deleted: >m play pomf pomf
+2018-01-18 23:14:56.523000 | general | Nya edited: https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:15:01.075000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:16:22.010000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:21:27.670000 | general | Nya deleted: >quit
+2018-01-18 23:21:44.082000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:23:07.607000 | general | Nya deleted: >quit
+2018-01-18 23:23:20.290000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:23:30.534000 | general | Nya deleted: >m c
+2018-01-18 23:24:21.161000 | general | Nya deleted: >quit
+2018-01-18 23:24:37.264000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:30:19.967000 | general | Nya deleted: >quit
+2018-01-18 23:30:38.069000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:31:16.919000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:31:47.986000 | general | Nya deleted: >quit
+2018-01-18 23:32:06.382000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:32:16.328000 | general | Nya deleted: >m j
+2018-01-18 23:32:26.481000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:43:04.036000 | general | Nya deleted: >quit
+2018-01-18 23:45:38.904000 | general | Nya deleted: >m j
+2018-01-18 23:45:43.670000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:47:00.569000 | general | Nya deleted: >quit
+2018-01-18 23:47:13.035000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:47:19.006000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:47:46.678000 | general | Nya deleted: >quit
+2018-01-18 23:48:00.360000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:48:04.346000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:48:08.397000 | general | Nya deleted: >m q
+2018-01-18 23:49:00.060000 | general | Nya deleted: >quit
+2018-01-18 23:49:12.087000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:49:17.086000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:49:23.132000 | general | Nya deleted: >m q
+2018-01-18 23:50:05.773000 | general | Nya deleted: >m c
+2018-01-18 23:50:54.116000 | general | Nya deleted: >quit
+2018-01-18 23:51:05.355000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:51:07.861000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:51:11.585000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:51:16.007000 | general | Nya deleted: >m q
+2018-01-18 23:52:14.538000 | general | Nya deleted: >quit
+2018-01-18 23:52:28.065000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:52:31.627000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:52:34.304000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:52:36.711000 | general | Nya deleted: >m q
+2018-01-18 23:55:16.255000 | general | Nya deleted: >quit
+2018-01-18 23:55:56.768000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:55:59.078000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:56:01.294000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:56:04.310000 | general | Nya deleted: >m q
+2018-01-18 23:56:39.188000 | general | Nya deleted: >quit
+2018-01-18 23:56:46.500000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:56:48.842000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:56:52.280000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:56:56.688000 | general | Nya deleted: >m q
+2018-01-18 23:57:27.793000 | general | Nya deleted: >quit
+2018-01-18 23:57:44.552000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:57:46.526000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:57:48.479000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:57:55.961000 | general | Nya deleted: >m q
+2018-01-18 23:58:13.187000 | general | Nya deleted: >quit
+2018-01-18 23:58:23.591000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:58:24.717000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:58:26.011000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-18 23:58:30.023000 | general | Nya deleted: >m q
+2018-01-18 23:58:33.052000 | general | Nya deleted: >m q
+2018-01-19 00:01:57.502000 | general | Nya deleted: >quit
+2018-01-19 00:02:08.684000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:02:10.716000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:02:13.757000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:02:16.767000 | general | Nya deleted: >m q
+2018-01-19 00:02:52.148000 | general | Nya deleted: >quit
+2018-01-19 00:03:00.399000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:03:01.800000 | general | Nya deleted: >m q
+2018-01-19 00:03:06.439000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:03:09.259000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:03:12.055000 | general | Nya deleted: >m q
+2018-01-19 00:03:26.308000 | general | Nya deleted: >quit
+2018-01-19 00:03:33.493000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:03:37.007000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:03:39.590000 | general | Nya deleted: >m q
+2018-01-19 00:05:51.991000 | general | Nya deleted: >quit
+2018-01-19 00:06:01.211000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:06:04.381000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:06:07.482000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:06:11.912000 | general | Nya deleted: >m q
+2018-01-19 00:07:15.245000 | general | Nya deleted: >quit
+2018-01-19 00:07:30.767000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:07:33.208000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:07:36.625000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:07:38.784000 | general | Nya deleted: >m q
+2018-01-19 00:10:17.908000 | general | Nya deleted: >quit
+2018-01-19 00:10:30.783000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:10:34.627000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:10:36.410000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:10:44.680000 | general | Nya deleted: >m q
+2018-01-19 00:11:01.193000 | general | Nya deleted: >m j
+2018-01-19 00:11:03.992000 | general | Nya deleted: >m q
+2018-01-19 00:11:09.649000 | general | Nya deleted: >m q
+2018-01-19 00:11:41.328000 | general | Nya deleted: >m q https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:11:57.340000 | general | Nya deleted: >m c
+2018-01-19 00:17:36.569000 | general | Nya deleted: >quit
+2018-01-19 00:18:38.686000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:18:48.800000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:18:52.813000 | general | Nya deleted: >m p
+2018-01-19 00:18:59.494000 | general | Nya deleted: >m p
+2018-01-19 00:19:20.126000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:20:29.477000 | general | Nya deleted: >quit
+2018-01-19 00:21:48.228000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:21:59.900000 | general | Nya deleted: >quit
+2018-01-19 00:22:40.500000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:22:50.711000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=V_YlZ1JdcVk&index=13&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:22:53.399000 | general | Nya deleted: >m q
+2018-01-19 00:32:38.564000 | general | Nya deleted: >m q
+2018-01-19 00:43:43.349000 | general | Nya deleted: >quit
+2018-01-19 00:44:05.232000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=SBjQ9tuuTJQ&index=18&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:48:50.040000 | general | Nya deleted: >quit
+2018-01-19 00:49:04.103000 | general | Nya deleted: >m p https://www.youtube.com/watch?v=SBjQ9tuuTJQ&index=18&list=RDGMEMJQXQAmqrnmK1SEjY_rKBGAVMScNNfyq3d_w
+2018-01-19 00:49:16.473000 | general | Nya deleted: >quit
+2018-01-19 12:28:35.228000 | general | Nya deleted: >quit
+2018-01-20 01:08:37.210000 | botstuff | Nya deleted: >quit

@@ -10,15 +10,18 @@ class Mod:
     # {prefix}banish <@person>
     @commands.command(pass_context=1, help="BANHAMMER")
     async def banish(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         for user in ctx.message.mentions:
             await self.bot.kick(user)
     
     # {prefix}resetpats
     @commands.command(pass_context=1, help="Reset pat db")
     async def resetpats(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
-        
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         conn = sqlite3.connect(self.bot.PATSDB)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS author")
@@ -32,7 +35,9 @@ class Mod:
     # {prefix}emojispam <user>
     @commands.command(pass_context=1, help="Add a user to the emojispam list")
     async def emojispam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True, istyping=False)
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         if len(ctx.message.mentions) > 0:
             if ctx.message.mentions[0].id in self.bot.spamlist:
                 self.bot.spamlist.remove(ctx.message.mentions[0].id)
@@ -42,7 +47,9 @@ class Mod:
     # {prefix}getServerList 
     @commands.command(pass_context=1, hidden=1, help="getServerList")
     async def getServerList(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         m = "";
         for i in self.bot.servers:
             m += i.name + "\n";
@@ -51,7 +58,9 @@ class Mod:
     # {prefix}nickname <@person>
     @commands.command(pass_context=1, help="Nickname a person", aliases=["nick", "nn"])
     async def nickname(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         if len(ctx.message.mentions) > 0:
             if len(args) > 1:
                 await self.bot.change_nickname(ctx.message.mentions[0], " ".join(args[1:]))
@@ -61,7 +70,9 @@ class Mod:
     # {prefix}purge <amount>
     @commands.command(pass_context=1, help="Lets me go to sleep")
     async def purge(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         if len(args) > 0:
             try:
                 l = int(args[0])
@@ -78,7 +89,9 @@ class Mod:
     # {prefix}resetgoodbye
     @commands.command(pass_context=1, help="Resets all goodbye messages")
     async def resetgoodbye(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         conn = sqlite3.connect(self.bot.GOODBYEMESSAGEFILE)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS goodbye")
@@ -90,7 +103,9 @@ class Mod:
     # {prefix}setgoodbye <message>
     @commands.command(pass_context=1, help="Sets a goodbye message")
     async def setgoodbye(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         conn = sqlite3.connect(self.bot.GOODBYEMESSAGEFILE)
         c = conn.cursor()
         c.execute("SELECT * FROM goodbye WHERE serverID=" + ctx.message.server.id)
@@ -106,7 +121,9 @@ class Mod:
     # {prefix}resetwelcome
     @commands.command(pass_context=1, help="Resets all welcome messages")
     async def resetwelcome(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         conn = sqlite3.connect(self.bot.WELCOMEMESSAGEFILE)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS welcome")
@@ -118,7 +135,9 @@ class Mod:
     # {prefix}setwelcome <message>
     @commands.command(pass_context=1, help="Sets a welcome message")
     async def setwelcome(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         conn = sqlite3.connect(self.bot.WELCOMEMESSAGEFILE)
         c = conn.cursor()
         c.execute("SELECT * FROM welcome WHERE serverID=" + ctx.message.server.id)
@@ -134,7 +153,9 @@ class Mod:
     # {prefix}spam <amount> <user>
     @commands.command(pass_context=1, help="Spam a user messages")
     async def spam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         if len(ctx.message.mentions) > 0:
             user = ctx.message.mentions[0]
             if len(args) > 1:
@@ -148,7 +169,9 @@ class Mod:
     # {prefix}spongespam <user>
     @commands.command(pass_context=1, help="Add a user to the spongespam list")
     async def spongespam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         if len(ctx.message.mentions) > 0:
             if ctx.message.mentions[0].id in self.bot.spongelist:
                 self.bot.spongelist.remove(ctx.message.mentions[0].id)
@@ -158,20 +181,28 @@ class Mod:
     # {prefix}quit
     @commands.command(pass_context=1, help="Lets me go to sleep")
     async def quit(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, nyacheck=True)
-        await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
-        if self.bot.RPGGAME:
-            await self.bot.rpggameinstance.quit()
-        if self.bot.MUSIC:
-            if self.bot.musicplayer != None:
-                self.bot.musicplayer.quit()
-        asyncio.sleep(3)
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
+        try:
+            await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
+            if self.bot.RPGGAME:
+                await self.bot.rpggameinstance.quit()
+            if self.bot.MUSIC:
+                if self.bot.musicplayer != None:
+                    self.bot.musicplayer.quit()
+            asyncio.sleep(3)
+        except Exception as e:
+            print(e)
         await self.bot.logout()
         await self.bot.close()
 
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
     async def test(self, ctx, *args):    
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
         emoji = args[0].split(':', 1)[-1].split(':', 1)[0]  
         emojis = self.bot.get_all_emojis();
         for e in emojis:
