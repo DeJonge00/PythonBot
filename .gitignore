@@ -251,3 +251,6 @@ constants.py
 **/*.pyc
 *.cpython-36.pyc
 **/*.cpython-36.pyc
+PythonBot/__pycache__/*.pyc
+PythonBot/__pycache__/*.cpython-36.pyc
+PythonBot/__pycache__/*
