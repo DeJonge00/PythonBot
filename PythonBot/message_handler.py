@@ -36,6 +36,8 @@ async def new(bot, message):
                 await send_random.string(bot, message.channel, responses.response)
     if (message.content.lower() == "ayy") & ((message.author.id == constants.NYAid) | (message.server.id == constants.LEGITSOCIALid)):
         await bot.send_message(message.channel, "lmao")
+    if (message.content.lower() == "qyy") & ((message.author.id == constants.NYAid) | (message.author.id == constants.TRISTANid)):
+        await bot.send_message(message.channel, "kmao")
     if (message.content.lower() == "lmao") & (message.author.id == constants.NYAid):
         await bot.send_message(message.channel, "ayy")
     if "lenny" in message.content.split(" "):

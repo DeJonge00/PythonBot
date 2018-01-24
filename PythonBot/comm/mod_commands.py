@@ -200,11 +200,10 @@ class Mod:
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
     async def test(self, ctx, *args):    
-        await removeMessage.deleteMessage(self.bot, ctx)
+        #await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
-        emoji = args[0].split(':', 1)[-1].split(':', 1)[0]  
-        emojis = self.bot.get_all_emojis();
-        for e in emojis:
-            if(e.name == emoji):
-                return await self.bot.send_message(ctx.message.channel, url(e))
+        await self.bot.add_reaction(ctx.message, "\N{BROKEN HEART}")
+        await self.bot.add_reaction(ctx.message, "\N{WHITE SQUARE}")
+        await self.bot.add_reaction(ctx.message, "\N{NO ENTRY SIGN}")
+        await self.bot.add_reaction(ctx.message, "\U0000FE0F")

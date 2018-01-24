@@ -55,6 +55,8 @@ bot.add_cog(comm.mod_commands.Mod(bot))
 @bot.event
 async def on_message(message):
     try:
+        if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
+            print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
         if (message.author.bot):
             return
         if not (message.channel.is_private):
@@ -221,6 +223,16 @@ async def on_server_emojis_update(before, after):
         m += " size from: " + str(len(before)) + " to: " + str(len(after))
     if not "emojis updated: ":
         await log.error(m, filename=before.server.name)
+@bot.event
+async def on_reaction_add(reaction, user):
+    if user.bot:
+        return
+    if (reaction.emoji=="\N{BROKEN HEART}") | (reaction.message.author.id==constants.NYAid):
+        if reaction.message.author.id == bot.user.id:
+            await bot.delete_message(reaction.message)
+    if musicPlayer:
+        await bot.musicplayer.handleReaction(reaction)
+
 @bot.event
 async def on_member_ban(member):
     await log.error("user " + member.name + " banned", filename=member.server.name)

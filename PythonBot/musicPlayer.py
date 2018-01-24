@@ -8,6 +8,7 @@ embedColor = 0x93cc04
 class VoiceEntry:
     def __init__(self, message : discord.Message, player):
         self.requester = message.author
+        self.message = message
         self.channel = message.channel
         self.player = player
 
@@ -17,7 +18,7 @@ class VoiceEntry:
     def embed(self, title="Music"):
         embed = discord.Embed(colour=embedColor)
         embed.set_author(name=title, icon_url=self.requester.avatar_url)
-        embed.add_field(name="Title", value=self.player.title + " ")
+        embed.add_field(name="Title", value=self.player.title)
         embed.add_field(name="Duration", value="{0[0]}m {0[1]}s".format(divmod(self.player.duration, 60)))
         embed.add_field(name="Requester", value=self.requester.display_name)
         if self.player.likes != None:
@@ -36,6 +37,8 @@ class VoiceState:
         self.skip_votes = set()
         self.audio_player = self.bot.loop.create_task(self.audio_player_task())
         self.volume = 1.0
+        self.repeat=False
+        self.lastmessage = None
 
     def is_playing(self):
         if self.voice is None or self.current is None:
@@ -59,8 +62,11 @@ class VoiceState:
         while True:
             try:
                 self.play_next_song.clear()
-                self.current = await self.songs.get()
-                await self.bot.send_message(self.current.channel, embed=self.current.embed(title="Now playing"))
+                if self.repeat:
+                    self.current = VoiceEntry(self.current.message, await self.voice.create_ytdl_player(self.current.player.download_url, before_options=constants.ytdl_before, ytdl_options=constants.ytdl_options, after=self.toggle_next))
+                else:
+                    self.current = await self.songs.get()
+                    await self.bot.send_message(self.current.channel, embed=self.current.embed(title="Now playing"))
                 self.current.player.start()
                 await self.play_next_song.wait()
             except Exception as e:
@@ -135,13 +141,15 @@ class MusicPlayer:
             await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 
-    @music.command(name="current", pass_context=1, aliases=["c"])
+    @music.command(name="current", pass_context=1, aliases=["c"], help="Show current song")
     async def _current(self, ctx):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         if state.current == None:
-            return await self.bot.say("I am not performing at the moment")
-        return await self.bot.say(embed=state.current.embed())
+            await self.bot.say("I am not performing at the moment")
+            return
+        await self.bot.say(embed=state.current.embed())
+        return
 
     @music.command(name="join", pass_context=1, aliases=["j"])
     async def _join(self, ctx, *args):
@@ -151,7 +159,8 @@ class MusicPlayer:
         if (len(args) > 0) & (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):
             force=True
         if (not(force)) & (state.is_playing()):
-            return await self.bot.say("Im already singing somewhere else...")
+            await self.bot.say("Im already singing somewhere else...")
+            return
         await self.joinVC(ctx)
 
     @music.command(name="leave", pass_context=1, aliases=["l"])
@@ -160,7 +169,8 @@ class MusicPlayer:
         channel = ctx.message.author.voice.voice_channel
         voiceClient = self.bot.voice_client_in(ctx.message.server)
         if voiceClient == None:
-            return await self.bot.say("I am not in vc dummy")
+            await self.bot.say("I am not in vc dummy")
+            return
         await voiceClient.disconnect()
 
     @music.command(name="play", pass_context=1, aliases=["p"])
@@ -170,37 +180,76 @@ class MusicPlayer:
             return await self.play(ctx, " ".join(song))
         state = self.get_voice_state(ctx.message.server)
         if state.current == None:
-            return await self.bot.say("There is nothing to sing")
+            await self.bot.say("There is nothing to sing")
+            return
         if state.is_playing():
             if state.player.is_playing():
                 state.player.pause()
-                return await self.bot.say(ctx.message.author.display_name + " paused my singing...")
+                await self.bot.say(ctx.message.author.display_name + " paused my singing...")
+                return
             else:
                 state.player.resume()
-                return await self.bot.say("Singing resumed")
+                await self.bot.say("Singing resumed")
+                return
         await self.bot.say("I DUNNO WHAT TO DO ;-;")
+
+    async def handleReaction(self, reaction):
+        state = self.get_voice_state(reaction.message.server)
+        if state != None:
+            if state.lastmessage != None:
+                if state.lastmessage.id == reaction.message.id:
+                    if reaction.emoji=="\N{LEFTWARDS BLACK ARROW}":    #left
+                        state = self.get_voice_state(reaction.message.server)
+                        await self.showQueue(reaction.message, state.page-1)
+                        #await self.bot.remove_reaction(reaction.message, reaction.emoji, reaction.)
+                    if reaction.emoji=="\N{BLACK RIGHTWARDS ARROW}":    #right
+                        state = self.get_voice_state(reaction.message.server)
+                        await self.showQueue(reaction.message, state.page+1)
+
+    async def showQueue(self, message : discord.Message, page : int, new=False):
+        print("showq")
+        state = self.get_voice_state(message.server)
+        songs = state.songs._queue
+        perpage = 10
+        state.page = page
+        if len(songs) <= 0:
+            return
+        if not (0 < page <= math.ceil(len(songs)/perpage)):
+            return
+        embed = discord.Embed(colour=embedColor)
+        embed.set_author(name="Queue: " + str(len(songs)) + " songs, " + str(math.ceil(len(songs)/perpage)) + " pages", icon_url=message.author.avatar_url)
+        q = ""
+        for i in range(10*(page-1), min((10*page), len(songs))):
+            q += (str(i+1) + ": '" + songs[i].player.title + "' requested by **" + songs[i].requester.display_name + "**\n")
+        qname = "Queue, page " + str(page) + "/" + str(math.ceil(len(songs)/perpage))
+        embed.add_field(name=qname, value=q)
+        if new:
+            m = await self.bot.send_message(message.channel, embed=embed)
+            state.lastmessage = m
+            await self.bot.add_reaction(m, '\N{LEFTWARDS BLACK ARROW}')
+            await self.bot.add_reaction(m, "\N{BLACK RIGHTWARDS ARROW}")
+            await self.bot.add_reaction(m, "\N{BROKEN HEART}")
+        else:
+            await self.bot.edit_message(state.lastmessage, embed=embed)
 
     @music.command(name="queue", pass_context=1, aliases=["q"])
     async def _queue(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) <= 0:
-            state = self.get_voice_state(ctx.message.server)
-            songs = state.songs._queue
-            if len(songs) <= 0:
-                return await self.bot.say("There is nothing left, queue some songs with '>music queue'")
-            embed = discord.Embed(colour=embedColor)
-            embed.set_author(name="Queue", icon_url=ctx.message.author.avatar_url)
-            q = ""
-            i = 1
-            for s in songs:
-                q += str(i) + ": '" + s.player.title + "' requested by **" + s.requester.display_name + "**\n"
-                if i >= 9:
-                    break
-                i += 1
-            embed.add_field(name="Queue", value=q)
-            return await self.bot.say(embed=embed)
-        return await self.play(ctx, " ".join(song))
+            return await self.showQueue(ctx.message, 1, new=True)
+        await self.play(ctx, " ".join(song))
     
+    @music.command(name="repeat", pass_context=1, aliases=["r"])
+    async def _repeat(self, ctx, *song):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        state = self.get_voice_state(ctx.message.server)
+        if state.repeat:
+            state.repeat = False
+            await self.bot.say("Repeat is now off")
+            return
+        state.repeat = True
+        await self.bot.say("Repeat is now on")
+
     @music.command(name="skip", pass_context=1, aliases=["s"])
     async def _skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -214,10 +263,12 @@ class MusicPlayer:
         votes = len(state.skip_votes)
         if votes >= votesNeeded:
             state.skip()
-            return await self.bot.say(str(votes) + " people voted to skip the song\nSkipping now!")
+            await self.bot.say(str(votes) + " people voted to skip the song\nSkipping now!")
+            return
         if (force) | (state.current.requester.id==ctx.message.author.id):
             state.skip()
-            return await self.bot.say("Master has decided to skip this song!")
+            await self.bot.say("Master has decided to skip this song!")
+            return
         await self.bot.say("Votes to skip: " + str(votes) + "/" + str(votesNeeded))
 
     @music.command(name="stop", pass_context=1, aliases=["quit"])
@@ -238,7 +289,8 @@ class MusicPlayer:
             return
         state = self.get_voice_state(ctx.message.server)
         if not 0 < vol < 200:
-            return await self.bot.say("Volume must be between 0 and 200")
+            await self.bot.say("Volume must be between 0 and 200")
+            return
         state.volume = vol/100
         if state.is_playing():
             state.player.volume = vol/100
