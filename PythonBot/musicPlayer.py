@@ -129,7 +129,7 @@ class MusicPlayer:
         else:
             state.voice = await self.bot.join_voice_channel(channel)
 
-    async def play(self, ctx, song):
+    async def playSong(self, ctx, song):
         state = self.get_voice_state(ctx.message.server)
         if state.voice is None:
             await self.joinVC(ctx)
@@ -230,7 +230,8 @@ class MusicPlayer:
     async def play(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) > 0:
-            return await self.play(ctx, " ".join(song))
+            await self.playSong(ctx, " ".join(song))
+            return 
         state = self.get_voice_state(ctx.message.server)
         if state.current == None:
             await self.bot.say("There is nothing to sing")

@@ -1,4 +1,4 @@
-import asyncio, discord, log, comm.hangmaninstance, random, responses, string
+import asyncio, discord, log, comm.hangmaninstance, random, removeMessage, responses, string
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -13,32 +13,19 @@ EMBEDCOLOR=0x007a01
 class Hangman:
     def __init__(self, my_bot):
         self.bot = my_bot
-        self.games = []
+        self.games = {}
         self.prev = {}
-        self.busy = False
 
     # {prefix}hangman <create> {custom | sentence} | <guess>
     @commands.command(pass_context=1, help="Hangman game", aliases=["hm"])
     async def hangman(self, ctx, *args):
-        while self.busy:
-            asyncio.sleep(1)
-        self.busy = True
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
-        game = None
-        for x in self.games:
-            if x.id == ctx.message.server.id:
-                game = x
-                break
+        await removeMessage.deleteMessage(self.bot, ctx)
+        game = self.games.get(ctx.message.server.id)
+
         if len(args) <=0:
             if game == None:
-                self.busy = False
                 return await self.bot.say("Create a new game by using the command >hangman <create> {custom | sentence}")
             else:
-                self.busy = False
                 return await self.bot.say("Guess a letter or the sentence by using >hangman <guess>!")
                 
         if game == None:
@@ -49,44 +36,43 @@ class Hangman:
                         await self.bot.send_message(ctx.message.author, "Hi there!\nWhat would you like the sentence for the hangman game to be?")
                         m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, check=self.isPrivateCheck)
                         if m == None:
-                            self.busy = False
-                            return await self.bot.say("Senpai hasn't responded in a while, I guess we will stop playing then...")
+                            await self.bot.say("Senpai hasn't responded in a while, I guess we will stop playing then...")
+                            return
                         word = m.content
                     else:
                         word = " ".join(args[1:])
                 else:
                     r = random.randint(0,len(responses.hangmanwords)-1)
                     word = responses.hangmanwords[r]
-                g = comm.hangmaninstance.HangmanInstance(ctx.message.server.id, word)
-                self.games.append(g)
-                self.busy = False
+                g = comm.hangmaninstance.HangmanInstance(word)
+                self.games[ctx.message.server.id] = g
                 return await self.show(ctx.message.channel, g, "New game initialized")
             return await self.bot.say("There is no game running in this server b-b-baka")
         # Guess sentence
         if " ".join(args).lower().translate(str.maketrans('', '', string.punctuation)) == game.word.lower().translate(str.maketrans('', '', string.punctuation)):
-            self.games.remove(game)
-            self.busy = False
-            return await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
+            self.games.pop(ctx.message.server.id)
+            await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
+            return
         if len(args[0]) > 1:
             game.faults += 1
-            self.busy = False
-            return await self.show(ctx.message.channel, game, "Sorry, the word was not \"" + " ".join(args) + "\"...")
+            await self.show(ctx.message.channel, game, "Sorry, the word was not \"" + " ".join(args) + "\"...")
+            return
         # Guess letter
         result = game.guess(args[0])
         if result == WIN:
             self.games.remove(game)
-            self.busy = False
-            return await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
+            await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
+            return
         if result == RIGHT:
-            self.busy = False
-            return await self.show(ctx.message.channel, game, "You guessed right, the letter \"" + " ".join(args) + "\" is in the sentence")
+            await self.show(ctx.message.channel, game, "You guessed right, the letter \"" + " ".join(args) + "\" is in the sentence")
+            return
         if result == WRONG:
-            self.busy = False
-            return await self.show(ctx.message.channel, game, "Sorry, the letter \"" + " ".join(args) + "\" is not in the sentence")
+            await self.show(ctx.message.channel, game, "Sorry, the letter \"" + " ".join(args) + "\" is not in the sentence")
+            return
         if result == GAMEOVER:
-            self.busy = False
-            self.games.remove(game)
-            return await self.show(ctx.message.channel, game)
+            self.games.pop(ctx.message.server.id)
+            await self.show(ctx.message.channel, game)
+            return
 
     async def show(self, channel : discord.Channel, game : comm.hangmaninstance.HangmanInstance, message="", win=False):
         embed = discord.Embed(colour=EMBEDCOLOR)
@@ -120,13 +106,13 @@ class Hangman:
                     embed.add_field(name="Letters guessed wrong", value=s)
                 embed.add_field(name="Faults", value=str(game.faults) + "/6")
         m = await self.bot.send_message(channel, embed=embed)
-        if channel.server.id in self.prev:
+        if channel.server.id in self.prev.keys():
             try:
-                await self.bot.delete_message(self.prev[channel.server.id])
+                await self.bot.delete_message(self.prev.get(channel.server.id))
             except discord.Forbidden:
-                print(m.server + " | No permission to delete messages")
+                print(m.server.name + " | No permission to delete messages")
         if game.faults >= 6:
-            del self.prev[channel.server.id]
+            self.prev.pop(channel.server.id)
         else:
             self.prev[channel.server.id] = m
 

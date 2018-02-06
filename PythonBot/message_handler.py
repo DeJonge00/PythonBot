@@ -19,29 +19,37 @@ async def new(bot, message):
         await bot.add_reaction(message, ":Just:402575695508668427")
     if message.content == "\\o/":
         if (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
-            try:
-                await bot.delete_message(message)
-            except discord.Forbidden:
-                print(message.server.name + " | No permission to delete messages")
+            perms = ctx.message.channel.permissions_for(self.bot.user)
+            if not ((perms.manage_messages) & (perms.attach_files)):
+                return
+            await bot.delete_message(message)
             await send_random.file(bot, message.channel, "sun")
             bot.praise = datetime.datetime.utcnow()
+
     # Talking to the bot
     if (not message.content[0]==">"):
         if ((bot.user in message.mentions) | (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri'])))>0)):
-            if (message.author.id == constants.NYAid) | (message.author.id == constants.LOLIid) | (message.author.id == constants.WIZZid):
-                return await bot.send_message(message.channel, ":heart:")
+            if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid] & message.content.lower in ['send hearts', 'send heart', '❤']):
+                await bot.send_message(message.channel, ":heart:")
+                return
             if message.content[len(message.content)-1] == "?":
                 await send_random.string(bot, message.channel, responses.qa)
+                return
             else:
                 await send_random.string(bot, message.channel, responses.response)
+                return
     if (message.content.lower() == "ayy") & ((message.author.id == constants.NYAid) | (message.server.id == constants.LEGITSOCIALid)):
         await bot.send_message(message.channel, "lmao")
+        return
     if (message.content.lower() == "qyy") & ((message.author.id == constants.NYAid) | (message.author.id == constants.TRISTANid)):
         await bot.send_message(message.channel, "kmao")
+        return
     if (message.content.lower() == "lmao") & (message.author.id == constants.NYAid):
         await bot.send_message(message.channel, "ayy")
+        return
     if "lenny" in message.content.split(" "):
         await bot.send_message(message.channel, "( ͡° ͜ʖ ͡°)")
+        return
     if ("ded" == message.content):
         ml = list(bot.messages)
         m = ml.pop()

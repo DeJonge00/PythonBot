@@ -17,6 +17,7 @@ bot.spamlist = []
 bot.spongelist = []
 bot.MUSIC = True
 bot.RPGGAME = True
+bot.quitting = False
 
 logging.basicConfig()
 

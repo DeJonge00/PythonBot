@@ -8,20 +8,15 @@ DAMAGE = 10
 WEAPONSKILL = 1
 
 class RPGCharacter:
-    def __init__(self, n, health=HEALTH, damage=DAMAGE, weaponskill=WEAPONSKILL):
-        self.name = n
+    def __init__(self, name, health, maxhealth, damage, weaponskill):
+        self.name = name
         self.health = health
-        self.maxhealth = health
+        self.maxhealth = maxhealth
         self.damage = damage
         self.weaponskill = weaponskill
-        self.adventure = 0
-        self.adventurechannel = None
         
     # Add (negative) health, returns true if successful
-    async def addHealth(self, n):
-        if(n<-10000 | n>10000):
-            print("AddHealth out of bounds")
-            return False
+    def addHealth(self, n):
         if self.health + n < 0:
             self.health = 0
             return True
@@ -31,33 +26,37 @@ class RPGCharacter:
         self.health += n
         return True
 
+class RPGMonster(RPGCharacter):
+    def __init__(self, name="Monster", health=30, damage=10, ws=1):
+        super(RPGMonster, self).__init__(name, health, health, damage, ws)
+
 class RPGPlayer(RPGCharacter):
-    def __init__(self, user : discord.User, role="Undead"):
-        self.user = user
+    def __init__(self, userid : int, username : str, role="Undead", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
+        self.userid = userid
         self.role = role
         self.exp = 0
         self.money = 0
-        self.adventure = 0
-        super(RPGPlayer, self).__init__(user.name)
+        self.adventuretime = 0
+        self.adventurechannel = 0
+        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws)
 
-    async def addExp(self, n):
+    def addExp(self, n):
         if n<0:
-            return print("Warning: Exp add below zero (" + str(n) + ") on " + self.name)
+            print("Warning: Exp add below zero (" + str(n) + ") on " + self.user.name)
+            return False
         self.exp += n
         self.money += n
 
-    async def getLevel(self):
+    def getLevel(self):
         return math.floor(math.sqrt(self.exp) / 20)+1
 
-    async def setAdventure(self, n, channelid):
-        if (self.adventure <= 0) & (5 < n < 120):
-            self.adventure = n
+    def setAdventure(self, n, channelid):
+        if (self.adventuretime <= 0) & (5 < n < 120):
+            self.adventuretime = n
             self.adventurechannel = channelid
 
-    async def decreaseMoney(self, n):
-        if n<0:
+    def addMoney(self, n):
+        if money + n < 0:
             return False
-        if money - n < 0:
-            return False
-        self.money -= n
+        self.money += n
         return True

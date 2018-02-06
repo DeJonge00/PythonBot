@@ -1,18 +1,18 @@
-import asyncio, datetime, discord, log, math, pickle, random, removeMessage, rpggame.rpgcharacter, sqlite3
+import asyncio, datetime, discord, log, math, pickle, random, removeMessage, rpggame.rpgcharacter, rpggame.rpgdbconnect as dbcon, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 RPGSTATSFILE = 'logs/rpgstats.txt'
-RPGCHANNELFILE = 'logs/rpgchannel.db'
 RPG_EMBED_COLOR = 0x710075
 
 class RPGgame:
     def __init__(self, my_bot):
         self.bot = my_bot
-        self.bot.loop.create_task(self.gameloop())
         self.bossparties = {}
+        self.players = {}
+        self.bot.loop.create_task(self.gameloop())
 
-    async def battle1v1(self, channel : discord.Channel, p1 : rpggame.rpgcharacter.RPGCharacter, p2=rpggame.rpgcharacter.RPGCharacter("Monster", health=30), short=False, mockbattle=False):
+    async def battle1v1(self, channel : discord.Channel, p1 : rpggame.rpgcharacter.RPGCharacter, p2=rpggame.rpgcharacter.RPGMonster(), short=False, mockbattle=False):
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Battle", value=p1.name + " (" + str(p1.health) + ") vs " + p2.name + " (" + str(p2.health) + ")", inline=False)
         battlereport = ""
@@ -23,7 +23,7 @@ class RPGgame:
             ws = random.randint(0, p1.weaponskill + p2.weaponskill)
             if (ws < p1.weaponskill):
                 damage = math.floor((random.randint(100, 200) * p1.damage)/100);
-                await p2.addHealth(-1*damage)
+                p2.addHealth(-1*damage)
                 battlereport += "\n**" + p1.name + "** attacked for **" + str(damage) + "**"
             p3 = p1
             p1 = p2
@@ -55,7 +55,7 @@ class RPGgame:
                 p2.addExp(100)
         await self.bot.send_message(channel, embed=embed);
 
-    async def bossbattle(self, boss=rpggame.rpgcharacter.RPGCharacter("Monster", health=250)):
+    async def bossbattle(self, boss=rpggame.rpgcharacter.RPGMonster(name="Monster", health=250)):
         print("Boss time!")
         for serverid in self.bossparties:
             party = self.bossparties.get(serverid)
@@ -76,26 +76,22 @@ class RPGgame:
         await self.bot.wait_until_ready()
         print("RPG Gameloop started!")
         running = True;
-        await self.initialize()
         while running:
             time = datetime.datetime.utcnow()
             if time.minute%5 == 0:
                 print(time)
             if time.minute%15 == 0:
-                try:
-                    with open(RPGSTATSFILE, 'wb') as fp:
-                        pickle.dump(self.bot.rpgstats, fp)
-                    print("RPGStsts saved")
-                except:
-                    print("RPGStats saving failed")
+                dbcon.updatePlayers(list(self.players.values))
+                self.players = {}
+                print("Players saved")
             if time.minute == 0:
                 await self.bossbattle()
                 self.bossparties = {}
-            for u in self.bot.rpgstats:
+            for u in list(self.players.values()):
                 if u.health < u.maxhealth:
-                    await u.addHealth(10)
-                if u.adventure > 0:
-                    u.adventure -= 1
+                    u.addHealth(10)
+                if u.adventuretime > 0:
+                    u.adventuretime -= 1
                     if(random.randint(0,5)<=0):
                         await self.battle1v1(u.adventurechannel, u, short=True)
 
@@ -103,41 +99,33 @@ class RPGgame:
             #print("Sleeping for " + str(60-(endtime).second) + "s")
             await asyncio.sleep(60-endtime.second)
 
-    async def getParty(self, serverid):
+    def getParty(self, serverid):
         party = self.bossparties.get(serverid)
         if party == None:
             party = set()
             self.bossparties[serverid] = party
         return party
 
-    async def getPlayerData(self, user : discord.User):
-        for d in self.bot.rpgstats:
-            if d.user == user:
-                return d
-        print("User not found: " + user.name)
-        newdata = rpggame.rpgcharacter.RPGPlayer(user)
-        self.bot.rpgstats.append(newdata)
-        return newdata
+    def getPlayerData(self, user : discord.User, name=None):
+        p = self.players.get(user.id)
+        if p == None:
+            p = dbcon.getPlayer(user)
+            self.players[user.id] = p
+        if name != None:
+            p.name = name
+        return p
 
     async def handle(self, message : discord.Message):
-        data = await self.getPlayerData(message.author)
-        i = round(pow((await data.getLevel())+1, 1/3)  # levelbonus
+        data = self.getPlayerData(message.author, name=message.author.display_name)
+        i = round(pow((data.getLevel())+1, 1/3)  # levelbonus
                 *max(0, min(50, (len(message.content) - 3) / 2))); # Textbonus
-        await data.addExp(i)
-
-    async def initialize(self):
-        try:
-            with open (RPGSTATSFILE, 'rb') as fp:
-                self.bot.rpgstats = pickle.load(fp)
-        except:
-            print("Loading playerstats failed")
-            self.bot.rpgstats = []
+        data.addExp(i)
 
     async def quit(self):
         self.running = False
         #save rpgstats
-        with open(RPGSTATSFILE, 'wb') as fp:
-            pickle.dump(self.bot.rpgstats, fp)
+        dbcon.updatePlayers(list(self.players.values()))
+        print("RPGStats saved")
 
     @commands.group(pass_context=1, aliases=["g"], help="'>help rpg' for full options")
     async def rpg(self, ctx):
@@ -145,34 +133,39 @@ class RPGgame:
             await removeMessage.deleteMessage(self.bot, ctx)
             print("Commandnotfound")
     
+    @rpg.command(pass_context=1, help="Reset channels!")
+    async def updatedb(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
+        dbcon.updatePlayers(self.players.values())
+
     # DB commands
     @rpg.command(pass_context=1, help="Reset channels!")
     async def resetchannels(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
-        conn = sqlite3.connect(RPGCHANNELFILE)
-        c = conn.cursor()
-        c.execute("DROP TABLE IF EXISTS rpgchannel")
-        c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
-        conn.commit()
-        conn.close()
+        dbcon.initChannels()
         await self.bot.say("RPG channels reset")
+
+    @rpg.command(pass_context=1, help="Reset rpg data!")
+    async def resetstats(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
+        dbcon.initDB()
+        await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
     async def setchannel(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
-        conn = sqlite3.connect(RPGCHANNELFILE)
-        c = conn.cursor()
-        c.execute("INSERT OR REPLACE INTO rpgchannel VALUES (" + ctx.message.server.id + ", " + ctx.message.channel.id + ")")
-        t = c.fetchone()
-        conn.commit()
-        conn.close()
+        dbcon.setChannel(ctx.message.server.id, ctx.message.channel.id)
         await self.bot.say("This channel is now the rpg channel for this server")
 
-    # {prefix}rpgadventure #
+    # {prefix}rpg adventure #
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
     async def adventure(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -183,17 +176,17 @@ class RPGgame:
                 n = 10
         else:
             n = 10
-        data = await self.getPlayerData(ctx.message.author)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if data.adventure > 0:
             return await self.bot.say("You are already on an adventure")
         if n<5:
             return await self.bot.say("You came back before you even went out, 0 exp earned")
         if n>120:
             return await self.bot.say("You do not have the stamina to go on that long of an adventure")
-        data.adventure = n
+        data.setAdventure(n, ctx.message.channel)
         await self.bot.say(ctx.message.author.mention + ", you are now adventuring for " + str(n) + " minutes, good luck!")
 
-    # {prefix}rpgbattle <user>
+    # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -201,20 +194,20 @@ class RPGgame:
             return await self.bot.say("You need to tag someone to battle with!")
         if ctx.message.mentions[0] == ctx.message.author:
             return await self.bot.say("Suicide is never the answer :angry:")
-        await self.battle1v1(ctx.message.channel, await self.getPlayerData(ctx.message.author), p2=await self.getPlayerData(ctx.message.mentions[0]), mockbattle=True)
+        await self.battle1v1(ctx.message.channel, self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name), p2=self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name), mockbattle=True)
 
-    # {prefix}rpgstats <user>
-    @rpg.command(pass_context=1, aliases=['i'], help="Show the character's status information!")
+    # {prefix}rpg info <user>
+    @rpg.command(pass_context=1, aliases=['i', 'stats'], help="Show the character's status information!")
     async def info(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)>0:
-            data = await self.getPlayerData(ctx.message.mentions[0])
+            data = self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)
         else:
-            data = await self.getPlayerData(ctx.message.author)
+            data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         statnames = "Username:"
         stats = data.name
         statnames += "\nExperience:"
-        stats += "\n" + str(data.exp) + " (" + str(await data.getLevel()) + ")"
+        stats += "\n" + str(data.exp) + " (" + str(data.getLevel()) + ")"
         statnames += "\nHealth:"
         stats += "\n" + str(data.health) + "/" + str(data.maxhealth)
         statnames += "\nDamage:"
@@ -227,33 +220,34 @@ class RPGgame:
         embed.add_field(name="Stats", value=stats)
         await self.bot.say(embed=embed)
 
-    # {prefix}rpgjoin
+    # {prefix}rpg join
     @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
     async def join(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        data = await self.getPlayerData(ctx.message.author)
-        party = await self.getParty(ctx.message.server.id)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        party = self.getParty(ctx.message.server.id)
         if data in party:
             return await self.bot.say("You are already in the boss raid party...")
         party.add(data)
         await self.bot.say("Prepare yourself! You and your party of " + str(len(party)) + " will be fighting the boss at the hour mark!")
 
-    # {prefix}rpgparty
+    # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
     async def party(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        party = await self.getParty(ctx.message.server.id)
+        party = self.getParty(ctx.message.server.id)
         if len(party) <= 0:
             return await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")        
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Boss raiding party", value=str(len(party)) + " adventurers", inline=False)
         m = ""
         for n in party:
-            m += n.name + ", level " + str(await n.getLevel()) + "\n"
+            member = ctx.message.server.get_member(str(n.userid))
+            m += member.display_name + ", level " + str(n.getLevel()) + "\n"
         embed.add_field(name="Adventurers", value=m, inline=False)
         await self.bot.say(embed=embed)
 
-     # {prefix}rpgshop <item>
+     # {prefix}rpg shop <item>
     @rpg.command(pass_context=1, aliases=["s"], help="Shop for valuable items!")
     async def shop(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -265,7 +259,7 @@ class RPGgame:
             return print("buy damage")
         return print("Item " + args[0] + " not found") 
 
-     # {prefix}rpgtrain
+     # {prefix}rpg train
     @rpg.command(pass_context=1, aliases=["t"], help="Train your character!")
     async def train(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -276,7 +270,7 @@ class RPGgame:
         if args[0] in ["2", "damage", "dam"]:
             return print("train damage")
 
-    # {prefix}rpgtop #
+    # {prefix}rpg top #
     @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -298,6 +292,7 @@ class RPGgame:
             if (len(list) <= ((USERS_PER_PAGE*n)+i)):
                 break
             m = list[(USERS_PER_PAGE*n)+i]
-            embed.add_field(name="["+str((USERS_PER_PAGE*n)+i+1)+"] "+m.name, value=str(m.exp)+" exp\nLevel "+str(await m.getLevel()))
+            member = ctx.message.server.get_member(str(m.userid))
+            embed.add_field(name="["+str((USERS_PER_PAGE*n)+i+1)+"] "+member.display_name, value=str(m.exp)+" exp\nLevel "+str(m.getLevel()))
         await self.bot.send_message(ctx.message.channel, embed=embed)
             

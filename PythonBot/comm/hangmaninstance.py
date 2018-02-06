@@ -10,8 +10,7 @@ MAXFAULTS = 6
 
 # Normal commands
 class HangmanInstance:
-    def __init__(self, id : str, word : str):
-        self.id = id
+    def __init__(self, word : str):
         self.word = word
         self.faults = 0
         self.guesses = []
