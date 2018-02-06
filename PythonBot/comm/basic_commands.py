@@ -37,7 +37,7 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
-        return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + responses.spell[randint(0, len(responses.spell)-1)] + "** on " + " ".join(args) + ".\n" +  responses.spellresult[randint(0, len(responses.spellresult)-1)])
+        return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + responses.spell[random.randint(0, len(responses.spell)-1)] + "** on " + " ".join(args) + ".\n" +  responses.spellresult[random.randint(0, len(responses.spellresult)-1)])
 
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
@@ -68,17 +68,17 @@ class Basics:
     # {prefix}delete
     @commands.command(pass_context=1, help="Delete your message automatically in a bit!", aliases=["del", "d"])
     async def delete(self, ctx, *args):
-        s = args[0]
-        try: 
-            int(s)
-        except ValueError:
-            s = 20
-        s *= 100
-        asyncio.sleep(s)
+        if len(args) > 0:
+            s = args[0]
+            try: 
+                s = float(s)
+            except ValueError:
+                s = 1
+            await asyncio.sleep(s)
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            print(ctx.message.server + " | No permission to delete messages")
+            print(ctx.message.server.name + " | No permission to delete messages")
 
     # {prefix}echo <words>
     @commands.command(pass_context=1, help="I'll be a parrot!")
@@ -139,7 +139,7 @@ class Basics:
     async def hug(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
-            return await self.bot.send_message(ctx.message.channel, "Trying to give yourself a hug? Haha, so lonely...")
+            return await self.bot.send_message(ctx.message.channel, ctx.messageauthor.mention + "Trying to give yourself a hug? Haha, so lonely...")
         await send_random.string(self.bot, ctx.message.channel, responses.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick

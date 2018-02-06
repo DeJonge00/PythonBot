@@ -16,7 +16,7 @@ bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
 bot.spongelist = []
 bot.MUSIC = True
-bot.RPGGAME = False
+bot.RPGGAME = True
 
 logging.basicConfig()
 
@@ -55,15 +55,15 @@ bot.add_cog(comm.mod_commands.Mod(bot))
 @bot.event
 async def on_message(message):
     try:
-        if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
-            print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
         if (message.author.bot):
             return
-        if not (message.channel.is_private):
+        if (message.channel.is_private):
+            print(message.author.name + " | said in dm's: " + message.content)
+        else:
+            if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
+                print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
             if message.content:
                 await message_handler.new(bot, message)
-        else:
-            print(message.author.name + " | said in dm's: " + message.content)
         if len(message.attachments) > 0:
             await message_handler.new_pic(bot, message)
         # Commands in the message
@@ -73,7 +73,7 @@ async def on_message(message):
             await bot.rpggameinstance.handle(message)
     except discord.ext.commands.errors.CommandInvokeError as e:
         print(e)
-    except discord.ext.commands.errors.CommandNotFoundError:
+    except discord.ext.commands.errors.CommandNotFound:
         pass
 @bot.event
 async def on_message_edit(before, after):
@@ -128,7 +128,10 @@ async def on_channel_delete(channel):
     await log.error("deleted channel: " + channel.name, filename=channel.server.name)
 @bot.event
 async def on_channel_create(channel):
-    await log.error("created channel: " + channel.name, filename=channel.server.name)
+    if channel.is_private:
+        await log.error("created private channel", filename="private")
+    else:
+        await log.error("created channel: " + channel.name, filename=channel.server.name)
 @bot.event
 async def on_channel_update(before, after):
     m = "Channel updated:"
@@ -148,13 +151,12 @@ async def on_voice_state_update(before, after):
             channel = after.voice.voice_channel
             if (channel != None) & (before.voice.voice_channel != channel):
                 state = bot.musicplayer.get_voice_state(before.server)
-                
                 if bot.musicplayer.bot.is_voice_connected(before.server):
                     if channel == bot.musicplayer.bot.voice_client_in(before.server):
                         return
                     state.voice = await state.voice.move_to(channel)
                 else:
-                    state.voice = await bot.musicplayer.bot.join_voice_channel(channel)
+                    state.voice = await bot.join_voice_channel(channel)
 @bot.event
 async def on_member_update(before, after):
     changed = False

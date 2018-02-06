@@ -14,6 +14,8 @@ class RPGCharacter:
         self.maxhealth = health
         self.damage = damage
         self.weaponskill = weaponskill
+        self.adventure = 0
+        self.adventurechannel = None
         
     # Add (negative) health, returns true if successful
     async def addHealth(self, n):
@@ -45,11 +47,12 @@ class RPGPlayer(RPGCharacter):
         self.money += n
 
     async def getLevel(self):
-        return math.floor(math.sqrt(self.exp) / 20)
+        return math.floor(math.sqrt(self.exp) / 20)+1
 
-    async def setAdventure(self, n):
+    async def setAdventure(self, n, channelid):
         if (self.adventure <= 0) & (5 < n < 120):
             self.adventure = n
+            self.adventurechannel = channelid
 
     async def decreaseMoney(self, n):
         if n<0:

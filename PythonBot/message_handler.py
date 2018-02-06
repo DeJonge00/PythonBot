@@ -22,7 +22,7 @@ async def new(bot, message):
             try:
                 await bot.delete_message(message)
             except discord.Forbidden:
-                print(message.serner.name + " | No permission to delete messages")
+                print(message.server.name + " | No permission to delete messages")
             await send_random.file(bot, message.channel, "sun")
             bot.praise = datetime.datetime.utcnow()
     # Talking to the bot
@@ -54,22 +54,22 @@ async def new(bot, message):
     if message.content == "(╯°□°）╯︵ ┻━┻":
         await bot.send_message(message.channel, "┬─┬﻿ ノ( ゜-゜ノ)")
     # Nickname change
-    #if not ((message.author.id == constants.NYAid) | (message.author.id == constants.LOLIid) | (message.author.id == constants.WIZZid)):
-    #    if message.author.permissions_in(message.channel).change_nickname == True:
-    #        if (len(message.content.split(" ")) > 2) & (message.server.name.lower() == "9chat"):
-    #            if (message.content.split(" ")[0] == "i") & (message.content.split(" ")[1] == "am"):
-    #                try: 
-    #                    await bot.change_nickname(message.author, message.content.partition(' ')[2].partition(' ')[2])
-    #                    print("Changed nickname")
-    #                except Exception:
-    #                    print("Failed to change Nickname")
-    #        if (len(message.content.split(" ")) > 1) & (message.server.name.lower() == "9chat"):
-    #            if (message.content.lower().split(" ")[0] == "im") | (message.content.split(" ")[0] == "i'm"):
-    #                try: 
-    #                    await bot.change_nickname(message.author, message.content.partition(' ')[2])
-    #                    print("Changed nickname")
-    #                except Exception:
-    #                    print("Failed to change Nickname")
+    if not ((message.author.id == constants.NYAid) | (message.author.id == constants.LOLIid) | (message.author.id == constants.WIZZid)):
+        if message.author.permissions_in(message.channel).change_nickname == True:
+            if (len(message.content.split(" ")) > 2) & (message.server.name.lower() == "9chat"):
+                if (message.content.split(" ")[0] == "i") & (message.content.split(" ")[1] == "am"):
+                    try: 
+                        await bot.change_nickname(message.author, message.content.partition(' ')[2].partition(' ')[2])
+                        print("Changed nickname")
+                    except Exception:
+                        print("Failed to change Nickname")
+            if (len(message.content.split(" ")) > 1) & (message.server.name.lower() == "9chat"):
+                if (message.content.lower().split(" ")[0] == "im") | (message.content.split(" ")[0] == "i'm"):
+                    try: 
+                        await bot.change_nickname(message.author, message.content.partition(' ')[2])
+                        print("Changed nickname")
+                    except Exception:
+                        print("Failed to change Nickname")
     # Reactions
     # Tristan or churro
     if (message.author.id in ["224267646869176320", "214708282864959489"]) & ("pls" in message.content.lower().split(" ")) & (message.server.id == constants.NINECHATid):

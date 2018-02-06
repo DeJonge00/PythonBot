@@ -1,20 +1,18 @@
-import asyncio, datetime, discord, log, math, pickle, random, rpggame.rpgcharacter
+import asyncio, datetime, discord, log, math, pickle, random, removeMessage, rpggame.rpgcharacter, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 RPGSTATSFILE = 'logs/rpgstats.txt'
-RPGCHANNELID = "238995787927912449"
+RPGCHANNELFILE = 'logs/rpgchannel.db'
 RPG_EMBED_COLOR = 0x710075
 
 class RPGgame:
     def __init__(self, my_bot):
         self.bot = my_bot
         self.bot.loop.create_task(self.gameloop())
-        self.party = []
+        self.bossparties = {}
 
-    async def battle1v1(self, p1 : rpggame.rpgcharacter.RPGCharacter, p2=rpggame.rpgcharacter.RPGCharacter("Monster", health=30), channel=None, short=False, mockbattle=False):
-        if channel==None:
-            channel = self.bot.get_channel(RPGCHANNELID)
+    async def battle1v1(self, channel : discord.Channel, p1 : rpggame.rpgcharacter.RPGCharacter, p2=rpggame.rpgcharacter.RPGCharacter("Monster", health=30), short=False, mockbattle=False):
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Battle", value=p1.name + " (" + str(p1.health) + ") vs " + p2.name + " (" + str(p2.health) + ")", inline=False)
         battlereport = ""
@@ -57,12 +55,26 @@ class RPGgame:
                 p2.addExp(100)
         await self.bot.send_message(channel, embed=embed);
 
-    async def bossbattle(self, party, boss=rpggame.rpgcharacter.RPGCharacter("Monster", health=250), channel=None):
+    async def bossbattle(self, boss=rpggame.rpgcharacter.RPGCharacter("Monster", health=250)):
         print("Boss time!")
+        for serverid in self.bossparties:
+            party = self.bossparties.get(serverid)
+            if len(party) > 0:
+                conn = sqlite3.connect(RPGCHANNELFILE)
+                c = conn.cursor()
+                c.execute("SELECT channelID FROM rpgchannel WHERE serverID=" + serverid)
+                t = c.fetchone()
+                conn.commit()
+                conn.close()
+                if t==None:
+                    print("Channel not specified for server")
+                    return
+                channel = self.bot.get_channel(str(t[0]))
+                await self.bot.send_message(channel, "Leeeetttssss dduuuuuueeeelllll!!!")
 
     async def gameloop(self):
         await self.bot.wait_until_ready()
-        #print("Gameloop started!")
+        print("RPG Gameloop started!")
         running = True;
         await self.initialize()
         while running:
@@ -77,19 +89,26 @@ class RPGgame:
                 except:
                     print("RPGStats saving failed")
             if time.minute == 0:
-                await self.bossbattle(self.party)
-                self.party = []
+                await self.bossbattle()
+                self.bossparties = {}
             for u in self.bot.rpgstats:
                 if u.health < u.maxhealth:
                     await u.addHealth(10)
                 if u.adventure > 0:
                     u.adventure -= 1
                     if(random.randint(0,5)<=0):
-                        await self.battle1v1(u, short=True)
+                        await self.battle1v1(u.adventurechannel, u, short=True)
 
             endtime = datetime.datetime.utcnow()
-            #print(60-(endtime).seconds)
+            #print("Sleeping for " + str(60-(endtime).second) + "s")
             await asyncio.sleep(60-endtime.second)
+
+    async def getParty(self, serverid):
+        party = self.bossparties.get(serverid)
+        if party == None:
+            party = set()
+            self.bossparties[serverid] = party
+        return party
 
     async def getPlayerData(self, user : discord.User):
         for d in self.bot.rpgstats:
@@ -120,15 +139,43 @@ class RPGgame:
         with open(RPGSTATSFILE, 'wb') as fp:
             pickle.dump(self.bot.rpgstats, fp)
 
-    #   Commands
+    @commands.group(pass_context=1, aliases=["g"], help="'>help rpg' for full options")
+    async def rpg(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await removeMessage.deleteMessage(self.bot, ctx)
+            print("Commandnotfound")
+    
+    # DB commands
+    @rpg.command(pass_context=1, help="Reset channels!")
+    async def resetchannels(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
+        conn = sqlite3.connect(RPGCHANNELFILE)
+        c = conn.cursor()
+        c.execute("DROP TABLE IF EXISTS rpgchannel")
+        c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
+        conn.commit()
+        conn.close()
+        await self.bot.say("RPG channels reset")
+
+    @rpg.command(pass_context=1, help="Set rpg channel!")
+    async def setchannel(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+            return
+        conn = sqlite3.connect(RPGCHANNELFILE)
+        c = conn.cursor()
+        c.execute("INSERT OR REPLACE INTO rpgchannel VALUES (" + ctx.message.server.id + ", " + ctx.message.channel.id + ")")
+        t = c.fetchone()
+        conn.commit()
+        conn.close()
+        await self.bot.say("This channel is now the rpg channel for this server")
+
     # {prefix}rpgadventure #
-    @commands.command(pass_context=1, aliases=["rpgadv"], help="Go on an adventure!")
-    async def rpgadventure(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
+    @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
+    async def adventure(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) > 0:
             try:
                 n = int(args[0])
@@ -147,70 +194,19 @@ class RPGgame:
         await self.bot.say(ctx.message.author.mention + ", you are now adventuring for " + str(n) + " minutes, good luck!")
 
     # {prefix}rpgbattle <user>
-    @commands.command(pass_context=1, help="Battle a fellow discord ally to a deadly fight!")
-    async def rpgbattle(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
+    @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
+    async def battle(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)<1:
             return await self.bot.say("You need to tag someone to battle with!")
         if ctx.message.mentions[0] == ctx.message.author:
             return await self.bot.say("Suicide is never the answer :angry:")
-        await self.battle1v1(await self.getPlayerData(ctx.message.author), p2=await self.getPlayerData(ctx.message.mentions[0]), channel=ctx.message.channel, mockbattle=True)
-
-    # {prefix}rpgjoin
-    @commands.command(pass_context=1, help="Join a raid to kill a boss!")
-    async def rpgjoin(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
-        data = await self.getPlayerData(ctx.message.author)
-        if data in self.party:
-            return await self.bot.say("You are already in the boss raid party...")
-        self.party.append(data)
-        await self.bot.say("Prepare yourself! You and your party of " + str(len(self.party)) + " will be fighting the boss at the hour mark!")
-
-    # {prefix}rpgparty
-    @commands.command(pass_context=1, help="All players gathered to kill the boss")
-    async def rpgparty(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
-        if len(self.party) <= 0:
-            return await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")        
-        embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="Boss raiding party", value=str(len(self.party)) + " adventurers", inline=False)
-        m = ""
-        for n in self.party:
-            m += n.name + ", level " + str(await n.getLevel()) + "\n"
-        embed.add_field(name="Adventurers", value=m, inline=False)
-        await self.bot.say(embed=embed)
-
-     # {prefix}rpgshop <item>
-    @commands.command(pass_context=1, help="Shop for valuable items!")
-    async def rpgshop(self, ctx, *args):
-        if len(args)<=0:
-            return print("shop inventory")
-        if args[0] in ["1", "health", "hp"]:
-            return print("buy health")
-        if args[0] in ["2", "damage", "dam"]:
-            return print("buy damage")
-        return print("Item " + args[0] + " not found") 
+        await self.battle1v1(ctx.message.channel, await self.getPlayerData(ctx.message.author), p2=await self.getPlayerData(ctx.message.mentions[0]), mockbattle=True)
 
     # {prefix}rpgstats <user>
-    @commands.command(pass_context=1, aliases=['rpgstatus'], help="Show the character stats!")
-    async def rpgstats(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
+    @rpg.command(pass_context=1, aliases=['i'], help="Show the character's status information!")
+    async def info(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)>0:
             data = await self.getPlayerData(ctx.message.mentions[0])
         else:
@@ -231,24 +227,59 @@ class RPGgame:
         embed.add_field(name="Stats", value=stats)
         await self.bot.say(embed=embed)
 
-     # {prefix}rpgtrain
-    @commands.command(pass_context=1, help="Shop for valuable items!")
-    async def rpgtrain(self, ctx, *args):
+    # {prefix}rpgjoin
+    @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
+    async def join(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        data = await self.getPlayerData(ctx.message.author)
+        party = await self.getParty(ctx.message.server.id)
+        if data in party:
+            return await self.bot.say("You are already in the boss raid party...")
+        party.add(data)
+        await self.bot.say("Prepare yourself! You and your party of " + str(len(party)) + " will be fighting the boss at the hour mark!")
+
+    # {prefix}rpgparty
+    @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
+    async def party(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        party = await self.getParty(ctx.message.server.id)
+        if len(party) <= 0:
+            return await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")        
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.add_field(name="Boss raiding party", value=str(len(party)) + " adventurers", inline=False)
+        m = ""
+        for n in party:
+            m += n.name + ", level " + str(await n.getLevel()) + "\n"
+        embed.add_field(name="Adventurers", value=m, inline=False)
+        await self.bot.say(embed=embed)
+
+     # {prefix}rpgshop <item>
+    @rpg.command(pass_context=1, aliases=["s"], help="Shop for valuable items!")
+    async def shop(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args)<=0:
-            return print("training")
-        if args[0] in ["1", "ws", "hp"]:
+            return print("shop inventory")
+        if args[0] in ["1", "health", "hp"]:
             return print("buy health")
         if args[0] in ["2", "damage", "dam"]:
             return print("buy damage")
+        return print("Item " + args[0] + " not found") 
+
+     # {prefix}rpgtrain
+    @rpg.command(pass_context=1, aliases=["t"], help="Train your character!")
+    async def train(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if len(args)<=0:
+            return print("training")
+        if args[0] in ["1", "ws", "hp"]:
+            return print("train health")
+        if args[0] in ["2", "damage", "dam"]:
+            return print("train damage")
 
     # {prefix}rpgtop #
-    @commands.command(pass_context=1, help="Show the people with the most experience!")
-    async def rpgtop(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
-        await self.bot.send_typing(ctx.message.channel)
+    @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")
+    async def top(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) > 0:
             try:
                 n = int(args[0])-1

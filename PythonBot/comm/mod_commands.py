@@ -16,9 +16,15 @@ class Mod:
         for user in ctx.message.mentions:
             await self.bot.kick(user)
     
-    # {prefix}resetpats
-    @commands.command(pass_context=1, help="Reset pat db")
-    async def resetpats(self, ctx, *args):
+    #{prefix}reset
+    @commands.group(pass_context=1, help="'>help reset' for full options")
+    async def reset(self, ctx):
+        if ctx.invoked_subcommand is None:
+            pass
+
+    # {prefix}reset pats
+    @reset.command(pass_context=1, help="Reset pat db")
+    async def _pats(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
@@ -87,8 +93,8 @@ class Mod:
         await self.bot.purge_from(ctx.message.channel, limit=l)
 
     # {prefix}resetgoodbye
-    @commands.command(pass_context=1, help="Resets all goodbye messages")
-    async def resetgoodbye(self, ctx, *args):
+    @reset.command(pass_context=1, help="Resets all goodbye messages")
+    async def _goodbye(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
@@ -119,8 +125,8 @@ class Mod:
         await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
 
     # {prefix}resetwelcome
-    @commands.command(pass_context=1, help="Resets all welcome messages")
-    async def resetwelcome(self, ctx, *args):
+    @reset.command(pass_context=1, help="Resets all welcome messages")
+    async def _welcome(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
@@ -203,7 +209,4 @@ class Mod:
         #await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return
-        await self.bot.add_reaction(ctx.message, "\N{BROKEN HEART}")
-        await self.bot.add_reaction(ctx.message, "\N{WHITE SQUARE}")
-        await self.bot.add_reaction(ctx.message, "\N{NO ENTRY SIGN}")
-        await self.bot.add_reaction(ctx.message, "\U0000FE0F")
+        await self.bot.rpggameinstance.bossbattle()

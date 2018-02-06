@@ -18,7 +18,7 @@ class VoiceEntry:
     def embed(self, title="Music"):
         embed = discord.Embed(colour=embedColor)
         embed.set_author(name=title, icon_url=self.requester.avatar_url)
-        embed.add_field(name="Title", value=self.player.title)
+        embed.add_field(name="Title", value=self.player.title + "  ")
         embed.add_field(name="Duration", value="{0[0]}m {0[1]}s".format(divmod(self.player.duration, 60)))
         embed.add_field(name="Requester", value=self.requester.display_name)
         if self.player.likes != None:
@@ -94,104 +94,13 @@ class MusicPlayer:
         state.voice = self.bot.voice_client_in(server)
         return state
 
-    @commands.group(pass_context=1, aliases=["m"], help="'>music' for full options")
-    async def music(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await removeMessage.deleteMessage(self.bot, ctx)
-            embed = discord.Embed(colour=embedColor)
-            embed.set_author(name="Help", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="current", value="Show information about the song currently playing", inline=False)
-            embed.add_field(name="join", value="Let me join a voice channel", inline=False)
-            embed.add_field(name="leave", value="Send me away from the voice channel", inline=False)
-            embed.add_field(name="play", value="'>m p' to pause or resume singing, '>m p <songname | url>' to add a song to the queue", inline=False)
-            embed.add_field(name="queue", value="'>m q' to show the queue, '>m q <songname | url>' to add a song to the queue", inline=False)
-            embed.add_field(name="skip", value="Vote to skip the current song", inline=False)
-            embed.add_field(name="stop", value="Empty the queue and skip the current song, then leave the voice channel", inline=False)
-            embed.add_field(name="volume", value="Change the volume of the songs", inline=False)
-            await self.bot.say(embed=embed)
-
-    async def joinVC(self, ctx):
-        channel = ctx.message.author.voice.voice_channel
-        if channel == None:
-            return await self.bot.say("You are not in vc dummy")
+    async def stopPlaying(self, ctx):
         state = self.get_voice_state(ctx.message.server)
-        if self.bot.is_voice_connected(ctx.message.server):
-            if channel == self.bot.voice_client_in(ctx.message.server):
-                return await self.bot.say("Present o/")
-            state.voice = await state.voice.move_to(channel)
-        else:
-            state.voice = await self.bot.join_voice_channel(channel)
-
-    async def play(self, ctx, song):
-        state = self.get_voice_state(ctx.message.server)
-        if state.voice is None:
-            await self.joinVC(ctx)
-            state = self.get_voice_state(ctx.message.server)
-        try:
-            player = await state.voice.create_ytdl_player(song, before_options=constants.ytdl_before, ytdl_options=constants.ytdl_options, after=state.toggle_next)
-        except Exception as e:
-            embed = discord.Embed(colour=0x0000FF)
-            embed.add_field(name="Something went wrong", value="Cannot play selected song")
-            #fmt = '```py\n{}: {}\n```'
-            #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
-            await self.bot.send_message(ctx.message.channel, embed=embed)
-        else:
-            player.volume = state.volume
-            song = VoiceEntry(ctx.message, player)
-            await self.bot.say(embed=song.embed(title="Song added"))
-            await state.songs.put(song)
-
-    @music.command(name="current", pass_context=1, aliases=["c"], help="Show current song")
-    async def _current(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        state = self.get_voice_state(ctx.message.server)
-        if state.current == None:
-            await self.bot.say("I am not performing at the moment")
-            return
-        await self.bot.say(embed=state.current.embed())
-        return
-
-    @music.command(name="join", pass_context=1, aliases=["j"])
-    async def _join(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        state = self.get_voice_state(ctx.message.server)
-        force = False
-        if (len(args) > 0) & (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):
-            force=True
-        if (not(force)) & (state.is_playing()):
-            await self.bot.say("Im already singing somewhere else...")
-            return
-        await self.joinVC(ctx)
-
-    @music.command(name="leave", pass_context=1, aliases=["l"])
-    async def _leave(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        channel = ctx.message.author.voice.voice_channel
+        state.songs = asyncio.Queue()
+        state.skip()
         voiceClient = self.bot.voice_client_in(ctx.message.server)
-        if voiceClient == None:
-            await self.bot.say("I am not in vc dummy")
-            return
-        await voiceClient.disconnect()
-
-    @music.command(name="play", pass_context=1, aliases=["p"])
-    async def _play(self, ctx, *song):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if len(song) > 0:
-            return await self.play(ctx, " ".join(song))
-        state = self.get_voice_state(ctx.message.server)
-        if state.current == None:
-            await self.bot.say("There is nothing to sing")
-            return
-        if state.is_playing():
-            if state.player.is_playing():
-                state.player.pause()
-                await self.bot.say(ctx.message.author.display_name + " paused my singing...")
-                return
-            else:
-                state.player.resume()
-                await self.bot.say("Singing resumed")
-                return
-        await self.bot.say("I DUNNO WHAT TO DO ;-;")
+        if voiceClient != None:
+            await voiceClient.disconnect()
 
     async def handleReaction(self, reaction):
         state = self.get_voice_state(reaction.message.server)
@@ -206,13 +115,47 @@ class MusicPlayer:
                         state = self.get_voice_state(reaction.message.server)
                         await self.showQueue(reaction.message, state.page+1)
 
+    async def joinVC(self, ctx):
+        channel = ctx.message.author.voice.voice_channel
+        if channel == None:
+            await self.bot.say("You are not in vc dummy")
+            return
+        state = self.get_voice_state(ctx.message.server)
+        if self.bot.is_voice_connected(ctx.message.server):
+            if channel == self.bot.voice_client_in(ctx.message.server):
+                await self.bot.say("Present o/")
+                return
+            state.voice = await state.voice.move_to(channel)
+        else:
+            state.voice = await self.bot.join_voice_channel(channel)
+
+    async def play(self, ctx, song):
+        state = self.get_voice_state(ctx.message.server)
+        if state.voice is None:
+            await self.joinVC(ctx)
+            state = self.get_voice_state(ctx.message.server)
+        try:
+            player = await state.voice.create_ytdl_player(song, before_options=constants.ytdl_before, ytdl_options=constants.ytdl_options, after=state.toggle_next)
+        except Exception as e:
+            embed = discord.Embed(colour=0x0000FF)
+            embed.add_field(name="Something went wrong", value="Cannot play selected song")
+            fmt = '```py\n{}: {}\n```'
+            #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
+            print(fmt.format(type(e).__name__, e))
+            await self.bot.send_message(ctx.message.channel, embed=embed)
+        else:
+            player.volume = state.volume
+            song = VoiceEntry(ctx.message, player)
+            await self.bot.say(embed=song.embed(title="Song added"))
+            await state.songs.put(song)
+
     async def showQueue(self, message : discord.Message, page : int, new=False):
-        print("showq")
         state = self.get_voice_state(message.server)
         songs = state.songs._queue
         perpage = 10
         state.page = page
         if len(songs) <= 0:
+            await self.bot.send_message(message.channel, "The queue is empty! Queue some songs with '>m q'.")
             return
         if not (0 < page <= math.ceil(len(songs)/perpage)):
             return
@@ -232,15 +175,86 @@ class MusicPlayer:
         else:
             await self.bot.edit_message(state.lastmessage, embed=embed)
 
-    @music.command(name="queue", pass_context=1, aliases=["q"])
-    async def _queue(self, ctx, *song):
+    @commands.group(pass_context=1, aliases=["m"], help="'>help music' for full options")
+    async def music(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await removeMessage.deleteMessage(self.bot, ctx)
+            embed = discord.Embed(colour=embedColor)
+            embed.set_author(name="Help", icon_url=ctx.message.author.avatar_url)
+            embed.add_field(name="current", value="Show information about the song currently playing", inline=False)
+            embed.add_field(name="join", value="Let me join a voice channel", inline=False)
+            embed.add_field(name="leave", value="Send me away from the voice channel", inline=False)
+            embed.add_field(name="play", value="'>m p' to pause or resume singing, '>m p <songname | url>' to add a song to the queue", inline=False)
+            embed.add_field(name="queue", value="'>m q' to show the queue, '>m q <songname | url>' to add a song to the queue", inline=False)
+            embed.add_field(name="repeat", value="Repeat the current song", inline=False)
+            embed.add_field(name="reset", value="Reset the player for this channel", inline=False)
+            embed.add_field(name="skip", value="Vote to skip the current song", inline=False)
+            embed.add_field(name="stop", value="Empty the queue and skip the current song, then leave the voice channel", inline=False)
+            embed.add_field(name="volume", value="Change the volume of the songs", inline=False)
+            await self.bot.say(embed=embed)
+
+    @music.command(pass_context=1, aliases=["c"], help="Show information about the song currently playing")
+    async def current(self, ctx):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        state = self.get_voice_state(ctx.message.server)
+        if state.current == None:
+            await self.bot.say("I am not performing at the moment")
+            return
+        await self.bot.say(embed=state.current.embed())
+        return
+
+    @music.command(pass_context=1, aliases=["j"], help="Let me join a voice channel")
+    async def join(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        state = self.get_voice_state(ctx.message.server)
+        force = False
+        if (len(args) > 0):
+            if (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):
+                force=True
+        if (not(force)) & (state.is_playing()):
+            await self.bot.say("Im already singing somewhere else...")
+            return
+        await self.joinVC(ctx)
+
+    @music.command(pass_context=1, aliases=["l"], help="Send me away from the voice channel")
+    async def leave(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        channel = ctx.message.author.voice.voice_channel
+        voiceClient = self.bot.voice_client_in(ctx.message.server)
+        if voiceClient == None:
+            await self.bot.say("I am not in vc dummy")
+            return
+        await voiceClient.disconnect()
+
+    @music.command(pass_context=1, aliases=["p"], help="'>m p' to pause or resume singing, '>m p <songname | url>' to add a song to the queue")
+    async def play(self, ctx, *song):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if len(song) > 0:
+            return await self.play(ctx, " ".join(song))
+        state = self.get_voice_state(ctx.message.server)
+        if state.current == None:
+            await self.bot.say("There is nothing to sing")
+            return
+        if state.is_playing():
+            if state.player.is_playing():
+                state.player.pause()
+                await self.bot.say(ctx.message.author.display_name + " paused my singing...")
+                return
+            else:
+                state.player.resume()
+                await self.bot.say("Singing resumed")
+                return
+        await self.bot.say("I DUNNO WHAT TO DO ;-;")
+
+    @music.command(pass_context=1, aliases=["q"], help="'>m q' to show the queue, '>m q <songname | url>' to add a song to the queue")
+    async def queue(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) <= 0:
             return await self.showQueue(ctx.message, 1, new=True)
         await self.play(ctx, " ".join(song))
     
-    @music.command(name="repeat", pass_context=1, aliases=["r"])
-    async def _repeat(self, ctx, *song):
+    @music.command(pass_context=1, aliases=["r"], help="Repeat the current song")
+    async def repeat(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         if state.repeat:
@@ -250,8 +264,18 @@ class MusicPlayer:
         state.repeat = True
         await self.bot.say("Repeat is now on")
 
-    @music.command(name="skip", pass_context=1, aliases=["s"])
-    async def _skip(self, ctx, *args):
+    @music.command(pass_context=1, help="Reset the player for this channel")
+    async def reset(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        state = self.get_voice_state(ctx.message.server)
+        await self.stopPlaying(ctx)
+        try:
+            self.voice_states.pop(server.id)
+        except KeyError as e:
+            print(e)
+
+    @music.command(pass_context=1, aliases=["s"], help="Vote to skip the current song")
+    async def skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         force = False
@@ -271,19 +295,14 @@ class MusicPlayer:
             return
         await self.bot.say("Votes to skip: " + str(votes) + "/" + str(votesNeeded))
 
-    @music.command(name="stop", pass_context=1, aliases=["quit"])
-    async def _stop(self, ctx):
+    @music.command(pass_context=1, aliases=["quit"], help="Empty the queue and skip the current song, then leave the voice channel")
+    async def stop(self, ctx):
         await removeMessage.deleteMessage(self.bot, ctx)
-        state = self.get_voice_state(ctx.message.server)
-        state.songs = asyncio.Queue()
-        state.skip()
-        voiceClient = self.bot.voice_client_in(ctx.message.server)
-        if voiceClient != None:
-            await voiceClient.disconnect()
+        await self.stopPlaying(ctx)
         await self.bot.say("Baibai o/")
 
-    @music.command(name="volume", pass_context=1, aliases=["v"])
-    async def _volume(self, ctx, vol : int):
+    @music.command(pass_context=1, aliases=["v"], help="Change the volume of the songs")
+    async def volume(self, ctx, vol : int):
         await removeMessage.deleteMessage(self.bot, ctx)
         if(not await removeMessage.nyaCheck(self.bot, ctx)):
             return

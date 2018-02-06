@@ -73,9 +73,6 @@
     <Compile Include="comm\mod_commands.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="comm\music.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="responses.py">
       <SubType>Code</SubType>
     </Compile>
