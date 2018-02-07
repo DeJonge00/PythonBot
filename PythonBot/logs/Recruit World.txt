@@ -2494,3 +2494,47 @@ Skipping now!
 2018-02-07 12:34:10.646000 | general | Nya deleted: >rpg top
 2018-02-07 12:37:09.764000 | general | Nya deleted: >quit
 2018-02-07 12:37:19.413000 | general | Nya deleted: >rpg top
+2018-02-07 12:54:52.602000 | general | Nya deleted: >rpg top
+2018-02-07 13:10:18.992000 | general | Nya deleted: >rpg top
+2018-02-07 13:28:00.031000 | general | Nya deleted: >quit
+2018-02-07 13:28:14.699000 | general | Nya deleted: >rpg battle @SimpleMagicalBird
+2018-02-07 13:40:56.096000 | general | Nya deleted: >quit
+2018-02-07 13:41:13.445000 | general | Nya deleted: >rpg battle @SimpleMagicalBird
+2018-02-07 13:44:31.091000 | general | Nya deleted: >quit
+2018-02-07 13:44:44.776000 | general | Nya deleted: >rpg battle @SimpleMagicalBird
+2018-02-07 13:44:54.765000 | general | Nya deleted: >quit
+2018-02-07 13:45:06.147000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:45:38.053000 | general | Nya deleted: >quit
+2018-02-07 13:45:47.038000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:46:06.627000 | general | Nya deleted: >quit
+2018-02-07 13:46:19.789000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:47:14.345000 | general | Nya deleted: >quit
+2018-02-07 13:47:24.045000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:50:01.311000 | general | Nya deleted: >quit
+2018-02-07 13:50:11.220000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:51:53.034000 | general | Nya deleted: >quit
+2018-02-07 13:52:02.535000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:52:28.864000 | general | Nya deleted: >quit
+2018-02-07 13:52:37.682000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:54:12.563000 | general | Nya deleted: >quit
+2018-02-07 13:54:27.093000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:54:53.919000 | general | Nya deleted: >quit
+2018-02-07 13:55:03.733000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:55:37.034000 | general | Nya deleted: >quit
+2018-02-07 13:55:47.859000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:56:20.950000 | general | Nya deleted: >quit
+2018-02-07 13:56:30.051000 | general | Nya deleted: >g b @SimpleMagicalBird
+2018-02-07 13:57:49.168000 | general | Nya deleted: >quit
+2018-02-07 14:21:00.701000 | general | Nya deleted: >pp
+2018-02-07 14:22:41.889000 | general | Nya deleted: >quit
+2018-02-07 14:23:07.715000 | general | Nya deleted: >emoji <:GWvickyKannaPeek:395628482555543573>
+2018-02-07 14:57:17.197000 | general | Nya deleted: >quit
+2018-02-07 15:06:59.845000 | general | Nya deleted: >quit
+2018-02-07 15:08:51.273000 | general | Nya deleted: >quit
+2018-02-07 15:09:40.187000 | general | Nya deleted: >s hp
+2018-02-07 15:10:24.401000 | general | Nya deleted: >quit
+2018-02-07 15:19:33.924000 | general | Nya deleted: >quit
+2018-02-07 15:19:46.994000 | general | Nya deleted: >shop hp 30
+2018-02-07 15:19:55.687000 | general | Nya deleted: >shop hp 5
+2018-02-07 15:20:32.372000 | general | Nya deleted: >shop hp
+2018-02-07 16:02:13.009000 | general | Nya deleted: >quit

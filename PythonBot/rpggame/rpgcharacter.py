@@ -59,7 +59,7 @@ class RPGPlayer(RPGCharacter):
             self.adventurechannel = channelid
 
     def addMoney(self, n):
-        if money + n < 0:
+        if self.money + n < 0:
             return False
         self.money += n
         return True

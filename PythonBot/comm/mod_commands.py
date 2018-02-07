@@ -217,7 +217,7 @@ class Mod:
         try:
             await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
             if self.bot.RPGGAME:
-                await self.bot.rpggameinstance.quit()
+                await self.bot.rpggame.quit()
             if self.bot.MUSIC:
                 if self.bot.musicplayer != None:
                     self.bot.musicplayer.quit()

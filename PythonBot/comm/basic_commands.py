@@ -95,7 +95,7 @@ class Basics:
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS");
         embed = discord.Embed(colour=0x000000)
-        embed.set_author(name=str(ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url))
+        embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         try:
             emoji = re.findall('\d+', args[0])[0];
             print(emoji);

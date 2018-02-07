@@ -46,9 +46,11 @@ if bot.MUSIC:
     bot.musicplayer = musicPlayer.MusicPlayer(bot)
     bot.add_cog(bot.musicplayer)
 if bot.RPGGAME:
-    import rpggame.rpgmain
-    bot.rpggameinstance = rpggame.rpgmain.RPGgame(bot)
-    bot.add_cog(bot.rpggameinstance)
+    import rpggame.rpgmain, rpggame.rpgshop
+    bot.rpggame = rpggame.rpgmain.RPGGame(bot)
+    bot.rpgshop = rpggame.rpgshop.RPGShop(bot)
+    bot.add_cog(bot.rpggame)
+    bot.add_cog(bot.rpgshop)
 import comm.mod_commands
 bot.add_cog(comm.mod_commands.Mod(bot))
 
@@ -71,7 +73,7 @@ async def on_message(message):
         await bot.process_commands(message)
         # Send message to rpggame for exp
         if bot.RPGGAME:
-            await bot.rpggameinstance.handle(message)
+            await bot.rpggame.handle(message)
     except discord.ext.commands.errors.CommandInvokeError as e:
         print(e)
     except discord.ext.commands.errors.CommandNotFound:

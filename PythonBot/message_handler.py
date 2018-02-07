@@ -19,7 +19,7 @@ async def new(bot, message):
         await bot.add_reaction(message, ":Just:402575695508668427")
     if message.content == "\\o/":
         if (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
-            perms = ctx.message.channel.permissions_for(self.bot.user)
+            perms = message.channel.permissions_for(self.bot.user)
             if not ((perms.manage_messages) & (perms.attach_files)):
                 return
             await bot.delete_message(message)
