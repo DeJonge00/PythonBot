@@ -50,7 +50,7 @@ class RPGPlayer(RPGCharacter):
     def getLevel(self):
         return math.floor(math.sqrt(self.exp) / 20)+1
 
-    def setAdventure(self, n, channelid):
+    def setAdventure(self, n : int, channelid : int):
         if (self.adventuretime <= 0) & (5 < n < 120):
             self.adventuretime = n
             self.adventurechannel = channelid

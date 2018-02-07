@@ -221,7 +221,6 @@ class Mod:
             if self.bot.MUSIC:
                 if self.bot.musicplayer != None:
                     self.bot.musicplayer.quit()
-            asyncio.sleep(3)
         except Exception as e:
             print(e)
         await self.bot.logout()

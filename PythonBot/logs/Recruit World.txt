@@ -2396,3 +2396,52 @@ Skipping now!
 2018-02-06 20:52:03.925000 | general | Nya deleted: >rpg battle @SimpleMagicalBird
 2018-02-06 20:54:08.821000 | general | Nya deleted: >rpg a 50
 2018-02-06 21:21:54.566000 | general | Nya deleted: >quit
+2018-02-06 21:29:45.909000 | general | Nya deleted: >quit
+2018-02-06 21:31:49.758000 | general | Nya deleted: >quit
+2018-02-06 21:32:25.457000 | general | Nya deleted: >quit
+2018-02-06 21:32:49.386000 | general | Nya deleted: >quit
+2018-02-06 21:34:47.378000 | general | Nya deleted: >quit
+2018-02-06 21:35:22.469000 | general | Nya deleted: >quit
+2018-02-06 21:42:11.463000 | general | Nya deleted: >quit
+2018-02-06 21:46:10.134000 | general | Nya deleted: >quit
+2018-02-06 22:00:44.411000 | general | Nya deleted: >quit
+2018-02-06 22:00:54.091000 | general | Nya deleted: >quit
+2018-02-06 22:02:36.205000 | general | Nya deleted: >quit
+2018-02-06 22:04:39.612000 | general | Nya deleted: >quit
+2018-02-06 22:05:41.377000 | general | Nya deleted: >rpg a 30
+2018-02-06 22:06:58.211000 | general | Nya deleted: >quit
+2018-02-06 22:07:16.467000 | general | Nya deleted: >rpg a 50
+2018-02-06 22:11:42.119000 | general | Nya deleted: >quit
+2018-02-06 22:15:46.441000 | general | Nya deleted: >quit
+2018-02-06 22:16:16.207000 | general | Nya deleted: >rpg i
+2018-02-06 22:20:06.141000 | general | Nya deleted: >quit
+2018-02-06 22:20:16.938000 | general | Nya deleted: >rpg i
+2018-02-06 22:20:29.330000 | general | Nya deleted: >g a 10
+2018-02-06 22:20:32.979000 | general | Nya deleted: >rpg i
+2018-02-06 22:23:14.279000 | general | Nya deleted: >rpg i
+2018-02-06 22:30:26.703000 | general | Nya deleted: >rpg updatestats
+2018-02-06 22:30:47.241000 | general | Nya deleted: >rpg updatedb
+2018-02-06 22:32:55.694000 | general | Nya deleted: >quit
+2018-02-06 22:33:12.696000 | general | Nya deleted: >rpg updatedb
+2018-02-06 22:33:52.733000 | general | Nya deleted: >quit
+2018-02-06 22:34:10.404000 | general | Nya deleted: >g updatedb
+2018-02-06 22:34:15.338000 | general | Nya deleted: >rpg i
+2018-02-06 22:34:30.381000 | general | Nya deleted: >g adventure 10
+2018-02-06 22:50:34.889000 | general | Nya deleted: >quit
+2018-02-06 22:50:47.060000 | general | Nya deleted: >g a 10
+2018-02-06 22:50:56.212000 | general | Nya deleted: >g q 10
+2018-02-06 22:51:06.003000 | general | Nya deleted: >g a 10
+2018-02-06 22:52:10.111000 | general | Nya deleted: >quit
+2018-02-06 22:52:24.139000 | general | Nya deleted: >g i
+2018-02-06 22:52:30.144000 | general | Nya deleted: >g a 10
+2018-02-06 23:53:40.452000 | general | Nya deleted: >quit
+2018-02-06 23:53:54.471000 | general | Nya deleted: >g updatedb
+2018-02-06 23:54:06.113000 | general | Nya deleted: >g a 10
+2018-02-06 23:54:11.176000 | general | Nya deleted: >g updatedb
+2018-02-06 23:57:14.680000 | general | Nya deleted: >quit
+2018-02-06 23:57:25.871000 | general | Nya deleted: >g a 10
+2018-02-06 23:57:29.855000 | general | Nya deleted: >g i
+2018-02-06 23:57:26.257000 | general | Biribiri deleted: @Nya, you are now adventuring for 10 minutes, good luck!
+2018-02-07 00:03:22.428000 | general | Nya deleted: >echo @Nya
+2018-02-07 00:03:34.964000 | general | Nya deleted: >echo \@Nya
+2018-02-07 00:06:33.298000 | general | Nya deleted: >quit

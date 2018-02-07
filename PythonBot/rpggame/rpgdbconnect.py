@@ -47,7 +47,7 @@ def getPlayer(player : discord.User):
     conn.close()
     if p == None:
         print("User not found: " + player.name)
-        return rpgchar.RPGPlayer(player.id)
+        return rpgchar.RPGPlayer(player.id, player.name)
     player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5])
     if i != None:
         player.exp = i[1]
@@ -66,6 +66,5 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
         c.execute("INSERT OR REPLACE INTO items VALUES (?, ?, ?)", params)
         params = (s.userid, s.adventuretime, s.adventurechannel)
         c.execute("INSERT OR REPLACE INTO adventure VALUES (?, ?, ?)", params)
-    t = c.fetchone()
     conn.commit()
     conn.close()

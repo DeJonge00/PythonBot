@@ -1,9 +1,10 @@
-import asyncio, datetime, discord, log, math, pickle, random, removeMessage, rpggame.rpgcharacter, rpggame.rpgdbconnect as dbcon, sqlite3
+import asyncio, datetime, secret.constants as constants, discord, log, math, pickle, random, removeMessage, rpggame.rpgcharacter as rpgchar, rpggame.rpgdbconnect as dbcon, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 RPGSTATSFILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
+BATTLETURNS = 30
 
 class RPGgame:
     def __init__(self, my_bot):
@@ -12,14 +13,14 @@ class RPGgame:
         self.players = {}
         self.bot.loop.create_task(self.gameloop())
 
-    async def battle1v1(self, channel : discord.Channel, p1 : rpggame.rpgcharacter.RPGCharacter, p2=rpggame.rpgcharacter.RPGMonster(), short=False, mockbattle=False):
+    async def battle1v1(self, channel : discord.Channel, p1 : rpgchar.RPGCharacter, p2=rpgchar.RPGMonster(), short=False, mockbattle=False):
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Battle", value=p1.name + " (" + str(p1.health) + ") vs " + p2.name + " (" + str(p2.health) + ")", inline=False)
         battlereport = ""
         i = 0
         h1 = p1.health
         h2 = p2.health
-        while (i<30) & (p1.health > 0) & (p2.health > 0):
+        while (i<BATTLETURNS) & (p1.health > 0) & (p2.health > 0):
             ws = random.randint(0, p1.weaponskill + p2.weaponskill)
             if (ws < p1.weaponskill):
                 damage = math.floor((random.randint(100, 200) * p1.damage)/100);
@@ -49,13 +50,13 @@ class RPGgame:
             p1.health = h1
             p2.health = h2
         else:
-            if isinstance(p1, rpgcharacter.RPGPlayer):
+            if isinstance(p1, rpgchar.RPGPlayer):
                 p1.addExp(100)
-            if isinstance(p2, rpgcharacter.RPGPlayer):
+            if isinstance(p2, rpgchar.RPGPlayer):
                 p2.addExp(100)
         await self.bot.send_message(channel, embed=embed);
 
-    async def bossbattle(self, boss=rpggame.rpgcharacter.RPGMonster(name="Monster", health=250)):
+    async def bossbattle(self, boss=rpgchar.RPGMonster(name="Monster", health=250)):
         print("Boss time!")
         for serverid in self.bossparties:
             party = self.bossparties.get(serverid)
@@ -81,8 +82,12 @@ class RPGgame:
             if time.minute%5 == 0:
                 print(time)
             if time.minute%15 == 0:
-                dbcon.updatePlayers(list(self.players.values))
-                self.players = {}
+                p = self.players.values()
+                if len(p) > 0:
+                    dbcon.updatePlayers(p)
+                    for i in self.players.keys():
+                        if self.players.get(i).adventuretime <= 0:
+                            self.players.pop(i)
                 print("Players saved")
             if time.minute == 0:
                 await self.bossbattle()
@@ -93,7 +98,7 @@ class RPGgame:
                 if u.adventuretime > 0:
                     u.adventuretime -= 1
                     if(random.randint(0,5)<=0):
-                        await self.battle1v1(u.adventurechannel, u, short=True)
+                        await self.battle1v1(self.bot.get_channel(u.adventurechannel), u, short=True)
 
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
@@ -124,19 +129,20 @@ class RPGgame:
     async def quit(self):
         self.running = False
         #save rpgstats
-        dbcon.updatePlayers(list(self.players.values()))
+        dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
     @commands.group(pass_context=1, aliases=["g"], help="'>help rpg' for full options")
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            print("Commandnotfound")
+            await self.bot.say("Use '>help rpg' for all the rpg commands")
     
     @rpg.command(pass_context=1, help="Reset channels!")
     async def updatedb(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+        if not(ctx.message.author.id==constants.NYAid):
+            await self.bot.say("Hahahaha, no")
             return
         dbcon.updatePlayers(self.players.values())
 
@@ -177,13 +183,16 @@ class RPGgame:
         else:
             n = 10
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if data.adventure > 0:
-            return await self.bot.say("You are already on an adventure")
+        if data.adventuretime > 0:
+            await self.bot.say("You are already on an adventure")
+            return
         if n<5:
-            return await self.bot.say("You came back before you even went out, 0 exp earned")
+            await self.bot.say("You came back before you even went out, 0 exp earned")
+            return
         if n>120:
-            return await self.bot.say("You do not have the stamina to go on that long of an adventure")
-        data.setAdventure(n, ctx.message.channel)
+            await self.bot.say("You do not have the stamina to go on that long of an adventure")
+            return
+        data.setAdventure(n, ctx.message.channel.id)
         await self.bot.say(ctx.message.author.mention + ", you are now adventuring for " + str(n) + " minutes, good luck!")
 
     # {prefix}rpg battle <user>
@@ -206,6 +215,13 @@ class RPGgame:
             data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         statnames = "Username:"
         stats = data.name
+        statnames += "\nStatus:"
+        if data.health <= 0:
+            stats += "\nDead"
+        elif data.adventuretime > 0:
+            stats += "\nAdventuring for " + str(data.adventuretime) + "m"
+        else:
+            stats += "\nAlive"
         statnames += "\nExperience:"
         stats += "\n" + str(data.exp) + " (" + str(data.getLevel()) + ")"
         statnames += "\nHealth:"
@@ -265,9 +281,9 @@ class RPGgame:
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args)<=0:
             return print("training")
-        if args[0] in ["1", "ws", "hp"]:
+        if args[0] in ["1", "health", "hp"]:
             return print("train health")
-        if args[0] in ["2", "damage", "dam"]:
+        if args[0] in ["2", "damage", "dam", "s", "strength"]:
             return print("train damage")
 
     # {prefix}rpg top #

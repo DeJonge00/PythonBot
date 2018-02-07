@@ -29,7 +29,7 @@ async def new(bot, message):
     # Talking to the bot
     if (not message.content[0]==">"):
         if ((bot.user in message.mentions) | (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri'])))>0)):
-            if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid] & message.content.lower in ['send hearts', 'send heart', '❤']):
+            if ((message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) & ('heart' in message.content.lower())):
                 await bot.send_message(message.channel, ":heart:")
                 return
             if message.content[len(message.content)-1] == "?":

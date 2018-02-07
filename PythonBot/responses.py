@@ -40,7 +40,17 @@ response = [
             "Awwwn... such a cute voice",
             "You sound like a pretty nice person",
             "I want you to treat me like a princess, pls!",
-            "You need more hugs in your life..."
+            "You need more hugs in your life...",
+            "YES YES YES YES YES",
+            "DEATH TO MY ENEMIES",
+            "B-b-b-baka!",
+            "*embarrassment intensifies*",
+            "Give me a big hug!",
+            "Send hearts <3",
+            "Use the knife! You can do it!",
+            "<@143037788969762816> send help daddy :sob:",
+            "Uhhh... uhh... *TRAPS ARE GAY AS FUCK* :smirk:",
+            "*Soft singing intensifies*"
         ]
 
 # random responses
