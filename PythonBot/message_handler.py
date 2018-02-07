@@ -1,4 +1,4 @@
-import secret.constants as constants, discord, datetime, log, requests, random, responses, send_random, string, urllib, comm.image_commands, os.path
+import constants, discord, datetime, log, requests, random, send_random, string, urllib, comm.image_commands, os.path
 from discord.ext.commands import Bot
 from PIL import Image
 from io import BytesIO
@@ -29,14 +29,14 @@ async def new(bot, message):
     # Talking to the bot
     if (not message.content[0]==">"):
         if ((bot.user in message.mentions) | (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri'])))>0)):
-            if ((message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) & ('heart' in message.content.lower())):
+            if ((message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) & any(word in message.content.lower() for word in ['heart','pls', 'love'])):
                 await bot.send_message(message.channel, ":heart:")
                 return
             if message.content[len(message.content)-1] == "?":
-                await send_random.string(bot, message.channel, responses.qa)
+                await send_random.string(bot, message.channel, constants.qa)
                 return
             else:
-                await send_random.string(bot, message.channel, responses.response)
+                await send_random.string(bot, message.channel, constants.response)
                 return
     if (message.content.lower() == "ayy") & ((message.author.id == constants.NYAid) | (message.server.id == constants.LEGITSOCIALid)):
         await bot.send_message(message.channel, "lmao")
@@ -56,7 +56,7 @@ async def new(bot, message):
         while((m == message) | (m.channel != message.channel)):
             m = ml.pop()
         if (message.timestamp - m.timestamp).seconds > 60:
-            await send_random.string(bot, message.channel, responses.ded)
+            await send_random.string(bot, message.channel, constants.ded)
         else:
             log.error("Ded said, but the time was " + str((message.timestamp - m.timestamp).seconds) + "seconds")
     if message.content == "(╯°□°）╯︵ ┻━┻":

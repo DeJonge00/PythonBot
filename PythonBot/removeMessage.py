@@ -1,4 +1,4 @@
-import asyncio, discord, secret.constants as constants
+import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 

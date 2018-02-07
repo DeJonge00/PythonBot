@@ -1,4 +1,4 @@
-import asyncio, datetime, secret.constants as constants, discord, log, math, pickle, random, removeMessage, sqlite3
+import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, sqlite3
 import rpggame.rpgcharacter as rpgchar, rpggame.rpgdbconnect as dbcon, rpggame.rpgshop as rpgshop
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -301,13 +301,19 @@ class RPGGame:
         exp = ""
         for m in list[i:end]:
             i += 1
-            try:
-                name = ctx.message.server.get_member(str(m[0])).display_name
-            except AttributeError:
-                name = "id" + str(m[0])
-            nums += str(i) + "\n"
-            members += name + "\n"
-            exp += str(m[1]) + "exp (" + str(rpgchar.getLevelByExp(m[1])) + ")\n"
+            member = self.players.get(str(m[0]))
+            if member != None:
+                nums += str(i) + "\n"
+                members += member.name + "\n"
+                exp += str(member.exp) + "exp (" + str(member.getLevel()) + ")\n"
+            else:
+                try:
+                    name = ctx.message.server.get_member(str(m[0])).display_name
+                except AttributeError:
+                    name = "id" + str(m[0])
+                nums += str(i) + "\n"
+                members += name + "\n"
+                exp += str(m[1]) + "exp (" + str(rpgchar.getLevelByExp(m[1])) + ")\n"
         embed.add_field(name="Rank", value=nums)
         embed.add_field(name="Player", value=members)
         embed.add_field(name="Exp (Level)", value=exp)

@@ -1,10 +1,9 @@
-import asyncio, discord, secret.constants as constants, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, sqlite3
+import asyncio, discord, constants, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, sqlite3
 from discord.ext import commands
-RPGDB = 'logs/rpg.db'
 
 # Channels
 def initChannels():
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS rpgchannel")
     c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
@@ -12,7 +11,7 @@ def initChannels():
     conn.close()
 
 def setChannel(serverID, channelID):
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     c.execute("INSERT OR REPLACE INTO rpgchannel VALUES (" + str(serverID) + ", " + str(channelID) + ")")
     t = c.fetchone()
@@ -21,7 +20,7 @@ def setChannel(serverID, channelID):
 
 # Stats
 def initDB():
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS stats")
     c.execute("DROP TABLE IF EXISTS items")
@@ -35,7 +34,7 @@ def initDB():
     conn.close()
 
 def getPlayer(player : discord.User):
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     c.execute("SELECT * FROM stats WHERE playerID=" + str(player.id))
     p = c.fetchone()
@@ -57,7 +56,7 @@ def getPlayer(player : discord.User):
     return player
 
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     for s in stats:
         params = (s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill)
@@ -70,7 +69,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     conn.close()
 
 def getTopPlayers(server="all"):
-    conn = sqlite3.connect(RPGDB)
+    conn = sqlite3.connect(constants.RPGDB)
     c = conn.cursor()
     c.execute("SELECT playerID, exp FROM items ORDER BY exp DESC")
     a = c.fetchall()

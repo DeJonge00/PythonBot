@@ -40,7 +40,7 @@
     <Compile Include="rpggame\rpgdbconnect.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="secret\constants.py">
+    <Compile Include="secret\secrets.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="comm\basic_commands.py">
@@ -76,7 +76,7 @@
     <Compile Include="comm\mod_commands.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="responses.py">
+    <Compile Include="constants.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PythonBot.py" />

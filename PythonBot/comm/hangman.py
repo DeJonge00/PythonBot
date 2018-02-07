@@ -1,4 +1,4 @@
-import asyncio, discord, log, comm.hangmaninstance, random, removeMessage, responses, string
+import asyncio, discord, log, comm.hangmaninstance, random, removeMessage, constants, string
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -42,8 +42,8 @@ class Hangman:
                     else:
                         word = " ".join(args[1:])
                 else:
-                    r = random.randint(0,len(responses.hangmanwords)-1)
-                    word = responses.hangmanwords[r]
+                    r = random.randint(0,len(constants.hangmanwords)-1)
+                    word = constants.hangmanwords[r]
                 g = comm.hangmaninstance.HangmanInstance(word)
                 self.games[ctx.message.server.id] = g
                 return await self.show(ctx.message.channel, g, "New game initialized")

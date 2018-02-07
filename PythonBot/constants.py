@@ -1,3 +1,30 @@
+prefix = ">"
+RPGDB = 'logs/rpg.db'
+
+# User Id's
+NYAid = "143037788969762816"
+LOLIid = "182127850919428096"
+WIZZid = "224620110277509120"
+CATEid = "183977132622348288"
+TRISTANid = "214708282864959489"
+
+# Server id's
+PRIVATESERVERid = "226010107513798656"
+NINECHATid = "225995968703627265"
+LEGITSOCIALid = "319581059467575297"
+
+ytdl_options = dict(
+    format="bestaudio/best",
+    extractaudio=True,
+    audioformat="mp3",
+    noplaylist=True,
+    default_search="auto",
+    quiet=True,
+    nocheckcertificate=True
+)
+
+ytdl_before = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
+
 # talking to bb
 
 qa = [
@@ -11,7 +38,9 @@ qa = [
             "Ehm.. Ehmmm... Yes???",
             "No, no, no, no pls :sob:",
             "To be or not to be, *that's* the question!",
-            "Ask that your waifu, you weeb"
+            "Ask that your waifu, you weeb",
+            "If there is one thing I am sure of, it is that traps are gay af",
+            "About a 4% chance of that..."
         ]
 
 response = [
@@ -55,7 +84,9 @@ response = [
             "uwu",
             "owo",
             "-3-",
-            "Ewwwwww... Don't touch me..."
+            "Ewwwwww... Don't touch me...",
+            "Praise Git like you never praised before!",
+            "Code me like one of your french bots"
         ]
 
 # random responses

@@ -1,4 +1,4 @@
-import asyncio, datetime, secret.constants as constants, discord, log, random, re, responses, removeMessage, send_random, wikipedia, sqlite3
+import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
@@ -37,7 +37,7 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
-        return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + responses.spell[random.randint(0, len(responses.spell)-1)] + "** on " + " ".join(args) + ".\n" +  responses.spellresult[random.randint(0, len(responses.spellresult)-1)])
+        return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + constants.spell[random.randint(0, len(constants.spell)-1)] + "** on " + " ".join(args) + ".\n" +  constants.spellresult[random.randint(0, len(constants.spellresult)-1)])
 
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
@@ -50,7 +50,7 @@ class Basics:
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        return await send_random.string(self.bot, ctx.message.channel, responses.compliments, [" ".join(args)])
+        return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
     
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
@@ -132,7 +132,7 @@ class Basics:
     @commands.command(pass_context=1, help="Make a random face!")
     async def face(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        await send_random.string(self.bot, ctx.message.channel, responses.faces)
+        await send_random.string(self.bot, ctx.message.channel, constants.faces)
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
@@ -140,7 +140,7 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, ctx.messageauthor.mention + "Trying to give yourself a hug? Haha, so lonely...")
-        await send_random.string(self.bot, ctx.message.channel, responses.hug, [ctx.message.author.mention, " ".join(args)])
+        await send_random.string(self.bot, ctx.message.channel, constants.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick
     @commands.command(pass_context=1, help="Kick someone for funzies")
@@ -159,7 +159,7 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
-        await send_random.string(self.bot, ctx.message.channel, responses.kill, [" ".join(args)])
+        await send_random.string(self.bot, ctx.message.channel, constants.kill, [" ".join(args)])
 
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")

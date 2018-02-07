@@ -1,14 +1,15 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import secret.constants as constants, customHelpFormatter, datetime, log, logging, message_handler, pickle, random, responses, sys, sqlite3
+import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3
+import secret.secrets as secrets, constants
 
 # Basic configs
 pi = 3.14159265358979323846264
 REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
-bot = Bot(command_prefix=commands.when_mentioned_or(">"), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
+bot = Bot(command_prefix=commands.when_mentioned_or(constants.prefix), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
 bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
 bot.PATSDB = "logs/pats.db"
@@ -246,4 +247,4 @@ async def on_member_unban(member):
     await log.error("user " + member.name + " unbanned", filename=member.server.name)
 
 # Actually run the bot
-bot.run(constants.bot_token)
+bot.run(secrets.bot_token)

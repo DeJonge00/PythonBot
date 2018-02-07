@@ -1,4 +1,4 @@
-import asyncio, discord, secret.constants as constants, log, pickle, removeMessage, sqlite3
+import asyncio, discord, constants, log, pickle, removeMessage, sqlite3
 from discord.ext import commands
 from random import randint
 
@@ -11,7 +11,7 @@ class Mod:
     @commands.command(pass_context=1, help="BANHAMMER")
     async def banish(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        perms = ctx.message.channel.permissions_for(self.bot.user)
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not((ctx.message.author.id==constants.NYAid) | (perms.kick_members)):
             await self.bot.say("Hahahaha, no")
             return
@@ -21,9 +21,6 @@ class Mod:
     #{prefix}reset
     @commands.group(pass_context=1, help="'>help reset' for full options")
     async def reset(self, ctx):
-        if not(ctx.message.author.id==constants.NYAid):
-            await self.bot.say("Hahahaha, no")
-            return
         if ctx.invoked_subcommand is None:
             pass
 
@@ -56,7 +53,7 @@ class Mod:
     @commands.command(pass_context=1, help="Nickname a person", aliases=["nick", "nn"])
     async def nickname(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        perms = ctx.message.channel.permissions_for(self.bot.user)
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
         if len(ctx.message.mentions) > 0:
             if len(args) > 1:
                 if not((ctx.message.author.id==constants.NYAid) | (perms.manage_nicknames)):
@@ -90,7 +87,7 @@ class Mod:
     @commands.command(pass_context=1, help="Remove a weird chat")
     async def purge(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        perms = ctx.message.channel.permissions_for(self.bot.user)
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_messages)):
             await self.bot.say("Hahahaha, no")
             return
@@ -126,6 +123,7 @@ class Mod:
     @commands.command(pass_context=1, help="Sets a goodbye message")
     async def setgoodbye(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
             await self.bot.say("Hahahaha, no")
             return
@@ -143,7 +141,7 @@ class Mod:
 
     # {prefix}resetwelcome
     @reset.command(pass_context=1, help="Resets all welcome messages")
-    async def _welcome(self, ctx, *args):
+    async def welcome(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
@@ -160,6 +158,7 @@ class Mod:
     @commands.command(pass_context=1, help="Sets a welcome message")
     async def setwelcome(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
             await self.bot.say("Hahahaha, no")
             return

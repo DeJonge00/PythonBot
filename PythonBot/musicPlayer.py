@@ -1,4 +1,4 @@
-import argparse, asyncio, secret.constants as constants, discord, removeMessage, math
+import argparse, asyncio, constants, discord, removeMessage, math
 from discord.ext import commands
 from discord.ext.commands import Bot
 import urllib.request, urllib.parse, re
@@ -252,7 +252,7 @@ class MusicPlayer:
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) <= 0:
             return await self.showQueue(ctx.message, 1, new=True)
-        await self.play(ctx, " ".join(song))
+        await self.playSong(ctx, " ".join(song))
     
     @music.command(pass_context=1, aliases=["r"], help="Repeat the current song")
     async def repeat(self, ctx, *song):

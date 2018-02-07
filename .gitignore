@@ -243,9 +243,9 @@ ModelManifest.xml
 
 */pics/*
 */picsC\#/*
-*/constants.py
+*/serets.py
 */secret/*
-constants.py
+secrets.py
 **/__pycache__/*
 *.pyc
 **/*.pyc
