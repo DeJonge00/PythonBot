@@ -50,7 +50,12 @@ response = [
             "Use the knife! You can do it!",
             "<@143037788969762816> send help daddy :sob:",
             "Uhhh... uhh... *TRAPS ARE GAY AS FUCK* :smirk:",
-            "*Soft singing intensifies*"
+            "*Soft singing intensifies*",
+            ":sweat_drops: :sweat_drops: :sweat_drops: :smirk:",
+            "uwu",
+            "owo",
+            "-3-",
+            "Ewwwwww... Don't touch me..."
         ]
 
 # random responses
@@ -210,12 +215,13 @@ spell = [
             "Hyperbeam"
         ]
 
-spellresult = [     # Good results
+spellresult = [
+            # Good results
             "It's super effective!",    
             "An accurate hit!",
             "Target annihilated!",
             "Obliterated!",
-                    # Bad results
+            # Bad results
             "It misfired!",
             "It missed it's target!",
             "The target was immune!",

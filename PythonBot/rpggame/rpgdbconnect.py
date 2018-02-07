@@ -68,3 +68,12 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
         c.execute("INSERT OR REPLACE INTO adventure VALUES (?, ?, ?)", params)
     conn.commit()
     conn.close()
+
+def getTopPlayers(server="all"):
+    conn = sqlite3.connect(RPGDB)
+    c = conn.cursor()
+    c.execute("SELECT playerID, exp FROM items ORDER BY exp DESC")
+    a = c.fetchall()
+    conn.commit()
+    conn.close()
+    return a

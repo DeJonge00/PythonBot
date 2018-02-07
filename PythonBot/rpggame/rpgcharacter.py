@@ -7,6 +7,9 @@ ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
 
+def getLevelByExp(exp):
+    return math.floor(math.sqrt(exp) / 20)+1
+
 class RPGCharacter:
     def __init__(self, name, health, maxhealth, damage, weaponskill):
         self.name = name
@@ -48,7 +51,7 @@ class RPGPlayer(RPGCharacter):
         self.money += n
 
     def getLevel(self):
-        return math.floor(math.sqrt(self.exp) / 20)+1
+        return getLevelByExp(self.exp)
 
     def setAdventure(self, n : int, channelid : int):
         if (self.adventuretime <= 0) & (5 < n < 120):

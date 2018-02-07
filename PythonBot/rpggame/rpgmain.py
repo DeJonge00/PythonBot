@@ -85,7 +85,8 @@ class RPGgame:
                 p = self.players.values()
                 if len(p) > 0:
                     dbcon.updatePlayers(p)
-                    for i in self.players.keys():
+                    l = list(self.players.keys())
+                    for i in l:
                         if self.players.get(i).adventuretime <= 0:
                             self.players.pop(i)
                 print("Players saved")
@@ -97,8 +98,10 @@ class RPGgame:
                     u.addHealth(10)
                 if u.adventuretime > 0:
                     u.adventuretime -= 1
-                    if(random.randint(0,5)<=0):
-                        await self.battle1v1(self.bot.get_channel(u.adventurechannel), u, short=True)
+                    c = self.bot.get_channel(str(u.adventurechannel))
+                    if c != None:
+                        if(random.randint(0,5)<=0): 
+                            await self.battle1v1(c, u, short=True)
 
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
@@ -301,14 +304,28 @@ class RPGgame:
         USERS_PER_PAGE = 12
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
-        list = sorted(self.bot.rpgstats, key=lambda user: -1*user.exp)
+        list = dbcon.getTopPlayers()
+        print(len(list))
         if (len(list) < (USERS_PER_PAGE*n)):
             return await self.bot.say("There are only " + str(math.ceil(len(list)/USERS_PER_PAGE)) + " pages...")
-        for i in range(USERS_PER_PAGE):
-            if (len(list) <= ((USERS_PER_PAGE*n)+i)):
-                break
-            m = list[(USERS_PER_PAGE*n)+i]
-            member = ctx.message.server.get_member(str(m.userid))
-            embed.add_field(name="["+str((USERS_PER_PAGE*n)+i+1)+"] "+member.display_name, value=str(m.exp)+" exp\nLevel "+str(m.getLevel()))
+        end = (USERS_PER_PAGE*(n+1))
+        if end > len(list):
+            end = len(list)
+        nums = ""
+        i = (USERS_PER_PAGE*n)
+        members = ""
+        exp = ""
+        for m in list[i:end]:
+            i += 1
+            try:
+                name = ctx.message.server.get_member(str(m[0])).display_name
+            except AttributeError:
+                name = "id" + str(m[0])
+            nums += str(i) + "\n"
+            members += name + "\n"
+            exp += str(m[1]) + "exp, L" + str(rpgchar.getLevelByExp(m[1])) + "\n"
+        embed.add_field(name="Rank", value=nums)
+        embed.add_field(name="Player", value=members)
+        embed.add_field(name="Exp, level", value=exp)
         await self.bot.send_message(ctx.message.channel, embed=embed)
             
