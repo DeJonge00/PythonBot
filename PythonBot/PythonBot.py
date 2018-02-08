@@ -10,9 +10,6 @@ REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
 bot = Bot(command_prefix=commands.when_mentioned_or(constants.prefix), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
-bot.WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
-bot.GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
-bot.PATSDB = "logs/pats.db"
 bot.praise = datetime.datetime.utcnow()
 bot.spamlist = []
 bot.spongelist = []
@@ -88,7 +85,7 @@ async def on_message_delete(message):
 @bot.event
 async def on_member_join(member):
     await log.error(member.server.name + " | Member " + member.name + " just joined", filename=member.server.name)
-    conn = sqlite3.connect(bot.WELCOMEMESSAGEFILE)
+    conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
     c = conn.cursor()
     c.execute("SELECT message FROM welcome WHERE serverID=" + member.server.id)
     mes = c.fetchone()
@@ -109,7 +106,7 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     await log.error(member.server.name + " | Member " + member.name + " just left", filename=member.server.name)
-    conn = sqlite3.connect(bot.GOODBYEMESSAGEFILE)
+    conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
     c = conn.cursor()
     c.execute("SELECT message FROM goodbye WHERE serverID=" + member.server.id)
     mes = c.fetchone()

@@ -138,7 +138,7 @@ class MusicPlayer:
             player = await state.voice.create_ytdl_player(song, before_options=constants.ytdl_before, ytdl_options=constants.ytdl_options, after=state.toggle_next)
         except Exception as e:
             embed = discord.Embed(colour=0x0000FF)
-            embed.add_field(name="Something went wrong", value="Cannot play selected song")
+            embed.add_field(name="Something went wrong", value="{}".format(type(e).__name__))
             fmt = '```py\n{}: {}\n```'
             #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
             print(fmt.format(type(e).__name__, e))

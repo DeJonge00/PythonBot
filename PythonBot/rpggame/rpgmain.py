@@ -167,7 +167,7 @@ class RPGGame:
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Use '>help rpg' for all the rpg commands")
+            await self.bot.say("Use '" + constants.prefix + "help rpg' for all the rpg commands")
     
     # {prefix}rpg adventure #
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
@@ -262,17 +262,6 @@ class RPGGame:
             m += member.display_name + ", level " + str(n.getLevel()) + "\n"
         embed.add_field(name="Adventurers", value=m, inline=False)
         await self.bot.say(embed=embed)
-
-     # {prefix}rpg train
-    @rpg.command(pass_context=1, aliases=["t"], help="Train your character!")
-    async def train(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if len(args)<=0:
-            return print("training")
-        if args[0] in ["1", "health", "hp"]:
-            return print("train health")
-        if args[0] in ["2", "damage", "dam", "s", "strength"]:
-            return print("train damage")
 
     # {prefix}rpg top #
     @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")

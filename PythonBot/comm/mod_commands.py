@@ -73,7 +73,7 @@ class Mod:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(self.bot.PATSDB)
+        conn = sqlite3.connect(constants.PATSDB)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS author")
         c.execute("DROP TABLE IF EXISTS pats")
@@ -111,7 +111,7 @@ class Mod:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(self.bot.GOODBYEMESSAGEFILE)
+        conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS goodbye")
         c.execute("CREATE TABLE goodbye (serverID INTEGER, message TEXT)")
@@ -127,7 +127,7 @@ class Mod:
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(self.bot.GOODBYEMESSAGEFILE)
+        conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
         c = conn.cursor()
         c.execute("SELECT * FROM goodbye WHERE serverID=" + ctx.message.server.id)
         r = c.fetchone()
@@ -146,7 +146,7 @@ class Mod:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(self.bot.WELCOMEMESSAGEFILE)
+        conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
         c = conn.cursor()
         c.execute("DROP TABLE IF EXISTS welcome")
         c.execute("CREATE TABLE welcome (serverID INTEGER, message TEXT)")
@@ -162,7 +162,7 @@ class Mod:
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(self.bot.WELCOMEMESSAGEFILE)
+        conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
         c = conn.cursor()
         c.execute("SELECT * FROM welcome WHERE serverID=" + ctx.message.server.id)
         r = c.fetchone()

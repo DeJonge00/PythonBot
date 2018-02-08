@@ -2578,3 +2578,215 @@ Skipping now!
 2018-02-07 22:06:52.406000 | general | Nya deleted: >quit
 2018-02-07 22:24:47.528000 | general | Nya deleted: >quit
 2018-02-07 22:34:11.186000 | general | Nya deleted: >quit
+2018-02-07 23:03:22.156119 | RECRUIT WORLD | member Kappa's BB updated:  +role: Adeptus Mechanicus
+2018-02-07 23:48:30.165000 | general | Kappa deleted: $echo yo
+2018-02-07 23:48:48.744000 | general | Kappa deleted: $rpg top
+2018-02-07 23:49:32.286000 | general | Nya edited: Do db created?
+2018-02-07 23:50:51.173000 | general | Kappa deleted: $rpg top
+2018-02-07 23:51:33.600000 | general | Kappa deleted: $rpg top
+2018-02-07 23:51:42.543000 | general | Nya deleted: >rpg top
+2018-02-08 00:03:36.354000 | general | Kappa deleted: >rpg setchannel
+2018-02-08 00:03:44.292000 | general | Kappa deleted: $rpg setchannel
+2018-02-08 00:03:55.471000 | general | Kappa edited: get dennied by my on bot
+2018-02-08 00:07:04.319000 | general | Kappa deleted: $rpg setchannel
+2018-02-08 00:09:30.386000 | general | Kappa deleted: $rpg initchannels
+2018-02-08 00:12:52.094000 | general | Kappa deleted: $rpg setchannel
+2018-02-08 00:20:06.846000 | general | Kappa deleted: $echo test
+2018-02-08 00:20:34.462000 | general | Kappa deleted: $rpg top
+2018-02-08 00:20:52.272000 | general | Nya deleted: $g i
+2018-02-08 00:22:59.421000 | general | Kappa deleted: $rpg help
+2018-02-08 00:23:30.037000 | general | Kappa deleted: $rpg top
+2018-02-08 00:31:24.101472 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:24.101472 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:24.103456 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:47.954379 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:47.955380 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:47.957386 | Channel updated: _permission_overwrites changed
+2018-02-08 00:31:55.224000 | general | Nya deleted: >rpg top 3
+2018-02-08 00:40:03.477000 | general | Nya deleted: >rpg top
+2018-02-08 00:44:14.658000 | general | Nya edited: Adding players is in the gameloop, every 15mins you do an dbcon.updatePlayers()
+2018-02-08 00:45:14.503000 | general | Nya edited: Adding to the self.players is in dbcon.getPlayer()
+2018-02-08 01:10:58.540000 | general | Nya deleted: >quit
+2018-02-08 10:52:02.681462 | Role Honour Guard updated:  -permission: manage_roles
+2018-02-08 10:52:46.312371 | RECRUIT WORLD | member Kappa updated:  -role: GOD EMPEROR
+2018-02-08 10:52:47.394136 | RECRUIT WORLD | member Kappa updated:  +role: The Emperors Chosen
+2018-02-08 10:53:07.365931 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:07.366933 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:07.368936 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:11.826156 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:11.827146 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:11.828148 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:32.565088 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:32.565088 | Channel updated: _permission_overwrites changed
+2018-02-08 10:53:32.567094 | Channel updated: _permission_overwrites changed
+2018-02-08 10:55:31.648299 | Role GOD EMPEROR updated:  -permission: add_reactions -permission: attach_files -permission: change_nickname -permission: connect -permission: create_instant_invite -permission: deafen_members -permission: embed_links -permission: external_emojis -permission: manage_messages -permission: manage_nicknames -permission: manage_roles -permission: manage_server -permission: manage_webhooks -permission: mention_everyone -permission: move_members -permission: mute_members -permission: read_messages -permission: speak -permission: use_voice_activation
+2018-02-08 10:55:59.969740 | Role Honour Guard updated:  -permission: add_reactions -permission: attach_files -permission: deafen_members -permission: embed_links -permission: kick_members -permission: manage_nicknames -permission: move_members -permission: mute_members
+2018-02-08 10:57:07.072370 | Role Honour Guard updated:  +permission: change_nickname +permission: kick_members +permission: manage_nicknames
+2018-02-08 10:57:58.431335 | Role Adeptus Mechanicus updated:  -permission: create_instant_invite -permission: manage_emojis -permission: manage_messages
+2018-02-08 10:58:28.474059 | Role The Emperors Chosen updated:  -permission: connect -permission: read_message_history -permission: read_messages -permission: send_messages -permission: speak -permission: use_voice_activation
+2018-02-08 10:58:43.424137 | Role Muted updated:  -permission: read_message_history -permission: read_messages
+2018-02-08 10:59:00.949362 | Role Loyal Marines updated:  -permission: add_reactions -permission: attach_files -permission: connect -permission: embed_links -permission: external_emojis -permission: read_message_history -permission: read_messages -permission: send_messages -permission: speak -permission: use_voice_activation
+2018-02-08 10:59:13.828763 | Role @everyone updated:  -permission: connect -permission: read_message_history -permission: read_messages -permission: send_messages -permission: speak -permission: use_voice_activation
+2018-02-08 10:59:45.153465 | Channel updated: _permission_overwrites changed
+2018-02-08 10:59:45.170473 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:21.801121 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:21.802122 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:43.483949 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:43.491941 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:50.071850 | Channel updated: _permission_overwrites changed
+2018-02-08 11:00:50.071850 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:34.218108 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:34.218108 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:34.402482 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:34.403484 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:40.669137 | Channel updated: _permission_overwrites changed
+2018-02-08 11:01:40.669137 | Channel updated: _permission_overwrites changed
+2018-02-08 11:02:26.233767 | Channel updated: _permission_overwrites changed
+2018-02-08 11:02:26.234768 | Channel updated: _permission_overwrites changed
+2018-02-08 11:02:31.639497 | Channel updated: _permission_overwrites changed
+2018-02-08 11:02:31.639497 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.055132 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.057134 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.340839 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.341839 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.512279 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:24.513274 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:31.010405 | Channel updated: _permission_overwrites changed
+2018-02-08 11:03:31.011405 | Channel updated: _permission_overwrites changed
+2018-02-08 11:04:13.306860 | Channel updated: _permission_overwrites changed
+2018-02-08 11:04:13.306860 | Channel updated: _permission_overwrites changed
+2018-02-08 11:05:00.117183 | Channel updated: _permission_overwrites changed
+2018-02-08 11:05:07.789670 | Channel updated: _permission_overwrites changed
+2018-02-08 11:05:15.482049 | Channel updated: _permission_overwrites changed
+2018-02-08 11:06:53.599750 | Channel updated: _permission_overwrites changed
+2018-02-08 11:06:53.600751 | Channel updated: _permission_overwrites changed
+2018-02-08 11:06:53.601751 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.541104 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.541104 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.542087 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.725571 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.726572 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.726572 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.886989 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.886989 | Channel updated: _permission_overwrites changed
+2018-02-08 11:07:25.887990 | Channel updated: _permission_overwrites changed
+2018-02-08 11:08:17.834085 | Channel updated: _permission_overwrites changed
+2018-02-08 11:08:33.729149 | Channel updated: _permission_overwrites changed
+2018-02-08 11:08:58.540000 | general | Nya deleted: >m l
+2018-02-08 11:10:09.247692 | Role (????)????*?spoo.py?*????(???)? updated: 
+2018-02-08 11:10:09.254694 | Role Dyno updated: 
+2018-02-08 11:10:09.257697 | Role Uzume updated: 
+2018-02-08 11:10:09.261702 | Role Loyal Marines updated: 
+2018-02-08 11:10:09.441398 | Role Tatsumaki updated:  -permission: add_reactions -permission: administrator -permission: ban_members -permission: create_instant_invite -permission: external_emojis -permission: kick_members -permission: manage_messages -permission: read_message_history -permission: read_messages -permission: send_messages
+2018-02-08 11:11:00.140679 | Role (????)????*?spoo.py?*????(???)? updated:  -permission: add_reactions -permission: attach_files -permission: create_instant_invite -permission: embed_links -permission: external_emojis -permission: kick_members -permission: manage_messages -permission: manage_nicknames -permission: manage_roles -permission: read_message_history -permission: read_messages -permission: send_messages
+2018-02-08 11:11:00.268771 | Role Dyno updated:  -permission: add_reactions -permission: ban_members -permission: change_nickname -permission: create_instant_invite -permission: embed_links -permission: external_emojis -permission: kick_members -permission: manage_channels -permission: manage_emojis -permission: manage_messages -permission: manage_nicknames -permission: manage_roles -permission: manage_server -permission: manage_webhooks -permission: move_members
+2018-02-08 11:11:00.400864 | Role Uzume updated:  -permission: add_reactions -permission: attach_files -permission: ban_members -permission: external_emojis -permission: kick_members -permission: manage_messages -permission: manage_nicknames -permission: manage_roles -permission: read_message_history -permission: read_messages -permission: send_messages
+2018-02-08 11:11:00.553003 | Role Tatsumaki updated:  -permission: deafen_members -permission: mute_members
+2018-02-08 11:12:10.557074 | RECRUIT WORLD | member Kappa's BB updated:  +role: Loyal Marines
+2018-02-08 11:12:16.237707 | RECRUIT WORLD | member SimpleMagicalBird updated:  +role: Loyal Marines
+2018-02-08 11:14:34.338693 | Role The Emperors Chosen updated: 
+2018-02-08 11:14:34.348698 | Role Muted updated: 
+2018-02-08 13:42:27.706000 | general | Kappa deleted: $rpg help
+2018-02-08 13:50:20.209000 | general | Kappa deleted: $rpg adventure
+2018-02-08 13:51:54.336000 | general | Kappa deleted: $rpg stats
+2018-02-08 13:53:50.688000 | general | Nya deleted: $rpg i
+2018-02-08 13:54:13.519000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 13:57:17.027000 | general | Nya deleted: >rpg i
+2018-02-08 13:57:19.742000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:00:19.051000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:02:57.884000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:05:56.855000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:37:46.322000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:39:32.535000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:45:01.747000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:45:55.792000 | general | Kappa deleted: $rpg stats
+2018-02-08 14:46:10.006000 | general | Kappa deleted: $rpg top
+2018-02-08 14:46:23.694000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:46:30.531000 | general | Kappa deleted: $rpg top
+2018-02-08 14:47:30.561000 | general | Nya deleted: $rpg top
+2018-02-08 14:47:39.620000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:52:37.398000 | general | Kappa deleted: $rpg stats
+2018-02-08 14:53:01.345000 | general | Kappa deleted: $rpg top
+2018-02-08 14:53:22.688000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:56:27.007000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 14:56:36.163000 | general | Kappa deleted: $rpg top
+2018-02-08 15:07:49.756000 | general | Kappa deleted: $rpg top
+2018-02-08 15:07:57.016000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:09:52.144000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:22:52.094000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:34:21.504200 | RECRUIT WORLD | Member KappaTest just joined
+2018-02-08 15:34:53.424000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:35:17.458000 | general | Kappa deleted: $rpg top
+2018-02-08 15:38:11.813000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:39:08.367000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:44:29.578000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:45:20.262000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:46:42.967000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:49:19.216000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 15:57:29.809000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 17:42:51.698000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 17:49:06.511000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 17:51:46.788000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 17:55:22.681000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:00:44.111000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:01:11.051000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:03:03.655000 | general | KappaTest deleted: $rpg updatedb
+2018-02-08 18:03:11.451000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:10:03.357000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:13:16.592000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:17:27.921000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:18:38.586000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:19:00.029000 | general | Kappa deleted: $rpg top
+2018-02-08 18:21:18.633000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:26:25.335000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:30:12.095000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:31:08.170000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:32:15.736000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:34:40.667000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:42:56.669000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:44:46.175000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:45:35.268000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:48:14.375000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:52:01.641000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:53:06.081000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:53:50.261000 | general | Kappa edited: the ?, ?, ? thingy works only for mysql
+2018-02-08 18:55:50.074000 | general | Nya deleted: >m q pretender
+2018-02-08 18:56:05.294000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 18:57:08.449000 | general | Nya deleted: >m stop
+2018-02-08 19:03:14.707000 | general | Kappa edited: https://stackoverflow.com/questions/11146190/python-typeerror-not-enough-arguments-for-format-string
+2018-02-08 19:04:18.620000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:04:58.430000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:07:55.508000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:08:23.028162 | RECRUIT WORLD | member KappaTest updated:  nick from nothing to: Little Kappuh
+2018-02-08 19:12:59.743000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:14:08.356000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:16:46.894000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:16:55.099000 | general | Kappa deleted: $rpg top
+2018-02-08 19:17:12.578000 | general | KappaTest deleted: $rpg stats
+2018-02-08 19:17:24.570000 | general | Nya deleted: $rpg i
+2018-02-08 19:17:32.363000 | general | Kappa deleted: $rpg updatedb
+2018-02-08 19:17:36.415000 | general | Kappa deleted: $rpg top
+2018-02-08 19:17:41.073000 | general | Nya deleted: $g top
+2018-02-08 19:26:22.246000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:02:15.947000 | general | Kappa deleted: +rpg updated
+2018-02-08 21:02:24.564000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:12:24.049000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:15:21.290000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:21:10.184000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:22:03.006000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:26:43.250000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:28:02.696000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:31:37.782000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:32:37.868000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:35:30.436000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:35:48.096000 | general | KappaTest deleted: +rpg stats
+2018-02-08 21:35:55.886000 | general | KappaTest deleted: +rpg top
+2018-02-08 21:36:25.141000 | general | Kappa deleted: +rpg updatedb
+2018-02-08 21:36:28.679000 | general | Kappa deleted: +rpg top
+2018-02-08 21:37:38.693000 | general | Nya deleted: >pat @KappaTest
+2018-02-08 21:41:21.835000 | general | Nya deleted: >rpg top
+2018-02-08 21:41:47.646000 | general | Kappa edited: whym?
+2018-02-08 21:49:29.347000 | general | Kappa deleted: +rpg top
+2018-02-08 21:50:35.987000 | general | Nya deleted: >rpg top
+2018-02-08 21:53:42.417000 | general | Kappa deleted: +rpg top
+2018-02-08 21:54:06.990000 | general | Kappa deleted: +rpg top

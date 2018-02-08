@@ -1,5 +1,8 @@
 prefix = ">"
 RPGDB = 'logs/rpg.db'
+WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
+GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
+PATSDB = "logs/pats.db"
 
 # User Id's
 NYAid = "143037788969762816"

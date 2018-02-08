@@ -205,7 +205,7 @@ class Basics:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
         time = datetime.datetime.utcnow()
 
-        conn = sqlite3.connect(self.bot.PATSDB)
+        conn = sqlite3.connect(constants.PATSDB)
         c = conn.cursor()
         c.execute("SELECT time FROM author WHERE authorID =" + ctx.message.author.id)
         t = c.fetchone()
@@ -219,7 +219,7 @@ class Basics:
 
         authorID = ctx.message.author.id
 
-        conn = sqlite3.connect(self.bot.PATSDB)
+        conn = sqlite3.connect(constants.PATSDB)
         c = conn.cursor()
         if t == None:
             c.execute("INSERT INTO author VALUES ('" + authorID + "', '" + str(time.timestamp()) + "')")
