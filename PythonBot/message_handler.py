@@ -58,7 +58,7 @@ async def new(bot, message):
         if (message.timestamp - m.timestamp).seconds > 60:
             await send_random.string(bot, message.channel, constants.ded)
         else:
-            log.error("Ded said, but the time was " + str((message.timestamp - m.timestamp).seconds) + "seconds")
+            log.error("Ded said, but the time was {} seconds".format((message.timestamp - m.timestamp).seconds))
     if message.content == "(╯°□°）╯︵ ┻━┻":
         await bot.send_message(message.channel, "┬─┬﻿ ノ( ゜-゜ノ)")
     # Nickname change
@@ -70,14 +70,14 @@ async def new(bot, message):
                         await bot.change_nickname(message.author, message.content.partition(' ')[2].partition(' ')[2])
                         print("Changed nickname")
                     except Exception:
-                        print("Failed to change Nickname")
+                        pass
             if (len(message.content.split(" ")) > 1) & (message.server.name.lower() == "9chat"):
                 if (message.content.lower().split(" ")[0] == "im") | (message.content.split(" ")[0] == "i'm"):
                     try: 
                         await bot.change_nickname(message.author, message.content.partition(' ')[2])
                         print("Changed nickname")
                     except Exception:
-                        print("Failed to change Nickname")
+                        pass
     # Reactions
     # Tristan or churro
     if (message.author.id in ["224267646869176320", "214708282864959489"]) & ("pls" in message.content.lower().split(" ")) & (message.server.id == constants.NINECHATid):
@@ -108,20 +108,29 @@ async def edit(message):
 async def deleted(message):
     await log.message(message, "deleted")
 
+SAVEPIC = False
+
 async def new_pic(bot, message):
     if message.author.id == constants.NYAid:
         return
     for pic in message.attachments:
-        url = pic["url"]
-        response = requests.get(url)
-        img = Image.open(BytesIO(response.content))
-        i = 0
-        if url.split(".")[len(url.split("."))-1] == "gif":
-            while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif"):
+        if SAVEPIC:
+            url = pic["url"]
+            response = requests.get(url)
+            img = Image.open(BytesIO(response.content))
+            i = 0
+
+            if url.split(".")[len(url.split("."))-1] == "gif":
+                ext = "gif"
+            else:
+                ext = "png"
+            while os.path.isfile("./pics/{}{}.{}".format(''.join(e for e in message.author.name if e.isalnum()), i, ext)):
                 i+=1
-            img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".gif", save_all=1)
+            img.save("./pics/{}{}.{}".format(''.join(e for e in message.author.name if e.isalnum()), i, ext), save_all=1)
+            await log.message(message, "pic", i)
         else:
-            while os.path.isfile("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png"):
-                i+=1
-            img.save("./pics/" + ''.join(e for e in message.author.name if e.isalnum()) + str(i) + ".png")
-        await log.message(message, "pic", i)
+            text = "{} | {} | {} | {} | {} \n".format(datetime.datetime.utcnow(), message.server.name, message.channel.name, message.author.name, pic["url"])
+            file = open("logs/pics.txt","a+")
+            file.write(text)
+            file.close
+            print(text)

@@ -2790,3 +2790,69 @@ Skipping now!
 2018-02-08 21:50:35.987000 | general | Nya deleted: >rpg top
 2018-02-08 21:53:42.417000 | general | Kappa deleted: +rpg top
 2018-02-08 21:54:06.990000 | general | Kappa deleted: +rpg top
+2018-02-08 22:23:57.308000 | general | Nya deleted: >quit
+2018-02-08 22:36:57.518463 | Channel updated: _permission_overwrites changed
+2018-02-08 22:36:57.519462 | Channel updated: _permission_overwrites changed
+2018-02-08 22:36:57.522965 | Channel updated: _permission_overwrites changed
+2018-02-08 22:36:57.525466 | Channel updated: _permission_overwrites changed
+2018-02-08 22:36:57.528468 | Channel updated: _permission_overwrites changed
+2018-02-08 22:37:22.588546 | RECRUIT WORLD | member SimpleMagicalBird updated:  +role: Honour Guard
+2018-02-08 22:40:29.701000 | general | Nya edited: So nothing on git anyway
+2018-02-08 23:28:26.245000 | general | Nya deleted: >quit
+2018-02-08 23:37:32.125000 | general | Nya deleted: >quit
+2018-02-09 12:57:26.985810 | created channel: botstuff
+2018-02-09 12:57:41.894000 | botstuff | Nya deleted: >quit
+2018-02-09 12:58:55.217335 | created channel: music
+2018-02-09 12:59:02.935319 | created channel: music
+2018-02-09 12:59:19.216006 | Channel updated: name from: music to: Music
+2018-02-09 13:09:27.346000 | music | Nya deleted: >m q pretender
+2018-02-09 13:09:31.155000 | music | Nya deleted: >m q best of me
+2018-02-09 13:09:40.556000 | music | Nya deleted: >m q walk foo fighters lyrics
+2018-02-09 13:09:49.600000 | music | Nya deleted: >m q pretender
+2018-02-09 13:09:55.205000 | music | Nya deleted: >m q best of me
+2018-02-09 13:10:04.469000 | music | Nya deleted: >m q walk foo lyrics
+2018-02-09 13:14:39.734000 | music | Nya deleted: >m s
+2018-02-09 13:14:47.987000 | music | Nya deleted: >m q best of me foo
+2018-02-09 13:15:05.799000 | music | Nya deleted: >m q westworld piano fords
+2018-02-09 13:30:46.228000 | music | Nya deleted: >quit
+2018-02-09 13:31:01.718000 | music | Nya deleted: >m q westworld main theme
+2018-02-09 13:31:07.727000 | music | Nya deleted: >m q pretender
+2018-02-09 13:31:15.662000 | music | Nya deleted: >m q
+2018-02-09 13:31:24.145000 | music | Nya deleted: >m s 1
+2018-02-09 13:33:47.015000 | music | Nya deleted: >m s
+2018-02-09 13:33:49.729000 | music | Nya deleted: >quit
+2018-02-09 13:34:06.867000 | music | Nya deleted: >m q westworld main theme
+2018-02-09 13:34:10.895000 | music | Nya deleted: >m q pretender
+2018-02-09 13:34:27.196000 | music | Nya deleted: >m q linkin park castle of glass lyrics
+2018-02-09 13:34:31.325000 | music | Nya deleted: >m q
+2018-02-09 13:34:35.566000 | music | Nya deleted: >m s 1
+2018-02-09 13:34:45.330000 | music | Nya deleted: >m q
+2018-02-09 13:36:30.969000 | music | Nya deleted: >quit
+2018-02-09 13:36:41.776000 | music | Nya deleted: >m q pretender
+2018-02-09 13:36:49.549000 | music | Nya deleted: >m q castle of glass lyrics
+2018-02-09 13:36:56.138000 | music | Nya deleted: >m q pomf pomf
+2018-02-09 13:36:58.415000 | music | Nya deleted: >m q
+2018-02-09 13:37:04.248000 | music | Nya deleted: >m s 3
+2018-02-09 13:37:35.126000 | music | Nya deleted: >m s 2
+2018-02-09 13:37:39.726000 | music | Nya deleted: >m q
+2018-02-09 13:42:25.611000 | music | Nya deleted: >quit
+2018-02-09 13:42:40.751000 | music | Nya deleted: >m q in the end
+2018-02-09 13:42:43.257000 | music | Nya deleted: >m q numb
+2018-02-09 13:42:46.809000 | music | Nya deleted: >m q pomf pomf
+2018-02-09 13:42:50.079000 | music | Nya deleted: >m q
+2018-02-09 13:42:55.951000 | music | Nya deleted: >m s 2
+2018-02-09 13:46:56.520000 | music | Nya deleted: >quit
+2018-02-09 13:47:07.848000 | music | Nya deleted: >m q pretender
+2018-02-09 13:47:08.762000 | music | Nya deleted: >m q pretender
+2018-02-09 13:47:09.163000 | music | Nya deleted: >m q pretender
+2018-02-09 13:47:09.784000 | music | Nya deleted: >m q pretender
+2018-02-09 13:47:14.572000 | music | Nya deleted: >m q
+2018-02-09 13:47:25.770000 | music | Nya deleted: >m s 3
+2018-02-09 13:47:28.483000 | music | Nya deleted: >m q
+2018-02-09 13:47:41.147000 | music | Nya deleted: >m s 1
+2018-02-09 13:47:45.554000 | music | Nya deleted: >m q pomf pomf
+2018-02-09 13:47:48.970000 | music | Nya deleted: >m q
+2018-02-09 13:47:53.354000 | music | Nya deleted: >m s 1
+2018-02-09 13:47:57.232000 | music | Nya deleted: >m q
+2018-02-09 13:48:04.941000 | music | Nya deleted: >m stop
+2018-02-09 13:49:06.216000 | music | Nya deleted: >quit

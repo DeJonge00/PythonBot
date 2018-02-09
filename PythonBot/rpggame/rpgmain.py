@@ -18,14 +18,14 @@ class RPGGame:
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         title = ""
         if len(p1)==1:
-            title += p1[0].name + " (" + str(p1[0].health) + ")"
+            title += "{} ({})".format(p1[0].name, p1[0].health)
         else:
-            title += "A party of " + str(len(p1))
+            title += "A party of {}".format(len(p1))
         title += " vs "
         if len(p2)==1:
-            title += p2[0].name + " (" + str(p2[0].health) + ")"
+            title += "{} ({})".format(p2[0].name, p2[0].health)
         else:
-            title += "A party of " + str(len(p2))
+            title += "A party of {}".format(len(p2))
         embed.add_field(name="Battle", value=title, inline=False)
         battlereport = ""
         i = 0
@@ -42,7 +42,7 @@ class RPGGame:
                 if (ws < attacker.weaponskill):
                     damage = math.floor((random.randint(100, 200) * attacker.damage)/100);
                     defender.addHealth(-1*damage)
-                    battlereport += "\n**" + attacker.name + "** attacked **" + defender.name + "** for **" + str(damage) + "**"
+                    battlereport += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
             p3 = p1
             p1 = p2
             p2 = p3
@@ -52,14 +52,12 @@ class RPGGame:
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
         if(len(p1)==1) & (len(p2)==1) & (p1[0].health <= 0):
-            embed.add_field(name="Result", value=p2[0].name + " (" + str(p2[0].health) + ") laughs while walking away from " + p1[0].name + "'s corpse", inline=False)
+            embed.add_field(name="Result", value="{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health, p1[0].name), inline=False)
         else:
             embed.add_field(name="Result", value="The battle lasted long, both players are exhausted.\nThey agree on a draw this time", inline=False)
             hrep = ""
-            for m in p1:
-                hrep += m.name + " (" + str(m.health) + ")\n"
-            for m in p2:
-                hrep += m.name + " (" + str(m.health) + ")\n"
+            for m in (p1+p2):
+                hrep += m.name + " ({})\n".format(m.health)
             embed.add_field(name="Healthreport", value=hrep, inline=False)
         if mockbattle:
             for i in range(len(p1)):
@@ -75,7 +73,7 @@ class RPGGame:
     def getRPGChannel(serverid : str):
         conn = sqlite3.connect(dbcon.RPGDB)
         c = conn.cursor()
-        c.execute("SELECT channelID FROM rpgchannel WHERE serverID=" + serverid)
+        c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
         t = c.fetchone()
         conn.commit()
         conn.close()
@@ -93,7 +91,6 @@ class RPGGame:
                 boss = rpgchar.RPGMonster(name="Dark Eldar Lord", health=250)
                 await self.resolveBattle(channel, party, [boss])
                 return
-                await self.bot.send_message(channel, "Leeeetttssss dduuuuuueeeelllll!!!")
 
     async def gameloop(self):
         await self.bot.wait_until_ready()
@@ -116,7 +113,7 @@ class RPGGame:
             # Bossraids
             if time.minute == 55:
                 for p in self.bossparties:
-                    await self.bot.send_message(self.getRPGChannel(str(p)), "A party of " + str(len(self.bossparties.get(p))) + " is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate")
+                    await self.bot.send_message(self.getRPGChannel(str(p)), "A party of {} is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate".format(len(self.bossparties.get(p))))
             if time.minute == 0:
                 await self.bossbattle()
                 self.bossparties = {}
@@ -163,11 +160,11 @@ class RPGGame:
         dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
-    @commands.group(pass_context=1, aliases=["g"], help="'>help rpg' for full options")
+    @commands.group(pass_context=1, aliases=["g"], help="'{}help rpg' for full options".format(constants.prefix))
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Use '" + constants.prefix + "help rpg' for all the rpg commands")
+            await self.bot.say("Use '{}help rpg' for full options".format(constants.prefix))
     
     # {prefix}rpg adventure #
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
@@ -191,16 +188,18 @@ class RPGGame:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
         data.setAdventure(n, ctx.message.channel.id)
-        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for " + str(n) + " minutes, good luck!")
+        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for {} minutes, good luck!".format(n))
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)<1:
-            return await self.bot.say("You need to tag someone to battle with!")
+            await self.bot.say("You need to tag someone to battle with!")
+            return
         if ctx.message.mentions[0] == ctx.message.author:
-            return await self.bot.say("Suicide is never the answer :angry:")
+            await self.bot.say("Suicide is never the answer :angry:")
+            return
         await self.resolveBattle(ctx.message.channel, [self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)], [self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)], mockbattle=True)
 
     # {prefix}rpg info <user>
@@ -217,19 +216,19 @@ class RPGGame:
         if data.health <= 0:
             stats += "\nDead"
         elif data.adventuretime > 0:
-            stats += "\nAdventuring for " + str(data.adventuretime) + "m"
+            stats += "\nAdventuring for {}m".format(data.adventuretime)
         else:
             stats += "\nAlive"
         statnames += "\nExperience:"
-        stats += "\n" + str(data.exp) + " (" + str(data.getLevel()) + ")"
+        stats += "\n{} ({})".format(data.exp, data.getLevel())
         statnames += "\nMoney:"
-        stats += "\n$" + str(data.money)
+        stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
-        stats += "\n" + str(data.health) + "/" + str(data.maxhealth)
+        stats += "\n{}/".format(data.health,data.maxhealth)
         statnames += "\nDamage:"
-        stats += "\n" + str(data.damage)
+        stats += "\n{}".format(data.damage)
         statnames += "\nWeaponskill:"
-        stats += "\n" + str(data.weaponskill)
+        stats += "\n{}".format(data.weaponskill)
 
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Statname", value=statnames)
@@ -245,7 +244,7 @@ class RPGGame:
         if data in party:
             return await self.bot.say("You are already in the boss raid party...")
         party.append(data)
-        await self.bot.say("Prepare yourself! You and your party of " + str(len(party)) + " will be fighting the boss at the hour mark!")
+        await self.bot.say("Prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(len(party)))
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
@@ -255,11 +254,11 @@ class RPGGame:
         if len(party) <= 0:
             return await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")        
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="Boss raiding party", value=str(len(party)) + " adventurers", inline=False)
+        embed.add_field(name="Boss raiding party", value="{} adventurers".format(len(party)), inline=False)
         m = ""
         for n in party:
             member = ctx.message.server.get_member(str(n.userid))
-            m += member.display_name + ", level " + str(n.getLevel()) + "\n"
+            m += "{}, level {}\n".format(member.display_name, n.getLevel())
         embed.add_field(name="Adventurers", value=m, inline=False)
         await self.bot.say(embed=embed)
 
@@ -280,7 +279,7 @@ class RPGGame:
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
         list = dbcon.getTopPlayers()
         if (len(list) < (USERS_PER_PAGE*n)):
-            return await self.bot.say("There are only " + str(math.ceil(len(list)/USERS_PER_PAGE)) + " pages...")
+            return await self.bot.say("There are only {} pages...".format(math.ceil(len(list)/USERS_PER_PAGE)))
         end = (USERS_PER_PAGE*(n+1))
         if end > len(list):
             end = len(list)
@@ -292,17 +291,17 @@ class RPGGame:
             i += 1
             member = self.players.get(str(m[0]))
             if member != None:
-                nums += str(i) + "\n"
-                members += member.name + "\n"
-                exp += str(member.exp) + "exp (" + str(member.getLevel()) + ")\n"
+                nums += "{}\n".format(i)
+                members += "{}\n".format(member.name)
+                exp += "{}exp ({})\n".format(member.exp, member.getLevel())
             else:
                 try:
                     name = ctx.message.server.get_member(str(m[0])).display_name
                 except AttributeError:
-                    name = "id" + str(m[0])
-                nums += str(i) + "\n"
-                members += name + "\n"
-                exp += str(m[1]) + "exp (" + str(rpgchar.getLevelByExp(m[1])) + ")\n"
+                    name = "id{}".format(m[0])
+                nums += "{}\n".format(i)
+                members += "{}\n".format(name)
+                exp += "{}exp ({})\n".format(m[1], rpgchar.getLevelByExp(m[1]))
         embed.add_field(name="Rank", value=nums)
         embed.add_field(name="Player", value=members)
         embed.add_field(name="Exp (Level)", value=exp)

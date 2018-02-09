@@ -1,5 +1,6 @@
 import argparse, asyncio, constants, discord, removeMessage, math
 from discord.ext import commands
+from collections import deque
 from discord.ext.commands import Bot
 import urllib.request, urllib.parse, re
 
@@ -13,7 +14,7 @@ class VoiceEntry:
         self.player = player
 
     def __str__(self):
-        return self.requester.display_name + " requested: " + self.player.title + " (" + self.player.duration + ")"
+        return  "'{0}' ({1[0]}.{1[1]}) requested by **{2}**".format(self.player.title, divmod(self.player.duration, 60), self.requester.display_name)
 
     def embed(self, title="Music"):
         embed = discord.Embed(colour=embedColor)
@@ -155,16 +156,16 @@ class MusicPlayer:
         perpage = 10
         state.page = page
         if len(songs) <= 0:
-            await self.bot.send_message(message.channel, "The queue is empty! Queue some songs with '>m q'.")
+            await self.bot.send_message(message.channel, "The queue is empty! Queue some songs with '{}m q'.".format(constants.prefix))
             return
         if not (0 < page <= math.ceil(len(songs)/perpage)):
             return
         embed = discord.Embed(colour=embedColor)
-        embed.set_author(name="Queue: " + str(len(songs)) + " songs, " + str(math.ceil(len(songs)/perpage)) + " pages", icon_url=message.author.avatar_url)
+        embed.set_author(name="Queue: {} songs, {} pages".format(len(songs), math.ceil(len(songs)/perpage)), icon_url=message.author.avatar_url)
         q = ""
         for i in range(10*(page-1), min((10*page), len(songs))):
-            q += (str(i+1) + ": '" + songs[i].player.title + "' requested by **" + songs[i].requester.display_name + "**\n")
-        qname = "Queue, page " + str(page) + "/" + str(math.ceil(len(songs)/perpage))
+            q += "{}: '{}' requested by **{}**\n".format(i+1, songs[i].player.title, songs[i].requester.display_name)
+        qname = "Queue, page {}/{}".format(page, math.ceil(len(songs)/perpage))
         embed.add_field(name=qname, value=q)
         if new:
             m = await self.bot.send_message(message.channel, embed=embed)
@@ -175,7 +176,7 @@ class MusicPlayer:
         else:
             await self.bot.edit_message(state.lastmessage, embed=embed)
 
-    @commands.group(pass_context=1, aliases=["m"], help="'>help music' for full options")
+    @commands.group(pass_context=1, aliases=["m"], help="'{}help music' for full options".format(constants.prefix))
     async def music(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
@@ -184,8 +185,8 @@ class MusicPlayer:
             embed.add_field(name="current", value="Show information about the song currently playing", inline=False)
             embed.add_field(name="join", value="Let me join a voice channel", inline=False)
             embed.add_field(name="leave", value="Send me away from the voice channel", inline=False)
-            embed.add_field(name="play", value="'>m p' to pause or resume singing, '>m p <songname | url>' to add a song to the queue", inline=False)
-            embed.add_field(name="queue", value="'>m q' to show the queue, '>m q <songname | url>' to add a song to the queue", inline=False)
+            embed.add_field(name="play", value="'{0}m p' to pause or resume singing, '{0}m p <songname | url>' to add a song to the queue".format(constants.prefix), inline=False)
+            embed.add_field(name="queue", value="'{0}m q' to show the queue, '{0}m q <songname | url>' to add a song to the queue".format(constants.prefix), inline=False)
             embed.add_field(name="repeat", value="Repeat the current song", inline=False)
             embed.add_field(name="reset", value="Reset the player for this channel", inline=False)
             embed.add_field(name="skip", value="Vote to skip the current song", inline=False)
@@ -226,7 +227,7 @@ class MusicPlayer:
             return
         await voiceClient.disconnect()
 
-    @music.command(pass_context=1, aliases=["p"], help="'>m p' to pause or resume singing, '>m p <songname | url>' to add a song to the queue")
+    @music.command(pass_context=1, aliases=["p"], help="'{0}m p' to pause or resume singing, '{0}m p <songname | url>' to add a song to the queue".format(constants.prefix))
     async def play(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) > 0:
@@ -247,7 +248,7 @@ class MusicPlayer:
                 return
         await self.bot.say("I DUNNO WHAT TO DO ;-;")
 
-    @music.command(pass_context=1, aliases=["q"], help="'>m q' to show the queue, '>m q <songname | url>' to add a song to the queue")
+    @music.command(pass_context=1, aliases=["q"], help="'{0}m q' to show the queue, '{0}m q <songname | url>' to add a song to the queue".format(constants.prefix))
     async def queue(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(song) <= 0:
@@ -275,7 +276,7 @@ class MusicPlayer:
         except KeyError as e:
             print(e)
 
-    @music.command(pass_context=1, aliases=["s"], help="Vote to skip the current song")
+    @music.command(pass_context=1, aliases=["s"], help="Vote to skip a song, or just skip it if you are the requester")
     async def skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
@@ -283,18 +284,40 @@ class MusicPlayer:
         if (len(args) > 0):
             if (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):
                 force=True
+            else:
+                try:
+                    n = int(args[0])-1
+                except ValueError:
+                    await self.bot.say("I'm not sure that's a number...")
+                    return
+                songs = list(state.songs._queue)
+                print(songs)
+                if n >= len(songs):
+                    await self.bot.say("The song queue is not that long...")
+                if (ctx.message.author.id==songs[n].requester.id) | (ctx.message.author.id==constants.NYAid):
+                    s = songs[n]
+                    del songs[n]
+                    print(songs)
+                    state.songs._queue = deque(songs)
+                    print("Q")
+                    print(state.songs._queue)
+                    await self.bot.say("Removed a song from the queue: {}".format(s))
+                    return
+                else:
+                    await self.bot.say("Only the requester, {}, can skip that song".format(songs[n].requester.name))
+                    return
         state.skip_votes.add(ctx.message.author.id)
         votesNeeded = math.ceil(len(self.bot.voice_client_in(ctx.message.server).channel.voice_members)/3)
         votes = len(state.skip_votes)
         if votes >= votesNeeded:
             state.skip()
-            await self.bot.say(str(votes) + " people voted to skip the song\nSkipping now!")
+            await self.bot.say("{} people voted to skip the song\nSkipping now!".format(votes))
             return
         if (force) | (state.current.requester.id==ctx.message.author.id):
             state.skip()
             await self.bot.say("Master has decided to skip this song!")
             return
-        await self.bot.say("Votes to skip: " + str(votes) + "/" + str(votesNeeded))
+        await self.bot.say("Votes to skip: {}/{}".format(votes,votesNeeded))
 
     @music.command(pass_context=1, aliases=["quit"], help="Empty the queue and skip the current song, then leave the voice channel")
     async def stop(self, ctx):
@@ -314,7 +337,7 @@ class MusicPlayer:
         state.volume = vol/100
         if state.is_playing():
             state.player.volume = vol/100
-        await self.bot.say("Volume set to " + str(vol) + "%")
+        await self.bot.say("Volume set to {}%".format(vol))
 
     def quit(self):
         for s in self.voice_states.values():

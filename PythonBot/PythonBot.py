@@ -235,7 +235,6 @@ async def on_reaction_add(reaction, user):
             await bot.delete_message(reaction.message)
     if musicPlayer:
         await bot.musicplayer.handleReaction(reaction)
-
 @bot.event
 async def on_member_ban(member):
     await log.error("user " + member.name + " banned", filename=member.server.name)

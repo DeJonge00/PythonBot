@@ -7,7 +7,7 @@ ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
 
-def getLevelByExp(exp):
+def getLevelByExp(exp : int):
     return math.floor(math.sqrt(exp) / 20)+1
 
 class RPGCharacter:
@@ -19,14 +19,8 @@ class RPGCharacter:
         self.weaponskill = weaponskill
         
     # Add (negative) health, returns true if successful
-    def addHealth(self, n):
-        if self.health + n < 0:
-            self.health = 0
-            return True
-        if self.health + n > self.maxhealth:
-            self.health = self.maxhealth
-            return True
-        self.health += n
+    def addHealth(self, n : int):
+        self.health = max(0, min(self.maxhealth, self.health + n))
         return True
 
 class RPGMonster(RPGCharacter):
@@ -43,7 +37,7 @@ class RPGPlayer(RPGCharacter):
         self.adventurechannel = 0
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws)
 
-    def addExp(self, n):
+    def addExp(self, n : int):
         if n<0:
             print("Warning: Exp add below zero (" + str(n) + ") on " + self.user.name)
             return False
@@ -58,7 +52,7 @@ class RPGPlayer(RPGCharacter):
             self.adventuretime = n
             self.adventurechannel = channelid
 
-    def addMoney(self, n):
+    def addMoney(self, n : int):
         if self.money + n < 0:
             return False
         self.money += n
