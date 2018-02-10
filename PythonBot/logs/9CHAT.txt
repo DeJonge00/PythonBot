@@ -16526,3 +16526,113 @@ deb-src http://security.debian.org/debian-security/ stretch/updates main
 2018-02-10 16:25:18.825000 | botspam | Dafaq-Man deleted: >pat @Snusky
 2018-02-10 16:26:27.833000 | botspam | Dafaq-Man deleted: >pat @Snusky
 2018-02-10 16:29:40.984000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:31:19.880000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:33:58.514000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:35:51.960000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:37:22.529000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:39:02.448000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:39:38.958000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:40:27.137000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:41:30.767000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:42:55.248000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:45:51.207000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:48:56.969000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:51:33.804000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:52:57.673789 | 9CHAT | member ?Jynkiz? updated:  avatar changed
+2018-02-10 16:54:05.534000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:55:23.752000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:56:39.904000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:57:58.435000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:59:18.048000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:00:24.970000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:01:30.391000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:03:04.803000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:04:51.270000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:05:35.104000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:06:27.127000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:08:08.112000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:09:23.537000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:10:50.211000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:12:31.456000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:12:43.189000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:11.180000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:16.096000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:16.715000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:17.354000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:17.740000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:13:19.402000 | botspam | Excalibur Morgan deleted: >pat @Snusky >pat @Snusky >pat @Snusky >pat @Snusky >pat @Snusky
+2018-02-10 17:13:36.443000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:14:19.273000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:15:03.302000 | music | Dafaq-Man edited: Haven't watched any in the ned
+2018-02-10 17:15:37.705000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:16:00.087000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:16:29.215000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:16:42.075000 | music | Excalibur Morgan deleted: >m p https://youtu.be/ABNWPHDK7K4
+2018-02-10 17:17:09.147000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:17:28.253000 | botspam | Excalibur Morgan edited: https://youtu.be/ABNWPHDK7K4
+2018-02-10 17:17:28.253000 | botspam | Excalibur Morgan deleted: https://youtu.be/ABNWPHDK7K4
+2018-02-10 17:17:34.421000 | music | Dafaq-Man deleted: >m q the drug in my is youi
+2018-02-10 17:17:44.648000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:17:54.243000 | music | Dafaq-Man deleted: >m q better than drugs
+2018-02-10 17:18:26.008000 | music | Excalibur Morgan deleted: >m p https://youtu.be/1TiVmrdiAuQ
+2018-02-10 17:19:03.450000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:19:48.558000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:19:50.403000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:21:23.882000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:21:34.114000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:22:59.033000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:23:11.271000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:24:10.915000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:24:41.526000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:25:06.519000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:25:44.414000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:26:34.876000 | music | Excalibur Morgan deleted: >m l
+2018-02-10 17:26:40.361000 | music | Excalibur Morgan deleted: >m p https://youtu.be/1TiVmrdiAuQ
+2018-02-10 17:26:43.150000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:26:45.053000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:27:08.848000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:28:03.207000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:29:05.100000 | music | Excalibur Morgan deleted: >m l
+2018-02-10 17:29:23.354000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:30:04.025000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:31:10.106000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : Disturbed - Stricken [Official Music Video]
+ 2 : Disturbed - Stricken Lyrics
+ 3 : Disturbed-Stricken
+ 4 : DISTURBED - STRICKEN" LIVE HD
+ 5 : Disturbed - Inside The Fire [Official Music Video]
+ c : Cancel
+```
+2018-02-10 17:31:12.692000 | music | Dafaq-Man deleted: 1
+2018-02-10 17:31:40.079000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:31:59.606000 | music | Dafaq-Man edited: Ayana too
+2018-02-10 17:33:16.790000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:34:58.048000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:35:06.244000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:35:36.544000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:35:46.765000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:36:01.920000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee**EEEEEEEEEEEEEEEEEEEEEEEEEE**EEEEEEEEEEEEEEEEE****__EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE__**
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee**EEEEEEEEEEEEEEEEEEEEEEEEEE**EEEEEEEEEEEEEEEEE** **__EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE__**
+2018-02-10 17:36:46.548000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:36:49.519000 | botspam | Snusky deleted: >pat @Dafaq-Man
+2018-02-10 17:36:53.179000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:36:40.259000 | music | menme edited: They don?t even oath sign
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee****EEEEEEEEEEEEEEEEEEEEEEEEEE**EEEEEEEEEEEEEEEEE****__EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE__**
+2018-02-10 17:37:09.710000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee** **EEEEEEEEEEEEEEEEEEEEEEEEEE**EEEEEEEEEEEEEEEEE** **__EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE__**
+2018-02-10 17:37:28.016000 | music | Excalibur Morgan deleted: >m p https://youtu.be/PSAxxJ4f-RI
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee** **EEEEEEEEEEEEEEEEEEEEEEEEEE**EEEEEEEEEEEEEEEEE** __**EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE**__
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeeeee** **EEEEEEEEEEEEEEEEEEEEEEEEEE****EEEEEEEEEEEEEEEEE** __**EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE**__
+2018-02-10 17:36:17.364000 | botspam | Dafaq-Man edited: reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee**eeeeeeeeeeeeeeeeeee****EEEEEEEEEEEEEEEEEEEEEEEEEE**
+2018-02-10 17:38:11.526000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:38:35.220000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:38:49.353000 | botspam | Tatsumaki deleted: **menme**, please cool down! (**4** seconds left)
+2018-02-10 17:39:51.409000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:40:18.717000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 17:42:23.531000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 17:43:06.752000 | music | Dafaq-Man deleted: >m q Dead inside
+2018-02-10 17:43:35.431000 | botspam | Dafaq-Man deleted: >pat @Snusky

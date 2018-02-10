@@ -2972,3 +2972,7 @@ Skipping now!
 2018-02-10 16:13:05.796000 | general | Kappa deleted: +quit
 2018-02-10 16:26:54.140000 | general | Kappa deleted: +echo I'm working as a service!
 2018-02-10 16:27:14.523000 | general | Kappa deleted: +quit
+2018-02-10 16:39:26.506000 | general | Kappa edited: #!/usr/bin/env python
+2018-02-10 17:27:31.777000 | general | Kappa deleted: +pat @KappaTest
+2018-02-10 17:44:35.315000 | general | Nya deleted: >quit
+2018-02-10 19:33:23.769000 | botstuff | Nya deleted: >quit

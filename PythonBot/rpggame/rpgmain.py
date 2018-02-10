@@ -70,18 +70,6 @@ class RPGGame:
                     m.addExp(100)
         await self.bot.send_message(channel, embed=embed);
 
-    def getRPGChannel(serverid : str):
-        conn = sqlite3.connect(dbcon.RPGDB)
-        c = conn.cursor()
-        c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
-        t = c.fetchone()
-        conn.commit()
-        conn.close()
-        if t==None:
-            print("Channel not specified for server")
-            return None
-        return self.bot.get_channel(str(t[0]))
-
     async def bossbattle(self):
         print("Boss time!")
         for serverid in self.bossparties:

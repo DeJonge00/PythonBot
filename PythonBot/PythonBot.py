@@ -1,12 +1,12 @@
+#!/usr/bin/env python3
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3
-import secret.secrets as secrets, constants
+import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3, constants
+from secret import secrets
 
 # Basic configs
 pi = 3.14159265358979323846264
-SERVICE = False
 REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
@@ -249,17 +249,4 @@ def initBot():
         await log.error("user " + member.name + " unbanned", filename=member.server.name)
     return bot
 
-import daemon
-class BotDaemon(daemon):
-    def __init__(self, pidfile):
-        super(daemon, self).__init__(pidfile)
-
-    def run(self):
-        # Start the bot
-        initBot().run(secrets.bot_token)
-
-if SERVICE:
-    bot = BotDaemon(constants.pidfile)
-    bot.start()
-else:
-    initBot().run(secrets.bot_token)
+initBot().run(secrets.bot_token)
