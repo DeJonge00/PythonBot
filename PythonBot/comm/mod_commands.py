@@ -204,17 +204,8 @@ class Mod:
             else:
                 self.bot.spongelist.append(ctx.message.mentions[0].id)
 
-    # {prefix}quit
-    @commands.command(pass_context=1, help="Lets me go to sleep")
-    async def quit(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
-            await self.bot.say("Hahahaha, no")
-            return
-        if len(args) <= 0:
-            self.bot.quitting = True
+    async def quitBot(self):
         try:
-            await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
             if self.bot.RPGGAME:
                 await self.bot.rpggame.quit()
             if self.bot.MUSIC:
@@ -224,6 +215,28 @@ class Mod:
             print(e)
         await self.bot.logout()
         await self.bot.close()
+
+#    # {prefix}restart
+#    @commands.command(pass_context=1, help="Lets me go to sleep AND BE RESURRECTED \\o/")
+#    async def restart(self, ctx, *args):
+#        await removeMessage.deleteMessage(self.bot, ctx)
+#        if not(ctx.message.author.id==constants.NYAid):
+#            await self.bot.say("Hahahaha, no")
+#            return
+#        await self.bot.send_message(ctx.message.channel, "*I'll be back...*")
+#        
+#        reload(PythonBot)
+
+    # {prefix}quit
+    @commands.command(pass_context=1, help="Lets me go to sleep")
+    async def quit(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if not(ctx.message.author.id==constants.NYAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
+        await self.quitBot()
+        
 
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")

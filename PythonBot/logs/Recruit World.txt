@@ -2860,3 +2860,19 @@ Skipping now!
 2018-02-09 20:25:00.374000 | botstuff | Nya deleted: >quit
 2018-02-09 21:17:18.242000 | botstuff | Nya deleted: >urban lit
 2018-02-09 21:17:26.946000 | botstuff | Nya deleted: >quit
+2018-02-10 11:46:36.936000 | botstuff | Nya deleted: >quit
+2018-02-10 11:47:36.857000 | botstuff | Nya deleted: >quit
+2018-02-10 11:47:52.031000 | botstuff | Nya deleted: >urban bot
+2018-02-10 11:47:57.782000 | botstuff | Nya deleted: >face
+2018-02-10 12:24:03.908000 | botstuff | Nya deleted: >quit
+2018-02-10 12:24:23.354000 | botstuff | Nya deleted: >restart
+2018-02-10 12:25:24.119000 | botstuff | Nya deleted: >quit
+2018-02-10 12:27:15.066000 | botstuff | Nya deleted: >restart
+2018-02-10 12:28:21.310000 | botstuff | Nya deleted: >restart
+2018-02-10 12:29:54.568000 | botstuff | Nya deleted: >restart
+2018-02-10 12:33:22.699000 | botstuff | Nya deleted: >restart
+2018-02-10 12:34:34.787000 | botstuff | Nya deleted: >restart
+2018-02-10 12:36:58.989000 | botstuff | Nya deleted: >restart
+2018-02-10 12:37:49.006000 | botstuff | Nya deleted: >restart
+2018-02-10 12:37:54.874000 | botstuff | Nya deleted: >restart
+2018-02-10 12:38:34.505000 | botstuff | Nya deleted: >quit

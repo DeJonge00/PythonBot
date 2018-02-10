@@ -16330,3 +16330,107 @@ deb-src http://security.debian.org/debian-security/ stretch/updates main
 2018-02-09 20:19:09.325000 | lobby | Excalibur Morgan deleted: <:hyperTamamoSmug:402643743083069451>
 2018-02-09 20:21:46.572000 | music | Dafaq-Man edited: I like this song a loy
 2018-02-09 20:22:57.703638 | 9CHAT | member Nya updated:  nick from: Nys to: Exposed Reverse Trap
+2018-02-10 11:45:45.842000 | lobby | Kappa edited: I meant the carnival itself
+2018-02-10 11:50:08.555000 | lobby | kaori edited: I don't believe it, send a video to proof *wink*
+2018-02-10 11:56:40.495000 | lobby | ;d deleted: 
+2018-02-10 12:05:23.348000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : Game Show Music - Lingo Theme Song (2002-2003)
+ 2 : Game Show Music - Lingo Theme Song (2003-2007)
+ 3 : Lingo Theme 1989-2000
+ 4 : Lingo Theme Song 1987-1988, Canadian Version, Unclean [400 Subscriber Special!]
+ 5 : Lingo Theme Song
+ c : Cancel
+```
+2018-02-10 12:05:24.839000 | music | Tristan deleted: 1
+2018-02-10 12:05:30.505000 | lobby | kaori edited: Can't even tell your hair colot
+2018-02-10 12:06:30.038000 | lobby | ;d edited: No brown
+2018-02-10 12:08:08.485000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : Creedence Clearwater Revival - Fortunate Son (Lyric Video)
+ 2 : Who Wants To Be A Millionaire Music - ?64,000 - ?500,000 Questions
+ 3 : Who Wants To Be A Millionaire Full Theme
+ 4 : Who Wants To Be A Millionaire: Music for 1 Hour!
+ 5 : Theme Main - Who Wants to Be a Millionaire?
+ c : Cancel
+```
+2018-02-10 12:08:09.238000 | music | Tristan deleted: 1
+2018-02-10 12:08:07.846000 | lobby | ;d deleted: When I was five
+2018-02-10 12:10:23.969000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : Best of epic asian music compilation
+ 2 : Japanese Battle Music - Shogun
+ 3 : Japanese Battle Music - Shuriken
+ 4 : Wadaiko Matsuriza - Kabuki Gomen-Jyo [Japanese drums]
+ 5 : Japanese Battle Music - Daimyo
+ c : Cancel
+```
+2018-02-10 12:10:24.635000 | music | Tristan deleted: 1
+2018-02-10 12:10:11.792000 | lobby | kaori deleted: 
+2018-02-10 12:10:32.087000 | lobby | kaori deleted: 
+2018-02-10 12:13:38.700000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : VRchat weird moment
+ 2 : Suicide is painless sung by knuckles
+ 3 : ~Suicide Is Painless~ with lyrics
+ 4 : knuckles suicide is painless sung by knuckles
+ 5 : Suicide is Painless Knuckles Version
+ c : Cancel
+```
+2018-02-10 12:13:42.027000 | music | Tristan deleted: 2
+2018-02-10 12:14:02.673000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : HAPPY MUSIC - Hawaiian Music - UKULELE Background, Cheerful, Joyful and Upbeat #2
+ 2 : HAPPY Music - Good Morning Ukulele Music - Upbeat Background Music to Wake UP and Happiness
+ 3 : Relaxing Jazz & Bossa Nova Music Radio - 24/7 Chill Out Piano & Guitar Music Live Stream
+ 4 : HAPPY Music - Good Morning Gypsy & Happy Jazz - Music to Wake UP, Cooking and Happiness
+ 5 : Relaxing Jazz & Bossa Nova Happy Music for Work in office - Background Cafe Music
+ c : Cancel
+```
+2018-02-10 12:14:03.766000 | music | Tristan deleted: 1
+2018-02-10 12:18:20.299000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : Game Show Music - Lingo Theme Song (2002-2003)
+ 2 : Game Show Music - Lingo Theme Song (2003-2007)
+ 3 : Lingo Theme 1989-2000
+ 4 : Lingo Theme Song 1987-1988, Canadian Version, Unclean [400 Subscriber Special!]
+ 5 : Lingo Theme Song
+ c : Cancel
+```
+2018-02-10 12:18:24.933000 | music | Tristan deleted: 5
+2018-02-10 12:18:41.653000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : J.B.O - Ich will L?rm
+ 2 : JBO - Ich will L?rm
+ 3 : The Aggressively German Centurion - For Honor
+ 4 : J.B.O. - Ich will L?rm
+ 5 : Nightcore - Ich will L?rm
+ c : Cancel
+```
+2018-02-10 12:18:42.917000 | music | Tristan deleted: 1
+2018-02-10 12:24:53.320000 | music | Ayana deleted: Pick an option below to enqueue it.
+```prolog
+[Page 1/1]
+
+ 1 : ?Hatsune Miku?Your Reality - Doki Doki Literature Club
+ 2 : DOKI DOKI METAL CLUB (OFFICIAL MUSIC VIDEO)
+ 3 : DOKI DOKI TRADITIONAL JAPANESE CLUB
+ 4 : THINGS JUST GOT VERY WEIRD & NOW I'M UNCOMFORTABLE | Doki Doki Literature Club [3]
+ 5 : SPEEDPAINT: Yuri - Doki Doki Literature Club!
+ c : Cancel
+```
+2018-02-10 12:25:00.183000 | music | Tristan deleted: 3
