@@ -37,9 +37,6 @@
     <Compile Include="removeMessage.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="daemon.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="rpggame\rpgdbconnect.py">
       <SubType>Code</SubType>
     </Compile>

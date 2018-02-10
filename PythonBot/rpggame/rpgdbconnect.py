@@ -1,9 +1,10 @@
-import asyncio, discord, constants, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, sqlite3
+import asyncio, discord, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, pymysql
 from discord.ext import commands
+RPGDB = 'logs/rpg.db'
 
 # Channels
 def initChannels():
-    conn = sqlite3.connect(constants.RPGDB)
+    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS rpgchannel")
     c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
@@ -11,30 +12,33 @@ def initChannels():
     conn.close()
 
 def setChannel(serverID, channelID):
-    conn = sqlite3.connect(constants.RPGDB)
+    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
-    c.execute("INSERT OR REPLACE INTO rpgchannel VALUES (" + str(serverID) + ", " + str(channelID) + ")")
+    if c.execute("SELECT * FROM rpgchannel") == 0:
+        c.execute("INSERT INTO rpgchannel (serverID, channelID) VALUES ({0}, {1})".format(serverID, channelID))
+    else :
+        c.execute("UPDATE rpgchannel SET channelID = {0} WHERE serverID = {1}".format(serverID, channelID))
     t = c.fetchone()
     conn.commit()
     conn.close()
 
 # Stats
-def initDB():
-    conn = sqlite3.connect(constants.RPGDB)
-    c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS stats")
-    c.execute("DROP TABLE IF EXISTS items")
-    c.execute("DROP TABLE IF EXISTS adventure")
-    c.execute("DROP TABLE IF EXISTS weapon")
-    c.execute("CREATE TABLE stats (playerID INTEGER PRIMARY KEY, role TEXT, health INTEGER, maxhealth INTEGER, damage INTEGER, weaponskill INTEGER)")
-    c.execute("CREATE TABLE items (playerID INTEGER PRIMARY KEY, exp INTEGER, money INTEGER)")
-    c.execute("CREATE TABLE adventure (playerID INTEGER PRIMARY KEY, time INTEGER, channelID INTEGER)")
-    c.execute("CREATE TABLE weapon (playerID INTEGER PRIMARY KEY, ability TEXT)")
-    conn.commit()
-    conn.close()
+# def initDB():
+#     conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+#     c = conn.cursor()
+#     c.execute("DROP TABLE IF EXISTS stats")
+#     c.execute("DROP TABLE IF EXISTS items")
+#     c.execute("DROP TABLE IF EXISTS adventure")
+#     c.execute("DROP TABLE IF EXISTS weapon")
+#     c.execute("CREATE TABLE stats (playerID INTEGER PRIMARY KEY, role TEXT, health INTEGER, maxhealth INTEGER, damage INTEGER, weaponskill INTEGER)")
+#     c.execute("CREATE TABLE items (playerID INTEGER PRIMARY KEY, exp INTEGER, money INTEGER)")
+#     c.execute("CREATE TABLE adventure (playerID INTEGER PRIMARY KEY, time INTEGER, channelID INTEGER)")
+#     c.execute("CREATE TABLE weapon (playerID INTEGER PRIMARY KEY, ability TEXT)")
+#     conn.commit()
+#     conn.close()
 
 def getPlayer(player : discord.User):
-    conn = sqlite3.connect(constants.RPGDB)
+    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
     c.execute("SELECT * FROM stats WHERE playerID=" + str(player.id))
     p = c.fetchone()
@@ -55,21 +59,43 @@ def getPlayer(player : discord.User):
         player.setAdventure(a[1], a[2])
     return player
 
+# def updatePlayers(stats : [rpgchar.RPGPlayer]):
+#     conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+#     c = conn.cursor()
+#     for s in stats:
+#         params = (s.playerID, s.role, s.health, s.maxhealth, s.damage, s.weaponskill)
+#         c.execute("INSERT OR REPLACE INTO stats VALUES (?, ?, ?, ?, ?, ?)", params)
+#         params = (s.playerID, s.exp, s.money)
+#         c.execute("INSERT OR REPLACE INTO items VALUES (?, ?, ?)", params)
+#         params = (s.playerID, s.adventuretime, s.adventurechannel)
+#         c.execute("INSERT OR REPLACE INTO adventure VALUES (?, ?, ?)", params)
+#     conn.commit()
+#     conn.close()
+
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
-    conn = sqlite3.connect(constants.RPGDB)
+    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
     for s in stats:
-        params = (s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill)
-        c.execute("INSERT OR REPLACE INTO stats VALUES (?, ?, ?, ?, ?, ?)", params)
-        params = (s.userid, s.exp, s.money)
-        c.execute("INSERT OR REPLACE INTO items VALUES (?, ?, ?)", params)
-        params = (s.userid, s.adventuretime, s.adventurechannel)
-        c.execute("INSERT OR REPLACE INTO adventure VALUES (?, ?, ?)", params)
+        if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.playerID)) == 0 :
+            c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.playerID, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
+        else :
+            c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.playerID, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
+        
+        if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.playerID)) == 0 :
+            c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.playerID, s.exp, s.money))
+        else :
+            c.execute("UPDATE items SET exp = {1}, money = {2} WHERE playerID = {0}".format(s.playerID, s.exp, s.money))
+        
+        if c.execute("SELECT playerID FROM adventure WHERE playerID = {0}".format(s.playerID)) == 0 :
+            c.execute("INSERT INTO adventure (playerID, adventuretime, adventurechannel) VALUES ({0}, {1}, '{2}')".format(s.playerID, s.adventuretime, s.adventurechannel))
+        else :
+            c.execute("UPDATE adventure SET adventuretime = {1}, adventurechannel = '{2}' WHERE playerID = {0}".format(s.playerID, s.adventuretime, s.adventurechannel))    
     conn.commit()
     conn.close()
 
+
 def getTopPlayers(server="all"):
-    conn = sqlite3.connect(constants.RPGDB)
+    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
     c.execute("SELECT playerID, exp FROM items ORDER BY exp DESC")
     a = c.fetchall()

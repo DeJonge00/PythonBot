@@ -19,7 +19,7 @@ class RPGShop:
             return True
         return False
 
-    @commands.group(pass_context=1, help="Shop for valuable items!")
+    @commands.group(pass_context=1, aliases=["s"], help="Shop for valuable items!")
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
@@ -42,16 +42,3 @@ class RPGShop:
             await self.bot.say(ctx.message.author.mention + " bought " + str(a) + " healthpotions")
         else:
             await self.bot.say(ctx.message.author.mention + " does not have enough money to buy " + str(a) + " healthpotions\nThe maximum you can afford is " + str(math.floor(player.money/item.cost)))
-
-    # {prefix}train
-    @commands.group(pass_context=1, help="Train your skills!")
-    async def train(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Type '" + constants.prefix + "help train' for the list of available training sessions")
-
-    # {prefix}train hp
-    @train.command(pass_context=1, aliases=["h", "hp"], help="Train your character's health!")
-    async def health(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        await self.bot.say("Training for no benefit")
