@@ -2856,3 +2856,7 @@ Skipping now!
 2018-02-09 13:47:57.232000 | music | Nya deleted: >m q
 2018-02-09 13:48:04.941000 | music | Nya deleted: >m stop
 2018-02-09 13:49:06.216000 | music | Nya deleted: >quit
+2018-02-09 15:10:57.162000 | music | Nya deleted: >quit
+2018-02-09 20:25:00.374000 | botstuff | Nya deleted: >quit
+2018-02-09 21:17:18.242000 | botstuff | Nya deleted: >urban lit
+2018-02-09 21:17:26.946000 | botstuff | Nya deleted: >quit
