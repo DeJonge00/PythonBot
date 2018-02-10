@@ -27,7 +27,7 @@ async def new(bot, message):
             bot.praise = datetime.datetime.utcnow()
 
     # Talking to the bot
-    if (not message.content[0]==">"):
+    if (not message.content[0]==constants.prefix):
         if ((bot.user in message.mentions) | (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri'])))>0)):
             if ((message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) & any(word in message.content.lower() for word in ['heart','pls', 'love'])):
                 await bot.send_message(message.channel, ":heart:")

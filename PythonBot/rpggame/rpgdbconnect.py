@@ -52,7 +52,7 @@ def getPlayer(player : discord.User):
         player.exp = i[1]
         player.money = i[2]
     if a != None:
-        player.setAdventure(i[1], i[2])
+        player.setAdventure(a[1], a[2])
     return player
 
 def updatePlayers(stats : [rpgchar.RPGPlayer]):

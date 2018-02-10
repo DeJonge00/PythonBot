@@ -2,6 +2,9 @@ import discord, math
 from discord.ext import commands
 from discord.ext.commands import Bot
 
+minadvtime = 5
+maxadvtime = 120
+
 HEALTH = 100
 ARMOR = 0
 DAMAGE = 10
@@ -48,7 +51,7 @@ class RPGPlayer(RPGCharacter):
         return getLevelByExp(self.exp)
 
     def setAdventure(self, n : int, channelid : int):
-        if (self.adventuretime <= 0) & (5 < n < 120):
+        if (self.adventuretime <= 0) & (minadvtime < n < maxadvtime):
             self.adventuretime = n
             self.adventurechannel = channelid
 

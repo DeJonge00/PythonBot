@@ -181,10 +181,10 @@ class RPGGame:
         if data.adventuretime > 0:
             await self.bot.say("You are already on an adventure")
             return
-        if n<5:
+        if n<rpgchar.minadvtime:
             await self.bot.say("You came back before you even went out, 0 exp earned")
             return
-        if n>120:
+        if n>rpgchar.maxadvtime:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
         data.setAdventure(n, ctx.message.channel.id)

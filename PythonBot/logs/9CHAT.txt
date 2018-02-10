@@ -16434,3 +16434,95 @@ deb-src http://security.debian.org/debian-security/ stretch/updates main
  c : Cancel
 ```
 2018-02-10 12:25:00.183000 | music | Tristan deleted: 3
+2018-02-10 13:24:26.358000 | music | Nya deleted: >echo ?
+2018-02-10 13:24:33.641000 | music | Excalibur Morgan deleted: >m p https://youtu.be/lJuswV49ZVM
+2018-02-10 13:28:03.086000 | music | Excalibur Morgan deleted: >m p https://youtu.be/iVB_DrswQfU
+2018-02-10 13:28:25.578000 | music | Dafaq-Man deleted: >m q goodbye to gravity the cage
+2018-02-10 13:30:52.737000 | music | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 13:30:59.725000 | music | Excalibur Morgan deleted: the bait has been set
+2018-02-10 13:31:23.487000 | music | Excalibur Morgan edited: i litteraly typed the same
+2018-02-10 13:36:04.566000 | lobby | Excalibur Morgan deleted: i thought there were only straight and curly
+2018-02-10 13:36:47.545000 | music | Excalibur Morgan deleted: >m p https://youtu.be/fzz7LwUaKr0
+2018-02-10 13:39:32.939000 | lobby | kaori deleted: 
+2018-02-10 13:41:55.060000 | music | Dafaq-Man deleted: >m q breaking benjamin breath
+2018-02-10 13:42:01.374000 | music | Excalibur Morgan deleted: >m p https://youtu.be/15KxSgAurw4
+2018-02-10 13:45:33.700000 | music | Excalibur Morgan deleted: >m p https://youtu.be/2kCbFmjEi6A
+2018-02-10 13:54:39.872000 | music | Dafaq-Man deleted: >m q war of change
+2018-02-10 13:55:33.907467 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2018-02-10 13:59:56.112000 | music | Excalibur Morgan deleted: >m p https://youtu.be/5SkG-OtSxv8
+2018-02-10 14:04:22.728000 | music | Excalibur Morgan deleted: >m p https://youtu.be/VcOWxKCSsK0
+2018-02-10 14:11:24.838596 | 9CHAT | member Some Creepy Dude updated:  avatar changed
+2018-02-10 14:11:30.364000 | music | Excalibur Morgan deleted: >m p https://youtu.be/r8oSeuIiSlQ
+2018-02-10 14:15:45.512000 | music | Dafaq-Man edited: Thought biri dies
+2018-02-10 14:16:22.424000 | music | Excalibur Morgan deleted: >m p https://youtu.be/1TiVmrdiAuQ
+2018-02-10 14:20:07.639000 | music | Excalibur Morgan deleted: >m p https://youtu.be/PSAxxJ4f-RI
+2018-02-10 14:24:54.573000 | music | Excalibur Morgan deleted: >m p https://youtu.be/NLk_TwOP8Gw
+2018-02-10 14:28:35.500000 | music | Excalibur Morgan deleted: >m p https://youtu.be/1PBfYCvHFl4
+2018-02-10 14:37:41.593000 | music | Excalibur Morgan deleted: >m p https://youtu.be/lvY4FQtw-ac
+2018-02-10 14:41:16.220000 | music | Excalibur Morgan deleted: >m p https://youtu.be/ABNWPHDK7K4
+2018-02-10 14:44:57.790000 | music | Excalibur Morgan deleted: >m p https://youtu.be/vKM9nXuXnog
+2018-02-10 14:48:24.929000 | music | Excalibur Morgan deleted: >m p https://youtu.be/fEkx54KBpOU
+2018-02-10 14:51:59.328000 | music | Excalibur Morgan deleted: >m p https://youtu.be/dI7SGsZk62Q
+2018-02-10 14:53:31.629000 | lobby | Excalibur Morgan edited: i'm 0001 too
+2018-02-10 14:55:58.833000 | music | Excalibur Morgan deleted: >m p https://youtu.be/RqJI4pOe0h4
+2018-02-10 15:00:19.627000 | music | Excalibur Morgan deleted: >m p https://youtu.be/r-dmqCzquZU
+2018-02-10 15:06:17.898000 | music | Excalibur Morgan deleted: >m p https://youtu.be/LF8AGUJcbxY
+2018-02-10 15:33:40.314405 | 9CHAT | member Cookie Poro updated:  avatar changed
+2018-02-10 15:37:30.094588 | 9CHAT | member menme updated:  avatar changed
+2018-02-10 15:41:11.315664 | 9CHAT | member MajesticUniverse updated:  name from: MajesticUniverse to: Hi, my name is [Thomau]
+2018-02-10 15:42:47.137000 | lobby | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:43:34.596000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:44:13.620000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:44:13.863000 | lobby | Raziel deleted: >pat @Snusky
+2018-02-10 15:44:37.183000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:44:43.180000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:44:55.381000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:45:06.420000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:45:12.183000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:45:13.186000 | botspam | Snusky deleted: >pat @Raziel
+2018-02-10 15:45:23.575000 | botspam | Snusky deleted: >pat @Dafaq-Man
+2018-02-10 15:45:25.043000 | lobby | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:45:31.194000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:45:41.339000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:45:49.981000 | botspam | Raziel deleted: >pat @Snusky
+2018-02-10 15:46:42.009000 | botspam | Tatsumaki deleted: **Snusky**, please cool down! (**24** seconds left)
+2018-02-10 15:46:49.397000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:46:50.854000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:47:13.972000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:47:51.494000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:47:57.612000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:49:00.387000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:49:05.341000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:50:04.385000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:50:13.836000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:50:37.856000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:50:44.228000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:51:25.673000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:51:34.760000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:52:55.992000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:53:05.029000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:54:49.284000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 15:55:03.936000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:57:00.252000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:57:18.186114 | 9CHAT | member Steager | Jannek updated:  avatar changed
+2018-02-10 15:58:01.291000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:59:11.077000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 15:59:47.419000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 16:00:22.530000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:01:29.604000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:02:42.117000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 16:03:03.481000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:03:11.673000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 16:03:42.790000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:04:16.714000 | botspam | Excalibur Morgan deleted: >pat @Snusky
+2018-02-10 16:04:20.140000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:09:27.838000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:10:55.693000 | botspam | Nya deleted: >m l
+2018-02-10 16:11:53.312684 | 9CHAT | member Turd Sandwich updated:  name from: Turd Sandwich to: Rulon Oboyev avatar changed
+2018-02-10 16:13:50.043000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:16:02.459000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:18:57.409000 | botspam | Nya deleted: >pat @Excalibur Morgan
+2018-02-10 16:23:38.117000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:25:18.825000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:26:27.833000 | botspam | Dafaq-Man deleted: >pat @Snusky
+2018-02-10 16:29:40.984000 | botspam | Dafaq-Man deleted: >pat @Snusky
