@@ -44,7 +44,8 @@ qa = [
             "To be or not to be, *that's* the question!",
             "Ask that your waifu, you weeb",
             "If there is one thing I am sure of, it is that traps are gay af",
-            "About a 4% chance of that..."
+            "About a 4% chance of that...",
+            "Not. Even. Close."
         ]
 
 response = [

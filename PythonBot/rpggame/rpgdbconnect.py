@@ -39,16 +39,16 @@ def initDB():
 def getPlayer(player : discord.User):
     conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
-    c.execute("SELECT * FROM stats WHERE playerID=" + str(player.id))
+    c.execute("SELECT * FROM stats WHERE playerID={}".format(player.id))
     p = c.fetchone()
-    c.execute("SELECT * FROM items WHERE playerID=" + str(player.id))
+    c.execute("SELECT * FROM items WHERE playerID={}".format(player.id))
     i = c.fetchone()
-    c.execute("SELECT * FROM adventure WHERE playerID=" + str(player.id))
+    c.execute("SELECT * FROM adventure WHERE playerID={}".format(player.id))
     a = c.fetchone()
     conn.commit()
     conn.close()
     if p == None:
-        print("User not found: " + player.name)
+        print("User not found: {}".format(player.name))
         return rpgchar.RPGPlayer(player.id, player.name)
     player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5])
     if i != None:
@@ -62,20 +62,20 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
     c = conn.cursor()
     for s in stats:
-        if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.playerID)) == 0 :
-            c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.playerID, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
+        if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
+            c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
         else :
-            c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.playerID, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
+            c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
         
-        if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.playerID)) == 0 :
+        if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
             c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.playerID, s.exp, s.money))
         else :
             c.execute("UPDATE items SET exp = {1}, money = {2} WHERE playerID = {0}".format(s.playerID, s.exp, s.money))
         
-        if c.execute("SELECT playerID FROM adventure WHERE playerID = {0}".format(s.playerID)) == 0 :
-            c.execute("INSERT INTO adventure (playerID, adventuretime, adventurechannel) VALUES ({0}, {1}, '{2}')".format(s.playerID, s.adventuretime, s.adventurechannel))
+        if c.execute("SELECT playerID FROM adventure WHERE playerID = {0}".format(s.userid)) == 0 :
+            c.execute("INSERT INTO adventure (playerID, adventuretime, adventurechannel) VALUES ({0}, {1}, '{2}')".format(s.userid, s.adventuretime, s.adventurechannel))
         else :
-            c.execute("UPDATE adventure SET adventuretime = {1}, adventurechannel = '{2}' WHERE playerID = {0}".format(s.playerID, s.adventuretime, s.adventurechannel))    
+            c.execute("UPDATE adventure SET adventuretime = {1}, adventurechannel = '{2}' WHERE playerID = {0}".format(s.userid, s.adventuretime, s.adventurechannel))    
     conn.commit()
     conn.close()
 

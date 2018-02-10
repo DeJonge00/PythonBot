@@ -239,7 +239,7 @@ def initBot():
         if (reaction.emoji=="\N{BROKEN HEART}") | (reaction.message.author.id==constants.NYAid):
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
-        if musicPlayer:
+        if musicplayer:
             await bot.musicplayer.handleReaction(reaction)
     @bot.event
     async def on_member_ban(member):
