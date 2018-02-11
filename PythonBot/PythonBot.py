@@ -251,4 +251,5 @@ def initBot():
         await log.error("user " + member.name + " unbanned", filename=member.server.name)
     return bot
 
+# Start the bot
 initBot().run(secrets.bot_token)

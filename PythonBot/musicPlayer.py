@@ -1,9 +1,8 @@
-import argparse, asyncio, constants, discord, removeMessage, math
+import argparse, asyncio, constants, discord, removeMessage, math 
 from discord.ext import commands
 from collections import deque
 from discord.ext.commands import Bot
 import urllib.request, urllib.parse, re
-
 embedColor = 0x93cc04
 
 class VoiceEntry:
@@ -81,10 +80,7 @@ class VoiceState:
 class MusicPlayer:
     def __init__(self, my_bot):
         self.bot = my_bot
-        try:
-            discord.opus.load_opus("opus.dll")
-        except:
-            print("Failed to load opus.dll")
+        import opuslib
         self.voice_states = {}
 
     def get_voice_state(self, server):

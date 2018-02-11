@@ -5,6 +5,8 @@ GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
 PATSDB = "logs/pats.db"
 pidfile = "logs/pid.txt"
 
+SERVICE = False
+
 # User Id's
 NYAid = "143037788969762816"
 LOLIid = "182127850919428096"
