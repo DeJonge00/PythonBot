@@ -80,10 +80,8 @@ def initBot():
             # Send message to rpggame for exp
             if bot.RPGGAME:
                 await bot.rpggame.handle(message)
-        except discord.ext.commands.errors.CommandInvokeError as e:
-            print(e)
-        except discord.ext.commands.errors.CommandNotFound:
-            pass
+        except Exception as e:
+            log.error(str(e))
     @bot.event
     async def on_message_edit(before, after):
         await message_handler.edit(before)
