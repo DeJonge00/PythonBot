@@ -68,9 +68,9 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
         
         if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-            c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.playerID, s.exp, s.money))
+            c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.userid, s.exp, s.money))
         else :
-            c.execute("UPDATE items SET exp = {1}, money = {2} WHERE playerID = {0}".format(s.playerID, s.exp, s.money))
+            c.execute("UPDATE items SET exp = {1}, money = {2} WHERE playerID = {0}".format(s.userid, s.exp, s.money))
         
         if c.execute("SELECT playerID FROM adventure WHERE playerID = {0}".format(s.userid)) == 0 :
             c.execute("INSERT INTO adventure (playerID, adventuretime, adventurechannel) VALUES ({0}, {1}, '{2}')".format(s.userid, s.adventuretime, s.adventurechannel))

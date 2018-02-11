@@ -32,6 +32,8 @@ def initCogs(bot):
         bot.add_cog(bot.rpgshop)
     import comm.mod_commands
     bot.add_cog(comm.mod_commands.Mod(bot))
+    import comm.misc_commands
+    bot.add_cog(comm.misc_commands.Misc(bot))
 
 class PythonBot(Bot):
     def __init__(self, music=True, rpggame=True):
