@@ -1,9 +1,10 @@
 import asyncio, discord, constants, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, pymysql
 from discord.ext import commands
+from secret import secrets
 
 # Channels
 def initChannels():
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS rpgchannel")
     c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
@@ -11,7 +12,7 @@ def initChannels():
     conn.close()
 
 def setChannel(serverID, channelID):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     if c.execute("SELECT * FROM rpgchannel") == 0:
         c.execute("INSERT INTO rpgchannel (serverID, channelID) VALUES ({0}, {1})".format(serverID, channelID))
@@ -23,7 +24,7 @@ def setChannel(serverID, channelID):
 
 # Stats
 def initDB():
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS stats")
     c.execute("DROP TABLE IF EXISTS items")
@@ -37,7 +38,7 @@ def initDB():
     conn.close()
 
 def getPlayer(player : discord.User):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT * FROM stats WHERE playerID={}".format(player.id))
     p = c.fetchone()
@@ -59,7 +60,7 @@ def getPlayer(player : discord.User):
     return player
 
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     for s in stats:
         if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
@@ -80,7 +81,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     conn.close()
 
 def getTopPlayers(server="all"):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT playerID, exp FROM items ORDER BY exp DESC")
     a = c.fetchall()
@@ -89,7 +90,7 @@ def getTopPlayers(server="all"):
     return a
 
 def getRPGChannel(serverid : str):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
     t = c.fetchone()

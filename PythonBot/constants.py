@@ -1,4 +1,4 @@
-prefix = ">"
+prefix = "<"
 RPGDB = 'logs/rpg.db'
 WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
 GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
@@ -13,6 +13,7 @@ LOLIid = "182127850919428096"
 WIZZid = "224620110277509120"
 CATEid = "183977132622348288"
 TRISTANid = "214708282864959489"
+KAPPAid = "237514437194547202"
 
 # Server id's
 PRIVATESERVERid = "226010107513798656"
@@ -32,7 +33,6 @@ ytdl_options = dict(
 ytdl_before = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
 
 # talking to bb
-
 qa = [
             "What are you asking me for?",
             "*sigh*, go ask your dad...",

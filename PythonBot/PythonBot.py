@@ -81,7 +81,7 @@ def initBot():
             if bot.RPGGAME:
                 await bot.rpggame.handle(message)
         except Exception as e:
-            log.error(str(e))
+            await log.error(str(e))
     @bot.event
     async def on_message_edit(before, after):
         await message_handler.edit(before)
@@ -239,7 +239,7 @@ def initBot():
         if (reaction.emoji=="\N{BROKEN HEART}") | (reaction.message.author.id==constants.NYAid):
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
-        if musicplayer:
+        if bot.musicplayer != None:
             await bot.musicplayer.handleReaction(reaction)
     @bot.event
     async def on_member_ban(member):

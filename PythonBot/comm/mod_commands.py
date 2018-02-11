@@ -245,4 +245,4 @@ class Mod:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        await self.bot.rpggameinstance.bossbattle()
+        await self.bot.rpggame.bossbattle()
