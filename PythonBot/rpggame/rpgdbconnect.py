@@ -11,19 +11,32 @@ def initChannels():
     conn.commit()
     conn.close()
 
-def setChannel(serverID, channelID):
+def setRPGChannel(serverid : int, channelid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    if c.execute("SELECT * FROM rpgchannel") == 0:
-        c.execute("INSERT INTO rpgchannel (serverID, channelID) VALUES ({0}, {1})".format(serverID, channelID))
-    else :
-        c.execute("UPDATE rpgchannel SET channelID = {0} WHERE serverID = {1}".format(serverID, channelID))
+    c.execute("SELECT channelID FROM rpgchannel ".format(serverid))
     t = c.fetchone()
+    if t == None:
+        c.execute("INSERT INTO rpgchannel VALUES ('{}', '{}')".format(serverid, channelid))
+    else:
+        c.execute("UPDATE rpgchannel SET channelID={} WHERE serverID={}".format(channelid, serverid))
     conn.commit()
     conn.close()
 
-# Stats
-def initDB():
+def getRPGChannel(serverid : str):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    c = conn.cursor()
+    c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
+    t = c.fetchone()
+    conn.commit()
+    conn.close()
+    if t==None:
+        print("Channel not specified for server")
+        return None
+    return self.bot.get_channel(str(t[0]))
+
+# Rpg
+def initRpgDB():
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS stats")
@@ -89,14 +102,17 @@ def getTopPlayers(server="all"):
     conn.close()
     return a
 
-def getRPGChannel(serverid : str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+# Pats
+def incrementPats(patterid : int, patteeid : int):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "PATS")
     c = conn.cursor()
-    c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
-    t = c.fetchone()
+    c.execute("SELECT patsNbr FROM pats_counters WHERE patterID={} AND patteeID={}".format(pattaerid, patteeid))
+    try:
+        pats = c.fetchone()[0] +1
+        c.execute("UPDATE pats_counters SET patsNbr={} WHERE authorID={} AND userID={}".format(pats, patterid, patteeid))
+    except IndexError: # Never been patted before
+        pats = 1
+        c.execute("INSERT INTO pats_counters VALUES ('{}', '{}', '{}')".format(patterid, patteeid, pats))
     conn.commit()
     conn.close()
-    if t==None:
-        print("Channel not specified for server")
-        return None
-    return self.bot.get_channel(str(t[0]))
+    return pats

@@ -231,13 +231,12 @@ class Mod:
     @commands.command(pass_context=1, help="Lets me go to sleep")
     async def quit(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        if not((ctx.message.author.id==constants.NYAid) | (ctx.message.author.id==constants.KAPPAid)):
             await self.bot.say("Hahahaha, no")
             return
         await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
         await self.quitBot()
         
-
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
     async def test(self, ctx, *args):    

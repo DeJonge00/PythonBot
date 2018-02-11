@@ -176,7 +176,7 @@ class RPGGame:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
         data.setAdventure(n, ctx.message.channel.id)
-        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for {} minutes, good luck!".format(n))
+        await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
@@ -319,7 +319,7 @@ class RPGGame:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        dbcon.initDB()
+        dbcon.initRpgDB()
         await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
@@ -328,5 +328,5 @@ class RPGGame:
         if not(ctx.message.author.id==constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
-        dbcon.setChannel(ctx.message.server.id, ctx.message.channel.id)
+        dbcon.setRPGChannel(ctx.message.server.id, ctx.message.channel.id)
         await self.bot.say("This channel is now the rpg channel for this server")

@@ -92,6 +92,7 @@ response = [
             "uwu",
             "owo",
             "-3-",
+            "^_^",
             "Ewwwwww... Don't touch me...",
             "Praise Git like you never praised before!",
             "Code me like one of your french bots"

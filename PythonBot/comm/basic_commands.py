@@ -10,6 +10,7 @@ class Basics:
     def __init__(self, my_bot):
         self.bot = my_bot
         self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
+        self.patTimes = {}
 
     # {prefix}60
     @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
@@ -203,42 +204,27 @@ class Basics:
             return await self.bot.say(ctx.message.author.mention + " You cant pat air lmao")
         if ctx.message.mentions[0].id == ctx.message.author.id:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
+        
         time = datetime.datetime.utcnow()
-
-        conn = sqlite3.connect(constants.PATSDB)
-        c = conn.cursor()
-        c.execute("SELECT time FROM author WHERE authorID =" + ctx.message.author.id)
-        t = c.fetchone()
-        conn.commit()
-        conn.close()
+        t = self.patTimes.get(ctx.message.author.id)
 
         if (t != None):
             t = datetime.datetime.fromtimestamp(t[0])
             if ((time-t).total_seconds() < 60):
-                return await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
+                await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
+                return
+        self.patTimes[authorID] = time
 
-        authorID = ctx.message.author.id
-
-        conn = sqlite3.connect(constants.PATSDB)
-        c = conn.cursor()
-        if t == None:
-            c.execute("INSERT INTO author VALUES ('" + authorID + "', '" + str(time.timestamp()) + "')")
-        else:
-            c.execute("UPDATE author SET time="+ str(time.timestamp()) +" WHERE authorID=" + authorID + "")
-        c.execute("SELECT pats FROM pats WHERE authorID =" + authorID + " AND userID=" + ctx.message.mentions[0].id)
-        n = c.fetchone()
-        if n == None:
-            c.execute("INSERT INTO pats VALUES ('" + authorID + "', '" + ctx.message.mentions[0].id + "', '" + str(1) + "')")
-            n=1
-        else:
-            n = n[0]+1
-            c.execute("UPDATE pats SET pats="+ str(n) +" WHERE authorID=" + authorID + " AND userID=" + ctx.message.mentions[0].id)
-        conn.commit()
-        conn.close()
-        m = ctx.message.author.mention + " has pat " + ctx.message.mentions[0].mention + " " + str(n) + " times now"
-        if n%10==0:
+        pats = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
+        
+        m = "{} has pat {} {} times now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, pats)
+        if n%100==0:
+            m += "\nWoooooaaaaahh LEGENDARY!!!"
+        elif n%25==0:
+            m += "Wow, that is going somewhere!"
+        elif n%10==0:
             m += "\nSugoi!"
-        return await self.bot.say(m);
+        await self.bot.say(m);
 
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
