@@ -1,8 +1,14 @@
-prefix = "+"
+prefix = ">"
 RPGDB = 'logs/rpg.db'
+WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
+GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
+PATSDB = "logs/pats.db"
+pidfile = "logs/pid.txt"
+
+SERVICE = False
 
 # User Id's
-NYAid = "237514437194547202"
+NYAid = "143037788969762816"
 LOLIid = "182127850919428096"
 WIZZid = "224620110277509120"
 CATEid = "183977132622348288"
@@ -40,7 +46,8 @@ qa = [
             "To be or not to be, *that's* the question!",
             "Ask that your waifu, you weeb",
             "If there is one thing I am sure of, it is that traps are gay af",
-            "About a 4% chance of that..."
+            "About a 4% chance of that...",
+            "Not. Even. Close."
         ]
 
 response = [

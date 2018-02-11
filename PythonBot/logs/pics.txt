@@ -50,3 +50,8 @@
 2018-02-10 13:41:29.124639 | 9CHAT | lobby | Excalibur Morgan | https://cdn.discordapp.com/attachments/225995968703627265/411879338359652372/CPgytitWsAA8gNd.png 
 2018-02-10 13:42:59.408937 | 9CHAT | foodporn | kaori | https://cdn.discordapp.com/attachments/240093338538082305/411879717239521280/IMG_20180210_090501_502.jpg 
 2018-02-10 15:49:12.077390 | 9CHAT | lobby | kaori | https://cdn.discordapp.com/attachments/225995968703627265/411911488840663040/IMG_20180210_231155147.jpg 
+2018-02-10 17:29:49.818829 | 9CHAT | botspam | menme | https://cdn.discordapp.com/attachments/238995787927912449/411936812257509391/image.png 
+2018-02-10 17:42:55.381755 | 9CHAT | memes | Excalibur Morgan | https://cdn.discordapp.com/attachments/232025233177968640/411940107172708373/unknown.png 
+2018-02-10 17:43:48.150119 | 9CHAT | memes | Excalibur Morgan | https://cdn.discordapp.com/attachments/232025233177968640/411940328485158922/unknown.png 
+2018-02-10 20:48:37.016806 | 9CHAT | memes | Raziel | https://cdn.discordapp.com/attachments/232025233177968640/411986839218552863/image.png 
+2018-02-10 21:29:28.461810 | 9CHAT | memes | Raziel | https://cdn.discordapp.com/attachments/232025233177968640/411997121240104980/image.jpg 
