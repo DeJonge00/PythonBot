@@ -212,7 +212,7 @@ class RPGGame:
         statnames += "\nMoney:"
         stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
-        stats += "\n{}/".format(data.health,data.maxhealth)
+        stats += "\n{}/{}".format(data.health,data.maxhealth)
         statnames += "\nDamage:"
         stats += "\n{}".format(data.damage)
         statnames += "\nWeaponskill:"
