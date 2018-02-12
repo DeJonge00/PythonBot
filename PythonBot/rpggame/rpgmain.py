@@ -95,7 +95,7 @@ class RPGGame:
                     dbcon.updatePlayers(p)
                     l = list(self.players.keys())
                     for i in l:
-                        if self.players.get(i).adventuretime <= 0:
+                        if self.players.get(i).busydescription == rpgchar.RPGPlayer.NONE:
                             self.players.pop(i)
                 print("Players saved")
             # Bossraids
@@ -109,12 +109,15 @@ class RPGGame:
             for u in list(self.players.values()):
                 if u.health < u.maxhealth:
                     u.addHealth(10)
-                if u.adventuretime > 0:
-                    u.adventuretime -= 1
-                    c = self.bot.get_channel(str(u.adventurechannel))
-                    if c != None:
-                        if(random.randint(0,5)<=0): 
-                            await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
+                if u.busydescription != rpgchar.RPGPlayer.NONE:
+                    u.busytime -= 1
+                    c = self.bot.get_channel(str(u.busychannel))
+                    if u.busydescription == rpgchar.RPGPlayer.ADVENTURE:
+                        if c != None:
+                            if(random.randint(0,5)<=0): 
+                                await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
+                    if u.busytime <= 0:
+                        u.resetBusy()
 
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
@@ -138,6 +141,8 @@ class RPGGame:
 
     async def handle(self, message : discord.Message):
         data = self.getPlayerData(message.author, name=message.author.display_name)
+        if data.busydescription != rpgchar.RPGPlayer.NONE:
+            return
         i = round(pow((data.getLevel())+1, 1/3)  # levelbonus
                 *max(0, min(50, (len(message.content) - 3) / 2))); # Textbonus
         data.addExp(i)
@@ -166,8 +171,8 @@ class RPGGame:
         else:
             n = 10
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if data.adventuretime > 0:
-            await self.bot.say("You are already on an adventure")
+        if data.busytime > 0:
+            await self.bot.say("You are already doing other things")
             return
         if n<rpgchar.minadvtime:
             await self.bot.say("You came back before you even went out, 0 exp earned")
@@ -175,7 +180,9 @@ class RPGGame:
         if n>rpgchar.maxadvtime:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
-        data.setAdventure(n, ctx.message.channel.id)
+        if not data.setBusy(rpgchar.RPGPlayer.ADVENTURE, n, ctx.message.channel.id):
+            await self.bot.say("{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
+            return
         await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # {prefix}rpg battle <user>
@@ -203,8 +210,10 @@ class RPGGame:
         statnames += "\nStatus:"
         if data.health <= 0:
             stats += "\nDead"
-        elif data.adventuretime > 0:
-            stats += "\nAdventuring for {}m".format(data.adventuretime)
+        elif data.busydescription == rpgchar.RPGPlayer.ADVENTURE:
+            stats += "\nAdventuring for {}m".format(data.busytime)
+        elif data.busydescription == rpgchar.RPGPlayer.TRAINING:
+            stats += "\nTraining for {}m".format(data.busytime)
         else:
             stats += "\nAlive"
         statnames += "\nExperience:"

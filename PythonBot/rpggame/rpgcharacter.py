@@ -4,6 +4,8 @@ from discord.ext.commands import Bot
 
 minadvtime = 5
 maxadvtime = 120
+mintrainingtime = 10
+maxtrainingtime = 60
 
 HEALTH = 100
 ARMOR = 0
@@ -31,13 +33,18 @@ class RPGMonster(RPGCharacter):
         super(RPGMonster, self).__init__(name, health, health, damage, ws)
 
 class RPGPlayer(RPGCharacter):
+    NONE = 0
+    ADVENTURE = 1
+    TRAINING = 2
+
     def __init__(self, userid : int, username : str, role="Undead", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
         self.userid = userid
         self.role = role
         self.exp = 0
         self.money = 0
-        self.adventuretime = 0
-        self.adventurechannel = 0
+        self.busytime = 0
+        self.busychannel = 0
+        self.busydescription = self.NONE
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws)
 
     def addExp(self, n : int):
@@ -50,6 +57,26 @@ class RPGPlayer(RPGCharacter):
     def getLevel(self):
         return getLevelByExp(self.exp)
 
+    def setBusy(self, action : int, time : int, channel : int):
+        if self.busytime > 0:
+            return False
+        if action == self.ADVENTURE:
+            if not(minadvtime < time < maxadvtime):
+                return False
+        if action == self.TRAINING:
+            if not(mintrainingtime < time < maxtrainingtime):
+                return False
+
+        self.busytime = time
+        self.busychannel = channel
+        self.busydescription = action
+        return True
+
+    def resetBusy(self):
+        self.busytime = 0
+        self.busychannel = 0
+        self.busydescription = self.NONE
+
     def setAdventure(self, n : int, channelid : int):
         if (self.adventuretime <= 0) & (minadvtime < n < maxadvtime):
             self.adventuretime = n
@@ -60,3 +87,8 @@ class RPGPlayer(RPGCharacter):
             return False
         self.money += n
         return True
+
+    def raiseMaxhealth(self, n : int):
+        r = self.health/self.maxhealth
+        self.maxhealth += n
+        self.health = int(ceil(r*n))
