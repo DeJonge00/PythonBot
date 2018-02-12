@@ -221,7 +221,7 @@ class Basics:
         if n%100==0:
             m += "\nWoooooaaaaahh LEGENDARY!!!"
         elif n%25==0:
-            m += "Wow, that is going somewhere!"
+            m += "\nWow, that is going somewhere!"
         elif n%10==0:
             m += "\nSugoi!"
         await self.bot.say(m);

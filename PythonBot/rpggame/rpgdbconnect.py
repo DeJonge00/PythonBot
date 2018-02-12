@@ -62,7 +62,10 @@ def getPlayer(player : discord.User):
     conn.commit()
     conn.close()
     if p == None:
-        print("User not found: {}".format(player.name))
+        try:
+            print("User not found: {}".format(player.name))
+        except UnicodeEncodeError:
+            pass
         return rpgchar.RPGPlayer(player.id, player.name)
     player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5])
     if i != None:

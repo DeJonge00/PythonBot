@@ -28,3 +28,5 @@
 2018-02-11 21:25:02.741772 | RECRUIT WORLD | member Imposter updated:  nick from nothing to: Pretender
 2018-02-11 21:26:04.489000 | general | Nya | deleted : <quit
 2018-02-11 22:32:51.333000 | botstuff | Nya | deleted : <quit
+2018-02-12 20:02:12.154000 | botstuff | Nya | deleted : \o/
+2018-02-12 20:05:42.215000 | botstuff | Nya | deleted : \o/
