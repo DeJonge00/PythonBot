@@ -13,6 +13,7 @@ class RPGShop:
             return True
         return False
 
+
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
@@ -80,5 +81,3 @@ class RPGShop:
             await self.bot.say("You cannot train for that amount of time")
             return
         await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, time))
-        
-        

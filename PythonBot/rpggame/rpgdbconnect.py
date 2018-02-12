@@ -83,8 +83,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
             else :
-                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
-        
+                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.userid, s.exp, s.money))
             else :
@@ -100,6 +99,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
         print(e)
     finally:
         conn.close()
+
 
 def getTopPlayers(server="all"):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
@@ -125,3 +125,4 @@ def incrementPats(patterid : int, patteeid : int):
     conn.commit()
     conn.close()
     return pats
+

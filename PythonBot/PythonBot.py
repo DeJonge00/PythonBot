@@ -79,7 +79,6 @@ def initBot():
         # Send message to rpggame for exp
         if bot.RPGGAME:
             await bot.rpggame.handle(message)
-
     @bot.event
     async def on_message_edit(before, after):
         await message_handler.edit(before)
@@ -248,4 +247,4 @@ def initBot():
     return bot
 
 # Start the bot
-initBot(rpggame=True).run(secrets.bot_token)
+initBot().run(secrets.bot_token)

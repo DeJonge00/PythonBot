@@ -41,13 +41,21 @@ class Basics:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
         return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + constants.spell[random.randint(0, len(constants.spell)-1)] + "** on " + " ".join(args) + ".\n" +  constants.spellresult[random.randint(0, len(constants.spellresult)-1)])
 
+    # {prefix}heresy
+    @commands.command(pass_context=1, help="Fight the heresy!")
+    async def heresy(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        self.bot.heresy = datetime.datetime.utcnow()
+        await send_random.file(self.bot, ctx.message.channel, "heresy")
+    
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
     async def cat(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         self.bot.cat = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
-    
+
+
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):

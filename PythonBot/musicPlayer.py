@@ -293,6 +293,7 @@ class MusicPlayer:
         if ctx.message.author.voice_channel != state.voice.channel:
             await self.bot.say("You are not in the right voice channel for this command")
             return
+
         force = False
         if (len(args) > 0):
             if (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):

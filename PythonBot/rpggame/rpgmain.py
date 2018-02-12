@@ -185,6 +185,9 @@ class RPGGame:
             return
         await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
+        data.setAdventure(n, ctx.message.channel.id)
+        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for {} minutes, good luck!".format(n))
+
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx, *args):
