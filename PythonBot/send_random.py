@@ -8,8 +8,9 @@ import os
 async def file(my_bot, channel, folder):
     l = listdir(folder)
     i = randint(0,len(l)-1)
+    homedir = "/home/nya/PythonBot/PythonBot/"
     print(i)
-    await my_bot.send_file(channel, "./" + folder + "/" + l[i])
+    await my_bot.send_file(channel, homedir + folder + "/" + l[i])
 
 async def string(my_bot, channel, list, users=[]):
     i = randint(0,len(list)-1)
