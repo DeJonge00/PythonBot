@@ -1,4 +1,4 @@
-import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
+import asyncio, datetime, constants, secret.secrets as secret, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
@@ -39,13 +39,21 @@ class Basics:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
         return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + constants.spell[random.randint(0, len(constants.spell)-1)] + "** on " + " ".join(args) + ".\n" +  constants.spellresult[random.randint(0, len(constants.spellresult)-1)])
 
+    # {prefix}heresy
+    @commands.command(pass_context=1, help="Fight the heresy!")
+    async def heresy(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        self.bot.heresy = datetime.datetime.utcnow()
+        await send_random.file(self.bot, ctx.message.channel, "heresy")
+    
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
     async def cat(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         self.bot.cat = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
-    
+
+
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
@@ -205,7 +213,7 @@ class Basics:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
         time = datetime.datetime.utcnow()
 
-        conn = sqlite3.connect(self.bot.PATSDB)
+        conn = sqlite3.connect(constants.PATSDB)
         c = conn.cursor()
         c.execute("SELECT time FROM author WHERE authorID =" + ctx.message.author.id)
         t = c.fetchone()
@@ -219,7 +227,7 @@ class Basics:
 
         authorID = ctx.message.author.id
 
-        conn = sqlite3.connect(self.bot.PATSDB)
+        conn = sqlite3.connect(constants.PATSDB)
         c = conn.cursor()
         if t == None:
             c.execute("INSERT INTO author VALUES ('" + authorID + "', '" + str(time.timestamp()) + "')")
@@ -245,7 +253,8 @@ class Basics:
     async def role(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args)<=0:
-            return await self.bot.say("Usage: >role <rolename without spaces> [{user}]")
+            await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(constants.prefix))
+            return
         else:
             rolename = args[0].toLower()
         authorhasperms = (ctx.message.channel.permissions_for(ctx.message.author).manage_roles)
@@ -253,9 +262,10 @@ class Basics:
             user = ctx.message.author
         else:
             if not authorhasperms:
-                return await self.bot.send_message(ctx.message.channel, "You do not have the permissions to give other people roles")
+                await self.bot.send_message(ctx.message.channel, "You do not have the permissions to give other people roles")
+                return
             user = ctx.message.mentions[0]
-        if (authorhasperms) | ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['nsfw', 'muted'])):
+        if ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['nsfw', 'muted'])):
             role = None
             for r in ctx.message.server.roles:
                 if r.name.toLower().replace(' ','') == rolename:
@@ -265,16 +275,21 @@ class Basics:
                 try:
                     if role in ctx.message.author.roles:
                         await self.bot.remove_roles(user, role)
-                        return await self.bot.send_message(ctx.message.channel, "Role " + role.name + " succesfully removed")
+                        await self.bot.send_message(ctx.message.channel, "Role {} succesfully removed".format(role.name))
+                        return
                     else:
                         await self.bot.add_roles(user, role)
-                        return await self.bot.send_message(ctx.message.channel, "Role " + role.name + " succesfully added")
+                        await self.bot.send_message(ctx.message.channel, "Role {} succesfully added".format(role.name))
+                        return
                 except discord.Forbidden:
-                        return await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
+                    await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
+                    return
             else:
-                return await self.bot.send_message(ctx.message.channel, "Role not found (it's case sensitive)")
+                await self.bot.send_message(ctx.message.channel, "Role {} not found (it's case sensitive)".format(role))
+                return
         else:
-            return await self.bot.say("You lack the permissions for that")
+            await self.bot.say("You lack the permissions for that")
+            return
 
     # {prefix}urban <query>
     @commands.command(pass_context=1, help="Search the totally official wiki!", aliases=["ud", "urbandictionary"])
@@ -282,17 +297,19 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         q = " ".join(args)
         if q == "":
-            return await self.bot.send_message(ctx.message.channel, "...")
+            await self.bot.send_message(ctx.message.channel, "...")
+            return
         embed = discord.Embed(colour=0x0000FF)
         embed.add_field(name="Urban Dictionary Query", value=q)
         try:
-            c = Client(API_key = "D00sbvewComshcNG8qlTT1U7KqVPp1RG33njsnmL9HJFCtgFF8")
+            c = Client(API_key = secrets.urbankey)
             r = c.get(q)
             embed.add_field(name="Definition", value=r[1].definition, inline=False)
             embed.add_field(name="Author", value=r[1].author)
             embed.add_field(name="👍", value=r[1].thumbs_up)
             embed.add_field(name="👎", value=r[1].thumbs_down)
-            return await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.send_message(ctx.message.channel, embed=embed)
+            return
         except Exception as e:
             embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
             return await self.bot.send_message(ctx.message.channel, embed=embed)

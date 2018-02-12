@@ -1,12 +1,19 @@
-prefix = "+"
+prefix = ">"
 RPGDB = 'logs/rpg.db'
+WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
+GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
+PATSDB = "logs/pats.db"
+pidfile = "logs/pid.txt"
+
+SERVICE = False
 
 # User Id's
-NYAid = "237514437194547202"
+NYAid = "143037788969762816"
 LOLIid = "182127850919428096"
 WIZZid = "224620110277509120"
 CATEid = "183977132622348288"
 TRISTANid = "214708282864959489"
+KAPPAid = "237514437194547202"
 
 # Server id's
 PRIVATESERVERid = "226010107513798656"
@@ -26,7 +33,6 @@ ytdl_options = dict(
 ytdl_before = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
 
 # talking to bb
-
 qa = [
             "What are you asking me for?",
             "*sigh*, go ask your dad...",
@@ -40,7 +46,9 @@ qa = [
             "To be or not to be, *that's* the question!",
             "Ask that your waifu, you weeb",
             "If there is one thing I am sure of, it is that traps are gay af",
-            "About a 4% chance of that..."
+            "About a 4% chance of that...",
+            "Not. Even. Close.",
+            "Do not question the unquestionable"
         ]
 
 response = [
@@ -84,6 +92,7 @@ response = [
             "uwu",
             "owo",
             "-3-",
+            "^_^",
             "Ewwwwww... Don't touch me...",
             "Praise Git like you never praised before!",
             "Code me like one of your french bots"

@@ -79,3 +79,40 @@
 2017-07-05 22:18:10.019300 | Legit antisocial social club | member Gembah updated:  avatar changed
 2017-07-05 22:19:15.738548 | Legit antisocial social club | member Gembah updated:  avatar changed
 2017-07-05 22:25:36.792290 | Legit antisocial social club | member Wolfie updated:  avatar changed
+2018-02-12 10:02:53.058844 | module 'secret.secrets' has no attribute 'DBAddress'
+2018-02-12 10:02:58.197985 | module 'secret.secrets' has no attribute 'DBAddress'
+2018-02-12 10:03:06.554281 | module 'secret.secrets' has no attribute 'DBAddress'
+2018-02-12 10:03:17.948335 | module 'secret.secrets' has no attribute 'DBAddress'
+2018-02-12 11:13:57.522410 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:15.209407 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:22.479629 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:27.483562 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:37.190174 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:38.536761 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:39.720335 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:14:55.127004 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:15:03.477288 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 11:15:55.374717 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 12:25:35.267630 | 'ascii' codec can't encode characters in position 20-21: ordinal not in range(128)
+2018-02-12 12:25:39.100738 | 'ascii' codec can't encode characters in position 49-50: ordinal not in range(128)
+2018-02-12 15:39:48.775619 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:07:35.974749 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:07:37.541462 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:07:43.865087 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:07:51.114355 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:08:12.500657 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:08:33.917208 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:08:45.410959 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:09:01.063034 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:09:02.295606 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:09:04.194162 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:09:25.307535 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:09:29.485459 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:11:50.692370 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:11:54.469524 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:14:02.214330 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 16:14:06.929274 | 'ascii' codec can't encode characters in position 21-25: ordinal not in range(128)
+2018-02-12 19:49:07.697523 | object Member can't be used in 'await' expression
+2018-02-12 19:50:44.608118 | object Member can't be used in 'await' expression
+2018-02-12 19:51:52.391171 | object Member can't be used in 'await' expression
+2018-02-12 19:55:20.246075 | object Member can't be used in 'await' expression
