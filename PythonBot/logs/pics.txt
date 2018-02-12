@@ -55,8 +55,11 @@
 2018-02-10 17:43:48.150119 | 9CHAT | memes | Excalibur Morgan | https://cdn.discordapp.com/attachments/232025233177968640/411940328485158922/unknown.png 
 2018-02-10 20:48:37.016806 | 9CHAT | memes | Raziel | https://cdn.discordapp.com/attachments/232025233177968640/411986839218552863/image.png 
 2018-02-10 21:29:28.461810 | 9CHAT | memes | Raziel | https://cdn.discordapp.com/attachments/232025233177968640/411997121240104980/image.jpg 
+<<<<<<< HEAD
 2018-02-12 11:13:28.276548 | 9CHAT | lobby | worthless XD | https://cdn.discordapp.com/attachments/225995968703627265/412566875021770772/221167.png 
 2018-02-12 15:10:22.613460 | 9CHAT | lobby | ;d | https://cdn.discordapp.com/attachments/225995968703627265/412626493668065282/5f3db5b22a5cb57179c99b4e0ca9bdb9--east-germany-division.jpg 
 2018-02-12 15:21:58.040097 | 9CHAT | lobby | worthless XD | https://cdn.discordapp.com/attachments/225995968703627265/412629409854652437/tumblr_ok2ty3gFvl1w3rj62o1_1280.jpg 
 2018-02-12 15:26:04.507616 | 9CHAT | lobby | Tristan | https://cdn.discordapp.com/attachments/225995968703627265/412630444631130113/unknown.png 
 2018-02-12 17:50:51.073206 | 9CHAT | memes | Excalibur Morgan | https://cdn.discordapp.com/attachments/232025233177968640/412666878947753994/unknown.png 
+=======
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694

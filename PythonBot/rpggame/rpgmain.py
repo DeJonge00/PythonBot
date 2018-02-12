@@ -180,10 +180,15 @@ class RPGGame:
         if n>rpgchar.maxadvtime:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
+<<<<<<< HEAD
         if not data.setBusy(rpgchar.RPGPlayer.ADVENTURE, n, ctx.message.channel.id):
             await self.bot.say("{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
             return
         await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
+=======
+        data.setAdventure(n, ctx.message.channel.id)
+        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for {} minutes, good luck!".format(n))
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
@@ -210,10 +215,15 @@ class RPGGame:
         statnames += "\nStatus:"
         if data.health <= 0:
             stats += "\nDead"
+<<<<<<< HEAD
         elif data.busydescription == rpgchar.RPGPlayer.ADVENTURE:
             stats += "\nAdventuring for {}m".format(data.busytime)
         elif data.busydescription == rpgchar.RPGPlayer.TRAINING:
             stats += "\nTraining for {}m".format(data.busytime)
+=======
+        elif data.adventuretime > 0:
+            stats += "\nAdventuring for {}m".format(data.adventuretime)
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
         else:
             stats += "\nAlive"
         statnames += "\nExperience:"
@@ -221,7 +231,11 @@ class RPGGame:
         statnames += "\nMoney:"
         stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
+<<<<<<< HEAD
         stats += "\n{}/{}".format(data.health,data.maxhealth)
+=======
+        stats += "\n{}/".format(data.health,data.maxhealth)
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
         statnames += "\nDamage:"
         stats += "\n{}".format(data.damage)
         statnames += "\nWeaponskill:"

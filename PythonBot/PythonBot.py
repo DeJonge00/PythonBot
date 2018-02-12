@@ -63,6 +63,7 @@ def initBot():
     # Handle incoming events
     @bot.event
     async def on_message(message):
+<<<<<<< HEAD
         if (message.author.bot):
             return
         if (message.channel.is_private):
@@ -80,6 +81,29 @@ def initBot():
         if bot.RPGGAME:
             await bot.rpggame.handle(message)
 
+=======
+        try:
+            if (message.author.bot):
+                return
+            if (message.channel.is_private):
+                print(message.author.name + " | said in dm's: " + message.content)
+            else:
+                if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
+                    print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
+                if message.content:
+                    await message_handler.new(bot, message)
+            if len(message.attachments) > 0:
+                await message_handler.new_pic(bot, message)
+            # Commands in the message
+            await bot.process_commands(message)
+            # Send message to rpggame for exp
+            if bot.RPGGAME:
+                await bot.rpggame.handle(message)
+        except discord.ext.commands.errors.CommandInvokeError as e:
+            print(e)
+        except discord.ext.commands.errors.CommandNotFound:
+            pass
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     @bot.event
     async def on_message_edit(before, after):
         await message_handler.edit(before)
@@ -237,7 +261,11 @@ def initBot():
         if (reaction.emoji=="\N{BROKEN HEART}") | (reaction.message.author.id==constants.NYAid):
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
+<<<<<<< HEAD
         if bot.musicplayer != None:
+=======
+        if musicplayer:
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
             await bot.musicplayer.handleReaction(reaction)
     @bot.event
     async def on_member_ban(member):

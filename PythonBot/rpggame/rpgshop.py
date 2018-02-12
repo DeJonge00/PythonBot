@@ -13,7 +13,10 @@ class RPGShop:
             return True
         return False
 
+<<<<<<< HEAD
     # {prefix}shop
+=======
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -38,6 +41,7 @@ class RPGShop:
         else:
             await self.bot.say(ctx.message.author.mention + " does not have enough money to buy " + str(a) + " healthpotions\nThe maximum you can afford is " + str(math.floor(player.money/item.cost)))
 
+<<<<<<< HEAD
     # {prefix}shop damage
     @shop.command(pass_context=1, aliases=["d", "dam"], help="Buy a weapon upgrade")
     async def damage(self, ctx, *args):
@@ -56,17 +60,24 @@ class RPGShop:
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
+=======
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     # {prefix}train
     @commands.group(pass_context=1, help="Train your skills!")
     async def train(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
+<<<<<<< HEAD
             await self.bot.say("Type '{}help train' for the list of available training sessions".format(constants.prefix))
+=======
+            await self.bot.say("Type '" + constants.prefix + "help train' for the list of available training sessions")
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
 
     # {prefix}train hp
     @train.command(pass_context=1, aliases=["h", "hp"], help="Train your character's health!")
     async def health(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+<<<<<<< HEAD
         try:
             a = int(args[0])
         except ValueError:
@@ -82,3 +93,6 @@ class RPGShop:
         await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, time))
         
         
+=======
+        await self.bot.say("Training for no benefit")
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694

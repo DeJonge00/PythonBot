@@ -4,8 +4,11 @@ from discord.ext.commands import Bot
 
 minadvtime = 5
 maxadvtime = 120
+<<<<<<< HEAD
 mintrainingtime = 10
 maxtrainingtime = 60
+=======
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
 
 HEALTH = 100
 ARMOR = 0
@@ -33,10 +36,13 @@ class RPGMonster(RPGCharacter):
         super(RPGMonster, self).__init__(name, health, health, damage, ws)
 
 class RPGPlayer(RPGCharacter):
+<<<<<<< HEAD
     NONE = 0
     ADVENTURE = 1
     TRAINING = 2
 
+=======
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     def __init__(self, userid : int, username : str, role="Undead", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
         self.userid = userid
         self.role = role

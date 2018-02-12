@@ -47,8 +47,12 @@ qa = [
             "Ask that your waifu, you weeb",
             "If there is one thing I am sure of, it is that traps are gay af",
             "About a 4% chance of that...",
+<<<<<<< HEAD
             "Not. Even. Close.",
             "Do not question the unquestionable"
+=======
+            "Not. Even. Close."
+>>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
         ]
 
 response = [
