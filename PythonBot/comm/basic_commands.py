@@ -1,8 +1,9 @@
-import asyncio, datetime, constants, secret.secrets as secret, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
+import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urbanpyctionary.client import Client
-
+from secret import secrets
+from rpggame import rpgdbconnect as dbcon
 
 
 # Normal commands
@@ -209,15 +210,14 @@ class Basics:
         t = self.patTimes.get(ctx.message.author.id)
 
         if (t != None):
-            t = datetime.datetime.fromtimestamp(t[0])
             if ((time-t).total_seconds() < 60):
                 await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
                 return
-        self.patTimes[authorID] = time
+        self.patTimes[ctx.message.author.id] = time
 
-        pats = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
+        n = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
         
-        m = "{} has pat {} {} times now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, pats)
+        m = "{} has pat {} {} times now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, n)
         if n%100==0:
             m += "\nWoooooaaaaahh LEGENDARY!!!"
         elif n%25==0:

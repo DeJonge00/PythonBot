@@ -106,13 +106,14 @@ def getTopPlayers(server="all"):
 def incrementPats(patterid : int, patteeid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "PATS")
     c = conn.cursor()
-    c.execute("SELECT patsNbr FROM pats_counters WHERE patterID={} AND patteeID={}".format(pattaerid, patteeid))
-    try:
-        pats = c.fetchone()[0] +1
-        c.execute("UPDATE pats_counters SET patsNbr={} WHERE authorID={} AND userID={}".format(pats, patterid, patteeid))
-    except IndexError: # Never been patted before
+    c.execute("SELECT patsNbr FROM pats_counters WHERE patterID={} AND patteeID={}".format(patterid, patteeid))
+    pats = c.fetchone()
+    if pats == None:
         pats = 1
         c.execute("INSERT INTO pats_counters VALUES ('{}', '{}', '{}')".format(patterid, patteeid, pats))
+    else:
+        pats = pats[0]+1
+        c.execute("UPDATE pats_counters SET patsNbr={} WHERE patterID={} AND patteeID={}".format(pats, patterid, patteeid))
     conn.commit()
     conn.close()
     return pats

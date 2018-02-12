@@ -107,10 +107,15 @@ class MusicPlayer:
                     if reaction.emoji=="\N{LEFTWARDS BLACK ARROW}":    #left
                         state = self.get_voice_state(reaction.message.server)
                         await self.showQueue(reaction.message, state.page-1)
-                        #await self.bot.remove_reaction(reaction.message, reaction.emoji, reaction.)
+                        for m in await self.bot.get_reaction_users(reaction):
+                            if m.id != self.bot.user.id:
+                                await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
                     if reaction.emoji=="\N{BLACK RIGHTWARDS ARROW}":    #right
                         state = self.get_voice_state(reaction.message.server)
                         await self.showQueue(reaction.message, state.page+1)
+                        for m in await self.bot.get_reaction_users(reaction):
+                            if m.id != self.bot.user.id:
+                                await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
 
     async def joinVC(self, ctx):
         channel = ctx.message.author.voice.voice_channel

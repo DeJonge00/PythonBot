@@ -1,4 +1,4 @@
-prefix = "<"
+prefix = ">"
 RPGDB = 'logs/rpg.db'
 WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
 GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
