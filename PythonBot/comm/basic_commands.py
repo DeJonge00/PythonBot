@@ -10,7 +10,7 @@ from rpggame import rpgdbconnect as dbcon
 class Basics:
     def __init__(self, my_bot):
         self.bot = my_bot
-        self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
+        self.bot.heresy = self.bot.nonazi = self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
         self.patTimes = {}
 
     # {prefix}60
@@ -40,13 +40,6 @@ class Basics:
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
         return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + constants.spell[random.randint(0, len(constants.spell)-1)] + "** on " + " ".join(args) + ".\n" +  constants.spellresult[random.randint(0, len(constants.spellresult)-1)])
-
-    # {prefix}heresy
-    @commands.command(pass_context=1, help="Fight the heresy!")
-    async def heresy(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        self.bot.heresy = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "heresy")
     
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
@@ -54,7 +47,6 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         self.bot.cat = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
-
 
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
@@ -144,6 +136,13 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         await send_random.string(self.bot, ctx.message.channel, constants.faces)
 
+    # {prefix}heresy
+    @commands.command(pass_context=1, help="Fight the heresy!")
+    async def heresy(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        self.bot.heresy = datetime.datetime.utcnow()
+        await send_random.file(self.bot, ctx.message.channel, "heresy")
+
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
     async def hug(self, ctx, *args):
@@ -204,6 +203,13 @@ class Basics:
         mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.choice(lotterylist).name + " is the lucky winner!"
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
+
+    # {prefix}nonazi
+    @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")
+    async def nonazi(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        self.bot.nonazi = datetime.datetime.utcnow()
+        await send_random.file(self.bot, ctx.message.channel, "nonazi")
 
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
