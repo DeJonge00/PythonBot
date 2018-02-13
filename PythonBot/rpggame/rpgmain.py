@@ -95,7 +95,7 @@ class RPGGame:
                     dbcon.updatePlayers(p)
                     l = list(self.players.keys())
                     for i in l:
-                        if self.players.get(i).busydescription == rpgchar.RPGPlayer.NONE:
+                        if self.players.get(i).busydescription == rpgchar.NONE:
                             self.players.pop(i)
                 print("Players saved")
             # Bossraids
@@ -109,10 +109,10 @@ class RPGGame:
             for u in list(self.players.values()):
                 if u.health < u.maxhealth:
                     u.addHealth(10)
-                if u.busydescription != rpgchar.RPGPlayer.NONE:
+                if u.busydescription != rpgchar.NONE:
                     u.busytime -= 1
                     c = self.bot.get_channel(str(u.busychannel))
-                    if u.busydescription == rpgchar.RPGPlayer.ADVENTURE:
+                    if u.busydescription == rpgchar.ADVENTURE:
                         if c != None:
                             if(random.randint(0,5)<=0): 
                                 await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
@@ -141,7 +141,7 @@ class RPGGame:
 
     async def handle(self, message : discord.Message):
         data = self.getPlayerData(message.author, name=message.author.display_name)
-        if data.busydescription != rpgchar.RPGPlayer.NONE:
+        if data.busydescription != rpgchar.NONE:
             return
         i = round(pow((data.getLevel())+1, 1/3)  # levelbonus
                 *max(0, min(50, (len(message.content) - 3) / 2))); # Textbonus
@@ -171,7 +171,7 @@ class RPGGame:
         else:
             n = 10
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if data.busytime > 0:
+        if data.busydescription != rpgchar.NONE:
             await self.bot.say("You are already doing other things")
             return
         if n<rpgchar.minadvtime:
@@ -180,13 +180,11 @@ class RPGGame:
         if n>rpgchar.maxadvtime:
             await self.bot.say("You do not have the stamina to go on that long of an adventure")
             return
-        if not data.setBusy(rpgchar.RPGPlayer.ADVENTURE, n, ctx.message.channel.id):
+        if not data.setBusy(rpgchar.ADVENTURE, n, ctx.message.channel.id):
             await self.bot.say("{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
             return
-        await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
-
         data.setAdventure(n, ctx.message.channel.id)
-        await self.bot.say(ctx.message.author.mention + ", you are now adventuring for {} minutes, good luck!".format(n))
+        await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
@@ -198,7 +196,15 @@ class RPGGame:
         if ctx.message.mentions[0] == ctx.message.author:
             await self.bot.say("Suicide is never the answer :angry:")
             return
-        await self.resolveBattle(ctx.message.channel, [self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)], [self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)], mockbattle=True)
+        attacker = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if attacker.busydescription != rpgchar.NONE:
+            await self.bot.say("You are already doing something else at the moment...")
+            return
+        defender = self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)
+        if defender.busydescription != rpgchar.NONE:
+            await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
+            return
+        await self.resolveBattle(ctx.message.channel, [attacker], [defender], mockbattle=True)
 
     # {prefix}rpg info <user>
     @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
@@ -213,9 +219,9 @@ class RPGGame:
         statnames += "\nStatus:"
         if data.health <= 0:
             stats += "\nDead"
-        elif data.busydescription == rpgchar.RPGPlayer.ADVENTURE:
+        elif data.busydescription == rpgchar.ADVENTURE:
             stats += "\nAdventuring for {}m".format(data.busytime)
-        elif data.busydescription == rpgchar.RPGPlayer.TRAINING:
+        elif data.busydescription == rpgchar.TRAINING:
             stats += "\nTraining for {}m".format(data.busytime)
         else:
             stats += "\nAlive"
@@ -224,7 +230,10 @@ class RPGGame:
         statnames += "\nMoney:"
         stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
-        stats += "\n{}/{}".format(data.health,data.maxhealth)
+        stats += "\n{}/{}".format(max(data.health, data.maxhealth),data.maxhealth)
+        if data.health > data.maxhealth:
+            statnames += "\nArmor:"
+            stats += "\n{}".format(data.health - data.maxhealth)
         statnames += "\nDamage:"
         stats += "\n{}".format(data.damage)
         statnames += "\nWeaponskill:"
@@ -240,9 +249,13 @@ class RPGGame:
     async def join(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.busydescription != rpgchar.NONE:
+            await self.bot.say("Finish your current task first, then you can join the boss raid party!")
+            return
         party = self.getParty(ctx.message.server.id)
         if data in party:
-            return await self.bot.say("You are already in the boss raid party...")
+            await self.bot.say("You are already in the boss raid party...")
+            return
         party.append(data)
         await self.bot.say("Prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(len(party)))
 
@@ -252,7 +265,8 @@ class RPGGame:
         await removeMessage.deleteMessage(self.bot, ctx)
         party = self.getParty(ctx.message.server.id)
         if len(party) <= 0:
-            return await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")        
+            await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")
+            return
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Boss raiding party", value="{} adventurers".format(len(party)), inline=False)
         m = ""
@@ -279,7 +293,8 @@ class RPGGame:
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
         list = dbcon.getTopPlayers()
         if (len(list) < (USERS_PER_PAGE*n)):
-            return await self.bot.say("There are only {} pages...".format(math.ceil(len(list)/USERS_PER_PAGE)))
+            await self.bot.say("There are only {} pages...".format(math.ceil(len(list)/USERS_PER_PAGE)))
+            return
         end = (USERS_PER_PAGE*(n+1))
         if end > len(list):
             end = len(list)

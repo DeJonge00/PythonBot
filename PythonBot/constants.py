@@ -85,7 +85,6 @@ response = [
             "Give me a big hug!",
             "Send hearts <3",
             "Use the knife! You can do it!",
-            "<@143037788969762816> send help daddy :sob:",
             "Uhhh... uhh... *TRAPS ARE GAY AS FUCK* :smirk:",
             "*Soft singing intensifies*",
             ":sweat_drops: :sweat_drops: :sweat_drops: :smirk:",
@@ -95,7 +94,8 @@ response = [
             "^_^",
             "Ewwwwww... Don't touch me...",
             "Praise Git like you never praised before!",
-            "Code me like one of your french bots"
+            "Code me like one of your french bots",
+            "*Hiiime hime, hime, suki suki daisuki, hime!*"
         ]
 
 # random responses
