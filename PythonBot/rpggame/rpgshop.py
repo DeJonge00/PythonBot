@@ -6,7 +6,7 @@ from discord.ext.commands import Bot
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
-        self.shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 100, 10), "damage" : rpgsi.RPGShopItem("damage", 150, 1.2)}
+        self.shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 100, 10), "damage" : rpgsi.RPGShopItem("damage", 150, 5)}
 
     def buyItem(self, player : rpgchar.RPGPlayer, item : rpgsi.RPGShopItem, amount = 1):
         if player.addMoney(-amount * item.cost):
@@ -78,7 +78,7 @@ class RPGShop:
         item = self.shopitems.get("damage")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
-            player.damage = int(math.floor(player.damage * math.pow(item.benefit, a)))
+            player.damage += item.benefit
             await self.bot.say("{} bought {} weapon sharpeners".format(ctx.message.author.mention, a))
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
@@ -91,8 +91,8 @@ class RPGShop:
             await self.bot.say("Type '{}help train' for the list of available training sessions".format(constants.prefix))
 
     # {prefix}train hp
-    @train.command(pass_context=1, aliases=["h", "hp"], help="Train your character's health!")
-    async def health(self, ctx, *args):
+    @train.command(pass_context=1, aliases=["h", "health"], help="Train your character's health!")
+    async def hp(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         try:
             a = int(args[0])
@@ -101,15 +101,18 @@ class RPGShop:
         except IndexError:
             a = rpgchar.mintrainingtime
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if not player.setBusy(rpgchar.TRAINING, time, ctx.message.channel.id):
-            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.mintrainingtime))
+        if player.busydescription != rpgchar.NONE:
+            await self.bot.say("Please make sure you finish your other shit first")
+            return
+        if not player.setBusy(rpgchar.TRAINING, a, ctx.message.channel.id):
+            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.raiseMaxhealth(a)
-        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, time))
+        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, a))
 
     # {prefix}train ws
-    @train.command(pass_context=1, aliases=["w", "ws"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
-    async def weaponskill(self, ctx, *args):
+    @train.command(pass_context=1, aliases=["w", "weaponskill"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
+    async def ws(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         try:
             a = int(args[0])
@@ -118,8 +121,11 @@ class RPGShop:
         except IndexError:
             a = 1
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if player.busydescription != rpgchar.NONE:
+            await self.bot.say("Thou shalt not be busy when initiating a training session")
+            return
         if not player.setBusy(rpgchar.TRAINING, a*10, ctx.message.channel.id):
-            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.mintrainingtime))
+            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.weaponskill += a
-        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, time))
+        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, a*10))

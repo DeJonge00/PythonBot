@@ -117,6 +117,15 @@ class RPGGame:
                             if(random.randint(0,5)<=0): 
                                 await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
                     if u.busytime <= 0:
+                        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+                        if u.busydescription == rpgchar.ADVENTURE:
+                            type = "adventure"
+                            action = "adventuring"
+                        if u.busydescription == rpgchar.TRAINING:
+                            type = "training"
+                            action = "training"
+                        embed.add_field(name="Ended {}".format(type), value="{}, you are now done {}".format(u.name, action))
+                        await self.bot.send_message(self.bot.get_channel(u.busychannel), embed=embed)
                         u.resetBusy()
 
             endtime = datetime.datetime.utcnow()
@@ -230,7 +239,7 @@ class RPGGame:
         statnames += "\nMoney:"
         stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
-        stats += "\n{}/{}".format(max(data.health, data.maxhealth),data.maxhealth)
+        stats += "\n{}/{}".format(min(data.health, data.maxhealth),data.maxhealth)
         if data.health > data.maxhealth:
             statnames += "\nArmor:"
             stats += "\n{}".format(data.health - data.maxhealth)
@@ -291,6 +300,7 @@ class RPGGame:
         USERS_PER_PAGE = 12
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
+        dbcon.updatePlayers(self.players.values())
         list = dbcon.getTopPlayers()
         if (len(list) < (USERS_PER_PAGE*n)):
             await self.bot.say("There are only {} pages...".format(math.ceil(len(list)/USERS_PER_PAGE)))

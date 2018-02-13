@@ -5,32 +5,45 @@ from urbanpyctionary.client import Client
 from secret import secrets
 from rpggame import rpgdbconnect as dbcon
 
+TIMER = True
 
 # Normal commands
 class Basics:
     def __init__(self, my_bot):
         self.bot = my_bot
-        self.bot.heresy = self.bot.nonazi = self.bot.fps = self.bot.biri = self.bot.cat = self.bot.cuddle = datetime.datetime.utcnow()
+        if TIMER:
+            self.bot.heresy = {}
+            self.bot.nonazi = {}
+            self.bot.fps = {}
+            self.bot.biri = {}
+            self.bot.cat = {}
+            self.bot.cuddle = {}
         self.patTimes = {}
 
     # {prefix}60
     @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
     async def fps(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if (datetime.datetime.utcnow() - self.bot.fps).seconds < (2*60):
-            return
-        await self.bot.send_typing(ctx.message.channel)
-        self.bot.fps = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.fps.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.fps[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "60")
 
     # {prefix}biribiri
     @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
     async def biribiri(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if (datetime.datetime.utcnow() - self.bot.biri).seconds < (2*60):
-            return
-        await self.bot.send_typing(ctx.message.channel)
-        self.bot.biri = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.biri.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.biri[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "biribiri")
     
     # {prefix}cast <user>
@@ -45,7 +58,13 @@ class Basics:
     @commands.command(pass_context=1, help="CATS!")
     async def cat(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        self.bot.cat = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.cat.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.cat[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
 
     # {prefix}compliment <user>
@@ -58,13 +77,26 @@ class Basics:
     @commands.command(pass_context=1, help="Cuddles everywhere!")
     async def cuddle(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        self.bot.cuddle = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.cuddle.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.cuddle[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cuddle")
 
     # {prefix}ded
     @commands.command(pass_context=1, help="Ded chat reminder!")
     async def ded(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.ded.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.ded[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "ded")
 
     # {prefix}delete
@@ -140,7 +172,13 @@ class Basics:
     @commands.command(pass_context=1, help="Fight the heresy!")
     async def heresy(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        self.bot.heresy = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.heresy.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.heresy[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "heresy")
 
     # {prefix}hug <person>
@@ -148,7 +186,8 @@ class Basics:
     async def hug(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
-            return await self.bot.send_message(ctx.message.channel, ctx.messageauthor.mention + "Trying to give yourself a hug? Haha, so lonely...")
+            await self.bot.send_message(ctx.message.channel, ctx.messageauthor.mention + "Trying to give yourself a hug? Haha, so lonely...")
+            return
         await send_random.string(self.bot, ctx.message.channel, constants.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick
@@ -157,9 +196,10 @@ class Basics:
         if len(ctx.message.mentions) > 0:
             await self.bot.send_typing(ctx.message.channel)
             if (ctx.message.author == ctx.message.mentions[0]):
-                return await self.bot.send_message(ctx.message.channel, "You could just leave yourself if you want to go :thinking:")
+                await self.bot.send_message(ctx.message.channel, "You could just leave yourself if you want to go :thinking:")
+                return
             embed = discord.Embed(colour=0xFF0000)
-            embed.add_field(name=" <:cate:290483030227812353> <:cate:290483030227812353> User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed! <:cate:290483030227812353> <:cate:290483030227812353>")
+            embed.add_field(name="User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed!")
             m = await self.bot.say(embed=embed)
 
     # {prefix}kill <person>
@@ -174,7 +214,7 @@ class Basics:
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
     async def lenny(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        return await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
+        await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
@@ -208,7 +248,13 @@ class Basics:
     @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")
     async def nonazi(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        self.bot.nonazi = datetime.datetime.utcnow()
+        if TIMER:
+            t = self.bot.nonazi.get(ctx.message.channel.id)
+            if t != None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.nonazi[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "nonazi")
 
     # {prefix}pat <name>

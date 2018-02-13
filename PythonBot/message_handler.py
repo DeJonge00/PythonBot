@@ -15,8 +15,8 @@ async def new(bot, message):
     if ((message.author.id in bot.spongelist) & (random.randint(0,4)<=0) & (len(message.content)>5)):
         m = [ cl(x) for x in message.content.lower()]
         await bot.send_message(message.channel, ''.join(m))
-    if (message.server.id == constants.NINECHATid) & ("just" in message.content.lower().split(' ')) & (len(message.content.split(' '))==2):
-        await bot.add_reaction(message, ":Just:402575695508668427")
+    #if (message.server.id == constants.NINECHATid) & ("just" in message.content.lower().split(' ')) & (len(message.content.split(' '))==2):
+    #    await bot.add_reaction(message, ":Just:402575695508668427")
     if message.content == "\\o/":
         if (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
             perms = message.channel.permissions_for(message.server.get_member(str(bot.user.id)))
