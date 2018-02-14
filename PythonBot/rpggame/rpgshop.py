@@ -2,6 +2,7 @@ import asyncio, constants, discord, removeMessage, math
 from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgweapon as rpgw
 from discord.ext import commands
 from discord.ext.commands import Bot
+from rpggame import rpgcharacter as rpchar
 
 moneysign = "$"
 SHOP_EMBED_COLOR = 0x00969b

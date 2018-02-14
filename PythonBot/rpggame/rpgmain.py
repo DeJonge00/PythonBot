@@ -386,10 +386,10 @@ class RPGGame:
     @rpg.command(pass_context=1, help="Reset rpg data!")
     async def resetstats(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        dbcon.initRpgDB()
+        dbcon.resetPlayers()
         await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
