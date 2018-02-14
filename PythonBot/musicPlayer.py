@@ -98,6 +98,7 @@ class MusicPlayer:
         voiceClient = self.bot.voice_client_in(ctx.message.server)
         if voiceClient != None:
             await voiceClient.disconnect()
+        state = None
 
     async def handleReaction(self, reaction):
         state = self.get_voice_state(reaction.message.server)

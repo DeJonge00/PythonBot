@@ -14,7 +14,7 @@ class RPGGame:
         self.players = {}
         self.bot.loop.create_task(self.gameloop())
 
-    async def resolveBattle(self, channel : discord.Channel, p1 : [rpgchar.RPGCharacter], p2 : [rpgchar.RPGMonster()], short=False, mockbattle=False):
+    async def resolveBattle(self, battlename : str, channel : discord.Channel, p1 : [rpgchar.RPGCharacter], p2 : [rpgchar.RPGMonster()], short=False):
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         title = ""
         if len(p1)==1:
@@ -26,7 +26,7 @@ class RPGGame:
             title += "{} ({})".format(p2[0].name, p2[0].health)
         else:
             title += "A party of {}".format(len(p2))
-        embed.add_field(name="Battle", value=title, inline=False)
+        embed.add_field(name=battlename, value=title, inline=False)
         battlereport = ""
         i = 0
         h1 = []
@@ -38,9 +38,11 @@ class RPGGame:
         while (i<BATTLETURNS) & (sum([x.health for x in p1]) > 0) & (sum([x.health for x in p2]) > 0):
             for attacker in p1:
                 defender = p2[random.randint(0,len(p2)-1)]
-                ws = random.randint(0, attacker.weaponskill + defender.weaponskill)
-                if (ws < attacker.weaponskill):
-                    damage = math.floor((random.randint(100, 200) * attacker.damage)/100);
+                ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
+                if (ws < attacker.getWeaponskill()):
+                    print(attacker.name)
+                    print(attacker.getDamage())
+                    damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
                     defender.addHealth(-1*damage)
                     battlereport += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
             p3 = p1
@@ -48,7 +50,10 @@ class RPGGame:
             p2 = p3
             #print(p1.name + ": " + str(p1.health) + " | " + p2.name + " : " + str(p2.health))
             i += 1
-        
+        if i%2==1:
+            p3 = p1
+            p1 = p2
+            p2 = p3
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
         if(len(p1)==1) & (len(p2)==1) & (p1[0].health <= 0):
@@ -59,7 +64,7 @@ class RPGGame:
             for m in (p1+p2):
                 hrep += m.name + " ({})\n".format(m.health)
             embed.add_field(name="Healthreport", value=hrep, inline=False)
-        if mockbattle:
+        if battlename == "Mockbattle":
             for i in range(len(p1)):
                 p1[i].health = h1[i]
             for i in range(len(p2)):
@@ -76,15 +81,18 @@ class RPGGame:
             party = self.bossparties.get(serverid)
             if len(party) > 0:
                 channel = self.getRPGChannel(str(serverid))
-                boss = rpgchar.RPGMonster(name="Dark Eldar Lord", health=250)
-                await self.resolveBattle(channel, party, [boss])
-                return
+                if channel == None:
+                    return
+                list = rpgchar.names.get("monster")
+                name = list[random.randint(0, len(list)-1)]
+                boss = rpgchar.RPGMonster(name=name, health=250)
+                await self.resolveBattle("Bossbattle", channel, party, [boss])
 
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
         list = rpgchar.names.get("monster")
         name = list[random.randint(0, len(list)-1)]
         lvl = player.getLevel()
-        await self.resolveBattle(channel, [player], [rpgchar.RPGMonster(name=name, health=15*lvl, damage=4*lvl, ws=lvl)], short=True)
+        await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=20*lvl, damage=5*lvl, ws=2*lvl)], short=True)
 
     async def gameloop(self):
         await self.bot.wait_until_ready()
@@ -219,7 +227,7 @@ class RPGGame:
         if defender.busydescription != rpgchar.NONE:
             await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
             return
-        await self.resolveBattle(ctx.message.channel, [attacker], [defender], mockbattle=True)
+        await self.resolveBattle("Mockbattle", ctx.message.channel, [attacker], [defender])
 
     # {prefix}rpg info <user>
     @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
@@ -242,6 +250,8 @@ class RPGGame:
             stats += "\nTraining for {}m".format(data.busytime)
         else:
             stats += "\nAlive"
+        statnames += "\nWeapon:"
+        stats += "\n{}".format(data.weapon)
         statnames += "\nExperience:"
         stats += "\n{} ({})".format(data.exp, data.getLevel())
         statnames += "\nMoney:"
@@ -252,9 +262,9 @@ class RPGGame:
             statnames += "\nArmor:"
             stats += "\n{}".format(data.health - data.maxhealth)
         statnames += "\nDamage:"
-        stats += "\n{}".format(data.damage)
+        stats += "\n{}".format(data.getDamage())
         statnames += "\nWeaponskill:"
-        stats += "\n{}".format(data.weaponskill)
+        stats += "\n{}".format(data.getWeaponskill())
 
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Statname", value=statnames)
