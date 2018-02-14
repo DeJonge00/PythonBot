@@ -98,6 +98,7 @@ class MusicPlayer:
         voiceClient = self.bot.voice_client_in(ctx.message.server)
         if voiceClient != None:
             await voiceClient.disconnect()
+        state = None
 
     async def handleReaction(self, reaction):
         state = self.get_voice_state(reaction.message.server)
@@ -107,10 +108,15 @@ class MusicPlayer:
                     if reaction.emoji=="\N{LEFTWARDS BLACK ARROW}":    #left
                         state = self.get_voice_state(reaction.message.server)
                         await self.showQueue(reaction.message, state.page-1)
-                        #await self.bot.remove_reaction(reaction.message, reaction.emoji, reaction.)
+                        for m in await self.bot.get_reaction_users(reaction):
+                            if m.id != self.bot.user.id:
+                                await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
                     if reaction.emoji=="\N{BLACK RIGHTWARDS ARROW}":    #right
                         state = self.get_voice_state(reaction.message.server)
                         await self.showQueue(reaction.message, state.page+1)
+                        for m in await self.bot.get_reaction_users(reaction):
+                            if m.id != self.bot.user.id:
+                                await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
 
     async def joinVC(self, ctx):
         channel = ctx.message.author.voice.voice_channel
@@ -119,8 +125,7 @@ class MusicPlayer:
             return
         state = self.get_voice_state(ctx.message.server)
         if self.bot.is_voice_connected(ctx.message.server):
-            if channel == self.bot.voice_client_in(ctx.message.server):
-                await self.bot.say("Present o/")
+            if channel == self.bot.voice_client_in(ctx.message.server).channel:
                 return
             state.voice = await state.voice.move_to(channel)
         else:
@@ -170,7 +175,7 @@ class MusicPlayer:
             await self.bot.add_reaction(m, "\N{BLACK RIGHTWARDS ARROW}")
             await self.bot.add_reaction(m, "\N{BROKEN HEART}")
         else:
-            await self.bot.edit_message(state.lastmessage, embed=embed)
+            await self.bot.edit_message(message, embed=embed)
 
     @commands.group(pass_context=1, aliases=["m"], help="'{}help music' for full options".format(constants.prefix))
     async def music(self, ctx):
@@ -221,6 +226,10 @@ class MusicPlayer:
         if voiceClient == None:
             await self.bot.say("I am not in vc dummy")
             return
+        state = self.get_voice_state(ctx.message.server)
+        if state.is_playing():
+            await self.bot.say("I am still singing, use '{}music stop' to send me away".format(constants.prefix))
+            return
         await voiceClient.disconnect()
 
     @music.command(pass_context=1, aliases=["p"], help="'{0}m p' to pause or resume singing, '{0}m p <songname | url>' to add a song to the queue".format(constants.prefix))
@@ -255,6 +264,12 @@ class MusicPlayer:
     async def repeat(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
+        if state.voice == None:
+            await self.bot.say("I am not singing at the moment")
+            return
+        if ctx.message.author.voice_channel != state.voice.channel:
+            await self.bot.say("You are not here with me...")
+            return
         if state.repeat:
             state.repeat = False
             await self.bot.say("Repeat is now off")
@@ -276,8 +291,10 @@ class MusicPlayer:
     async def skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
-        if ctx.message.author.voice_channel != state.voice:
+        if ctx.message.author.voice_channel != state.voice.channel:
             await self.bot.say("You are not in the right voice channel for this command")
+            return
+
         force = False
         if (len(args) > 0):
             if (args[0] in ["f", "force"]) & (ctx.message.author.id==constants.NYAid):
