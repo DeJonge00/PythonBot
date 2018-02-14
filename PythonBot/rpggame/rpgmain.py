@@ -299,7 +299,7 @@ class RPGGame:
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if len(args) <= 0:
-            await self.bot.say("The currently available roles are: {}".format(rpgchar.roles.join(", ")))
+            await self.bot.say("The currently available roles are: {}".format(", ".join(rpgchar.names.get("role"))))
             return
         role = " ".join(args)
         if role == data.role:
