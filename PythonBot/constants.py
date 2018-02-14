@@ -17,7 +17,6 @@ NYAid = "143037788969762816"
 TRISTANid = "214708282864959489"
 WIZZid = "224620110277509120"
 
-
 # Server id's
 PRIVATESERVERid = "226010107513798656"
 NINECHATid = "225995968703627265"
@@ -95,10 +94,21 @@ response = [
             "owo",
             "-3-",
             "^_^",
+            "Hihi",
             "Ewwwwww... Don't touch me...",
             "Praise Git like you never praised before!",
             "Code me like one of your french bots",
-            "*Hiiime hime, hime, suki suki daisuki, hime!*"
+            "*Hiiime hime, hime, suki suki daisuki, hime!*",
+            "Sing a song for me, love",
+            "Can I get a cuddle from you? :upside_down:",
+            "Wait.... what??",
+            "That sounds like some serious heresy",
+            "*purging intensifies*",
+            "Whatever you say, darling",
+            "Would you kindly shut the fuck up?",
+            "No. Just... **No**",
+            "Want to do some gichi gichi? ( ͡° ͜ʖ ͡°)",
+            "Don't hack me senpai"
         ]
 
 # random responses
@@ -137,7 +147,7 @@ ded = [
             "Ehhmm.. Why don't you talk about the color blue?",
             "How about we talk about unicorns?",
             "Why don't we play a game?",
-            "Sooooo... Lets do lewd stuff now?",
+            "Sooooo... Let's do lewd stuff now?",
             "Just like your love life :smile:",
             "You look like you want to do my homework?",
             "Let's talk about your mom then!"

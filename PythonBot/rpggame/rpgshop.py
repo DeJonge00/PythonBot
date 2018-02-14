@@ -1,15 +1,18 @@
-import asyncio, removeMessage, math, constants
-from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi
+import asyncio, constants, discord, removeMessage, math
+from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgweapon as rpgw
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 moneysign = "$"
 SHOP_EMBED_COLOR = 0x00969b
 
+shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 100, 10), "damage" : rpgsi.RPGShopItem("damage", 150, 5)}
+weapons = {"Training sword" : rpgw.RPGWeapon("training sword", 0, {}), 
+           "Axe" : rpgw.RPGWeapon("axe", 500, {"damage" : 1.1})}
+
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
-        self.shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 100, 10), "damage" : rpgsi.RPGShopItem("damage", 150, 5)}
 
     def buyItem(self, player : rpgchar.RPGPlayer, item : rpgsi.RPGShopItem, amount = 1):
         if player.addMoney(-amount * item.cost):
@@ -23,7 +26,7 @@ class RPGShop:
             await removeMessage.deleteMessage(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
-            for i in self.shopitems:
+            for i in shopitems.values():
                 embed.add_field(name=i.name, value="Costs: {}{}\nBenefits: {} {}".format(moneysign, i.cost, i.benefit, i.name))
             await self.bot.say(embed=embed)
 
@@ -40,7 +43,7 @@ class RPGShop:
         if a < 0:
             await self.bot.say("You cannot sell your armor")
             return
-        item = self.shopitems.get("armor")
+        item = shopitems.get("armor")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.addArmor(a*item.benefit)
@@ -61,7 +64,7 @@ class RPGShop:
         if a < 0:
             await self.bot.say("You cannot sacrifice blood *yet*")
             return
-        item = self.shopitems.get("health")
+        item = shopitems.get("health")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.addHealth(a*item.benefit)
@@ -82,13 +85,33 @@ class RPGShop:
         if a < 0:
             await self.bot.say("It would be unwise to blunten your weapon")
             return
-        item = self.shopitems.get("damage")
+        item = shopitems.get("damage")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.damage += item.benefit
             await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+
+    # {prefix}shop weapon
+    @shop.command(pass_context=1, aliases=["w"], help="Buy a shiny new weapon!")
+    async def damage(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if len(args) <= 0:
+            m = "**Weapons for sale:**"
+            m += "\n".join(weapons.keys())
+            await self.bot.say(m)
+            return
+        weapon = weapons.get(" ".join(args))
+        if weapon == None:
+            await self.bot.say("That is not a weapon sold in this part of the country")
+            return
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if not self.buyWeapon(player, weapon):
+            await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
+            return
+        player.weapon = weapon
+        await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
 
     # {prefix}train
     @commands.group(pass_context=1, help="Train your skills!")
