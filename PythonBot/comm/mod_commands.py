@@ -86,7 +86,7 @@ class Mod:
     # {prefix}purge <amount>
     @commands.command(pass_context=1, help="Remove a weird chat")
     async def purge(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not((ctx.message.author.id==constants.NYAid) | (perms.manage_messages)):
             await self.bot.say("Hahahaha, no")

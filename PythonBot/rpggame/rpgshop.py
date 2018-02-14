@@ -3,6 +3,9 @@ from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi
 from discord.ext import commands
 from discord.ext.commands import Bot
 
+moneysign = "$"
+SHOP_EMBED_COLOR = 0x00969b
+
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
@@ -18,7 +21,11 @@ class RPGShop:
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Type '{}help shop' for the list of available items".format(constants.prefix))
+            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
+            for i in self.shopitems:
+                embed.add_field(name=i.name, value="Costs: {}{}\nBenefits: {} {}".format(moneysign, i.cost, i.benefit, i.name))
+            await self.bot.say(embed=embed)
 
     # {prefix}shop armor
     @shop.command(pass_context=1, aliases=["a", "ar", "armour"], help="Buy some armorplates")
@@ -58,7 +65,7 @@ class RPGShop:
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.addHealth(a*item.benefit)
-            await self.bot.say("{} bought {} healthpotions".format(ctx.message.author.mention, a))
+            await self.bot.say("{} bought {} healthpotions for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
@@ -79,7 +86,7 @@ class RPGShop:
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.damage += item.benefit
-            await self.bot.say("{} bought {} weapon sharpeners".format(ctx.message.author.mention, a))
+            await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 

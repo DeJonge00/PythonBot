@@ -80,6 +80,12 @@ class RPGGame:
                 await self.resolveBattle(channel, party, [boss])
                 return
 
+    async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
+        list = rpgchar.names.get("monster")
+        name = list[random.randint(0, len(list)-1)]
+        lvl = player.getLevel()
+        await self.resolveBattle(channel, [player], [rpgchar.RPGMonster(name=name, health=15*lvl, damage=4*lvl, ws=lvl)], short=True)
+
     async def gameloop(self):
         await self.bot.wait_until_ready()
         print("RPG Gameloop started!")
@@ -105,8 +111,8 @@ class RPGGame:
             if time.minute == 0:
                 await self.bossbattle()
                 self.bossparties = {}
-            # Adventures
-            for u in list(self.players.values()):
+            # Player is busy
+            for u in self.players.values():
                 if u.health < u.maxhealth:
                     u.addHealth(10)
                 if u.busydescription != rpgchar.NONE:
@@ -114,8 +120,8 @@ class RPGGame:
                     c = self.bot.get_channel(str(u.busychannel))
                     if u.busydescription == rpgchar.ADVENTURE:
                         if c != None:
-                            if(random.randint(0,4)<=0): 
-                                await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
+                            if(random.randint(0,4)<=0):
+                                await self.adventureEncounter(u, c)
                     if u.busytime <= 0:
                         embed = discord.Embed(colour=RPG_EMBED_COLOR)
                         if u.busydescription == rpgchar.ADVENTURE:
@@ -225,6 +231,8 @@ class RPGGame:
             data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         statnames = "Username:"
         stats = data.name
+        statnames += "\nClass:"
+        stats += "\n{}".format(data.role)
         statnames += "\nStatus:"
         if data.health <= 0:
             stats += "\nDead"
@@ -284,6 +292,24 @@ class RPGGame:
             m += "{}, level {}\n".format(member.display_name, n.getLevel())
         embed.add_field(name="Adventurers", value=m, inline=False)
         await self.bot.say(embed=embed)
+
+    # {prefix}rpg role
+    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="All players gathered to kill the boss")
+    async def role(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if len(args) <= 0:
+            await self.bot.say("The currently available roles are: {}".format(rpgchar.roles.join(", ")))
+            return
+        role = " ".join(args)
+        if role == data.role:
+            await self.bot.say("That is already your current role...")
+            return
+        if role in rpgchar.names.get("role"):
+            data.role = role
+            await self.bot.say("You now have the role of {}".format(role))
+            return
+        await self.bot.say("That is not a role available to a mere mortal")
 
     # {prefix}rpg top #
     @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")

@@ -294,7 +294,7 @@ class Basics:
             await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(constants.prefix))
             return
         else:
-            rolename = args[0].toLower()
+            rolename = args[0].lower()
         authorhasperms = (ctx.message.channel.permissions_for(ctx.message.author).manage_roles)
         if len(ctx.message.mentions)<=0:
             user = ctx.message.author

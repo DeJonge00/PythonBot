@@ -19,6 +19,11 @@ ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
 
+names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
+         "monster" : ["Goblin", "Gretchin", "Elven Slave", "Giant Spider", "Wounded Troll", "Lone Chaos Marauder", "Black Wolf", "Evolved Fish", "Drunk Human"],
+         "boss" : ["Black Ork Boss", "Yeti", "Mammoth", "Ogre Bruiser", "Chaos Demon of Khorne", "Chaos Sorcerer", "Unknown Mutation", "Young Dragon"]
+         }
+
 def getLevelByExp(exp : int):
     return math.floor(math.sqrt(exp) / 20)+1
 
