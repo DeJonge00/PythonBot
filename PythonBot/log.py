@@ -1,4 +1,4 @@
-import datetime,  discord, unicodedata
+import datetime,  discord, unicodedata, constants
 
 async def error(event, filename="errors"):
     file = open("logs/" + filename + ".txt","a+")

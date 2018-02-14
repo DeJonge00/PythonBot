@@ -66,8 +66,8 @@ class RPGGame:
                 p2[i].health = h2[i]
         else:
             for m in (p1+p2):
-                if isinstance(p1, rpgchar.RPGPlayer):
-                    m.addExp(100)
+                if isinstance(m, rpgchar.RPGPlayer):
+                    m.addExp(100*m.getLevel())
         await self.bot.send_message(channel, embed=embed);
 
     async def bossbattle(self):
@@ -114,7 +114,7 @@ class RPGGame:
                     c = self.bot.get_channel(str(u.busychannel))
                     if u.busydescription == rpgchar.ADVENTURE:
                         if c != None:
-                            if(random.randint(0,5)<=0): 
+                            if(random.randint(0,4)<=0): 
                                 await self.resolveBattle(c, [u], [rpgchar.RPGMonster()], short=True)
                     if u.busytime <= 0:
                         embed = discord.Embed(colour=RPG_EMBED_COLOR)
@@ -297,7 +297,7 @@ class RPGGame:
         else:
             n = 0
         # Construct return message
-        USERS_PER_PAGE = 12
+        USERS_PER_PAGE = 10
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
         dbcon.updatePlayers(self.players.values())
@@ -308,28 +308,25 @@ class RPGGame:
         end = (USERS_PER_PAGE*(n+1))
         if end > len(list):
             end = len(list)
-        nums = ""
         i = (USERS_PER_PAGE*n)
-        members = ""
-        exp = ""
+        result = ""
+        
         for m in list[i:end]:
             i += 1
             member = self.players.get(str(m[0]))
             if member != None:
-                nums += "{}\n".format(i)
-                members += "{}\n".format(member.name)
-                exp += "{}exp ({})\n".format(member.exp, member.getLevel())
+                name = member.name
+                exp = member.exp
+                lvl = member.getLevel()
             else:
                 try:
                     name = ctx.message.server.get_member(str(m[0])).display_name
                 except AttributeError:
                     name = "id{}".format(m[0])
-                nums += "{}\n".format(i)
-                members += "{}\n".format(name)
-                exp += "{}exp ({})\n".format(m[1], rpgchar.getLevelByExp(m[1]))
-        embed.add_field(name="Rank", value=nums)
-        embed.add_field(name="Player", value=members)
-        embed.add_field(name="Exp (Level)", value=exp)
+                exp = m[1]
+                lvl = rpgchar.getLevelByExp(m[1])
+            result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i, name, exp, lvl)
+        embed.add_field(name="Ranks and names", value=result)
         await self.bot.send_message(ctx.message.channel, embed=embed)
     
     # DB commands            
