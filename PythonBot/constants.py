@@ -8,12 +8,15 @@ pidfile = "logs/pid.txt"
 SERVICE = False
 
 # User Id's
-NYAid = "143037788969762816"
-LOLIid = "182127850919428096"
-WIZZid = "224620110277509120"
 CATEid = "183977132622348288"
-TRISTANid = "214708282864959489"
+CHURROid = "224267646869176320"
+DOGEid = "226782069747875842"
 KAPPAid = "237514437194547202"
+LOLIid = "182127850919428096"
+NYAid = "143037788969762816"
+TRISTANid = "214708282864959489"
+WIZZid = "224620110277509120"
+
 
 # Server id's
 PRIVATESERVERid = "226010107513798656"
@@ -47,12 +50,8 @@ qa = [
             "Ask that your waifu, you weeb",
             "If there is one thing I am sure of, it is that traps are gay af",
             "About a 4% chance of that...",
-<<<<<<< HEAD
             "Not. Even. Close.",
             "Do not question the unquestionable"
-=======
-            "Not. Even. Close."
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
         ]
 
 response = [
@@ -89,7 +88,6 @@ response = [
             "Give me a big hug!",
             "Send hearts <3",
             "Use the knife! You can do it!",
-            "<@143037788969762816> send help daddy :sob:",
             "Uhhh... uhh... *TRAPS ARE GAY AS FUCK* :smirk:",
             "*Soft singing intensifies*",
             ":sweat_drops: :sweat_drops: :sweat_drops: :smirk:",
@@ -99,7 +97,8 @@ response = [
             "^_^",
             "Ewwwwww... Don't touch me...",
             "Praise Git like you never praised before!",
-            "Code me like one of your french bots"
+            "Code me like one of your french bots",
+            "*Hiiime hime, hime, suki suki daisuki, hime!*"
         ]
 
 # random responses

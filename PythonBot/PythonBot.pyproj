@@ -31,13 +31,13 @@
     <Compile Include="comm\minesweeper.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="comm\misc_commands.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="musicPlayer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="removeMessage.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="daemon.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rpggame\rpgdbconnect.py">

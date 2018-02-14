@@ -2,18 +2,27 @@ import discord, math
 from discord.ext import commands
 from discord.ext.commands import Bot
 
+# Busydescription status
+NONE = 0
+ADVENTURE = 1
+TRAINING = 2
+
+# Min and max busy time
 minadvtime = 5
 maxadvtime = 120
-<<<<<<< HEAD
 mintrainingtime = 10
 maxtrainingtime = 60
-=======
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
 
+# Player starting stats
 HEALTH = 100
 ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
+
+names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
+         "monster" : ["Goblin", "Gretchin", "Elven Slave", "Giant Spider", "Wounded Troll", "Lone Chaos Marauder", "Black Wolf", "Evolved Fish", "Drunk Human"],
+         "boss" : ["Black Ork Boss", "Yeti", "Mammoth", "Ogre Bruiser", "Chaos Demon of Khorne", "Chaos Sorcerer", "Unknown Mutation", "Young Dragon"]
+         }
 
 def getLevelByExp(exp : int):
     return math.floor(math.sqrt(exp) / 20)+1
@@ -29,20 +38,12 @@ class RPGCharacter:
     # Add (negative) health, returns true if successful
     def addHealth(self, n : int):
         self.health = max(0, min(self.maxhealth, self.health + n))
-        return True
 
 class RPGMonster(RPGCharacter):
     def __init__(self, name="Monster", health=30, damage=10, ws=1):
         super(RPGMonster, self).__init__(name, health, health, damage, ws)
 
 class RPGPlayer(RPGCharacter):
-<<<<<<< HEAD
-    NONE = 0
-    ADVENTURE = 1
-    TRAINING = 2
-
-=======
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     def __init__(self, userid : int, username : str, role="Undead", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
         self.userid = userid
         self.role = role
@@ -50,7 +51,7 @@ class RPGPlayer(RPGCharacter):
         self.money = 0
         self.busytime = 0
         self.busychannel = 0
-        self.busydescription = self.NONE
+        self.busydescription = NONE
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws)
 
     def addExp(self, n : int):
@@ -66,11 +67,11 @@ class RPGPlayer(RPGCharacter):
     def setBusy(self, action : int, time : int, channel : int):
         if self.busytime > 0:
             return False
-        if action == self.ADVENTURE:
-            if not(minadvtime < time < maxadvtime):
+        if action == ADVENTURE:
+            if not(minadvtime <= time <= maxadvtime):
                 return False
-        if action == self.TRAINING:
-            if not(mintrainingtime < time < maxtrainingtime):
+        if action == TRAINING:
+            if not(mintrainingtime <= time <= maxtrainingtime):
                 return False
 
         self.busytime = time
@@ -81,12 +82,13 @@ class RPGPlayer(RPGCharacter):
     def resetBusy(self):
         self.busytime = 0
         self.busychannel = 0
-        self.busydescription = self.NONE
+        self.busydescription = NONE
 
     def setAdventure(self, n : int, channelid : int):
-        if (self.adventuretime <= 0) & (minadvtime < n < maxadvtime):
-            self.adventuretime = n
-            self.adventurechannel = channelid
+        if (self.busytime <= 0) & (minadvtime < n < maxadvtime):
+            self.busytime = n
+            self.busychannel = channelid
+            self.busydescription = ADVENTURE
 
     def addMoney(self, n : int):
         if self.money + n < 0:
@@ -97,4 +99,7 @@ class RPGPlayer(RPGCharacter):
     def raiseMaxhealth(self, n : int):
         r = self.health/self.maxhealth
         self.maxhealth += n
-        self.health = int(ceil(r*n))
+        self.health = int(math.ceil(r*self.maxhealth))
+
+    def addArmor(self, n : int):
+        self.health = max(self.health, self.health + n)

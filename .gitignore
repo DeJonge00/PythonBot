@@ -257,3 +257,4 @@ PythonBot/__pycache__/*
 PythonBot/comm/__pycache__/*.pyc
 PythonBot/comm/__pycache__/*.cpython-36.pyc
 PythonBot/comm/__pycache__/*
+*/logs/*

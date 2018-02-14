@@ -1,9 +1,6 @@
 import asyncio, discord, constants, log, pickle, removeMessage, rpggame.rpgcharacter as rpgchar, pymysql
 from discord.ext import commands
-<<<<<<< HEAD
 from secret import secrets
-=======
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
 
 # Channels
 def initChannels():
@@ -26,7 +23,6 @@ def setRPGChannel(serverid : int, channelid : int):
     conn.commit()
     conn.close()
 
-<<<<<<< HEAD
 def getRPGChannel(serverid : str):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
@@ -50,19 +46,6 @@ def initRpgDB():
     c.execute("CREATE TABLE stats (playerID INTEGER PRIMARY KEY, role TEXT, health INTEGER, maxhealth INTEGER, damage INTEGER, weaponskill INTEGER)")
     c.execute("CREATE TABLE items (playerID INTEGER PRIMARY KEY, exp INTEGER, money INTEGER)")
     c.execute("CREATE TABLE busy (playerID INTEGER PRIMARY KEY, busytime INTEGER, busychannel INTEGER, busydesc INTEGER)")
-=======
-# Stats
-def initDB():
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
-    c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS stats")
-    c.execute("DROP TABLE IF EXISTS items")
-    c.execute("DROP TABLE IF EXISTS adventure")
-    c.execute("DROP TABLE IF EXISTS weapon")
-    c.execute("CREATE TABLE stats (playerID INTEGER PRIMARY KEY, role TEXT, health INTEGER, maxhealth INTEGER, damage INTEGER, weaponskill INTEGER)")
-    c.execute("CREATE TABLE items (playerID INTEGER PRIMARY KEY, exp INTEGER, money INTEGER)")
-    c.execute("CREATE TABLE adventure (playerID INTEGER PRIMARY KEY, time INTEGER, channelID INTEGER)")
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     c.execute("CREATE TABLE weapon (playerID INTEGER PRIMARY KEY, ability TEXT)")
     conn.commit()
     conn.close()
@@ -74,23 +57,15 @@ def getPlayer(player : discord.User):
     p = c.fetchone()
     c.execute("SELECT * FROM items WHERE playerID={}".format(player.id))
     i = c.fetchone()
-<<<<<<< HEAD
     c.execute("SELECT * FROM busy WHERE playerID={}".format(player.id))
-=======
-    c.execute("SELECT * FROM adventure WHERE playerID={}".format(player.id))
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
     a = c.fetchone()
     conn.commit()
     conn.close()
     if p == None:
-<<<<<<< HEAD
         try:
             print("User not found: {}".format(player.name))
         except UnicodeEncodeError:
             pass
-=======
-        print("User not found: {}".format(player.name))
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
         return rpgchar.RPGPlayer(player.id, player.name)
     player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5])
     if i != None:
@@ -103,14 +78,12 @@ def getPlayer(player : discord.User):
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-<<<<<<< HEAD
     try:
         for s in stats:
             if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
             else :
-                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
-        
+                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.userid, s.exp, s.money))
             else :
@@ -126,25 +99,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
         print(e)
     finally:
         conn.close()
-=======
-    for s in stats:
-        if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
-            c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
-        else :
-            c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
-        
-        if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-            c.execute("INSERT INTO items (playerID, exp, money) VALUES ({0}, {1}, {2})".format(s.userid, s.exp, s.money))
-        else :
-            c.execute("UPDATE items SET exp = {1}, money = {2} WHERE playerID = {0}".format(s.userid, s.exp, s.money))
-        
-        if c.execute("SELECT playerID FROM adventure WHERE playerID = {0}".format(s.userid)) == 0 :
-            c.execute("INSERT INTO adventure (playerID, adventuretime, adventurechannel) VALUES ({0}, {1}, '{2}')".format(s.userid, s.adventuretime, s.adventurechannel))
-        else :
-            c.execute("UPDATE adventure SET adventuretime = {1}, adventurechannel = '{2}' WHERE playerID = {0}".format(s.userid, s.adventuretime, s.adventurechannel))    
-    conn.commit()
-    conn.close()
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
+
 
 def getTopPlayers(server="all"):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
@@ -155,7 +110,6 @@ def getTopPlayers(server="all"):
     conn.close()
     return a
 
-<<<<<<< HEAD
 # Pats
 def incrementPats(patterid : int, patteeid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "PATS")
@@ -171,16 +125,4 @@ def incrementPats(patterid : int, patteeid : int):
     conn.commit()
     conn.close()
     return pats
-=======
-def getRPGChannel(serverid : str):
-    conn = pymysql.connect("localhost", "root", "biribiri", "RPGDB")
-    c = conn.cursor()
-    c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
-    t = c.fetchone()
-    conn.commit()
-    conn.close()
-    if t==None:
-        print("Channel not specified for server")
-        return None
-    return self.bot.get_channel(str(t[0]))
->>>>>>> b52c9f6bff454dac7d3904388517c60bd0965694
+
