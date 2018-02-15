@@ -1,5 +1,5 @@
 import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, sqlite3
-import rpggame.rpgcharacter as rpgchar, rpggame.rpgdbconnect as dbcon, rpggame.rpgshop as rpgshop
+from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop as rpgshop, rpgconstants as rpgc
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -40,10 +40,11 @@ class RPGGame:
                 defender = p2[random.randint(0,len(p2)-1)]
                 ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                 if (ws < attacker.getWeaponskill()):
-                    print(attacker.name)
-                    print(attacker.getDamage())
                     damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
-                    defender.addHealth(-1*damage)
+                    if battlename=="Mockbattle":
+                        defender.addHealth(-1*damage, death=False)
+                    else:
+                        defender.addHealth(-1*damage)
                     battlereport += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
             p3 = p1
             p1 = p2
@@ -83,13 +84,13 @@ class RPGGame:
                 channel = self.getRPGChannel(str(serverid))
                 if channel == None:
                     return
-                list = rpgchar.names.get("monster")
+                list = rpgc.names.get("monster")
                 name = list[random.randint(0, len(list)-1)]
                 boss = rpgchar.RPGMonster(name=name, health=250)
                 await self.resolveBattle("Bossbattle", channel, party, [boss])
 
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
-        list = rpgchar.names.get("monster")
+        list = rpg.names.get("monster")
         name = list[random.randint(0, len(list)-1)]
         lvl = player.getLevel()
         await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=20*lvl, damage=5*lvl, ws=2*lvl)], short=True)
@@ -309,13 +310,13 @@ class RPGGame:
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if len(args) <= 0:
-            await self.bot.say("The currently available roles are: {}".format(", ".join(rpgchar.names.get("role"))))
+            await self.bot.say("The currently available roles are: {}".format(", ".join(rpgc.names.get("role"))))
             return
         role = " ".join(args)
         if role == data.role:
             await self.bot.say("That is already your current role...")
             return
-        if role in rpgchar.names.get("role"):
+        if role in rpgc.names.get("role"):
             data.role = role
             await self.bot.say("You now have the role of {}".format(role))
             return

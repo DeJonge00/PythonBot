@@ -3,3 +3,6 @@ class RPGWeapon:
         self.name = name
         self.cost = cost
         self.effect = effect
+
+    def __str__(self):
+        return "{}, ${} : {}".format(self.name, self.cost, self.effect)

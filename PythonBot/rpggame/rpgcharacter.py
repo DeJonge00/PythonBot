@@ -1,7 +1,7 @@
 import discord, math
-from rpggame import rpgshop
 from discord.ext import commands
 from discord.ext.commands import Bot
+from rpggame import rpgconstants as rpgc
 
 # Busydescription status
 NONE = 0
@@ -20,11 +20,6 @@ ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
 
-names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
-         "monster" : ["Goblin", "Gretchin", "Elven Slave", "Giant Spider", "Wounded Troll", "Lone Chaos Marauder", "Black Wolf", "Evolved Fish", "Drunk Human"],
-         "boss" : ["Black Ork Boss", "Yeti", "Mammoth", "Ogre Bruiser", "Chaos Demon of Khorne", "Chaos Sorcerer", "Unknown Mutation", "Young Dragon"]
-         }
-
 def getLevelByExp(exp : int):
     return math.floor(math.sqrt(exp) / 20)+1
 
@@ -37,12 +32,12 @@ class RPGCharacter:
         self.weaponskill = weaponskill
         
     # Add (negative) health, returns true if successful
-    def addHealth(self, n : int):
+    def addHealth(self, n : int, death=True):
         self.health = max(0, min(self.maxhealth, self.health + n))
 
-    def getDamage():
+    def getDamage(self):
         return self.damage
-    def getWeaponskill():
+    def getWeaponskill(self):
         return self.weaponskill
 
 class RPGMonster(RPGCharacter):
@@ -50,7 +45,7 @@ class RPGMonster(RPGCharacter):
         super(RPGMonster, self).__init__(name, health, health, damage, ws)
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training sword", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
+    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -61,9 +56,9 @@ class RPGPlayer(RPGCharacter):
         self.busydescription = NONE
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws)
 
-    def addHealth(self, n : int):
+    def addHealth(self, n : int, death=True):
         super().addHealth(n)
-        if self.health <= 0:
+        if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
             self.money = math.floor(self.money*0.5)
 
@@ -117,18 +112,18 @@ class RPGPlayer(RPGCharacter):
     def addArmor(self, n : int):
         self.health = max(self.health, self.health + n)
 
-    def getDamage():
-        m = rpgshop.weapons.get(self.weapon).get("damage")
+    def getDamage(self):
+        m = rpgc.weapons.get(self.weapon).effect.get("damage")
         if m == None:
-            return self.damage()
-        if 0 <= m < 2:
-            return int(math.floor(self.damage()*m))
-        return self.damage() + m
+            return self.damage
+        if 0 <= m <= 2:
+            return int(math.floor(self.damage*m))
+        return self.damage + m
 
-    def getWeaponskill():
-        m = rpgshop.weapons.get(self.weapon).get("weaponskill")
+    def getWeaponskill(self):
+        m = rpgc.weapons.get(self.weapon).effect.get("weaponskill")
         if m == None:
-            return self.weaponskill()
-        if 0 <= m < 2:
-            return int(math.floor(self.weaponskill()*m))
-        return self.weaponskill() + m
+            return self.weaponskill
+        if 0 <= m <= 2:
+            return int(math.floor(self.weaponskill*m))
+        return self.weaponskill + m
