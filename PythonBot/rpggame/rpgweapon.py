@@ -1,5 +1,5 @@
 class RPGWeapon:
-    def __init__(self, name : str, cost : int, effect : {str : float}):
+    def __init__(self, name : str, cost : int, effect : {str : (str, float)}):
         self.name = name
         self.cost = cost
         self.effect = effect

@@ -6,6 +6,7 @@ from secret import secrets
 from rpggame import rpgdbconnect as dbcon
 
 TIMER = True
+EMBED_COLOR = 0x008909
 
 # Normal commands
 class Basics:
@@ -84,7 +85,10 @@ class Basics:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.cuddle[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "cuddle")
+        gif = send_random.getFile("cuddle")+".gif"
+        if len(ctx.message.mentions)>0:
+            m = await self.bot.send_file(ctx.message.channel, gif)
+            await self.bot.edit_message(m, new_content="Lots of cuddles for {} :heart:".format(ctx.message.mentions[0].mention))
 
     # {prefix}ded
     @commands.command(pass_context=1, help="Ded chat reminder!")
@@ -329,6 +333,32 @@ class Basics:
             await self.bot.say("You lack the permissions for that")
             return
 
+    # {prefix}serverinfo
+    @commands.command(pass_context=1, help="Get a user's information!")
+    async def serverinfo(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        server = ctx.message.server
+        embed = discord.Embed(colour=0xFF0000)
+        embed.set_author(name=server.name, icon_url=ctx.message.author.avatar_url)
+        if server.icon != None:
+            embed.set_thumbnail(url=server.icon_url)
+        embed.add_field(name="Server ID", value=server.id)
+        embed.add_field(name="Creation date", value=server.created_at)
+        embed.add_field(name="Region", value=server.region)
+        embed.add_field(name="Members", value=server.member_count)
+        embed.add_field(name="Owner", value=server.owner.display_name)
+        embed.add_field(name="Custom Emoji", value=len(server.emojis))
+        embed.add_field(name="Roles", value=len(server.roles))
+        embed.add_field(name="Channels", value=len(server.channels))
+        if len(server.features)>0:
+            f  = ""
+            for feat in server.features:
+                f += "{}\n".format(feat)
+            embed.add_field(name="Features", value=f)
+        if server.splash != None:
+            embed.add_field(name="Splash", value=server.splash)
+        await self.bot.say(embed=embed)
+
     # {prefix}urban <query>
     @commands.command(pass_context=1, help="Search the totally official wiki!", aliases=["ud", "urbandictionary"])
     async def urban(self, ctx, *args):
@@ -352,8 +382,8 @@ class Basics:
             embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
             return await self.bot.send_message(ctx.message.channel, embed=embed)
 
-    # {prefix}userinfo <query>
-    @commands.command(pass_context=1, help="Get a user's information!", aliases=["user"])
+    # {prefix}userinfo <user>
+    @commands.command(pass_context=1, help="Get a user's information!", aliases=["user", "info"])
     async def userinfo(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions)<=0:

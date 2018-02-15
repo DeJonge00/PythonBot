@@ -291,6 +291,9 @@ class MusicPlayer:
     async def skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
+        if state.voice == None:
+            await self.bot.say("I am not plaing songs right now...")
+            return
         if ctx.message.author.voice_channel != state.voice.channel:
             await self.bot.say("You are not in the right voice channel for this command")
             return

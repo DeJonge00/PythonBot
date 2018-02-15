@@ -15,7 +15,7 @@ def initChannels():
 def setRPGChannel(serverid : int, channelid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    c.execute("SELECT channelID FROM rpgchannel ".format(serverid))
+    c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
     t = c.fetchone()
     if t == None:
         c.execute("INSERT INTO rpgchannel VALUES ('{}', '{}')".format(serverid, channelid))
@@ -34,7 +34,7 @@ def getRPGChannel(serverid : str):
     if t==None:
         print("Channel not specified for server")
         return None
-    return self.bot.get_channel(str(t[0]))
+    return t[0]
 
 # Rpg
 def initRpgDB():

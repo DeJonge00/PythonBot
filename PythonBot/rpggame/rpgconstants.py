@@ -5,8 +5,11 @@ trainingitems = {"health" : rpgti.RPGTrainingItem("health", 1), "weaponskill" : 
 
 
 weapons = {"Training Sword" : rpgw.RPGWeapon("Training Sword", 0, {}), 
-           "Axe" : rpgw.RPGWeapon("Axe", 1000, {"damage" : 1.1}),
-           "Rebellious Knife" : rpgw.RPGWeapon("Rebellious Knife", -200, {"damage" : 0})}
+           "Axe" : rpgw.RPGWeapon("Axe", 1000, {"damage" : ("*", 1.1)}),
+           "Rebellious Knife" : rpgw.RPGWeapon("Rebellious Knife", -200, {"damage" : ("*", 0)}),
+           "Thunderhammer" : rpgw.RPGWeapon("Thunderhammer", 1500, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}),
+           "Slaanesh' Katana" : rpgw.RPGWeapon("Slaanesh' Katana", 3000, {"damage" : ("+", 20), "weaponskill" : ("*", 1.2)}),
+           }
 
 names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
          "monster" : ["Goblin", "Gretchin", "Elven Slave", "Giant Spider", "Wounded Troll", "Lone Chaos Marauder", "Black Wolf", "Evolved Fish", "Drunk Human"],

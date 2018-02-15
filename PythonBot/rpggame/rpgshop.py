@@ -29,7 +29,7 @@ class RPGShop:
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
             for i in rpgc.shopitems.values():
                 embed.add_field(name=i.name, value="Costs: {}{}\nBenefits: {} {}".format(moneysign, i.cost, i.benefit, i.name))
-            embed.add_field(name="Weapons", value="Type '{}shop weapons' for a list of available weapons".format(constants.prefix), inline=False)
+            embed.add_field(name="Weapons", value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix), inline=False)
             await self.bot.say(embed=embed)
 
     # {prefix}shop armor
@@ -90,20 +90,25 @@ class RPGShop:
         item = rpgc.shopitems.get("damage")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
-            player.damage += item.benefit
+            player.damage += a*item.benefit
             await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
     # {prefix}shop weapon
-    @shop.command(pass_context=1, aliases=["w"], help="Buy a shiny new weapon!")
+    @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
-            m = "**Weapons for sale:**"
-            for w in rpgc.weapons.values():
-                m += "\n{}, {}{}".format(w.name, moneysign, w.cost)
-            await self.bot.say(m)
+            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
+            for i in rpgc.weapons.values():
+                t = "Costs: {}{}".format(moneysign, i.cost)
+                for e in i.effect:
+                    x = i.effect.get(e)
+                    t += "\n{}{}{}".format(e, x[0], x[1])
+                embed.add_field(name=i.name, value=t)
+            await self.bot.say(embed=embed)
             return
         weapon = rpgc.weapons.get(" ".join(args))
         if weapon == None:

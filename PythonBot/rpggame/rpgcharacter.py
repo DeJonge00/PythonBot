@@ -7,6 +7,7 @@ from rpggame import rpgconstants as rpgc
 NONE = 0
 ADVENTURE = 1
 TRAINING = 2
+BOSSRAID = 3
 
 # Min and max busy time
 minadvtime = 5
@@ -116,14 +117,18 @@ class RPGPlayer(RPGCharacter):
         m = rpgc.weapons.get(self.weapon).effect.get("damage")
         if m == None:
             return self.damage
-        if 0 <= m <= 2:
-            return int(math.floor(self.damage*m))
-        return self.damage + m
+        if m[0]=="*":
+            return int(math.floor(self.damage*m[1]))
+        if m[0]=="-":
+            return self.damage - m[1]
+        return self.damage + m[1]
 
     def getWeaponskill(self):
         m = rpgc.weapons.get(self.weapon).effect.get("weaponskill")
         if m == None:
             return self.weaponskill
-        if 0 <= m <= 2:
-            return int(math.floor(self.weaponskill*m))
-        return self.weaponskill + m
+        if m[0]=="*":
+            return int(math.floor(self.weaponskill*m[1]))
+        if m[0]=="-":
+            return self.weaponskill - m[1]
+        return self.weaponskill + m[1]

@@ -1,4 +1,4 @@
-import asyncio, discord, requests, os.path
+import asyncio, discord, requests, os, os.path
 from discord.ext import commands
 from discord.ext.commands import Bot
 from PIL import Image, ImageDraw, ImageFont
@@ -71,6 +71,7 @@ class Images:
         name = 'memes/sample-out.jpg'
         img.save(name)
         await self.bot.send_file(ctx.message.channel, name)
+        os.remove(name)
 
     # {prefix}spin <user>
     @commands.command(pass_context=1, help="You spin your head right round, right round. Like a record baby!")
@@ -80,10 +81,10 @@ class Images:
             user = ctx.message.author
         else:
             user = ctx.message.mentions[0]
-        name = "temp/" + user.id + ".png"
-        self.save_img(user.avatar_url, name)
+        #name = "temp/" + user.id + ".png"
+        #self.save_img(user.avatar_url, name)
         l = []
-        image = Image.open("./" + name)
+        image = Image.open(user.avatar_url)
         c = (image.width/6, image.height/6, 5*(image.width/6), 5*(image.height/6))
         l.append(image.crop(c))
         for i in range(37):
@@ -91,6 +92,7 @@ class Images:
         name = "temp/" + user.id + ".gif"
         l[0].save(name, save_all=1, append_images=l[1:37], loop=10, duration=1)
         await self.bot.send_file(ctx.message.channel, name)
+        os.remove(name)
 
     # Download, resize and save file
     def save_img(self, url, name):
