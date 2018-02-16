@@ -69,6 +69,8 @@ class VoiceState:
                     await self.bot.send_message(self.current.channel, embed=self.current.embed(title="Now playing"))
                 self.current.player.start()
                 await self.play_next_song.wait()
+                if len(self.songs._queue)==0:
+                    await self.bot.send_message(self.current.channel, "The queue is now empty...")
             except Exception as e:
                 print(e)
     

@@ -190,11 +190,27 @@ class RPGGame:
         dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
-    @commands.group(pass_context=1, aliases=["g"], help="'{}help rpg' for full options".format(constants.prefix))
+    @commands.group(pass_context=1, help="Get send an overview of the rpg game's commands".format(constants.prefix))
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Use '{}help rpg' for full options".format(constants.prefix))
+            await self.bot.say("Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(constants.prefix))
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
+            embed.add_field(name="{}rpg [adventure|a] <minutes>".format(constants.prefix), value="Go on an adventure, find monsters to slay to gain exp", inline=False)
+            embed.add_field(name="{}rpg [battle|b] <user>".format(constants.prefix), value="Battle another user for the lolz, no exp will be gained and no health will be lost", inline=False)
+            embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(constants.prefix), value="Show your or another user's game statistics", inline=False)
+            embed.add_field(name="{}rpg [join|j]".format(constants.prefix), value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
+            embed.add_field(name="{}rpg [party|p]".format(constants.prefix), value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
+            embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
+            embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
+            embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
+            embed.add_field(name="{}shop <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
+            embed.add_field(name="{}shop [weapon|w|weapons]".format(constants.prefix), value="Show the rpg shop's weapon inventory", inline=False)
+            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop (Capital sensitive)", inline=False)
+            embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
+            embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
+            await self.bot.send_message(ctx.message.author, embed=embed)
     
     # {prefix}rpg adventure #
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
@@ -293,15 +309,15 @@ class RPGGame:
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.NONE:
-            await self.bot.say("Finish your current task first, then you can join the boss raid party!")
+            await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(ctx.message.author.mention))
             return
         party = self.getParty(ctx.message.server.id)
         if data in party:
-            await self.bot.say("You are already in the boss raid party...")
+            await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
             return
         party.append(data)
         data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
-        await self.bot.say("Prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(len(party)))
+        await self.bot.say("{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(ctx.message.author.mention, len(party)))
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
@@ -321,25 +337,25 @@ class RPGGame:
         await self.bot.say(embed=embed)
 
     # {prefix}rpg role
-    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="All players gathered to kill the boss")
+    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="Switch your role on the battlefield")
     async def role(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if len(args) <= 0:
-            await self.bot.say("The currently available roles are: {}".format(", ".join(rpgc.names.get("role"))))
+            await self.bot.say("{}, the currently available roles are: {}".format(ctx.message.author.mention, ", ".join(rpgc.names.get("role"))))
             return
         role = " ".join(args)
         if role == data.role:
-            await self.bot.say("That is already your current role...")
+            await self.bot.say("{}, that is already your current role...".format(ctx.message.author.mention))
             return
         if role in rpgc.names.get("role"):
             data.role = role
-            await self.bot.say("You now have the role of {}".format(role))
+            await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
             return
-        await self.bot.say("That is not a role available to a mere mortal")
+        await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
 
     # {prefix}rpg top #
-    @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")
+    @rpg.command(pass_context=1, aliases=['t'], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) > 0:

@@ -62,6 +62,7 @@ class RPGPlayer(RPGCharacter):
         if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
             self.money = math.floor(self.money*0.5)
+            self.resetBusy()
 
     def addExp(self, n : int):
         if n<0:
