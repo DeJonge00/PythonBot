@@ -93,7 +93,7 @@ class RPGShop:
             player.damage += a*item.benefit
             await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
-            await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+            await self.bot.say("{} does not have enough money to buy {} weapon sharpeners\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
@@ -107,10 +107,11 @@ class RPGShop:
                 for e in i.effect:
                     x = i.effect.get(e)
                     t += "\n{}{}{}".format(e, x[0], x[1])
+                t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
                 embed.add_field(name=i.name, value=t)
             await self.bot.say(embed=embed)
             return
-        weapon = rpgc.weapons.get(" ".join(args))
+        weapon = rpgc.weapons.get(" ".join(args).lower())
         if weapon == None:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
@@ -118,7 +119,7 @@ class RPGShop:
         if not self.buyWeapon(player, weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        player.weapon = " ".join(args)
+        player.weapon = weapon.name
         await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
 
     # {prefix}train
@@ -151,7 +152,7 @@ class RPGShop:
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.raiseMaxhealth(a)
-        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, a*item.time))
+        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))
 
     # {prefix}train ws
     @train.command(pass_context=1, aliases=["w", "weaponskill"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
@@ -172,4 +173,4 @@ class RPGShop:
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.weaponskill += a
-        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, a*item.time))
+        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))

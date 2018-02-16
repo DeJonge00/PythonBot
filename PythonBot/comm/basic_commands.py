@@ -52,8 +52,8 @@ class Basics:
     async def cast(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
-            return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + ", you cannot cast without a target...")
-        return await self.bot.send_message(ctx.message.channel, ctx.message.author.name + " casted **" + constants.spell[random.randint(0, len(constants.spell)-1)] + "** on " + " ".join(args) + ".\n" +  constants.spellresult[random.randint(0, len(constants.spellresult)-1)])
+            return await self.bot.send_message(ctx.message.channel, "{}, you cannot cast without a target...".format(ctx.message.author.name))
+        return await self.bot.send_message(ctx.message.channel, "{} casted **{}** on {}.\n{}".format(ctx.message.author.name, constants.spell[random.randint(0, len(constants.spell)-1)], " ".join(args), constants.spellresult[random.randint(0, len(constants.spellresult)-1)]))
     
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
