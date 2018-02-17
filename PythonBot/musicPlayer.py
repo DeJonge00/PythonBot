@@ -69,6 +69,8 @@ class VoiceState:
                     await self.bot.send_message(self.current.channel, embed=self.current.embed(title="Now playing"))
                 self.current.player.start()
                 await self.play_next_song.wait()
+                if len(self.songs._queue)==0:
+                    await self.bot.send_message(self.current.channel, "The queue is now empty...")
             except Exception as e:
                 print(e)
     
@@ -291,6 +293,9 @@ class MusicPlayer:
     async def skip(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
+        if state.voice == None:
+            await self.bot.say("I am not plaing songs right now...")
+            return
         if ctx.message.author.voice_channel != state.voice.channel:
             await self.bot.say("You are not in the right voice channel for this command")
             return

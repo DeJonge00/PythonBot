@@ -1,15 +1,10 @@
 import asyncio, constants, discord, removeMessage, math
-from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgweapon as rpgw
+from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgconstants as rpgc, rpgtrainingitem as rpgti
 from discord.ext import commands
 from discord.ext.commands import Bot
-from rpggame import rpgcharacter as rpchar
 
 moneysign = "$"
 SHOP_EMBED_COLOR = 0x00969b
-
-shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 100, 10), "damage" : rpgsi.RPGShopItem("damage", 150, 5)}
-weapons = {"Training sword" : rpgw.RPGWeapon("training sword", 0, {}), 
-           "Axe" : rpgw.RPGWeapon("axe", 500, {"damage" : 1.1})}
 
 class RPGShop:
     def __init__(self, bot):
@@ -20,6 +15,11 @@ class RPGShop:
             return True
         return False
 
+    def buyWeapon(self, player : rpgchar.RPGPlayer, item : rpgw.RPGWeapon):
+        if player.addMoney(-1 * item.cost):
+            return True
+        return False
+
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
@@ -27,8 +27,9 @@ class RPGShop:
             await removeMessage.deleteMessage(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
-            for i in shopitems.values():
+            for i in rpgc.shopitems.values():
                 embed.add_field(name=i.name, value="Costs: {}{}\nBenefits: {} {}".format(moneysign, i.cost, i.benefit, i.name))
+            embed.add_field(name="Weapons", value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix), inline=False)
             await self.bot.say(embed=embed)
 
     # {prefix}shop armor
@@ -44,7 +45,7 @@ class RPGShop:
         if a < 0:
             await self.bot.say("You cannot sell your armor")
             return
-        item = shopitems.get("armor")
+        item = rpgc.shopitems.get("armor")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.addArmor(a*item.benefit)
@@ -65,7 +66,7 @@ class RPGShop:
         if a < 0:
             await self.bot.say("You cannot sacrifice blood *yet*")
             return
-        item = shopitems.get("health")
+        item = rpgc.shopitems.get("health")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
             player.addHealth(a*item.benefit)
@@ -86,24 +87,31 @@ class RPGShop:
         if a < 0:
             await self.bot.say("It would be unwise to blunten your weapon")
             return
-        item = shopitems.get("damage")
+        item = rpgc.shopitems.get("damage")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if self.buyItem(player, item, amount=a):
-            player.damage += item.benefit
+            player.damage += a*item.benefit
             await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
         else:
-            await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+            await self.bot.say("{} does not have enough money to buy {} weapon sharpeners\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
     # {prefix}shop weapon
-    @shop.command(pass_context=1, aliases=["w"], help="Buy a shiny new weapon!")
-    async def damage(self, ctx, *args):
+    @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
+    async def weapon(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
-            m = "**Weapons for sale:**"
-            m += "\n".join(weapons.keys())
-            await self.bot.say(m)
+            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
+            for i in rpgc.weapons.values():
+                t = "Costs: {}{}".format(moneysign, i.cost)
+                for e in i.effect:
+                    x = i.effect.get(e)
+                    t += "\n{}{}{}".format(e, x[0], x[1])
+                t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
+                embed.add_field(name=i.name, value=t)
+            await self.bot.say(embed=embed)
             return
-        weapon = weapons.get(" ".join(args))
+        weapon = rpgc.weapons.get(" ".join(args).lower())
         if weapon == None:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
@@ -111,7 +119,7 @@ class RPGShop:
         if not self.buyWeapon(player, weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        player.weapon = weapon
+        player.weapon = weapon.name
         await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
 
     # {prefix}train
@@ -119,7 +127,11 @@ class RPGShop:
     async def train(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Type '{}help train' for the list of available training sessions".format(constants.prefix))
+            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)
+            for i in rpgc.trainingitems.values():
+                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.time))
+            await self.bot.say(embed=embed)
 
     # {prefix}train hp
     @train.command(pass_context=1, aliases=["h", "health"], help="Train your character's health!")
@@ -135,11 +147,12 @@ class RPGShop:
         if player.busydescription != rpgchar.NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
-        if not player.setBusy(rpgchar.TRAINING, a, ctx.message.channel.id):
+        item = rpgc.trainingitems.get("health")
+        if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.raiseMaxhealth(a)
-        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, a))
+        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))
 
     # {prefix}train ws
     @train.command(pass_context=1, aliases=["w", "weaponskill"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
@@ -155,8 +168,9 @@ class RPGShop:
         if player.busydescription != rpgchar.NONE:
             await self.bot.say("Thou shalt not be busy when initiating a training session")
             return
-        if not player.setBusy(rpgchar.TRAINING, a*10, ctx.message.channel.id):
+        item = rpgc.trainingitems.get("weaponskill")
+        if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.weaponskill += a
-        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, a*10))
+        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))

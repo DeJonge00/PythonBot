@@ -42,7 +42,7 @@ class PythonBot(Bot):
         self.spongelist = []
         self.MUSIC = music
         self.RPGGAME = rpggame
-        super(PythonBot, self).__init__(command_prefix=commands.when_mentioned_or(constants.prefix), pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
+        super(PythonBot, self).__init__(command_prefix=constants.prefix, pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 
 def initBot():
     bot = PythonBot()

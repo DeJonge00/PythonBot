@@ -1,11 +1,12 @@
 import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, sqlite3
-import rpggame.rpgcharacter as rpgchar, rpggame.rpgdbconnect as dbcon, rpggame.rpgshop as rpgshop
+from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop as rpgshop, rpgconstants as rpgc
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 RPGSTATSFILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
-BATTLETURNS = 30
+STANDARDBATTLETURNS = 30
+BATTLETURNS = {"Bossbattle" : 99}
 
 class RPGGame:
     def __init__(self, my_bot):
@@ -35,64 +36,83 @@ class RPGGame:
             h1.append(p1[i].health)
         for i in range(len(p2)):
             h2.append(p2[i].health)
-        while (i<BATTLETURNS) & (sum([x.health for x in p1]) > 0) & (sum([x.health for x in p2]) > 0):
+        turns = BATTLETURNS.get(battlename)
+        if turns==None:
+            turns=STANDARDBATTLETURNS
+        while (i<turns) & (sum([x.health for x in p1]) > 0) & (sum([x.health for x in p2]) > 0):
             for attacker in p1:
-                defender = p2[random.randint(0,len(p2)-1)]
-                ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
-                if (ws < attacker.getWeaponskill()):
-                    print(attacker.name)
-                    print(attacker.getDamage())
-                    damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
-                    defender.addHealth(-1*damage)
-                    battlereport += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
+                if attacker.health > 0:
+                    defs = [x for x in p2 if x.health > 0]
+                    defender = defs[random.randint(0,len(defs)-1)]
+                    ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
+                    if (ws < attacker.getWeaponskill()):
+                        damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
+                        if battlename=="Mockbattle":
+                            defender.addHealth(-1*damage, death=False)
+                        else:
+                            defender.addHealth(-1*damage)
+                        battlereport += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
             p3 = p1
             p1 = p2
             p2 = p3
             #print(p1.name + ": " + str(p1.health) + " | " + p2.name + " : " + str(p2.health))
             i += 1
-        if i%2==1:
-            p3 = p1
-            p1 = p2
-            p2 = p3
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
-        if(len(p1)==1) & (len(p2)==1) & (p1[0].health <= 0):
-            embed.add_field(name="Result", value="{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health, p1[0].name), inline=False)
+        if (p1[0].health <= 0):
+            if (len(p1)==1) & (len(p2)==1):
+                embed.add_field(name="Result", value="{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health, p1[0].name), inline=False)
+            else:
+                embed.add_field(name="Result", value="{}'s party completely slaughtered {}'s pary".format(p2[0].name, p1[0].name), inline=False)
         else:
             embed.add_field(name="Result", value="The battle lasted long, both players are exhausted.\nThey agree on a draw this time", inline=False)
             hrep = ""
             for m in (p1+p2):
                 hrep += m.name + " ({})\n".format(m.health)
             embed.add_field(name="Healthreport", value=hrep, inline=False)
+        if i%2==1:
+            p3 = p1
+            p1 = p2
+            p2 = p3
         if battlename == "Mockbattle":
             for i in range(len(p1)):
                 p1[i].health = h1[i]
             for i in range(len(p2)):
                 p2[i].health = h2[i]
-        else:
-            for m in (p1+p2):
-                if isinstance(m, rpgchar.RPGPlayer):
-                    m.addExp(100*m.getLevel())
         await self.bot.send_message(channel, embed=embed);
+        if sum([(x.health/x.maxhealth) for x in p1]) > sum([(x.health/x.maxhealth) for x in p2]):
+            return 1
+        return 2 
 
     async def bossbattle(self):
         print("Boss time!")
         for serverid in self.bossparties:
             party = self.bossparties.get(serverid)
             if len(party) > 0:
-                channel = self.getRPGChannel(str(serverid))
+                channel = self.bot.get_channel(dbcon.getRPGChannel(str(serverid)))
                 if channel == None:
+                    print("No channel for {}".format(serverid))
                     return
-                list = rpgchar.names.get("monster")
-                name = list[random.randint(0, len(list)-1)]
-                boss = rpgchar.RPGMonster(name=name, health=250)
-                await self.resolveBattle("Bossbattle", channel, party, [boss])
+                lvl = max([x.getLevel() for x in party])
+                list = rpgc.names.get("boss")
+                (name, elem) = list[random.randint(0, len(list)-1)]
+                boss = rpgchar.RPGMonster(name=name, health=500*lvl, damage=7*lvl, ws=5*lvl, element=elem)
+                winner = await self.resolveBattle("Bossbattle", channel, party, [boss])
+                if winner==1:
+                    for p in party:
+                        p.addExp(250*lvl)
+        for p in self.players.values():
+            if p.busydescription == rpgchar.BOSSRAID:
+                p.resetBusy()
+        self.bossparties = {}
 
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
-        list = rpgchar.names.get("monster")
-        name = list[random.randint(0, len(list)-1)]
+        list = rpgc.names.get("monster")
+        (name, elem) = list[random.randint(0, len(list)-1)]
         lvl = player.getLevel()
-        await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=20*lvl, damage=5*lvl, ws=2*lvl)], short=True)
+        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=20*lvl, damage=5*lvl, ws=2*lvl, element=elem)], short=True)
+        if winner==1:
+            player.addExp(100*player.getLevel())
 
     async def gameloop(self):
         await self.bot.wait_until_ready()
@@ -100,48 +120,55 @@ class RPGGame:
         running = True;
         while running:
             time = datetime.datetime.utcnow()
-            if time.minute%5 == 0:
-                print(time)
-            # Saving stats to db
-            if time.minute%15 == 0:
-                p = self.players.values()
-                if len(p) > 0:
-                    dbcon.updatePlayers(p)
-                    l = list(self.players.keys())
-                    for i in l:
-                        if self.players.get(i).busydescription == rpgchar.NONE:
-                            self.players.pop(i)
-                print("Players saved")
-            # Bossraids
-            if time.minute == 55:
-                for p in self.bossparties:
-                    await self.bot.send_message(self.getRPGChannel(str(p)), "A party of {} is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate".format(len(self.bossparties.get(p))))
-            if time.minute == 0:
-                await self.bossbattle()
-                self.bossparties = {}
-            # Player is busy
-            for u in self.players.values():
-                if u.health < u.maxhealth:
-                    u.addHealth(10)
-                if u.busydescription != rpgchar.NONE:
-                    u.busytime -= 1
-                    c = self.bot.get_channel(str(u.busychannel))
-                    if u.busydescription == rpgchar.ADVENTURE:
-                        if c != None:
-                            if(random.randint(0,4)<=0):
-                                await self.adventureEncounter(u, c)
-                    if u.busytime <= 0:
-                        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            try:
+                if time.minute%5 == 0:
+                    print(time)
+                # Saving stats to db
+                if time.minute%15 == 0:
+                    p = self.players.values()
+                    if len(p) > 0:
+                        dbcon.updatePlayers(p)
+                        l = list(self.players.keys())
+                        for i in l:
+                            player = self.players.get(i)
+                            if (player.busydescription == rpgchar.NONE) & (player.health >= player.maxhealth):
+                                self.players.pop(i)
+                    print("Players saved")
+                # Bossraids
+                if time.minute == 55:
+                    for p in self.bossparties:
+                        await self.bot.send_message(self.getRPGChannel(str(p)), "A party of {} is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate".format(len(self.bossparties.get(p))))
+                if time.minute == 0:
+                    await self.bossbattle()
+                # Player is busy
+                for u in self.players.values():
+                    if u.health < u.maxhealth:
+                        u.addHealth(10)
+                    if u.busydescription != rpgchar.NONE:
+                        if not(u.busydescription in [rpgchar.BOSSRAID]):
+                            u.busytime -= 1
+                        c = self.bot.get_channel(str(u.busychannel))
                         if u.busydescription == rpgchar.ADVENTURE:
-                            type = "adventure"
-                            action = "adventuring"
-                        if u.busydescription == rpgchar.TRAINING:
-                            type = "training"
-                            action = "training"
-                        embed.add_field(name="Ended {}".format(type), value="{}, you are now done {}".format(u.name, action))
-                        await self.bot.send_message(self.bot.get_channel(u.busychannel), embed=embed)
-                        u.resetBusy()
-
+                            if c != None:
+                                if(random.randint(0,4)<=0):
+                                    await self.adventureEncounter(u, c)
+                        if (u.busytime <= 0):
+                            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+                            if u.busydescription == rpgchar.ADVENTURE:
+                                type = "adventure"
+                                action = "adventuring"
+                            elif u.busydescription == rpgchar.TRAINING:
+                                type = action = "training"
+                            else:
+                                type = action = "Unknown"
+                            embed.add_field(name="Ended {}".format(type), value="{}, you are now done {}".format(u.name, action))
+                            if c != None:
+                                await self.bot.send_message(c, embed=embed)
+                            else:
+                                print("Channel not found, {} is done with {}".format(u.name, u.busydesription))
+                            u.resetBusy()
+            except Exception as e:
+                print(e)
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
             await asyncio.sleep(60-endtime.second)
@@ -176,11 +203,27 @@ class RPGGame:
         dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
-    @commands.group(pass_context=1, aliases=["g"], help="'{}help rpg' for full options".format(constants.prefix))
+    @commands.group(pass_context=1, help="Get send an overview of the rpg game's commands".format(constants.prefix))
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
-            await self.bot.say("Use '{}help rpg' for full options".format(constants.prefix))
+            await self.bot.say("Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(constants.prefix))
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
+            embed.add_field(name="{}rpg [adventure|a] <minutes>".format(constants.prefix), value="Go on an adventure, find monsters to slay to gain exp", inline=False)
+            embed.add_field(name="{}rpg [battle|b] <user>".format(constants.prefix), value="Battle another user for the lolz, no exp will be gained and no health will be lost", inline=False)
+            embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(constants.prefix), value="Show your or another user's game statistics", inline=False)
+            embed.add_field(name="{}rpg [join|j]".format(constants.prefix), value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
+            embed.add_field(name="{}rpg [party|p]".format(constants.prefix), value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
+            embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
+            embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
+            embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
+            embed.add_field(name="{}shop <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
+            embed.add_field(name="{}shop [weapon|w|weapons]".format(constants.prefix), value="Show the rpg shop's weapon inventory", inline=False)
+            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop (Capital sensitive)", inline=False)
+            embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
+            embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
+            await self.bot.send_message(ctx.message.author, embed=embed)
     
     # {prefix}rpg adventure #
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
@@ -220,13 +263,13 @@ class RPGGame:
             await self.bot.say("Suicide is never the answer :angry:")
             return
         attacker = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if attacker.busydescription != rpgchar.NONE:
-            await self.bot.say("You are already doing something else at the moment...")
-            return
+        #if attacker.busydescription != rpgchar.NONE:
+        #    await self.bot.say("You are already doing something else at the moment...")
+        #    return
         defender = self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)
-        if defender.busydescription != rpgchar.NONE:
-            await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
-            return
+        #if defender.busydescription != rpgchar.NONE:
+        #    await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
+        #    return
         await self.resolveBattle("Mockbattle", ctx.message.channel, [attacker], [defender])
 
     # {prefix}rpg info <user>
@@ -248,6 +291,8 @@ class RPGGame:
             stats += "\nAdventuring for {}m".format(data.busytime)
         elif data.busydescription == rpgchar.TRAINING:
             stats += "\nTraining for {}m".format(data.busytime)
+        elif data.busydescription == rpgchar.BOSSRAID:
+            stats += "\nWaiting for the bossbattle"
         else:
             stats += "\nAlive"
         statnames += "\nWeapon:"
@@ -277,14 +322,15 @@ class RPGGame:
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.NONE:
-            await self.bot.say("Finish your current task first, then you can join the boss raid party!")
+            await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(ctx.message.author.mention))
             return
         party = self.getParty(ctx.message.server.id)
         if data in party:
-            await self.bot.say("You are already in the boss raid party...")
+            await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
             return
         party.append(data)
-        await self.bot.say("Prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(len(party)))
+        data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
+        await self.bot.say("{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(ctx.message.author.mention, len(party)))
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
@@ -304,25 +350,25 @@ class RPGGame:
         await self.bot.say(embed=embed)
 
     # {prefix}rpg role
-    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="All players gathered to kill the boss")
+    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="Switch your role on the battlefield")
     async def role(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if len(args) <= 0:
-            await self.bot.say("The currently available roles are: {}".format(", ".join(rpgchar.names.get("role"))))
+            await self.bot.say("{}, the currently available roles are: {}".format(ctx.message.author.mention, ", ".join(rpgc.names.get("role"))))
             return
         role = " ".join(args)
         if role == data.role:
-            await self.bot.say("That is already your current role...")
+            await self.bot.say("{}, that is already your current role...".format(ctx.message.author.mention))
             return
-        if role in rpgchar.names.get("role"):
+        if role in rpgc.names.get("role"):
             data.role = role
-            await self.bot.say("You now have the role of {}".format(role))
+            await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
             return
-        await self.bot.say("That is not a role available to a mere mortal")
+        await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
 
     # {prefix}rpg top #
-    @rpg.command(pass_context=1, aliases=[], help="Show the people with the most experience!")
+    @rpg.command(pass_context=1, aliases=['t'], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) > 0:
