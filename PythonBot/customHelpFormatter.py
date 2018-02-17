@@ -10,4 +10,4 @@ class customHelpFormatter(commands.HelpFormatter):
         return super().format()
 
     def get_ending_note(self):
-        return "Message responses:\n\t'\\o/' : Praise the sun!\t'ded' (After a period of no messages) : Cry about a ded chat\t'(╯°□°）╯︵ ┻━┻' : '┬─┬ ノ( ゜-゜ノ)'\tMention me or 'biri' or 'biribiri' : I will talk to your lonely self\n" + super().get_ending_note() + "\nFor more questions use '{}helpserver' or message user 'Nya#2698'".format(constants.prefix)
+        return "Message responses:\n\t'\\o/' : Praise the sun!\n\t'ded' (After a period of no messages) : Cry about a ded chat\n\t'(╯°□°）╯︵ ┻━┻' : '┬─┬ ノ( ゜-゜ノ)'\n\tMention me or 'biri' or 'biribiri' : I will talk to your lonely self\n\n" + super().get_ending_note() + "\nFor more questions use '{}helpserver' or message user 'Nya#2698'".format(constants.prefix)

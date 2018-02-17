@@ -25,12 +25,13 @@ def getLevelByExp(exp : int):
     return math.floor(math.sqrt(exp) / 20)+1
 
 class RPGCharacter:
-    def __init__(self, name, health, maxhealth, damage, weaponskill, element=rpgc.element_none):
+    def __init__(self, name, health, maxhealth, damage, weaponskill, critical, element=rpgc.element_none):
         self.name = name
         self.health = health
         self.maxhealth = maxhealth
         self.damage = damage
         self.weaponskill = weaponskill
+        self.critical = critical
         self.element = element
 
     # Add (negative) health, returns true if successful
@@ -39,10 +40,10 @@ class RPGCharacter:
             n = math.floor(n*1.2)
         if (element == self.element):
             n = math.floor(n*0.8)
-        self.health = max(0, min(self.maxhealth, self.health + n))
 
-    def getDamage(self):
+    def getDamage(self, element=rpgc.element_none):
         return self.damage
+
     def getWeaponskill(self):
         return self.weaponskill
 
@@ -51,33 +52,64 @@ class RPGCharacter:
 
 class RPGMonster(RPGCharacter):
     def __init__(self, name="Monster", health=30, damage=10, ws=1, element=rpgc.element_none):
-        super(RPGMonster, self).__init__(name, health, health, damage, ws, element=element)
+        super(RPGMonster, self).__init__(name, health, health, damage, ws, 0, element=element)
+
+    def getDamage(self, element = rpgc.element_none):
+        n = super().getDamage(element=element)
+        # Elemental damage
+        selfelem = self.element
+        if element != rpgc.element_none:
+            if (element == (-1*selfelem)):
+                n = math.floor(n*1.2)
+            if (element == selfelem):
+                n = math.floor(n*0.8)
+        return n
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none, critical=0):
         self.userid = userid
         self.role = role
         self.exp = 0
+        self.levelups = 0
         self.money = 0
         self.weapon = weapon
+        self.armor = armor
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
+        self.critical = critical
         self.bosstier = 1
-        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, element=element)
+        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, 0, element=element)
 
-    def addHealth(self, n : int, death=True, element=rpgc.element_none):
-        super().addHealth(n, element=element)
+    def addHealth(self, n : int, death=True):
+        super().addHealth(n)
+        a = rpgc.armor.get(self.armor.lower())
+        if a != None:
+            n *= a.absorption
         if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
+            self.exp = max(0, self.exp)
             self.money = math.floor(self.money*0.5)
             self.busytime = 0
 
-    def addExp(self, n : int):
-        if n<0:
-            print("Warning: Exp add below zero (" + str(n) + ") on " + self.user.name)
+    def buyArmor(self, item):
+        if not self.addMoney(-1 * item.cost):
             return False
+        self.armor = item.name
+        self.element = item.element
+        return True
+
+    def buyWeapon(self, item):
+        if not self.addMoney(-1 * item.cost):
+            return False
+        self.weapon = item.name
+        return True
+
+    def addExp(self, n : int):
+        lvl = self.getLevel()
         self.exp += n
+        if self.getLevel()>lvl:
+            self.levelups += 1
         self.money += n
 
     def getLevel(self):
@@ -129,22 +161,36 @@ class RPGPlayer(RPGCharacter):
     def addArmor(self, n : int):
         self.health = max(self.health, self.health + n)
 
-    def getDamage(self):
-        m = rpgc.weapons.get(self.weapon.lower()).effect.get("damage")
-        if m == None:
-            return self.damage
-        if m[0]=="*":
-            return int(math.floor(self.damage*m[1]))
-        if m[0]=="-":
-            return self.damage - m[1]
-        return self.damage + m[1]
+    def getDamage(self, element=rpgc.element_none):
+        n = super().getDamage(element=element)
+        # Elemental damage
+        selfelem = rpgc.weapons.get(self.weapon.lower()).element
+        if element != rpgc.element_none:
+            if (element == (-1*selfelem)):
+                n = math.floor(n*1.2)
+            if (element == selfelem):
+                n = math.floor(n*0.8)
+        # Weapon mods
+        w = rpgc.weapons.get(self.weapon.lower())
+        if w != None:
+            m = w.effect.get("damage")
+            if m == None:
+                return n
+            if m[0]=="*":
+                return int(math.floor(n*m[1]))
+            if m[0]=="-":
+                return max(0, n - m[1])
+            return n + m[1]
+        return n
 
     def getWeaponskill(self):
         m = rpgc.weapons.get(self.weapon.lower()).effect.get("weaponskill")
+        n = super().getWeaponskill()
         if m == None:
-            return self.weaponskill
+            return n
         if m[0]=="*":
-            return int(math.floor(self.weaponskill*m[1]))
+            return int(math.floor(n*m[1]))
         if m[0]=="-":
-            return self.weaponskill - m[1]
-        return self.weaponskill + m[1]
+            return max(0, n - m[1])
+        return n + m[1]
+

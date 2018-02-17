@@ -46,7 +46,10 @@ class RPGGame:
                     defender = defs[random.randint(0,len(defs)-1)]
                     ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                     if (ws < attacker.getWeaponskill()):
-                        damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
+                        if ws < attacker.critical:
+                            damage = math.floor(2.5*attacker.getDamage(defender.element))
+                        else:
+                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.element));
                         if battlename=="Mockbattle":
                             defender.addHealth(-1*damage, death=False)
                         else:
@@ -57,6 +60,8 @@ class RPGGame:
             p2 = p3
             #print(p1.name + ": " + str(p1.health) + " | " + p2.name + " : " + str(p2.health))
             i += 1
+        if len(battlereport)>1500:
+            short=True
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
         if (p1[0].health <= 0):
@@ -204,6 +209,7 @@ class RPGGame:
         dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
+    # RPG intro/help
     @commands.group(pass_context=1, help="Get send an overview of the rpg game's commands".format(constants.prefix))
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -221,7 +227,8 @@ class RPGGame:
             embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
             embed.add_field(name="{}shop <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
             embed.add_field(name="{}shop [weapon|w|weapons]".format(constants.prefix), value="Show the rpg shop's weapon inventory", inline=False)
-            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop (Capital sensitive)", inline=False)
+            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop", inline=False)
+            embed.add_field(name="{}shop <armor> <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
             embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
             embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
@@ -299,7 +306,10 @@ class RPGGame:
         statnames += "\nWeapon:"
         stats += "\n{}".format(data.weapon)
         statnames += "\nExperience:"
-        stats += "\n{} ({})".format(data.exp, data.getLevel())
+        if data.levelups > 0:
+            stats += "\nLevel up available!"
+        else:
+            stats += "\n{} ({})".format(data.exp, data.getLevel())
         statnames += "\nMoney:"
         stats += "\n${}".format(data.money)
         statnames += "\nHealth:"
@@ -311,6 +321,8 @@ class RPGGame:
         stats += "\n{}".format(data.getDamage())
         statnames += "\nWeaponskill:"
         stats += "\n{}".format(data.getWeaponskill())
+        statnames += "\nCritical:"
+        stats += "\n{}".format(data.critical)
         statnames += "\nBoss Tier:"
         stats += "\n{}".format(data.getBosstier())
 
@@ -334,6 +346,31 @@ class RPGGame:
         party.append(data)
         data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say("{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(ctx.message.author.mention, len(party)))
+
+    # {prefix}rpg levelup
+    @rpg.command(pass_context=1, aliases=["lvlup", "lvl"], help="Join a raid to kill a boss!")
+    async def levelup(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.levelups <= 0:
+            await self.bot.say("You have no level-ups available")
+            return
+        if len(args) <= 0:
+            await self.bot.say("Available rewards are:\n1)\t+30 hp\n2)\t+1 ws\n3)\t+10 damage")
+            return
+        if args[0]==1:
+            data.raiseMaxhealth(30)
+            await self.bot.say("Health raised!")
+        elif args[0]==2:
+            data.weaponskill += 1
+            await self.bot.say("Weaponskill raised!")
+        elif args[0]==3:
+            data.damage += 10
+            await self.bot.say("Damage raised!")
+        else:
+            await self.bot.say("Dunno what you mean tbh")
+            return
+        data.levelups -= 1
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")

@@ -70,11 +70,13 @@ def getPlayer(player : discord.User):
         except UnicodeEncodeError:
             pass
         return rpgchar.RPGPlayer(player.id, player.name)
-    player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5])
+    player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5], critical=p[6])
     if i != None:
         player.exp = i[1]
-        player.money = i[2]
-        player.weapon = i[3]
+        player.levelups = i[2]
+        player.money = i[3]
+        player.weapon = i[4]
+        player.armor = i[5]
     if a != None:
         player.setBusy(a[3], a[1], a[2])
     if t != None:
@@ -87,13 +89,13 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     try:
         for s in stats:
             if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill) VALUES ({0}, '{1}', {2}, {3}, {4}, {5})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))
+                c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill, critical) VALUES ({0}, '{1}', {2}, {3}, {4}, {5}, {6})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))
             else :
-                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))        
+                c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5}, critical = {6} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO items (playerID, exp, money, weapon) VALUES ({0}, {1}, {2}, \"{3}\")".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("INSERT INTO items (playerID, exp, levelups, money, weapon, armor) VALUES ({}, {}, {}, {}, \"{}\", \"{}\")".format(s.userid, s.exp, s.levelups, s.money, s.weapon, s.armor))
             else :
-                c.execute("UPDATE items SET exp = {1}, money = {2}, weapon = \"{3}\" WHERE playerID = {0}".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("UPDATE items SET exp = {}, levelups = {}, money = {}, weapon = \"{}\", armor = \"{}\" WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.weapon, s.armor, s.userid))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
             else :
