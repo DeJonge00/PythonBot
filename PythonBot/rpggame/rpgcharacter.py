@@ -66,6 +66,7 @@ class RPGPlayer(RPGCharacter):
         self.userid = userid
         self.role = role
         self.exp = 0
+        self.levelups = 0
         self.money = 0
         self.weapon = weapon
         self.armor = armor
