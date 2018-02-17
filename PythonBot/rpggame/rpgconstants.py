@@ -1,4 +1,4 @@
-from rpggame import rpgshopitem as rpgsi, rpgweapon as rpgw, rpgtrainingitem as rpgti
+from rpggame import rpgshopitem as rpgsi, rpgweapon as rpgw, rpgtrainingitem as rpgti, rpgarmor as rpga
 
 element_none = 1
 element_lightning = 2
@@ -15,7 +15,7 @@ elementnames = {element_none : "None",
                 element_ice : "Ice", 
                 element_fire : "Fire"}
 
-shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), 
+shopitems = {"plates" : rpgsi.RPGShopItem("armorplates", 200, 10), 
              "health" : rpgsi.RPGShopItem("health", 150, 10), 
              "damage" : rpgsi.RPGShopItem("damage", 250, 3),
              "critical" : rpgsi.RPGShopItem("critical", 5000, 1)}
@@ -31,6 +31,8 @@ weapons = {"training sword" : rpgw.RPGWeapon("Training Sword", 0, {}, element_no
            "shadow dual blades" : rpgw.RPGWeapon("Shadow Dual Blades", 5000, {"weaponskill" : ("+", 18)}, element_dark),
            "yeti's lower legbone" : rpgw.RPGWeapon("Yeti's Lower Legbone", 10000, {"damage" : ("*", 1.2), "weaponskill" : ("-", 5)}, element_ice)
            }
+
+armor = {"training robes" : rpga.RPGArmor("Training Robes", 0, 1.0, element_none)}
 
 names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
          "monster" : [("Drunk Human", element_none),

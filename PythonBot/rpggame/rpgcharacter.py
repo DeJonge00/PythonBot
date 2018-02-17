@@ -40,7 +40,6 @@ class RPGCharacter:
     def getDamage(self, element=rpgc.element_none):
         return self.damage
 
-
     def getWeaponskill(self):
         return self.weaponskill
 
@@ -63,12 +62,13 @@ class RPGMonster(RPGCharacter):
         return n
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0
         self.money = 0
         self.weapon = weapon
+        self.armor = armor
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
@@ -76,11 +76,27 @@ class RPGPlayer(RPGCharacter):
 
     def addHealth(self, n : int, death=True):
         super().addHealth(n)
+        a = rpgc.armor.get(self.armor.lower())
+        if a != None:
+            n *= a.absorption
         if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
             self.exp = max(0, self.exp)
             self.money = math.floor(self.money*0.5)
             self.busytime = 0
+
+    def buyArmor(self, item):
+        if not player.addMoney(-1 * item.cost):
+            return False
+        self.armor = item.name
+        self.element = item.element
+        return True
+
+    def buyWeapon(self, item):
+        if not player.addMoney(-1 * item.cost):
+            return False
+        self.weapon = item.name
+        return True
 
     def addExp(self, n : int):
         self.exp += n
@@ -130,7 +146,6 @@ class RPGPlayer(RPGCharacter):
         self.health = max(self.health, self.health + n)
 
     def getDamage(self, element=rpgc.element_none):
-        print(self.weapon.lower())
         n = super().getDamage(element=element)
         # Elemental damage
         selfelem = rpgc.weapons.get(self.weapon.lower()).element

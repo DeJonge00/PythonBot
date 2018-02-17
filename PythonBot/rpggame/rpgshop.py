@@ -15,11 +15,6 @@ class RPGShop:
             return True
         return False
 
-    def buyWeapon(self, player : rpgchar.RPGPlayer, item : rpgw.RPGWeapon):
-        if player.addMoney(-1 * item.cost):
-            return True
-        return False
-
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
@@ -33,67 +28,28 @@ class RPGShop:
             await self.bot.say(embed=embed)
 
     # {prefix}shop armor
-    @shop.command(pass_context=1, aliases=["a", "ar", "armour"], help="Buy some armorplates")
+    @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        try:
-            a = int(args[0])
-        except ValueError:
-            a = 1
-        except IndexError:
-            a = 1
-        if a < 0:
-            await self.bot.say("You cannot sell your armor")
+        if len(args) <= 0:
+            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Blacksmith's Armor", icon_url=ctx.message.author.avatar_url)
+            for i in sorted(rpgc.armor.values(), key=lambda x: x.cost):
+                t = "Costs: {}{}".format(moneysign, i.cost)
+                t += "\nDamage multiplier: *{}".format(i.absorption)
+                t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
+                embed.add_field(name=i.name, value=t)
+            await self.bot.say(embed=embed)
             return
-        item = rpgc.shopitems.get("armor")
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if self.buyItem(player, item, amount=a):
-            player.addArmor(a*item.benefit)
-            await self.bot.say("{} bought {} plates of armor".format(ctx.message.author.mention, a))
-        else:
-            await self.bot.say("{} does not have enough money to buy {} armorplates\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
-
-    # {prefix}shop health
-    @shop.command(pass_context=1, aliases=["h", "hp"], help="Buy a healthpotion")
-    async def health(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        try:
-            a = int(args[0])
-        except ValueError:
-            a = 1
-        except IndexError:
-            a = 1
-        if a < 0:
-            await self.bot.say("You cannot sacrifice blood *yet*")
+        armor = rpgc.armor.get(" ".join(args).lower())
+        if weapon == None:
+            await self.bot.say("That is not an armor sold in this part of the country")
             return
-        item = rpgc.shopitems.get("health")
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if self.buyItem(player, item, amount=a):
-            player.addHealth(a*item.benefit)
-            await self.bot.say("{} bought {} healthpotions for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
-        else:
-            await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
-
-    # {prefix}shop damage
-    @shop.command(pass_context=1, aliases=["d", "dam"], help="Buy a weapon upgrade")
-    async def damage(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        try:
-            a = int(args[0])
-        except ValueError:
-            a = 1
-        except IndexError:
-            a = 1
-        if a < 0:
-            await self.bot.say("It would be unwise to blunten your weapon")
+        if not player.buyArmor(armor):
+            await self.bot.say("You do not have the money to buy the {}".format(armor.name))
             return
-        item = rpgc.shopitems.get("damage")
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if self.buyItem(player, item, amount=a):
-            player.damage += a*item.benefit
-            await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
-        else:
-            await self.bot.say("{} does not have enough money to buy {} weapon sharpeners\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+        await self.bot.say("You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost))
 
     # {prefix}shop critical
     @shop.command(pass_context=1, aliases=["c", "crit"], help="Special knowledge on enemy weakpoints")
@@ -116,6 +72,68 @@ class RPGShop:
         else:
             await self.bot.say("{} does not have enough money to buy {} critical knowledge\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
+    # {prefix}shop damage
+    @shop.command(pass_context=1, aliases=["d", "dam"], help="Buy a weapon upgrade")
+    async def damage(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        try:
+            a = int(args[0])
+        except ValueError:
+            a = 1
+        except IndexError:
+            a = 1
+        if a < 0:
+            await self.bot.say("It would be unwise to blunten your weapon")
+            return
+        item = rpgc.shopitems.get("damage")
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if self.buyItem(player, item, amount=a):
+            player.damage += a*item.benefit
+            await self.bot.say("{} bought {} weapon sharpeners for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
+        else:
+            await self.bot.say("{} does not have enough money to buy {} weapon sharpeners\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+
+    # {prefix}shop health
+    @shop.command(pass_context=1, aliases=["h", "hp"], help="Buy a healthpotion")
+    async def health(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        try:
+            a = int(args[0])
+        except ValueError:
+            a = 1
+        except IndexError:
+            a = 1
+        if a < 0:
+            await self.bot.say("You cannot sacrifice blood *yet*")
+            return
+        item = rpgc.shopitems.get("health")
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if self.buyItem(player, item, amount=a):
+            player.addHealth(a*item.benefit)
+            await self.bot.say("{} bought {} healthpotions for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
+        else:
+            await self.bot.say("{} does not have enough money to buy {} healthpotions\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+
+    # {prefix}shop plates
+    @shop.command(pass_context=1, aliases=["p"], help="Buy some armorplates")
+    async def plates(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        try:
+            a = int(args[0])
+        except ValueError:
+            a = 1
+        except IndexError:
+            a = 1
+        if a < 0:
+            await self.bot.say("You cannot sell your armor")
+            return
+        item = rpgc.shopitems.get("plates")
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if self.buyItem(player, item, amount=a):
+            player.addArmor(a*item.benefit)
+            await self.bot.say("{} bought {} plates of armor".format(ctx.message.author.mention, a))
+        else:
+            await self.bot.say("{} does not have enough money to buy {} armorplates\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
@@ -138,10 +156,9 @@ class RPGShop:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if not self.buyWeapon(player, weapon):
+        if not player.buyWeapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        player.weapon = weapon.name
         await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
 
     # {prefix}train
