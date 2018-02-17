@@ -32,7 +32,7 @@ class RPGCharacter:
         self.damage = damage
         self.weaponskill = weaponskill
         self.element = element
-        
+
     # Add (negative) health, returns true if successful
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
         if (element == (-1*self.element)):
@@ -63,6 +63,7 @@ class RPGPlayer(RPGCharacter):
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
+        self.bosstier = 1
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, element=element)
 
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
@@ -81,6 +82,12 @@ class RPGPlayer(RPGCharacter):
 
     def getLevel(self):
         return getLevelByExp(self.exp)
+
+    def getBosstier(self):
+        return self.bosstier
+
+    def addBosstier(self):
+        self.bosstier += 1
 
     def setBusy(self, action : int, time : int, channel : int):
         if self.busytime > 0:

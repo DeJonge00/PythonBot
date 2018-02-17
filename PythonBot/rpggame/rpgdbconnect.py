@@ -60,6 +60,8 @@ def getPlayer(player : discord.User):
     i = c.fetchone()
     c.execute("SELECT * FROM busy WHERE playerID={}".format(player.id))
     a = c.fetchone()
+    c.execute("SELECT * from tierboss WHERE playerID={}".format(player.id))
+    t = c.fetchone()
     conn.commit()
     conn.close()
     if p == None:
@@ -75,6 +77,8 @@ def getPlayer(player : discord.User):
         player.weapon = i[3]
     if a != None:
         player.setBusy(a[3], a[1], a[2])
+    if t != None:
+        player.bosstier = t[1]
     return player
 
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
@@ -87,13 +91,17 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             else :
                 c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO items (playerID, exp, money, weapon) VALUES ({0}, {1}, {2}, '{3}')".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("INSERT INTO items (playerID, exp, money, weapon) VALUES ({0}, {1}, {2}, \"{3}\")".format(s.userid, s.exp, s.money, s.weapon))
             else :
-                c.execute("UPDATE items SET exp = {1}, money = {2}, weapon = '{3}' WHERE playerID = {0}".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("UPDATE items SET exp = {1}, money = {2}, weapon = \"{3}\" WHERE playerID = {0}".format(s.userid, s.exp, s.money, s.weapon))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
             else :
                 c.execute("UPDATE busy SET busytime = {1}, busychannel = '{2}', busydescr='{3}' WHERE playerID = {0}".format(s.userid, s.busytime, s.busychannel, s.busydescription))
+            if c.execute("SELECT playerID FROM tierboss WHERE playerID = {0}".format(s.userid)) == 0 :
+                c.execute("INSERT INTO tierboss (playerID, bosstier) VALUES ({0}, {1})".format(s.userid, s.bosstier))
+            else :
+                c.execute("UPDATE tierboss SET bosstier = {1} WHERE playerID = {0}".format(s.userid, s.bosstier))
             conn.commit()    
     except pymysql.err.InternalError as e:
         print(e)
