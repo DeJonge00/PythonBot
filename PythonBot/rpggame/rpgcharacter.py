@@ -86,14 +86,14 @@ class RPGPlayer(RPGCharacter):
             self.busytime = 0
 
     def buyArmor(self, item):
-        if not player.addMoney(-1 * item.cost):
+        if not self.addMoney(-1 * item.cost):
             return False
         self.armor = item.name
         self.element = item.element
         return True
 
     def buyWeapon(self, item):
-        if not player.addMoney(-1 * item.cost):
+        if not self.addMoney(-1 * item.cost):
             return False
         self.weapon = item.name
         return True

@@ -33,7 +33,7 @@ class RPGShop:
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
-            embed.set_author(name="Blacksmith's Armor", icon_url=ctx.message.author.avatar_url)
+            embed.set_author(name="Blacksmith's Armory", icon_url=ctx.message.author.avatar_url)
             for i in sorted(rpgc.armor.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
                 t += "\nDamage multiplier: *{}".format(i.absorption)
@@ -42,7 +42,7 @@ class RPGShop:
             await self.bot.say(embed=embed)
             return
         armor = rpgc.armor.get(" ".join(args).lower())
-        if weapon == None:
+        if armor == None:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
@@ -191,7 +191,7 @@ class RPGShop:
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.raiseMaxhealth(a)
-        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))
+        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
 
     # {prefix}train ws
     @train.command(pass_context=1, aliases=["w", "weaponskill"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
@@ -212,4 +212,4 @@ class RPGShop:
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
         player.weaponskill += a
-        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, math.ceil(a*item.time)))
+        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
