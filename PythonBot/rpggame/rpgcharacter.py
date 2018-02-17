@@ -33,9 +33,13 @@ class RPGCharacter:
         self.weaponskill = weaponskill
         self.critical = critical
         self.element = element
-        
-    def addHealth(self, n : int, death=True):
-        self.health = max(0, min(self.maxhealth, self.health + n))
+
+    # Add (negative) health, returns true if successful
+    def addHealth(self, n : int, death=True, element=rpgc.element_none):
+        if (element == (-1*self.element)):
+            n = math.floor(n*1.2)
+        if (element == self.element):
+            n = math.floor(n*0.8)
 
     def getDamage(self, element=rpgc.element_none):
         return self.damage
@@ -62,7 +66,7 @@ class RPGMonster(RPGCharacter):
         return n
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none, critical=0):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -73,6 +77,8 @@ class RPGPlayer(RPGCharacter):
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
+        self.critical = critical
+        self.bosstier = 1
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, 0, element=element)
 
     def addHealth(self, n : int, death=True):
@@ -108,6 +114,12 @@ class RPGPlayer(RPGCharacter):
 
     def getLevel(self):
         return getLevelByExp(self.exp)
+
+    def getBosstier(self):
+        return self.bosstier
+
+    def addBosstier(self):
+        self.bosstier += 1
 
     def setBusy(self, action : int, time : int, channel : int):
         if self.busytime > 0:
@@ -181,3 +193,4 @@ class RPGPlayer(RPGCharacter):
         if m[0]=="-":
             return max(0, n - m[1])
         return n + m[1]
+

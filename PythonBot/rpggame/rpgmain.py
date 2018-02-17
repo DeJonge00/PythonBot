@@ -1,4 +1,4 @@
-import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, sqlite3
+import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, ipdb
 from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop as rpgshop, rpgconstants as rpgc
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -60,6 +60,8 @@ class RPGGame:
             p2 = p3
             #print(p1.name + ": " + str(p1.health) + " | " + p2.name + " : " + str(p2.health))
             i += 1
+        if len(battlereport)>1500:
+            short=True
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
         if (p1[0].health <= 0):
@@ -96,14 +98,15 @@ class RPGGame:
                 if channel == None:
                     print("No channel for {}".format(serverid))
                     return
-                lvl = max([x.getLevel() for x in party])
+                lvl = max([x.getBosstier() for x in party])
                 list = rpgc.names.get("boss")
                 (name, elem) = list[random.randint(0, len(list)-1)]
-                boss = rpgchar.RPGMonster(name=name, health=500*lvl, damage=7*lvl, ws=5*lvl, element=elem)
+                boss = rpgchar.RPGMonster(name=name, health=int(500*((lvl*0.25)**2)), damage=int(7*((lvl*0.25)**2)), ws=int(5*((lvl*0.25)**2)), element=elem)
                 winner = await self.resolveBattle("Bossbattle", channel, party, [boss])
                 if winner==1:
                     for p in party:
                         p.addExp(250*lvl)
+                        p.addBosstier()
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
                 p.resetBusy()
@@ -320,6 +323,8 @@ class RPGGame:
         stats += "\n{}".format(data.getWeaponskill())
         statnames += "\nCritical:"
         stats += "\n{}".format(data.critical)
+        statnames += "\nBoss Tier:"
+        stats += "\n{}".format(data.getBosstier())
 
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Statname", value=statnames)
@@ -450,7 +455,7 @@ class RPGGame:
     @rpg.command(pass_context=1, help="Reset channels!")
     async def updatedb(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        if not(ctx.message.author.id==constants.NYAid):
+        if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
         dbcon.updatePlayers(self.players.values())
