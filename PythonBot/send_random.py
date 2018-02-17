@@ -8,7 +8,8 @@ import os
 homedir = "/home/nya/PythonBot/PythonBot/"
 
 async def file(my_bot, channel, folder):
-    i = randint(0,len(listdir(folder))-1)
+    l = listdir(folder)
+    i = randint(0,len(l)-1)
     print(i)
     await my_bot.send_file(channel, homedir + folder + "/" + l[i])
 

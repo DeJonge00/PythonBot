@@ -1,15 +1,24 @@
 from rpggame import rpgshopitem as rpgsi, rpgweapon as rpgw, rpgtrainingitem as rpgti
 
-element_none = 0
-element_lightning = 1
-element_nature = -1
-element_dark = 2
-element_holy = -2
-element_ice = 3
-element_fire = -3
-elementnames = {element_none : "None", element_lightning : "Lightning", element_nature : "Nature", element_dark : "Dark", element_holy : "Holy", element_ice : "Ice", element_fire : "Fire"}
+element_none = 1
+element_lightning = 2
+element_nature = -2
+element_dark = 3
+element_holy = -3
+element_ice = 4
+element_fire = -4
+elementnames = {element_none : "None", 
+                element_lightning : "Lightning", 
+                element_nature : "Nature", 
+                element_dark : "Dark", 
+                element_holy : "Holy", 
+                element_ice : "Ice", 
+                element_fire : "Fire"}
 
-shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), "health" : rpgsi.RPGShopItem("health", 150, 10), "damage" : rpgsi.RPGShopItem("damage", 200, 3)}
+shopitems = {"armor" : rpgsi.RPGShopItem("armor", 200, 10), 
+             "health" : rpgsi.RPGShopItem("health", 150, 10), 
+             "damage" : rpgsi.RPGShopItem("damage", 250, 3),
+             "critical" : rpgsi.RPGShopItem("critical", 5000, 1)}
 trainingitems = {"health" : rpgti.RPGTrainingItem("health", 0.5), "weaponskill" : rpgti.RPGTrainingItem("weaponskill", 10)}
 
 

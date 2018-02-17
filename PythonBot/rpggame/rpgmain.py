@@ -46,7 +46,10 @@ class RPGGame:
                     defender = defs[random.randint(0,len(defs)-1)]
                     ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                     if (ws < attacker.getWeaponskill()):
-                        damage = math.floor((random.randint(100, 200) * attacker.getDamage())/100);
+                        if ws < attacker.critical:
+                            damage = math.floor(2.5*attacker.getDamage(defender.element))
+                        else:
+                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.element));
                         if battlename=="Mockbattle":
                             defender.addHealth(-1*damage, death=False)
                         else:
@@ -310,6 +313,8 @@ class RPGGame:
         stats += "\n{}".format(data.getDamage())
         statnames += "\nWeaponskill:"
         stats += "\n{}".format(data.getWeaponskill())
+        statnames += "\nCritical:"
+        stats += "\n{}".format(data.critical)
 
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Statname", value=statnames)

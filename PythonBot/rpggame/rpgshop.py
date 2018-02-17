@@ -95,6 +95,28 @@ class RPGShop:
         else:
             await self.bot.say("{} does not have enough money to buy {} weapon sharpeners\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
 
+    # {prefix}shop critical
+    @shop.command(pass_context=1, aliases=["c", "crit"], help="Special knowledge on enemy weakpoints")
+    async def critical(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        try:
+            a = int(args[0])
+        except ValueError:
+            a = 1
+        except IndexError:
+            a = 1
+        if a < 0:
+            await self.bot.say("Lmao, that sounds intelligent")
+            return
+        item = rpgc.shopitems.get("critical")
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        if self.buyItem(player, item, amount=a):
+            player.critical += a*item.benefit
+            await self.bot.say("{} bought {} critical knowledge for {}{}".format(ctx.message.author.mention, a, moneysign, a*item.cost))
+        else:
+            await self.bot.say("{} does not have enough money to buy {} critical knowledge\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, math.floor(player.money/item.cost)))
+
+
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
@@ -102,7 +124,7 @@ class RPGShop:
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
-            for i in rpgc.weapons.values():
+            for i in sorted(rpgc.weapons.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
                 for e in i.effect:
                     x = i.effect.get(e)

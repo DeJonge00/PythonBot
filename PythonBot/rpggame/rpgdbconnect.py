@@ -87,9 +87,9 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             else :
                 c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO items (playerID, exp, money, weapon) VALUES ({0}, {1}, {2}, '{3}')".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("INSERT INTO items (playerID, exp, money, weapon) VALUES ({0}, {1}, {2}, \"{3}\")".format(s.userid, s.exp, s.money, s.weapon))
             else :
-                c.execute("UPDATE items SET exp = {1}, money = {2}, weapon = '{3}' WHERE playerID = {0}".format(s.userid, s.exp, s.money, s.weapon))
+                c.execute("UPDATE items SET exp = {1}, money = {2}, weapon = \"{3}\" WHERE playerID = {0}".format(s.userid, s.exp, s.money, s.weapon))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
             else :
