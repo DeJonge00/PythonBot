@@ -32,14 +32,13 @@ class RPGCharacter:
         self.damage = damage
         self.weaponskill = weaponskill
         self.critical = critical
-        self.element = element
 
     # Add (negative) health, returns true if successful
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
-        if (element == (-1*self.element)):
-            n = math.floor(n*1.2)
-        if (element == self.element):
-            n = math.floor(n*0.8)
+        if self.health > self.maxhealth:
+            self.health = max(0, min(self.health, self.health + n))
+            return
+        self.health = max(0, min(self.maxhealth, self.health + n))
 
     def getDamage(self, element=rpgc.element_none):
         return self.damage
@@ -52,7 +51,16 @@ class RPGCharacter:
 
 class RPGMonster(RPGCharacter):
     def __init__(self, name="Monster", health=30, damage=10, ws=1, element=rpgc.element_none):
-        super(RPGMonster, self).__init__(name, health, health, damage, ws, 0, element=element)
+        self.element = element
+        super(RPGMonster, self).__init__(name, health, health, damage, ws, 0)
+
+    # Add (negative) health, returns true if successful
+    def addHealth(self, n : int, death=True, element=rpgc.element_none):
+        if (element == (-1*self.element)):
+            n = math.floor(n*1.2)
+        if (element == self.element):
+            n = math.floor(n*0.8)
+        super().addHealth(n)
 
     def getDamage(self, element = rpgc.element_none):
         n = super().getDamage(element=element)
@@ -81,22 +89,57 @@ class RPGPlayer(RPGCharacter):
         self.bosstier = 1
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, 0, element=element)
 
-    def addHealth(self, n : int, death=True):
-        super().addHealth(n)
+    def addHealth(self, n : int, death=True, element=rpgc.element_none):
         a = rpgc.armor.get(self.armor.lower())
         if a != None:
-            n *= a.absorption
+            abso = a.benefit.get("absorption")
+            if abso != None:
+               n *= abso
+            if (element == (-1*a.element)):
+                n = math.floor(n*1.2)
+            if (element == a.element):
+                n = math.floor(n*0.8)
+        super().addHealth(n)
         if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
             self.exp = max(0, self.exp)
             self.money = math.floor(self.money*0.5)
             self.busytime = 0
 
+    def buyItem(self, item : rpgsi.RPGShopItem, amount = 1):
+        if not player.addMoney(-amount * item.cost):
+            return False
+        x = item.benefit.get("armor")
+        if x!=None:
+            if x[0]=="+":
+                self.health += x[1]
+            if x[0]=="-":
+                if self.health>self.maxhealth:
+                    self.health = max(self.health-x[1], self.maxhealth)
+        x = item.benefit.get("health")
+        if x!=None:
+            if x[0]=="+":
+                self.addHealth(x[1])
+            if x[0]=="-":
+                self.addHealth(-1*x[1])
+        x = item.benefit.get("damage")
+        if x!=None:
+            if x[0]=="+":
+                self.damage += x[1]
+            if x[0]=="-":
+                self.damage = max(0, self.damage-x[1])
+        x = item.benefit.get("critical")
+        if x!=None:
+            if x[0]=="+":
+                self.critical += x[1]
+            if x[0]=="-":
+                self.critical = max(0, self.critical-x[1])
+        return True
+
     def buyArmor(self, item):
         if not self.addMoney(-1 * item.cost):
             return False
         self.armor = item.name
-        self.element = item.element
         return True
 
     def buyWeapon(self, item):

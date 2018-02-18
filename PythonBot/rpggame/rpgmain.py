@@ -225,10 +225,9 @@ class RPGGame:
             embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
             embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
             embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
-            embed.add_field(name="{}shop <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
-            embed.add_field(name="{}shop [weapon|w|weapons]".format(constants.prefix), value="Show the rpg shop's weapon inventory", inline=False)
-            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop", inline=False)
-            embed.add_field(name="{}shop <armor> <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
+            embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
+            embed.add_field(name="{}shop [weapon|w] <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop", inline=False)
+            embed.add_field(name="{}shop [armor|a] <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
             embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
             embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
@@ -358,13 +357,13 @@ class RPGGame:
         if len(args) <= 0:
             await self.bot.say("Available rewards are:\n1)\t+30 hp\n2)\t+1 ws\n3)\t+10 damage")
             return
-        if args[0]==1:
+        if args[0]=="1":
             data.raiseMaxhealth(30)
             await self.bot.say("Health raised!")
-        elif args[0]==2:
+        elif args[0]=="2":
             data.weaponskill += 1
             await self.bot.say("Weaponskill raised!")
-        elif args[0]==3:
+        elif args[0]=="3":
             data.damage += 10
             await self.bot.say("Damage raised!")
         else:
