@@ -236,48 +236,56 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
     async def adventure(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if len(args) > 0:
-            try:
-                n = int(args[0])
-            except ValueError:
-                n = 10
-        else:
-            n = 10
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if data.busydescription != rpgchar.NONE:
-            await self.bot.say("You are already doing other things")
-            return
-        if n<rpgchar.minadvtime:
-            await self.bot.say("You came back before you even went out, 0 exp earned")
-            return
-        if n>rpgchar.maxadvtime:
-            await self.bot.say("You do not have the stamina to go on that long of an adventure")
-            return
-        if not data.setBusy(rpgchar.ADVENTURE, n, ctx.message.channel.id):
-            await self.bot.say("{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
-            return
-        data.setAdventure(n, ctx.message.channel.id)
-        await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+        else:
+            if len(args) > 0:
+                try:
+                    n = int(args[0])
+                except ValueError:
+                    n = 10
+            else:
+                n = 10
+            data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+            if data.busydescription != rpgchar.NONE:
+                await self.bot.say("You are already doing other things")
+                return
+            if n<rpgchar.minadvtime:
+                await self.bot.say("You came back before you even went out, 0 exp earned")
+                return
+            if n>rpgchar.maxadvtime:
+                await self.bot.say("You do not have the stamina to go on that long of an adventure")
+                return
+            if not data.setBusy(rpgchar.ADVENTURE, n, ctx.message.channel.id):
+                await self.bot.say("{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
+                return
+            data.setAdventure(n, ctx.message.channel.id)
+            await self.bot.say("{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if len(ctx.message.mentions)<1:
-            await self.bot.say("You need to tag someone to battle with!")
-            return
-        if ctx.message.mentions[0] == ctx.message.author:
-            await self.bot.say("Suicide is never the answer :angry:")
-            return
-        attacker = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        #if attacker.busydescription != rpgchar.NONE:
-        #    await self.bot.say("You are already doing something else at the moment...")
-        #    return
-        defender = self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)
-        #if defender.busydescription != rpgchar.NONE:
-        #    await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
-        #    return
-        await self.resolveBattle("Mockbattle", ctx.message.channel, [attacker], [defender])
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+        else:
+            if len(ctx.message.mentions)<1:
+                await self.bot.say("You need to tag someone to battle with!")
+                return
+            if ctx.message.mentions[0] == ctx.message.author:
+                await self.bot.say("Suicide is never the answer :angry:")
+                return
+            attacker = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+            #if attacker.busydescription != rpgchar.NONE:
+            #    await self.bot.say("You are already doing something else at the moment...")
+            #    return
+            defender = self.getPlayerData(ctx.message.mentions[0], name=ctx.message.mentions[0].display_name)
+            #if defender.busydescription != rpgchar.NONE:
+            #    await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
+            #    return
+            await self.resolveBattle("Mockbattle", ctx.message.channel, [attacker], [defender])
 
     # {prefix}rpg info <user>
     @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
@@ -335,21 +343,29 @@ class RPGGame:
     async def join(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-        if data.busydescription != rpgchar.NONE:
-            await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(ctx.message.author.mention))
-            return
-        party = self.getParty(ctx.message.server.id)
-        if data in party:
-            await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
-            return
-        party.append(data)
-        data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
-        await self.bot.say("{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(ctx.message.author.mention, len(party)))
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+        else:        
+            data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+            if data.busydescription != rpgchar.NONE:
+                await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(ctx.message.author.mention))
+                return
+            party = self.getParty(ctx.message.server.id)
+            if data in party:
+                await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
+                return
+            party.append(data)
+            data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
+            await self.bot.say("{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(ctx.message.author.mention, len(party)))
 
     # {prefix}rpg levelup
     @rpg.command(pass_context=1, aliases=["lvlup", "lvl"], help="Join a raid to kill a boss!")
     async def levelup(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+            return
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if data.levelups <= 0:
             await self.bot.say("You have no level-ups available")
@@ -375,18 +391,22 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
     async def party(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        party = self.getParty(ctx.message.server.id)
-        if len(party) <= 0:
-            await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")
-            return
-        embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="Boss raiding party", value="{} adventurers".format(len(party)), inline=False)
-        m = ""
-        for n in party:
-            member = ctx.message.server.get_member(str(n.userid))
-            m += "{}, level {}\n".format(member.display_name, n.getLevel())
-        embed.add_field(name="Adventurers", value=m, inline=False)
-        await self.bot.say(embed=embed)
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+        else:
+            party = self.getParty(ctx.message.server.id)
+            if len(party) <= 0:
+                await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")
+                return
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.add_field(name="Boss raiding party", value="{} adventurers".format(len(party)), inline=False)
+            m = ""
+            for n in party:
+                member = ctx.message.server.get_member(str(n.userid))
+                m += "{}, level {}\n".format(member.display_name, n.getLevel())
+            embed.add_field(name="Adventurers", value=m, inline=False)
+            await self.bot.say(embed=embed)
 
     # {prefix}rpg role
     @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="Switch your role on the battlefield")

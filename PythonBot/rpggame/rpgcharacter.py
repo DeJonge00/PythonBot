@@ -149,6 +149,8 @@ class RPGPlayer(RPGCharacter):
         return True
 
     def addExp(self, n : int):
+        if self.role == "Undead":
+            return
         lvl = self.getLevel()
         self.exp += n
         if self.getLevel()>lvl:
