@@ -30,7 +30,9 @@ class RPGShop:
             embed.set_author(name="Blacksmith's Armory", icon_url=ctx.message.author.avatar_url)
             for i in sorted(rpgc.armor.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
-                t += "\nDamage multiplier: *{}".format(i.absorption)
+                abso = i.benefit.get("absorption")
+                if abso != None:
+                    t += "\nDamage multiplier: {}{}".format(abso[0], abso[1])
                 t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
                 embed.add_field(name=i.name, value=t)
             await self.bot.say(embed=embed)
@@ -52,8 +54,12 @@ class RPGShop:
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
-            for i in rpgc.shopitems.values():
-                embed.add_field(name=i.name, value="Costs: {}{}\nBenefits: {} {}".format(moneysign, i.cost, i.benefit, i.name))
+            for i in sorted(rpgc.shopitems.values(), key=lambda x: x.cost):
+                t = "Costs: {}{}".format(moneysign, i.cost)
+                for e in i.benefit:
+                    x = i.benefit.get(e)
+                    t += "\n{}{}{}".format(e, x[0], x[1])
+                embed.add_field(name=i.name, value=t)
             await self.bot.say(embed=embed)
             return
         item = rpgc.shopitems.get(args[0].lower())
@@ -70,7 +76,7 @@ class RPGShop:
             await self.bot.say("Lmao, that sounds intelligent")
             return
         player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if player.buyItem(player, item, amount=a):
+        if player.buyItem(item, amount=a):
             await self.bot.say("{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, item.name, math.floor(player.money/item.cost)))
@@ -84,8 +90,8 @@ class RPGShop:
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             for i in sorted(rpgc.weapons.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
-                for e in i.effect:
-                    x = i.effect.get(e)
+                for e in i.benefit:
+                    x = i.benefit.get(e)
                     t += "\n{}{}{}".format(e, x[0], x[1])
                 t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
                 embed.add_field(name=i.name, value=t)
@@ -103,13 +109,13 @@ class RPGShop:
 
     # {prefix}train
     @commands.command(pass_context=1, help="Train your skills!")
-    async def train(self, ctx, args):
-        if len(**kwargs) <= 0:
+    async def train(self, ctx, *args):
+        if len(args) <= 0:
             await removeMessage.deleteMessage(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)
             for i in rpgc.trainingitems.values():
-                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.time))
+                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost))
             await self.bot.say(embed=embed)
             return
         training = rpgc.trainingitems.get(args[0])

@@ -47,9 +47,9 @@ class RPGGame:
                     ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                     if (ws < attacker.getWeaponskill()):
                         if ws < attacker.critical:
-                            damage = math.floor(2.5*attacker.getDamage(defender.element))
+                            damage = math.floor(2.5*attacker.getDamage(defender.getElement()))
                         else:
-                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.element));
+                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.getElement()));
                         if battlename=="Mockbattle":
                             defender.addHealth(-1*damage, death=False)
                         else:

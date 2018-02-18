@@ -1,7 +1,7 @@
 import discord, math
 from discord.ext import commands
 from discord.ext.commands import Bot
-from rpggame import rpgconstants as rpgc
+from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi
 
 # Busydescription status
 NONE = 0
@@ -49,6 +49,9 @@ class RPGCharacter:
     def __str__(self, **kwargs):
         return "{} ({})".format(self.name, self.health)
 
+    def getElement(self):
+        return rpgc.element_none
+
 class RPGMonster(RPGCharacter):
     def __init__(self, name="Monster", health=30, damage=10, ws=1, element=rpgc.element_none):
         self.element = element
@@ -56,11 +59,15 @@ class RPGMonster(RPGCharacter):
 
     # Add (negative) health, returns true if successful
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
-        if (element == (-1*self.element)):
-            n = math.floor(n*1.2)
-        if (element == self.element):
-            n = math.floor(n*0.8)
+        if element!=rpgc.element_none:
+            if (element == (-1*self.element)):
+                n = math.floor(n*1.2)
+            if (element == self.element):
+                n = math.floor(n*0.8)
         super().addHealth(n)
+
+    def getElement(self):
+        return self.element
 
     def getDamage(self, element = rpgc.element_none):
         n = super().getDamage(element=element)
@@ -94,11 +101,12 @@ class RPGPlayer(RPGCharacter):
         if a != None:
             abso = a.benefit.get("absorption")
             if abso != None:
-               n *= abso
-            if (element == (-1*a.element)):
-                n = math.floor(n*1.2)
-            if (element == a.element):
-                n = math.floor(n*0.8)
+               n *= abso[1]
+            if element!=rpgc.element_none:
+                if (element == (-1*a.element)):
+                    n = int(math.floor(1.2*n))
+                if (element == a.element):
+                    n = int(math.floor(0.8*n))
         super().addHealth(n)
         if (self.health <= 0) & death:
             self.exp -= 100*self.getLevel()
@@ -106,8 +114,14 @@ class RPGPlayer(RPGCharacter):
             self.money = math.floor(self.money*0.5)
             self.busytime = 0
 
+    def getElement(self):
+        a = rpgc.armor.get(self.armor)
+        if a==None:
+            return rpgc.element_none
+        return a.element
+
     def buyItem(self, item : rpgsi.RPGShopItem, amount = 1):
-        if not player.addMoney(-amount * item.cost):
+        if not self.addMoney(-amount * item.cost):
             return False
         x = item.benefit.get("armor")
         if x!=None:
@@ -136,13 +150,13 @@ class RPGPlayer(RPGCharacter):
                 self.critical = max(0, self.critical-x[1])
         return True
 
-    def buyArmor(self, item):
+    def buyArmor(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
         self.armor = item.name
         return True
 
-    def buyWeapon(self, item):
+    def buyWeapon(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
         self.weapon = item.name
@@ -218,7 +232,7 @@ class RPGPlayer(RPGCharacter):
         # Weapon mods
         w = rpgc.weapons.get(self.weapon.lower())
         if w != None:
-            m = w.effect.get("damage")
+            m = w.benefit.get("damage")
             if m == None:
                 return n
             if m[0]=="*":
@@ -229,13 +243,16 @@ class RPGPlayer(RPGCharacter):
         return n
 
     def getWeaponskill(self):
-        m = rpgc.weapons.get(self.weapon.lower()).effect.get("weaponskill")
+        m = rpgc.weapons.get(self.weapon.lower())
         n = super().getWeaponskill()
-        if m == None:
-            return n
-        if m[0]=="*":
-            return int(math.floor(n*m[1]))
-        if m[0]=="-":
-            return max(0, n - m[1])
-        return n + m[1]
+        if m != None:
+            m = m.benefit.get("weaponskill")
+            if m == None:
+                return n
+            if m[0]=="*":
+                return int(math.floor(n*m[1]))
+            if m[0]=="-":
+                return max(0, n - m[1])
+            return n + m[1]
+        return n
 

@@ -7,7 +7,7 @@ class RPGShopItem:
 class RPGInvItem(RPGShopItem):
     def __init__(self, name : str, cost : int, effect : {str : (str, float)}, element):
         self.element = element
-        super(RPGWeapon, self).__init__(name, cost, effect)
+        super(RPGInvItem, self).__init__(name, cost, effect)
 
     def __str__(self):
         return "{}, ${} : {} ({})".format(self.name, self.cost, self.effect, self.element)
