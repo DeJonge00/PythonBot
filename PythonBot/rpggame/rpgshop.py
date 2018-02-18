@@ -176,40 +176,46 @@ class RPGShop:
     @train.command(pass_context=1, aliases=["h", "health"], help="Train your character's health!")
     async def hp(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        try:
-            a = int(args[0])
-        except ValueError:
-            a = rpgchar.mintrainingtime
-        except IndexError:
-            a = rpgchar.mintrainingtime
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if player.busydescription != rpgchar.NONE:
-            await self.bot.say("Please make sure you finish your other shit first")
-            return
-        item = rpgc.trainingitems.get("health")
-        if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
-            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
-            return
-        player.raiseMaxhealth(a)
-        await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
+        if self.role == "Undead":
+            await self.bot.say("{}, You need to chose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        else:
+            try:
+                a = int(args[0])
+            except ValueError:
+                a = rpgchar.mintrainingtime
+            except IndexError:
+                a = rpgchar.mintrainingtime
+            player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+            if player.busydescription != rpgchar.NONE:
+                await self.bot.say("Please make sure you finish your other shit first")
+                return
+            item = rpgc.trainingitems.get("health")
+            if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
+                await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
+                return
+            player.raiseMaxhealth(a)
+            await self.bot.say("{}, you are now training your health for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
 
     # {prefix}train ws
     @train.command(pass_context=1, aliases=["w", "weaponskill"], help="Train your character's weaponskill, {} minutes per skillpoint!".format(10))
     async def ws(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        try:
-            a = int(args[0])
-        except ValueError:
-            a = 1
-        except IndexError:
-            a = 1
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
-        if player.busydescription != rpgchar.NONE:
-            await self.bot.say("Thou shalt not be busy when initiating a training session")
-            return
-        item = rpgc.trainingitems.get("weaponskill")
-        if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
-            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
-            return
-        player.weaponskill += a
-        await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
+        if self.role == "Undead":
+            await self.bot.say("{}, You need to chose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        else:
+            try:
+                a = int(args[0])
+            except ValueError:
+                a = 1
+            except IndexError:
+                a = 1
+            player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+            if player.busydescription != rpgchar.NONE:
+                await self.bot.say("Thou shalt not be busy when initiating a training session")
+                return
+            item = rpgc.trainingitems.get("weaponskill")
+            if not player.setBusy(rpgchar.TRAINING, a*item.time, ctx.message.channel.id):
+                await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
+                return
+            player.weaponskill += a
+            await self.bot.say("{}, you are now training your weaponskill for {} minutes".format(ctx.message.author.mention, int(math.ceil(a*item.time))))
