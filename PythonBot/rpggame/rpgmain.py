@@ -237,8 +237,9 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
     async def adventure(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if self.role == "Undead":
-            await self.bot.say("{}, You need to choose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
         else:
             if len(args) > 0:
                 try:
@@ -267,8 +268,9 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if self.role == "Undead":
-            await self.bot.say("{}, You need to choose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
         else:
             if len(ctx.message.mentions)<1:
                 await self.bot.say("You need to tag someone to battle with!")
@@ -341,8 +343,9 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
     async def join(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if self.role == "Undead":
-            await self.bot.say("{}, You need to choose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
         else:        
             data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
             if data.busydescription != rpgchar.NONE:
@@ -360,8 +363,9 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["lvlup", "lvl"], help="Join a raid to kill a boss!")
     async def levelup(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if self.role == "Undead":
-            await self.bot.say("{}, You need to choose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
         else:
             data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
             if data.levelups <= 0:
@@ -388,8 +392,9 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
     async def party(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if self.role == "Undead":
-            await self.bot.say("{}, You need to choose a class with '>rpg role' in order to do that".format(ctx.message.author.mention))
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.role == "Undead":
+            await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
         else:
             party = self.getParty(ctx.message.server.id)
             if len(party) <= 0:
