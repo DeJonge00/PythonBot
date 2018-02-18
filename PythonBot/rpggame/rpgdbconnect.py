@@ -127,6 +127,7 @@ def resetPlayers():
     c = conn.cursor()
     c.execute("DELETE from items") 
     c.execute("DELETE from busy")
+    c.execute("DELETE from tierboss")
     #stats must be the last one
     c.execute("DELETE from stats")   
     conn.commit()
