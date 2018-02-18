@@ -81,7 +81,7 @@ class RPGMonster(RPGCharacter):
         return n
 
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, element=rpgc.element_none, critical=0):
+    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -92,16 +92,15 @@ class RPGPlayer(RPGCharacter):
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
-        self.critical = critical
         self.bosstier = 1
-        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, 0, element=element)
+        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
         a = rpgc.armor.get(self.armor.lower())
         if a != None:
             abso = a.benefit.get("absorption")
             if abso != None:
-               n *= abso[1]
+               n = int(math.floor(abso[1]))
             if element!=rpgc.element_none:
                 if (element == (-1*a.element)):
                     n = int(math.floor(1.2*n))
@@ -109,9 +108,8 @@ class RPGPlayer(RPGCharacter):
                     n = int(math.floor(0.8*n))
         super().addHealth(n)
         if (self.health <= 0) & death:
-            self.exp -= 100*self.getLevel()
-            self.exp = max(0, self.exp)
-            self.money = math.floor(self.money*0.5)
+            self.exp = max(0, self.exp -100*self.getLevel())
+            self.money = int(math.floor(self.money*0.5))
             self.busytime = 0
 
     def getElement(self):
@@ -226,9 +224,9 @@ class RPGPlayer(RPGCharacter):
         selfelem = rpgc.weapons.get(self.weapon.lower()).element
         if element != rpgc.element_none:
             if (element == (-1*selfelem)):
-                n = math.floor(n*1.2)
+                n = int(math.floor(n*1.2))
             if (element == selfelem):
-                n = math.floor(n*0.8)
+                n = int(math.floor(n*0.8))
         # Weapon mods
         w = rpgc.weapons.get(self.weapon.lower())
         if w != None:

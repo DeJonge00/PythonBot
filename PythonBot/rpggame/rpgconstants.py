@@ -40,7 +40,7 @@ armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" 
 names = {"role" : ["Undead", "Assassin", "Lancer", "Rider", "Caster", "Archer", "Berserker", "Saber"], 
          "monster" : [("Drunk Human", element_none),
                       ("Gretchin", element_none),
-                      ("Nya's Little Brothers", element_none),
+                      ("Nya's Little Brother", element_none),
                       ("Something Disguised as a Tree", element_none),
                       ("Wounded Troll", element_none),
                       ("Storm Elemental", element_lightning),

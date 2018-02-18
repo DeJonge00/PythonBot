@@ -47,9 +47,9 @@ class RPGGame:
                     ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                     if (ws < attacker.getWeaponskill()):
                         if ws < attacker.critical:
-                            damage = math.floor(2.5*attacker.getDamage(defender.getElement()))
+                            damage = int(math.floor(2.5*attacker.getDamage(defender.getElement())))
                         else:
-                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.getElement()));
+                            damage = int(math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.getElement())))
                         if battlename=="Mockbattle":
                             defender.addHealth(-1*damage, death=False)
                         else:
@@ -64,13 +64,13 @@ class RPGGame:
             short=True
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
-        if (p1[0].health <= 0):
+        if (sum([x.health for x in p1]) <= 0):
             if (len(p1)==1) & (len(p2)==1):
                 embed.add_field(name="Result", value="{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health, p1[0].name), inline=False)
             else:
                 embed.add_field(name="Result", value="{}'s party completely slaughtered {}'s pary".format(p2[0].name, p1[0].name), inline=False)
         else:
-            embed.add_field(name="Result", value="The battle lasted long, both players are exhausted.\nThey agree on a draw this time", inline=False)
+            embed.add_field(name="Result", value="The battle lasted long, both parties are exhausted.\nThey agree on a draw this time", inline=False)
             hrep = ""
             for m in (p1+p2):
                 hrep += m.name + " ({})\n".format(m.health)
@@ -372,14 +372,27 @@ class RPGGame:
             return
         if len(args) <= 0:
             await self.bot.say("Available rewards are:\n1)\t+30 hp\n2)\t+1 ws\n3)\t+10 damage")
-            return
-        if args[0]=="1":
+            m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
+            if m==None:
+                return
+            try:
+                num = int(m.content)
+            except ValueError:
+                return
+            num = m.content
+        else:
+            try:
+                num = int(args[0])
+            except ValueError:
+                await self.bot.say("Thats not even a number...")
+                return
+        if num==1:
             data.raiseMaxhealth(30)
             await self.bot.say("Health raised!")
-        elif args[0]=="2":
+        elif num==2:
             data.weaponskill += 1
             await self.bot.say("Weaponskill raised!")
-        elif args[0]=="3":
+        elif num==3:
             data.damage += 10
             await self.bot.say("Damage raised!")
         else:

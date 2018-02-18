@@ -110,8 +110,8 @@ class RPGShop:
     # {prefix}train
     @commands.command(pass_context=1, help="Train your skills!")
     async def train(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
-            await removeMessage.deleteMessage(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)
             for i in rpgc.trainingitems.values():
