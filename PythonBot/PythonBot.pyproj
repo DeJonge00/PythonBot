@@ -40,19 +40,10 @@
     <Compile Include="removeMessage.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="rpggame\rpgarmor.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="rpggame\rpgconstants.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rpggame\rpgdbconnect.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rpggame\rpgtrainingitem.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="rpggame\rpgweapon.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="secret\secrets.py">

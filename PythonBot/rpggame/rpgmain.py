@@ -47,9 +47,9 @@ class RPGGame:
                     ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
                     if (ws < attacker.getWeaponskill()):
                         if ws < attacker.critical:
-                            damage = math.floor(2.5*attacker.getDamage(defender.element))
+                            damage = int(math.floor(2.5*attacker.getDamage(defender.getElement())))
                         else:
-                            damage = math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.element));
+                            damage = int(math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.getElement())))
                         if battlename=="Mockbattle":
                             defender.addHealth(-1*damage, death=False)
                         else:
@@ -64,13 +64,13 @@ class RPGGame:
             short=True
         if not short:
             embed.add_field(name="Battlereport", value=battlereport, inline=False)
-        if (p1[0].health <= 0):
+        if (sum([x.health for x in p1]) <= 0):
             if (len(p1)==1) & (len(p2)==1):
                 embed.add_field(name="Result", value="{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health, p1[0].name), inline=False)
             else:
                 embed.add_field(name="Result", value="{}'s party completely slaughtered {}'s pary".format(p2[0].name, p1[0].name), inline=False)
         else:
-            embed.add_field(name="Result", value="The battle lasted long, both players are exhausted.\nThey agree on a draw this time", inline=False)
+            embed.add_field(name="Result", value="The battle lasted long, both parties are exhausted.\nThey agree on a draw this time", inline=False)
             hrep = ""
             for m in (p1+p2):
                 hrep += m.name + " ({})\n".format(m.health)
@@ -225,10 +225,9 @@ class RPGGame:
             embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
             embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
             embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
-            embed.add_field(name="{}shop <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
-            embed.add_field(name="{}shop [weapon|w|weapons]".format(constants.prefix), value="Show the rpg shop's weapon inventory", inline=False)
-            embed.add_field(name="{}shop <weapon> <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop", inline=False)
-            embed.add_field(name="{}shop <armor> <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
+            embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
+            embed.add_field(name="{}shop [weapon|w] <weaponname>".format(constants.prefix), value="Buy a certain weapon from the shop", inline=False)
+            embed.add_field(name="{}shop [armor|a] <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
             embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
             embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
@@ -366,27 +365,39 @@ class RPGGame:
         data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
         if data.role == "Undead":
             await self.bot.say("{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
+            return
+        data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
+        if data.levelups <= 0:
+            await self.bot.say("You have no level-ups available")
+            return
+        if len(args) <= 0:
+            await self.bot.say("Available rewards are:\n1)\t+30 hp\n2)\t+1 ws\n3)\t+10 damage")
+            m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
+            if m==None:
+                return
+            try:
+                num = int(m.content)
+            except ValueError:
+                return
         else:
-            data = self.getPlayerData(ctx.message.author, name=ctx.message.author.display_name)
-            if data.levelups <= 0:
-                await self.bot.say("You have no level-ups available")
+            try:
+                num = int(args[0])
+            except ValueError:
+                await self.bot.say("Thats not even a number...")
                 return
-            if len(args) <= 0:
-                await self.bot.say("Available rewards are:\n1)\t+30 hp\n2)\t+1 ws\n3)\t+10 damage")
-                return
-            if args[0]==1:
-                data.raiseMaxhealth(30)
-                await self.bot.say("Health raised!")
-            elif args[0]==2:
-                data.weaponskill += 1
-                await self.bot.say("Weaponskill raised!")
-            elif args[0]==3:
-                data.damage += 10
-                await self.bot.say("Damage raised!")
-            else:
-                await self.bot.say("Dunno what you mean tbh")
-                return
-            data.levelups -= 1
+        if num==1:
+            data.raiseMaxhealth(30)
+            await self.bot.say("Health raised!")
+        elif num==2:
+            data.weaponskill += 1
+            await self.bot.say("Weaponskill raised!")
+        elif num==3:
+            data.damage += 10
+            await self.bot.say("Damage raised!")
+        else:
+            await self.bot.say("Dunno what you mean tbh")
+            return
+        data.levelups -= 1
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
@@ -495,6 +506,8 @@ class RPGGame:
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
+        self.bossparties = {}
+        self.players = {}
         dbcon.resetPlayers()
         await self.bot.say("RPG stats reset")
 
