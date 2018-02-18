@@ -62,7 +62,16 @@ class RPGShop:
                 embed.add_field(name=i.name, value=t)
             await self.bot.say(embed=embed)
             return
-        item = rpgc.shopitems.get(args[0].lower())
+        item = args[0].lower()
+        if item in ["h", "hp"]:
+            item = "health"
+        elif item in ["d", "dam"]:
+            item = "damage"
+        elif item in ["a", "armour"]:
+            item = "armor"
+        elif item in ["c", "crit"]:
+            item = "critical"
+        item = rpgc.shopitems.get(item)
         if item==None:
             await self.bot.say("Thats not an item sold here")
             return
@@ -118,7 +127,12 @@ class RPGShop:
                 embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost))
             await self.bot.say(embed=embed)
             return
-        training = rpgc.trainingitems.get(args[0])
+        training = args[0]
+        if training in ['ws', 'weapon']:
+            training = "weaponskill"
+        elif training in ['hp', 'h']:
+            training = "health"
+        training = rpgc.trainingitems.get(training)
         if training==None:
             await self.bot.say("Thats not an available training")
             return
@@ -136,5 +150,5 @@ class RPGShop:
         if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), ctx.message.channel.id):
             await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
             return
-        player.buyItem(training)
+        player.buyItem(training, amount=a)
         await self.bot.say("{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name, int(math.ceil(a*training.cost))))

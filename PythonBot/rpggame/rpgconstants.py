@@ -17,7 +17,7 @@ elementnames = {element_none : "None",
 
 shopitems = {"plates" : rpgsi.RPGShopItem("armorplates", 200, {"armor" : ("+", 10)}), 
              "health" : rpgsi.RPGShopItem("health", 150, {"health" : ("+", 10)}), 
-             "damage" : rpgsi.RPGShopItem("damage", 250, {"damage" : ("+", 3)}),
+             "damage" : rpgsi.RPGShopItem("damage", 150, {"damage" : ("+", 1)}),
              "critical" : rpgsi.RPGShopItem("critical", 5000, {"critical" : ("+", 1)})
              }
 trainingitems = {"health" : rpgsi.RPGShopItem("health", 0.5, {"health" : ("+", 1)}), 

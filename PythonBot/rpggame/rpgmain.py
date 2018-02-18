@@ -379,7 +379,6 @@ class RPGGame:
                 num = int(m.content)
             except ValueError:
                 return
-            num = m.content
         else:
             try:
                 num = int(args[0])
@@ -507,6 +506,8 @@ class RPGGame:
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
+        self.bossparties = {}
+        self.players = {}
         dbcon.resetPlayers()
         await self.bot.say("RPG stats reset")
 

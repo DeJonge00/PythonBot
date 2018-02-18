@@ -100,7 +100,7 @@ class RPGPlayer(RPGCharacter):
         if a != None:
             abso = a.benefit.get("absorption")
             if abso != None:
-               n = int(math.floor(abso[1]))
+               n = int(math.floor(n*abso[1]))
             if element!=rpgc.element_none:
                 if (element == (-1*a.element)):
                     n = int(math.floor(1.2*n))
@@ -118,34 +118,40 @@ class RPGPlayer(RPGCharacter):
             return rpgc.element_none
         return a.element
 
-    def buyItem(self, item : rpgsi.RPGShopItem, amount = 1):
+    def buyItem(self, item : rpgsi.RPGShopItem, amount=1):
         if not self.addMoney(-amount * item.cost):
             return False
         x = item.benefit.get("armor")
         if x!=None:
             if x[0]=="+":
-                self.health += x[1]
+                self.health += amount*x[1]
             if x[0]=="-":
                 if self.health>self.maxhealth:
-                    self.health = max(self.health-x[1], self.maxhealth)
+                    self.health = max(self.health-(amount*x[1]), self.maxhealth)
         x = item.benefit.get("health")
         if x!=None:
             if x[0]=="+":
-                self.addHealth(x[1])
+                self.raiseMaxhealth(amount*x[1])
             if x[0]=="-":
-                self.addHealth(-1*x[1])
+                self.raiseMaxhealth(-amount*x[1])
         x = item.benefit.get("damage")
         if x!=None:
             if x[0]=="+":
-                self.damage += x[1]
+                self.damage += amount*x[1]
             if x[0]=="-":
-                self.damage = max(0, self.damage-x[1])
+                self.damage = max(0, self.damage-(amount*x[1]))
         x = item.benefit.get("critical")
         if x!=None:
             if x[0]=="+":
-                self.critical += x[1]
+                self.critical += amount*x[1]
             if x[0]=="-":
-                self.critical = max(0, self.critical-x[1])
+                self.critical = max(0, self.critical-(amount*x[1]))
+        x = item.benefit.get("weaponskill")
+        if x!=None:
+            if x[0]=="+":
+                self.weaponskill += amount*x[1]
+            if x[0]=="-":
+                self.weaponskill = max(0, self.weaponskill-(amount*x[1]))
         return True
 
     def buyArmor(self, item : rpgsi.RPGInvItem):
@@ -207,7 +213,7 @@ class RPGPlayer(RPGCharacter):
     def addMoney(self, n : int):
         if self.money + n < 0:
             return False
-        self.money += n
+        self.money = int(math.floor(self.money + n))
         return True
 
     def raiseMaxhealth(self, n : int):
