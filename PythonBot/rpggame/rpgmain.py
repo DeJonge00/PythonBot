@@ -1,7 +1,8 @@
-import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, ipdb
-from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop as rpgshop, rpgconstants as rpgc
+import asyncio, datetime, constants, discord, log, math, pickle, random, removeMessage, ipdb, os, os.path
+from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc
 from discord.ext import commands
 from discord.ext.commands import Bot
+from PIL import Image, ImageFont, ImageDraw 
 
 RPGSTATSFILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
@@ -325,52 +326,64 @@ class RPGGame:
         if data.role == "Undead":
             await self.bot.say("{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(ctx.message.author.mention))
             return
-        statnames = "Username:"
-        stats = data.name
-        statnames += "\nClass:"
-        stats += "\n{}".format(data.role)
-        statnames += "\nStatus:"
-        if data.health <= 0:
-            stats += "\nDead"
-        elif data.busydescription == rpgchar.ADVENTURE:
-            stats += "\nAdventuring for {}m".format(data.busytime)
-        elif data.busydescription == rpgchar.TRAINING:
-            stats += "\nTraining for {}m".format(data.busytime)
-        elif data.busydescription == rpgchar.BOSSRAID:
-            stats += "\nWaiting for the bossbattle"
-        elif data.busydescription == rpgchar.WANDERING:
-            stats += "\nWandering for {}m".format(data.busytime)
-        else:
-            stats += "\nAlive"
-        statnames += "\nWeapon:"
-        stats += "\n{}".format(data.weapon)
-        statnames += "\nArmor:"
-        stats += "\n{}".format(data.armor)
-        statnames += "\nExperience:"
-        if data.levelups > 0:
-            stats += "\nLevel up available!"
-        else:
-            stats += "\n{} ({})".format(data.exp, data.getLevel())
-        statnames += "\nMoney:"
-        stats += "\n${}".format(data.money)
-        statnames += "\nHealth:"
-        stats += "\n{}/{}".format(min(data.health, data.maxhealth),data.maxhealth)
-        if data.health > data.maxhealth:
-            statnames += "\nArmorplates:"
-            stats += "\n{}".format(data.health - data.maxhealth)
-        statnames += "\nDamage:"
-        stats += "\n{}".format(data.getDamage())
-        statnames += "\nWeaponskill:"
-        stats += "\n{}".format(data.getWeaponskill())
-        statnames += "\nCritical:"
-        stats += "\n{}".format(data.critical)
-        statnames += "\nBoss Tier:"
-        stats += "\n{}".format(data.getBosstier())
 
-        embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="Statname", value=statnames)
-        embed.add_field(name="Stats", value=stats)
-        await self.bot.say(embed=embed)
+        im = Image.open("/home/nya/PythonBot/PythonBot/rpggame/khorne.jpg")
+        draw = ImageDraw.Draw(im)
+        font = ImageFont.truetype("/home/nya/ringbearer/RINGM___.TTF", 11)
+        color = (255,255,255)
+        nameoffset = 20
+        statoffset = nameoffset + 100
+        topoffset = 20
+        next = 21
+
+        draw.text((nameoffset, topoffset),"Username:",color,font=font)
+        draw.text((statoffset, topoffset),data.name,color,font=font)
+        draw.text((nameoffset, topoffset+next),"Alignment:",color,font=font)
+        draw.text((statoffset, topoffset+next),str(data.role),color,font=font)
+        if data.health <= 0:
+            stats = "Dead"
+        elif data.busydescription == rpgchar.ADVENTURE:
+            stats = "Adventuring for {}m".format(data.busytime)
+        elif data.busydescription == rpgchar.TRAINING:
+            stats = "Training for {}m".format(data.busytime)
+        elif data.busydescription == rpgchar.BOSSRAID:
+            stats = "Waiting for the bossbattle"
+        elif data.busydescription == rpgchar.WANDERING:
+            stats = "Wandering for {}m".format(data.busytime)
+        else:
+            stats = "Alive"
+        draw.text((nameoffset, topoffset+2*next),"Status:",color,font=font)
+        draw.text((statoffset, topoffset+2*next),stats,color,font=font)
+        draw.text((nameoffset, topoffset+3*next),"Weapon:",color,font=font)
+        draw.text((statoffset, topoffset+3*next),data.weapon,color,font=font)
+        draw.text((nameoffset, topoffset+4*next),"Armor:",color,font=font)
+        draw.text((statoffset, topoffset+4*next),data.armor,color,font=font)
+        if data.levelups > 0:
+            stats = "Level up available!"
+        else:
+            stats = "{} ({})".format(data.exp, data.getLevel())
+        draw.text((nameoffset, topoffset+5*next),"Experience:",color,font=font)
+        draw.text((statoffset, topoffset+5*next),stats,color,font=font)
+        draw.text((nameoffset, topoffset+6*next),"Money:",color,font=font)
+        draw.text((statoffset, topoffset+6*next),"{}{}".format(rpgshop.moneysign, data.money),color,font=font)
+        draw.text((nameoffset, topoffset+7*next),"Health:",color,font=font)
+        draw.text((statoffset, topoffset+7*next),"{}/{}".format(min(data.health, data.maxhealth),data.maxhealth),color,font=font)
+        if data.health > data.maxhealth:
+            draw.text((nameoffset, topoffset+7*next),"Armorplates:",color,font=font)
+            draw.text((statoffset, topoffset+7*next),"{}".format(data.health - data.maxhealth),color,font=font)
+        draw.text((nameoffset, topoffset+8*next),"Damage:",color,font=font)
+        draw.text((statoffset, topoffset+8*next),"{}".format(data.getDamage()),color,font=font)
+        draw.text((nameoffset, topoffset+9*next),"Weaponskill:",color,font=font)
+        draw.text((statoffset, topoffset+9*next),"{}".format(data.getWeaponskill()),color,font=font)
+        draw.text((nameoffset, topoffset+10*next),"Critical:",color,font=font)
+        draw.text((statoffset, topoffset+10*next),"{}".format(data.getCritical()),color,font=font)
+        draw.text((nameoffset, topoffset+11*next),"Boss Tier:",color,font=font)
+        draw.text((statoffset, topoffset+11*next),"{}".format(data.getBosstier()),color,font=font)
+
+        imname = '/home/nya/PythonBot/PythonBot/temp/{}.png'.format(ctx.message.author.id)
+        im.save(imname)
+        await self.bot.send_file(ctx.message.channel, imname)
+        os.remove(imname)
 
     # {prefix}rpg join
     @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
