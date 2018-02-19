@@ -25,8 +25,10 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             embed.set_author(name="Blacksmith's Armory", icon_url=ctx.message.author.avatar_url)
             for i in sorted(rpgc.armor.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
@@ -41,7 +43,6 @@ class RPGShop:
         if armor == None:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if not player.buyArmor(armor):
             await self.bot.say("You do not have the money to buy the {}".format(armor.name))
             return
@@ -51,11 +52,14 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["i", "buy"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
+            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             for i in sorted(rpgc.shopitems.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
+                t += "\nYou can afford {} of this item".format(math.floor(player.money/i.cost))
                 for e in i.benefit:
                     x = i.benefit.get(e)
                     t += "\n{}{}{}".format(e, x[0], x[1])
@@ -84,7 +88,6 @@ class RPGShop:
         if a < 0:
             await self.bot.say("Lmao, that sounds intelligent")
             return
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if player.buyItem(item, amount=a):
             await self.bot.say("{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a*item.cost))
         else:
@@ -94,9 +97,11 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
+            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             for i in sorted(rpgc.weapons.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
                 for e in i.benefit:
@@ -110,7 +115,6 @@ class RPGShop:
         if weapon == None:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
         if not player.buyWeapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
@@ -130,8 +134,8 @@ class RPGShop:
         training = args[0]
         if training in ['ws', 'weapon']:
             training = "weaponskill"
-        elif training in ['hp', 'h']:
-            training = "health"
+        elif training in ['hp', 'h', 'health']:
+            training = "maxhealth"
         training = rpgc.trainingitems.get(training)
         if training==None:
             await self.bot.say("Thats not an available training")

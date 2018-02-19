@@ -8,12 +8,15 @@ NONE = 0
 ADVENTURE = 1
 TRAINING = 2
 BOSSRAID = 3
+WANDERING = 4
 
 # Min and max busy time
 minadvtime = 5
 maxadvtime = 120
 mintrainingtime = 10
 maxtrainingtime = 60
+minwandertime = 30
+maxwandertime = 360
 
 # Player starting stats
 HEALTH = 100
@@ -42,6 +45,9 @@ class RPGCharacter:
 
     def getDamage(self, element=rpgc.element_none):
         return self.damage
+
+    def getCritical(self):
+        return self.critical
 
     def getWeaponskill(self):
         return self.weaponskill
@@ -128,12 +134,18 @@ class RPGPlayer(RPGCharacter):
             if x[0]=="-":
                 if self.health>self.maxhealth:
                     self.health = max(self.health-(amount*x[1]), self.maxhealth)
-        x = item.benefit.get("health")
+        x = item.benefit.get("maxhealth")
         if x!=None:
             if x[0]=="+":
                 self.raiseMaxhealth(amount*x[1])
             if x[0]=="-":
                 self.raiseMaxhealth(-amount*x[1])
+        x = item.benefit.get("health")
+        if x!=None:
+            if x[0]=="+":
+                self.health = max(0, min(self.maxhealth, (self.health + amount*x[1])))
+            if x[0]=="-":
+                self.health = max(0, min(self.maxhealth, (self.health - amount*x[1])))
         x = item.benefit.get("damage")
         if x!=None:
             if x[0]=="+":
@@ -170,10 +182,10 @@ class RPGPlayer(RPGCharacter):
         if self.role == "Undead":
             return
         lvl = self.getLevel()
+        self.money += n
         self.exp += n
         if self.getLevel()>lvl:
             self.levelups += 1
-        self.money += n
 
     def getLevel(self):
         return getLevelByExp(self.exp)
@@ -193,6 +205,9 @@ class RPGPlayer(RPGCharacter):
         if action == TRAINING:
             if not(mintrainingtime <= time <= maxtrainingtime):
                 return False
+        if action == WANDERING:
+            if not(minwandertime <= time <= maxwandertime):
+                return False
 
         self.busytime = time
         self.busychannel = channel
@@ -203,12 +218,6 @@ class RPGPlayer(RPGCharacter):
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = NONE
-
-    def setAdventure(self, n : int, channelid : int):
-        if (self.busytime <= 0) & (minadvtime < n < maxadvtime):
-            self.busytime = n
-            self.busychannel = channelid
-            self.busydescription = ADVENTURE
 
     def addMoney(self, n : int):
         if self.money + n < 0:
@@ -251,12 +260,23 @@ class RPGPlayer(RPGCharacter):
         n = super().getWeaponskill()
         if m != None:
             m = m.benefit.get("weaponskill")
-            if m == None:
-                return n
-            if m[0]=="*":
-                return int(math.floor(n*m[1]))
-            if m[0]=="-":
-                return max(0, n - m[1])
-            return n + m[1]
+            if m != None:
+                if m[0]=="*":
+                    return int(math.floor(n*m[1]))
+                if m[0]=="-":
+                    return max(0, n - m[1])
+                return n + m[1]
         return n
 
+    def getCritical(self):
+        m = rpgc.weapons.get(self.weapon.lower())
+        n = super().getCritical()
+        if m != None:
+            m = m.benefit.get("critical")
+            if m != None:
+                if m[0]=="*":
+                    return int(math.floor(n*m[1]))
+                if m[0]=="-":
+                    return max(0, n - m[1])
+                return n + m[1]
+        return n
