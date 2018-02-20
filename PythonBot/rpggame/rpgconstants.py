@@ -44,7 +44,7 @@ armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" 
          "wizard robes" : rpgsi.RPGInvItem("Wizard Robes", 2000, {"absorption" : ("*", 0.95)}, element_lightning)
          }
 
-names = {"role" : ["Undead", "Nekomancer", "Caster", "Wizard", "Sorcerer", "Drunk", "Just trying to get pats"], 
+names = {"role" : ["Undead", "Assassin", "Sorcerer", "Barbarian", "Knight"], 
          "monster" : [("Drunk Human", element_none),
                       ("Gretchin", element_none),
                       ("Nya's Little Brother", element_none),

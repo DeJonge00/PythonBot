@@ -123,7 +123,7 @@ class RPGGame:
         list = rpgc.names.get("monster")
         (name, elem) = list[random.randint(0, len(list)-1)]
         lvl = player.getLevel()
-        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=8*lvl*lvl, damage=2*lvl*lvl, ws=2+(lvl*lvl/2), element=elem)], short=False)
+        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/100))), damage=int(math.floor(lvl*lvl/2)), ws=int(math.floor(2+(lvl*lvl/3))), element=elem)], short=False)
         if winner==1:
             player.addExp(100*player.getLevel())
 
@@ -144,8 +144,24 @@ class RPGGame:
         embed.add_field(name="Adventure secret found", value="{}, {}\n{} +{}".format(player.name, name, stat, amount))
         await self.bot.send_message(channel, embed=embed)
 
+    def getBossparties(self):
+        parties = {}
+        for p in self.players:
+            if p.busydescription == rpgchar.BOSSRAID:
+                party = parties.get(p.busychannel)
+                if party is None:
+                    party = []
+                    self.bossparties[serverid] = party
+                party.append(p)
+        return parties
+
     async def gameloop(self):
+        self.players = dbcon.getBusyPlayers()
+        self.bossparties = self.getBossparties()
         await self.bot.wait_until_ready()
+        import logging
+        logging.basicConfig(level=logging.DEBUG)
+        logger = logging.getLogger(__name__)
         print("RPG Gameloop started!")
         running = True;
         while running:
@@ -203,6 +219,7 @@ class RPGGame:
                             u.resetBusy()
             except Exception as e:
                 print(e)
+                logger.exception(e)
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
             await asyncio.sleep(60-endtime.second)
@@ -231,14 +248,14 @@ class RPGGame:
                 *max(0, min(50, (len(message.content) - 3) / 2))); # Textbonus
         data.addExp(i)
 
-    async def quit(self):
+    def quit(self):
         self.running = False
         #save rpgstats
         dbcon.updatePlayers(self.players.values())
         print("RPGStats saved")
 
     # RPG intro/help
-    @commands.group(pass_context=1, help="Get send an overview of the rpg game's commands".format(constants.prefix))
+    @commands.group(pass_context=1, aliases=["b&d", "bnd"], help="Get send an overview of the rpg game's commands".format(constants.prefix))
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None:
             await removeMessage.deleteMessage(self.bot, ctx)
@@ -340,7 +357,7 @@ class RPGGame:
 
         draw.text((nameoffset, topoffset),"Username:",color,font=font)
         draw.text((statoffset, topoffset),data.name,color,font=font)
-        draw.text((nameoffset, topoffset+next),"Alignment:",color,font=font)
+        draw.text((nameoffset, topoffset+next),"Class:",color,font=font)
         draw.text((statoffset, topoffset+next),str(data.role),color,font=font)
         if data.health <= 0:
             stats = "Dead"

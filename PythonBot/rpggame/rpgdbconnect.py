@@ -29,6 +29,18 @@ def getRPGChannel(serverid : str):
     return t[0]
 
 # Rpg
+def getBusyPlayers():
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    c = conn.cursor()
+    c.execute("SELECT playerID FROM busy WHERE busytime>0")
+    t = c.fetchall()
+    conn.commit()
+    conn.close()
+    players = {}
+    for p in t:
+        players[p[0]] = getPlayer(p[0])
+    return players
+
 def getPlayer(playerid):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
@@ -43,7 +55,7 @@ def getPlayer(playerid):
     conn.commit()
     conn.close()
     if p == None:
-        return rpgchar.RPGPlayer(playerid)
+        return rpgchar.RPGPlayer(playerid, "")
     player = rpgchar.RPGPlayer(playerid, "", role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5], critical=p[6])
     if i != None:
         player.exp = i[1]

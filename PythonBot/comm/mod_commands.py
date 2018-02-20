@@ -207,7 +207,7 @@ class Mod:
     async def quitBot(self):
         try:
             if self.bot.RPGGAME:
-                await self.bot.rpggame.quit()
+                self.bot.rpggame.quit()
             if self.bot.MUSIC:
                 if self.bot.musicplayer != None:
                     self.bot.musicplayer.quit()
