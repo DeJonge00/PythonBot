@@ -1,5 +1,5 @@
 import asyncio, constants, discord, removeMessage, math
-from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgconstants as rpgc, rpgtrainingitem as rpgti
+from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -25,7 +25,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
@@ -52,7 +52,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["i", "buy"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
@@ -71,8 +71,8 @@ class RPGShop:
             item = "health"
         elif item in ["d", "dam"]:
             item = "damage"
-        elif item in ["a", "armour"]:
-            item = "armor"
+        elif item in ["a", "armour", "armorplates", "armor"]:
+            item = "plates"
         elif item in ["c", "crit"]:
             item = "critical"
         item = rpgc.shopitems.get(item)
@@ -97,7 +97,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
@@ -147,12 +147,12 @@ class RPGShop:
         except IndexError:
             a = math.ceil(rpgchar.mintrainingtime/training.cost)
 
-        player = self.bot.rpggame.getPlayerData(ctx.message.author, ctx.message.author.display_name)
+        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
         if player.busydescription != rpgchar.NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
         if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), ctx.message.channel.id):
-            await self.bot.say("You can train between {} and {} minutes".format(rpgchar.mintrainingtime, rpgchar.maxtrainingtime))
+            await self.bot.say("You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime/training.cost), math.floor(rpgchar.maxtrainingtime/training.cost)))
             return
         player.buyItem(training, amount=a)
         await self.bot.say("{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name, int(math.ceil(a*training.cost))))

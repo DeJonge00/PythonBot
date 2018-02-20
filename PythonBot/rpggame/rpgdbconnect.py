@@ -4,14 +4,6 @@ from secret import secrets
 from rpggame import rpgcharacter as rpgchar
 
 # Channels
-def initChannels():
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
-    c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS rpgchannel")
-    c.execute("CREATE TABLE rpgchannel (serverID INTEGER, channelID INTEGER)")
-    conn.commit()
-    conn.close()
-
 def setRPGChannel(serverid : int, channelid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
@@ -37,40 +29,22 @@ def getRPGChannel(serverid : str):
     return t[0]
 
 # Rpg
-def initRpgDB():
+def getPlayer(playerid):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS stats")
-    c.execute("DROP TABLE IF EXISTS items")
-    c.execute("DROP TABLE IF EXISTS busy")
-    c.execute("DROP TABLE IF EXISTS weapon")
-    c.execute("CREATE TABLE stats (playerID INTEGER PRIMARY KEY, role TEXT, health INTEGER, maxhealth INTEGER, damage INTEGER, weaponskill INTEGER)")
-    c.execute("CREATE TABLE items (playerID INTEGER PRIMARY KEY, exp INTEGER, money INTEGER)")
-    c.execute("CREATE TABLE busy (playerID INTEGER PRIMARY KEY, busytime INTEGER, busychannel INTEGER, busydesc INTEGER)")
-    c.execute("CREATE TABLE weapon (playerID INTEGER PRIMARY KEY, ability TEXT)")
-    conn.commit()
-    conn.close()
-
-def getPlayer(player : discord.User):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
-    c = conn.cursor()
-    c.execute("SELECT * FROM stats WHERE playerID={}".format(player.id))
+    c.execute("SELECT * FROM stats WHERE playerID={}".format(playerid))
     p = c.fetchone()
-    c.execute("SELECT * FROM items WHERE playerID={}".format(player.id))
+    c.execute("SELECT * FROM items WHERE playerID={}".format(playerid))
     i = c.fetchone()
-    c.execute("SELECT * FROM busy WHERE playerID={}".format(player.id))
+    c.execute("SELECT * FROM busy WHERE playerID={}".format(playerid))
     a = c.fetchone()
-    c.execute("SELECT * from tierboss WHERE playerID={}".format(player.id))
+    c.execute("SELECT * from tierboss WHERE playerID={}".format(playerid))
     t = c.fetchone()
     conn.commit()
     conn.close()
     if p == None:
-        try:
-            print("User not found: {}".format(player.name))
-        except UnicodeEncodeError:
-            pass
-        return rpgchar.RPGPlayer(player.id, player.name)
-    player = rpgchar.RPGPlayer(player.id, player.name, role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5], critical=p[6])
+        return rpgchar.RPGPlayer(playerid)
+    player = rpgchar.RPGPlayer(playerid, "", role=p[1], health=p[2], maxhealth=p[3], damage=p[4], ws=p[5], critical=p[6])
     if i != None:
         player.exp = i[1]
         player.levelups = i[2]
@@ -112,7 +86,6 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     finally:
         conn.close()
 
-
 def getTopPlayers(server="all"):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
@@ -128,10 +101,43 @@ def resetPlayers():
     c.execute("DELETE from items") 
     c.execute("DELETE from busy")
     c.execute("DELETE from tierboss")
+    c.execute("DELETE from tierboss")
     #stats must be the last one
     c.execute("DELETE from stats")   
     conn.commit()
     conn.close()
+
+def setKing(userid, serverid):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    c = conn.cursor()
+    if c.execute("SELECT playerID FROM rpgkings WHERE serverID={}".format(serverid))==0:
+        c.execute("INSERT INTO rpgkings (serverID, playerID) VALUES ('{0}', '{1}')".format(serverid, userid))
+    else :
+        c.execute("UPDATE rpgkings SET playerID = '{1}' WHERE serverID = {0}".format(serverid, userid))
+    conn.commit()
+    conn.close()
+
+def getKing(serverid):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    c = conn.cursor()
+    c.execute("SELECT playerID FROM rpgkings WHERE serverID={}".format(serverid))
+    king = c.fetchone()
+    conn.commit()
+    conn.close()
+    if king is None:
+        return None
+    return king[0]
+
+def isKing(userid):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    c = conn.cursor()
+    if c.execute("SELECT serverID FROM rpgkings WHERE playerID={}".format(userid))==0:
+        conn.commit()
+        conn.close()
+        return False
+    conn.commit()
+    conn.close()
+    return True
 
 # Pats
 def incrementPats(patterid : int, patteeid : int):

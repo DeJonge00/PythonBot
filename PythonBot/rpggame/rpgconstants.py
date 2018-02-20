@@ -1,4 +1,4 @@
-from rpggame import rpgshopitem as rpgsi, rpgweapon as rpgw, rpgtrainingitem as rpgti, rpgarmor as rpga
+from rpggame import rpgshopitem as rpgsi, rpgtrainingitem as rpgti
 
 element_none = 1
 element_lightning = 2
@@ -20,7 +20,7 @@ shopitems = {"plates" : rpgsi.RPGShopItem("armorplates", 200, {"armor" : ("+", 1
              "damage" : rpgsi.RPGShopItem("damage", 150, {"damage" : ("+", 1)}),
              "critical" : rpgsi.RPGShopItem("critical", 5000, {"critical" : ("+", 1)})
              }
-trainingitems = {"maxhealth" : rpgsi.RPGShopItem("maxhealth", 0.5, {"maxhealth" : ("+", 1)}), 
+trainingitems = {"maxhealth" : rpgsi.RPGShopItem("maxhealth", 0.25, {"maxhealth" : ("+", 1)}), 
                  "weaponskill" : rpgsi.RPGShopItem("weaponskill", 10, {"weaponskill" : ("+", 1)})
                  }
 
@@ -44,7 +44,7 @@ armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" 
          "wizard robes" : rpgsi.RPGInvItem("Wizard Robes", 2000, {"absorption" : ("*", 0.95)}, element_lightning)
          }
 
-names = {"role" : ["Undead", "Khorne", "Nurgle", "Tzeench", "Slaanesh"], 
+names = {"role" : ["Undead", "Nekomancer", "Caster", "Wizard", "Sorcerer", "Drunk", "Just trying to get pats"], 
          "monster" : [("Drunk Human", element_none),
                       ("Gretchin", element_none),
                       ("Nya's Little Brother", element_none),
