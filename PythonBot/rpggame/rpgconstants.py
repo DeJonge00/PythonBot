@@ -2,14 +2,14 @@ from rpggame import rpgshopitem as rpgsi, rpgtrainingitem as rpgti
 
 element_none = 1
 element_lightning = 2
-element_nature = -2
+element_air = -2
 element_dark = 3
 element_holy = -3
 element_ice = 4
 element_fire = -4
-elementnames = {element_none : "None", 
+elementnames = {element_none : "Normal", 
                 element_lightning : "Lightning", 
-                element_nature : "Nature", 
+                element_air : "Air", 
                 element_dark : "Dark", 
                 element_holy : "Holy", 
                 element_ice : "Ice", 
@@ -24,21 +24,28 @@ trainingitems = {"maxhealth" : rpgsi.RPGShopItem("maxhealth", 0.25, {"maxhealth"
                  "weaponskill" : rpgsi.RPGShopItem("weaponskill", 10, {"weaponskill" : ("+", 1)})
                  }
 
+weapons = ['Axe', 'Boomerang', 'Bow', 'Crossbow', 'Dagger', 'Glaive', 'Hammer', 'Spear', 'Slingshot', 'Scourge', 'Scythe', 'Staff', 'Sword']
+
+weaponprefixes = ['Old', 'New', 'Used', 'Ancient', 'Rare', 'Epic', 'Legendary', 'Common', 'Forgotten', 'Antic', 'Rusty']
+
+weaponsuffixes = ['stolen from a kid', 'that fell off the tumbrel', 'made from Dafaq\'s tears', 'bought from the local dealer', 'gifted by the Emperor', 'as long as Nya\'s Dildo', 'blessed by Kappa', 'of Dankness', 'of Love', 'found under a rock', 'crafted by your mom', 'found in a happy meal']
+
+weaponelems = ['Thunder', 'Frozen', 'Flaming', 'Divine', 'Dark', 'Aerial']
 # Note to self: Weapons can only get negative effects with multipliers
-weapons = {"training sword" : rpgsi.RPGInvItem("Training Sword", 0, {}, element_none), 
-           "axe" : rpgsi.RPGInvItem("Axe", 1000, {"damage" : ("+", 10)}, element_none),
-           #"rebellious knife" : rpgsi.RPGInvItem("Rebellious Knife", -200, {"damage" : ("*", 0)}, element_none),
-           "thunderhammer" : rpgsi.RPGInvItem("Thunderhammer", 2000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_lightning),
-           "bisshop's scepter" : rpgsi.RPGInvItem("Bisshop's Scepter", 2200, {"damage" : ("+", 32), "weaponskill" : ("*", 0.8)}, element_holy),
-           "slaanesh' katana" : rpgsi.RPGInvItem("Slaanesh' Katana", 3500, {"damage" : ("+", 20), "weaponskill" : ("+", 5)}, element_dark),
-           "shadow dual blades" : rpgsi.RPGInvItem("Shadow Dual Blades", 5000, {"weaponskill" : ("+", 18)}, element_dark),
-           "yeti's lower legbone" : rpgsi.RPGInvItem("Yeti's Lower Legbone", 10000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_ice),
-           "demonic greatsword" : rpgsi.RPGInvItem("Demonic Greatsword", 4000, {"damage" : ("+", 30), "weaponskill" : ("-", 3)}, element_dark),
-           "chosen of tzeentch" : rpgsi.RPGInvItem("Chosen of Tzeentch", 8000, {"damage" : ("+", 66), "weaponskill" : ("-", 11)}, element_lightning),
-           "silver serpent sword" : rpgsi.RPGInvItem("Silver Serpent Sword", 10000, {"damage" : ("*", 0.8), "critical" : ("+", 5)}, element_holy),
-           "world tree shurikens" : rpgsi.RPGInvItem("World Tree Shurikens", 2000, {"critical" : ("+", 1)}, element_nature),
-           "sonic chidori" : rpgsi.RPGInvItem("Sonic Chidori", 1000, {"damage" : ("*", 0.75), "weaponskill" : ("+", 5)}, element_lightning)
-           }
+# weapons = {"training sword" : rpgsi.RPGInvItem("Training Sword", 0, {}, element_none), 
+#            "axe" : rpgsi.RPGInvItem("Axe", 1000, {"damage" : ("+", 10)}, element_none),
+#            #"rebellious knife" : rpgsi.RPGInvItem("Rebellious Knife", -200, {"damage" : ("*", 0)}, element_none),
+#            "thunderhammer" : rpgsi.RPGInvItem("Thunderhammer", 2000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_lightning),
+#            "bisshop's scepter" : rpgsi.RPGInvItem("Bisshop's Scepter", 2200, {"damage" : ("+", 32), "weaponskill" : ("*", 0.8)}, element_holy),
+#            "slaanesh' katana" : rpgsi.RPGInvItem("Slaanesh' Katana", 3500, {"damage" : ("+", 20), "weaponskill" : ("+", 5)}, element_dark),
+#            "shadow dual blades" : rpgsi.RPGInvItem("Shadow Dual Blades", 5000, {"weaponskill" : ("+", 18)}, element_dark),
+#            "yeti's lower legbone" : rpgsi.RPGInvItem("Yeti's Lower Legbone", 10000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_ice),
+#            "demonic greatsword" : rpgsi.RPGInvItem("Demonic Greatsword", 4000, {"damage" : ("+", 30), "weaponskill" : ("-", 3)}, element_dark),
+#            "chosen of tzeentch" : rpgsi.RPGInvItem("Chosen of Tzeentch", 8000, {"damage" : ("+", 66), "weaponskill" : ("-", 11)}, element_lightning),
+#            "silver serpent sword" : rpgsi.RPGInvItem("Silver Serpent Sword", 10000, {"damage" : ("*", 0.8), "critical" : ("+", 5)}, element_holy),
+#            "world tree shurikens" : rpgsi.RPGInvItem("World Tree Shurikens", 2000, {"critical" : ("+", 1)}, element_air),
+#            "sonic chidori" : rpgsi.RPGInvItem("Sonic Chidori", 1000, {"damage" : ("*", 0.75), "weaponskill" : ("+", 5)}, element_lightning)
+#            }
 
 armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" : ("*", 1.0)}, element_none),
          "wizard robes" : rpgsi.RPGInvItem("Wizard Robes", 2000, {"absorption" : ("*", 0.95)}, element_lightning)
@@ -51,10 +58,10 @@ names = {"role" : ["Undead", "Assassin", "Sorcerer", "Barbarian", "Knight"],
                       ("Something Disguised as a Tree", element_none, "http://statici.behindthevoiceactors.com/behindthevoiceactors/_img/chars/treebeard-the-lord-of-the-rings-the-two-towers-68.6.jpg"),
                       ("Wounded Troll", element_none, "https://vignette.wikia.nocookie.net/warhammerfb/images/2/20/Trolls_-_Stone_Troll_%28Old_Art%29.jpg/revision/latest?cb=20160708133949"),
                       ("Storm Elemental", element_lightning, "https://i.pinimg.com/736x/87/c7/8e/87c78eb9801fb248f91844881259e0ac--guild-wars--medieval-fantasy.jpg"),
-                      ("Black Wolf", element_nature, "https://s-media-cache-ak0.pinimg.com/originals/40/80/39/40803940ed534c4b396a43a270e66e57.jpg"), 
-                      ("Evolved Fish", element_nature, "https://s-media-cache-ak0.pinimg.com/originals/4d/0f/8d/4d0f8d96222ee1840c2c388dc8997aea.jpg"),
-                      ("Giant Spider", element_nature, "https://vignette.wikia.nocookie.net/warhammerfb/images/3/3f/Warhammer_Giant_Spiders.png/revision/latest?cb=20170809014204"),
-                      ("Runaway Warbeast", element_nature, "http://wh40k.lexicanum.com/mediawiki/images/thumb/6/6e/Cruorian_War_Beast.jpg/300px-Cruorian_War_Beast.jpg"),
+                      ("Black Wolf", element_air, "https://s-media-cache-ak0.pinimg.com/originals/40/80/39/40803940ed534c4b396a43a270e66e57.jpg"), 
+                      ("Evolved Fish", element_air, "https://s-media-cache-ak0.pinimg.com/originals/4d/0f/8d/4d0f8d96222ee1840c2c388dc8997aea.jpg"),
+                      ("Giant Spider", element_air, "https://vignette.wikia.nocookie.net/warhammerfb/images/3/3f/Warhammer_Giant_Spiders.png/revision/latest?cb=20170809014204"),
+                      ("Runaway Warbeast", element_air, "http://wh40k.lexicanum.com/mediawiki/images/thumb/6/6e/Cruorian_War_Beast.jpg/300px-Cruorian_War_Beast.jpg"),
                       ("Angry Goblin", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/b/b4/Goblin_Warrior.png/revision/latest?cb=20160508093347"),
                       ("Khone Juggernaut", element_dark, "https://vignette.wikia.nocookie.net/warhammer40k/images/5/56/Juggernaut_of_Khorne.png/revision/latest?cb=20151215222741"),
                       ("Lone Chaos Marauder", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/7f/Chaos_Marauder.png/revision/latest?cb=20151106043446"),
