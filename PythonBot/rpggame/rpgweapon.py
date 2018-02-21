@@ -1,7 +1,11 @@
+import random, ipdb
 from random import randint
+from rpggame import rpgconstants as rpgc
+
 
 def generateWeapon(cost : int):
-    name = "Weapon{}".format(cost)
+#    name = "Weapon{}".format(cost)
+    name = str(random.choice(rpgc.weaponprefixes)) + " " + str(random.choice(rpgc.weaponelems)) + " " + str(random.choice(rpgc.weapons)) + " " + str(random.choice(rpgc.weaponsuffixes))
     n = randint(0,99)
     damage = weaponskill = critical = 0
     if n<45:

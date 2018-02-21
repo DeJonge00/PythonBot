@@ -193,7 +193,7 @@ class RPGGame:
                     self.bot.rpgshop.reloadShopWeapons()
                 # Player is busy
                 for u in self.players.values():
-                    if u.health < u.maxhealth:
+                    if u.maxhealth < u.maxhealth:
                         u.addHealth(u.health*0.05)
                     if u.busydescription != rpgchar.NONE:
                         if not(u.busydescription in [rpgchar.BOSSRAID]):

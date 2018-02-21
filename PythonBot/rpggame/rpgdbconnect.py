@@ -121,7 +121,8 @@ def resetPlayers():
     c.execute("DELETE from items") 
     c.execute("DELETE from busy")
     c.execute("DELETE from tierboss")
-    c.execute("DELETE from tierboss")
+    c.execute("DELETE from rpgkings")
+    c.execute("DELETE from weapon")
     #stats must be the last one
     c.execute("DELETE from stats")   
     conn.commit()
