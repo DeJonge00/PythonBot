@@ -1,5 +1,5 @@
 import asyncio, constants, discord, removeMessage, math
-from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti
+from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti, rpgweapon as rpgw
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -9,6 +9,12 @@ SHOP_EMBED_COLOR = 0x00969b
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
+        self.weapons = []
+
+    def reloadShopWeapons(self):
+        self.weapons = []
+        for i in range(5):
+            self.weapons.append(rpgw.generateWeapon(i*1000))
 
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
@@ -102,17 +108,20 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            for i in sorted(rpgc.weapons.values(), key=lambda x: x.cost):
-                t = "Costs: {}{}".format(moneysign, i.cost)
-                for e in i.benefit:
-                    x = i.benefit.get(e)
-                    t += "\n{}{}{}".format(e, x[0], x[1])
-                t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
+            for i in self.weapons:
+                t = "Costs: {}".format(i.cost)
+                if i.damage != 0:
+                    t += "\nDamage + {}".format(i.damage)
+                if i.weaponskill != 0:
+                    t += "\nWeaponskill + {}".format(i.weaponskill)
+                if i.critical != 0:
+                    t += "\nCritical + {}".format(i.critical)
                 embed.add_field(name=i.name, value=t)
             await self.bot.say(embed=embed)
             return
-        weapon = rpgc.weapons.get(" ".join(args).lower())
-        if weapon == None:
+        try:
+            weapon = self.weapons[int(args[0])-1]
+        except ValueError:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
         if not player.buyWeapon(weapon):
@@ -151,7 +160,10 @@ class RPGShop:
         if player.busydescription != rpgchar.NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
-        if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), ctx.message.channel.id):
+        c = ctx.message.channel
+        if c.is_private:
+            c = ctx.message.author
+        if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), c.id):
             await self.bot.say("You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime/training.cost), math.floor(rpgchar.maxtrainingtime/training.cost)))
             return
         player.buyItem(training, amount=a)

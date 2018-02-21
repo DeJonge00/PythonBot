@@ -1,7 +1,7 @@
 import discord, math
 from discord.ext import commands
 from discord.ext.commands import Bot
-from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi
+from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw
 
 # Busydescription status
 NONE = 0
@@ -93,7 +93,7 @@ class RPGMonster(RPGCharacter):
         return int(elementalEffect(n, self.element, element))
         
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon="Training Sword", armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role="Undead", weapon=rpgw.defaultweapon, armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -145,11 +145,11 @@ class RPGPlayer(RPGCharacter):
     def buyWeapon(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
-        self.weapon = item.name
+        self.weapon = item
         return True
 
     def addExp(self, n : int):
-        if self.role == "Undead":
+        if (self.role == "Undead") or (self.health <= 0):
             return
         lvl = self.getLevel()
         self.money += n
@@ -205,17 +205,16 @@ class RPGPlayer(RPGCharacter):
 
     def getDamage(self, element=rpgc.element_none):
         n = super().getDamage(element=element)
-        n = elementalEffect(n, rpgc.weapons.get(self.weapon.lower()).element, element)
+        n = elementalEffect(n, self.weapon.element, element)
         n = adjustStats(n, "damage", rpgc.armor.get(self.armor.lower()))
-        return int(adjustStats(n, "damage", rpgc.weapons.get(self.weapon.lower())))
+        return int(n + self.weapon.damage)
 
     def getWeaponskill(self):
-        m = rpgc.weapons.get(self.weapon.lower())
         n = super().getWeaponskill()
         n = adjustStats(n, "weaponskill", rpgc.armor.get(self.armor.lower()))
-        return int(adjustStats(n, "weaponskill", rpgc.weapons.get(self.weapon.lower())))
+        return int(n + self.weapon.weaponskill)
 
     def getCritical(self):
         n = super().getCritical()
         n = adjustStats(n, "critical", rpgc.armor.get(self.armor.lower()))
-        return int(adjustStats(n, "critical", rpgc.weapons.get(self.weapon.lower())))
+        return int(n + self.weapon.critical)
