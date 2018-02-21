@@ -46,6 +46,9 @@
     <Compile Include="rpggame\rpgdbconnect.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rpggame\rpgweapon.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="secret\secrets.py">
       <SubType>Code</SubType>
     </Compile>

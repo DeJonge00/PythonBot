@@ -121,17 +121,25 @@ class MusicPlayer:
                                 await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
 
     async def joinVC(self, ctx):
-        channel = ctx.message.author.voice.voice_channel
-        if channel == None:
-            await self.bot.say("You are not in vc dummy")
-            return
-        state = self.get_voice_state(ctx.message.server)
-        if self.bot.is_voice_connected(ctx.message.server):
-            if channel == self.bot.voice_client_in(ctx.message.server).channel:
+        try:
+            channel = ctx.message.author.voice.voice_channel
+            if channel == None:
+                await self.bot.say("You are not in vc dummy")
                 return
-            state.voice = await state.voice.move_to(channel)
-        else:
-            state.voice = await self.bot.join_voice_channel(channel)
+            state = self.get_voice_state(ctx.message.server)
+            if self.bot.is_voice_connected(ctx.message.server):
+                if channel == self.bot.voice_client_in(ctx.message.server).channel:
+                    return
+                state.voice = await state.voice.move_to(channel)
+            else:
+                state.voice = await self.bot.join_voice_channel(channel)
+        except Exception as e:
+            embed = discord.Embed(colour=0x0000FF)
+            embed.add_field(name="Something went wrong", value="{}".format(type(e).__name__))
+            fmt = '```py\n{}: {}\n```'
+            #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
+            print(fmt.format(type(e).__name__, e))
+            await self.bot.send_message(ctx.message.channel, embed=embed)
 
     async def playSong(self, ctx, song):
         state = self.get_voice_state(ctx.message.server)
