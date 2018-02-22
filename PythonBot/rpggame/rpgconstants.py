@@ -15,6 +15,8 @@ elementnames = {element_none : "Normal",
                 element_ice : "Ice", 
                 element_fire : "Fire"}
 
+weaponelems = ['Plain', 'Thunder', 'Aerial', 'Dark', 'Divine', 'Frozen', 'Flaming']
+
 shopitems = {"plates" : rpgsi.RPGShopItem("armorplates", 200, {"armor" : ("+", 10)}), 
              "health" : rpgsi.RPGShopItem("health", 100, {"health" : ("+", 25)}), 
              "damage" : rpgsi.RPGShopItem("damage", 150, {"damage" : ("+", 1)}),
@@ -26,26 +28,9 @@ trainingitems = {"maxhealth" : rpgsi.RPGShopItem("maxhealth", 0.25, {"maxhealth"
 
 weapons = ['Axe', 'Boomerang', 'Bow', 'Crossbow', 'Dagger', 'Glaive', 'Hammer', 'Spear', 'Slingshot', 'Scourge', 'Scythe', 'Staff', 'Sword']
 
-weaponprefixes = ['Old', 'New', 'Used', 'Ancient', 'Rare', 'Epic', 'Legendary', 'Common', 'Forgotten', 'Antic', 'Rusty']
+weaponprefixes = ['Old', 'New', 'Used', 'Ancient', 'Rare', 'Epic', 'Legendary', 'Common', 'Forgotten', 'Antic', 'Rusty', 'Cursed']
 
 weaponsuffixes = ['stolen from a kid', 'that fell off the tumbrel', 'made from Dafaq\'s tears', 'bought from the local dealer', 'gifted by the Emperor', 'as long as Nya\'s Dildo', 'blessed by Kappa', 'of Dankness', 'of Love', 'found under a rock', 'crafted by your mom', 'found in a happy meal']
-
-weaponelems = ['Thunder', 'Frozen', 'Flaming', 'Divine', 'Dark', 'Aerial']
-# Note to self: Weapons can only get negative effects with multipliers
-# weapons = {"training sword" : rpgsi.RPGInvItem("Training Sword", 0, {}, element_none), 
-#            "axe" : rpgsi.RPGInvItem("Axe", 1000, {"damage" : ("+", 10)}, element_none),
-#            #"rebellious knife" : rpgsi.RPGInvItem("Rebellious Knife", -200, {"damage" : ("*", 0)}, element_none),
-#            "thunderhammer" : rpgsi.RPGInvItem("Thunderhammer", 2000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_lightning),
-#            "bisshop's scepter" : rpgsi.RPGInvItem("Bisshop's Scepter", 2200, {"damage" : ("+", 32), "weaponskill" : ("*", 0.8)}, element_holy),
-#            "slaanesh' katana" : rpgsi.RPGInvItem("Slaanesh' Katana", 3500, {"damage" : ("+", 20), "weaponskill" : ("+", 5)}, element_dark),
-#            "shadow dual blades" : rpgsi.RPGInvItem("Shadow Dual Blades", 5000, {"weaponskill" : ("+", 18)}, element_dark),
-#            "yeti's lower legbone" : rpgsi.RPGInvItem("Yeti's Lower Legbone", 10000, {"damage" : ("+", 25), "weaponskill" : ("-", 5)}, element_ice),
-#            "demonic greatsword" : rpgsi.RPGInvItem("Demonic Greatsword", 4000, {"damage" : ("+", 30), "weaponskill" : ("-", 3)}, element_dark),
-#            "chosen of tzeentch" : rpgsi.RPGInvItem("Chosen of Tzeentch", 8000, {"damage" : ("+", 66), "weaponskill" : ("-", 11)}, element_lightning),
-#            "silver serpent sword" : rpgsi.RPGInvItem("Silver Serpent Sword", 10000, {"damage" : ("*", 0.8), "critical" : ("+", 5)}, element_holy),
-#            "world tree shurikens" : rpgsi.RPGInvItem("World Tree Shurikens", 2000, {"critical" : ("+", 1)}, element_air),
-#            "sonic chidori" : rpgsi.RPGInvItem("Sonic Chidori", 1000, {"damage" : ("*", 0.75), "weaponskill" : ("+", 5)}, element_lightning)
-#            }
 
 armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" : ("*", 1.0)}, element_none),
          "wizard robes" : rpgsi.RPGInvItem("Wizard Robes", 2000, {"absorption" : ("*", 0.95)}, element_lightning)
