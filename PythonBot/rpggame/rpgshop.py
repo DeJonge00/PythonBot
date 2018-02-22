@@ -13,7 +13,7 @@ class RPGShop:
 
     def reloadShopWeapons(self):
         self.weapons = []
-        for i in range(5):
+        for i in range(1,6):
             self.weapons.append(rpgw.generateWeapon(i*1000))
 
     # {prefix}shop
@@ -111,12 +111,12 @@ class RPGShop:
             for i in self.weapons:
                 t = "Costs: {}".format(i.cost)
                 if i.damage != 0:
-                    t += "\nDamage + {}".format(i.damage)
+                    t += ", damage + {}".format(i.damage)
                 if i.weaponskill != 0:
-                    t += "\nWeaponskill + {}".format(i.weaponskill)
+                    t += ", weaponskill + {}".format(i.weaponskill)
                 if i.critical != 0:
-                    t += "\nCritical + {}".format(i.critical)
-                embed.add_field(name=i.name, value=t)
+                    t += ", critical + {}".format(i.critical)
+                embed.add_field(name=i.name, value=t, inline=False)
             await self.bot.say(embed=embed)
             return
         try:
