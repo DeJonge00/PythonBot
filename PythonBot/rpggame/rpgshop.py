@@ -9,12 +9,7 @@ SHOP_EMBED_COLOR = 0x00969b
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
-        self.weapons = []
-
-    def reloadShopWeapons(self):
-        self.weapons = []
-        for i in range(1,6):
-            self.weapons.append(rpgw.generateWeapon(i*1000))
+        self.weapons = {}
 
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
@@ -55,7 +50,7 @@ class RPGShop:
         await self.bot.say("You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost))
 
     # {prefix}shop item
-    @shop.command(pass_context=1, aliases=["i", "buy"], help="Special knowledge on enemy weakpoints")
+    @shop.command(pass_context=1, aliases=["i", "buy", "items"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
@@ -88,7 +83,10 @@ class RPGShop:
         try:
             a = int(args[1])
         except ValueError:
-            a = 1
+            if args[1] in ['m', 'max']:
+                a = math.floor(player.money/item.cost)
+            else:
+                a = 1
         except IndexError:
             a = 1
         if a < 0:
@@ -108,36 +106,44 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            for i in self.weapons:
-                t = "Costs: {}".format(i.cost)
-                if i.damage != 0:
-                    t += ", damage + {}".format(i.damage)
-                if i.weaponskill != 0:
-                    t += ", weaponskill + {}".format(i.weaponskill)
-                if i.critical != 0:
-                    t += ", critical + {}".format(i.critical)
-                embed.add_field(name=i.name, value=t, inline=False)
+            for i in range(player.getLevel()-5, player.getLevel()+5):
+                w = self.weapons.get(i)
+                if w is None:
+                    w = rpgw.generateWeapon(i*1000)
+                    self.weapons[i] = w
+                t = "Costs: {}".format(w.cost)
+                if w.damage != 0:
+                    t += ", damage + {}".format(w.damage)
+                if w.weaponskill != 0:
+                    t += ", weaponskill + {}".format(w.weaponskill)
+                if w.critical != 0:
+                    t += ", critical + {}".format(w.critical)
+                embed.add_field(name=str(i) + ") " + w.name, value=t, inline=False)
             await self.bot.say(embed=embed)
             return
         try:
-            weapon = self.weapons[int(args[0])-1]
+            weapon = self.weapons.get(int(args[0]))
         except ValueError:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
+        pw = player.weapon
         if not player.buyWeapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
+        t = "You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost)
+        if pw.cost > 3:
+            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pw.cost)))
+        await self.bot.say(t)
 
     # {prefix}train
-    @commands.command(pass_context=1, help="Train your skills!")
+    @commands.command(pass_context=1, aliases=["training"], help="Train your skills!")
     async def train(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)
             for i in rpgc.trainingitems.values():
-                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost))
+                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost), inline=False)
             await self.bot.say(embed=embed)
             return
         training = args[0]

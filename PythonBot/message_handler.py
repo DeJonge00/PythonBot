@@ -68,8 +68,6 @@ async def new(bot, message):
                 m = ml.pop()
             if (message.timestamp - m.timestamp).seconds > 60:
                 await send_random.string(bot, message.channel, constants.ded)
-            else:
-                log.error("Ded said, but the time was {} seconds".format((message.timestamp - m.timestamp).seconds))
     if TableUnflip:
         if message.content == "(╯°□°）╯︵ ┻━┻":
             await bot.send_message(message.channel, "┬─┬﻿ ノ( ゜-゜ノ)")

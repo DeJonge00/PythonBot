@@ -17,18 +17,17 @@ elementnames = {element_none : "Normal",
 
 weaponelems = ['Plain', 'Thunder', 'Aerial', 'Dark', 'Divine', 'Frozen', 'Flaming']
 
-shopitems = {"plates" : rpgsi.RPGShopItem("armorplates", 200, {"armor" : ("+", 10)}), 
-             "health" : rpgsi.RPGShopItem("health", 100, {"health" : ("+", 25)}), 
-             "damage" : rpgsi.RPGShopItem("damage", 150, {"damage" : ("+", 1)}),
-             "critical" : rpgsi.RPGShopItem("critical", 5000, {"critical" : ("+", 1)})
+shopitems = {"health" : rpgsi.RPGShopItem("health", 100, {"health" : ("+", 25)}), 
+             "damage" : rpgsi.RPGShopItem("damage", 200, {"damage" : ("+", 1)}),
+             "critical" : rpgsi.RPGShopItem("critical", 4000, {"critical" : ("+", 1)})
              }
 trainingitems = {"maxhealth" : rpgsi.RPGShopItem("maxhealth", 0.25, {"maxhealth" : ("+", 1)}), 
                  "weaponskill" : rpgsi.RPGShopItem("weaponskill", 10, {"weaponskill" : ("+", 1)})
                  }
 
-weapons = ['Axe', 'Boomerang', 'Bow', 'Crossbow', 'Dagger', 'Glaive', 'Hammer', 'Spear', 'Slingshot', 'Scourge', 'Scythe', 'Staff', 'Sword']
+weapons = ['Axe', 'Boomerang', 'Bow', 'Club', 'Crossbow', 'Dual Daggers', 'Dagger', 'Glaive', 'Greatsword', 'Hammer', 'Halberd', 'Katana', 'Mace', 'Magic', 'Pike', 'Rapier', 'Spear', 'Slingshot', 'Scourge', 'Scythe', 'Sorcery', 'Staff', 'Sword', 'Twin Glaives']
 
-weaponprefixes = ['Old', 'New', 'Used', 'Ancient', 'Rare', 'Epic', 'Legendary', 'Common', 'Forgotten', 'Antic', 'Rusty', 'Cursed']
+weaponprefixes = ['Cursed', 'Possesed', 'Rusty', 'Old', 'Used', 'Antic', 'Ancient', 'Common', 'Forgotten', 'New', 'Rare', 'Epic', 'Legendary']
 
 weaponsuffixes = ['stolen from a kid', 'that fell off the tumbrel', 'made from Dafaq\'s tears', 'bought from the local dealer', 'gifted by the Emperor', 'as long as Nya\'s Dildo', 'blessed by Kappa', 'of Dankness', 'of Love', 'found under a rock', 'crafted by your mom', 'found in a happy meal']
 
@@ -36,7 +35,7 @@ armor = {"training robes" : rpgsi.RPGInvItem("Training Robes", 0, {"absorption" 
          "wizard robes" : rpgsi.RPGInvItem("Wizard Robes", 2000, {"absorption" : ("*", 0.95)}, element_lightning)
          }
 
-names = {"role" : ["Undead", "Assassin", "Sorcerer", "Barbarian", "Knight"], 
+names = {"role" : ["Assassin", "Sorcerer", "Barbarian", "Knight"], 
          "monster" : [("Drunk Dwarf", element_none, "https://fc06.deviantart.net/fs70/f/2011/234/c/b/party_dwarf_by_capprotti-d47g5pt.jpg"),
                       ("Gretchin", element_none, "http://wh40k.lexicanum.com/mediawiki/images/thumb/e/eb/SM_Gretchin.png/250px-SM_Gretchin.png"),
                       ("Nya's Little Brother", element_none, "http://wh40k.lexicanum.com/mediawiki/images/thumb/a/a0/ChaosSpawn2.jpg/225px-ChaosSpawn2.jpg"),
@@ -79,13 +78,19 @@ names = {"role" : ["Undead", "Assassin", "Sorcerer", "Barbarian", "Knight"],
 
 adventureSecrets = [("you saw something shiny when you followed a bird", "Money", 100),
                     ("a strange creature you saved gave you his thanks", "Money", 100),
+                    ("you cought a thief for a nearby shopowner", "Money", 150),
+                    ("you killed a running skaven thief", "Money", 150),
                     ("you found a treasure chest", "Money", 200),
+                    ("you found a naked guy in a cave and stole his ring", "Money", 200),
                     ("you sold some junk at a salesman near the road", "Money", 250),
 
-                    ("you got lost and rested at a small lake", "Health", 100),
+                    ("an old lady shared a meal with you", "Health", 100),
+                    ("you got lost and rested at a small lake", "Health", 200),
 
                     ("you found a nest of little griffins and made the wise decision to run", "Exp", 100),
+                    ("you sparred with an old friend", "Exp", 100),
                     ("you listened to another adventurer's tales", "Exp", 150),
+                    ("you got through the scary part of nearby woods", "Exp", 150),
                     ("you talked to some strange travellers", "Exp", 200),
                     ("you saw big creatures fighting in the distance and learned some moves", "Exp", 250),
 

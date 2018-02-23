@@ -145,6 +145,7 @@ class RPGPlayer(RPGCharacter):
     def buyWeapon(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
+        self.money += int(math.floor(self.weapon.cost*0.25))
         self.weapon = item
         return True
 

@@ -133,6 +133,7 @@ def initBot():
     @bot.event
     async def on_channel_create(channel):
         if channel.is_private:
+            pass
             await log.error("created private channel", filename="private")
         else:
             await log.error("created channel: " + channel.name, filename=channel.server.name)
