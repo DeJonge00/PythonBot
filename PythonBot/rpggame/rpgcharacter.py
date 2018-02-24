@@ -1,7 +1,7 @@
 import discord, math
 from discord.ext import commands
 from discord.ext.commands import Bot
-from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw
+from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgarmor as rpga
 
 # Busydescription status
 NONE = 0
@@ -60,10 +60,10 @@ class RPGCharacter:
 
     # Add (negative) health, returns true if successful
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
-        if self.health > self.maxhealth:
-            self.health = max(0, min(self.health, self.health + n))
-            return
-        self.health = max(0, min(self.maxhealth, self.health + n))
+        self.health = int(max(0, min(self.getMaxhealth(), self.health + n)))
+
+    def getMaxhealth(self):
+        return self.maxhealth
 
     def getDamage(self, element=rpgc.element_none):
         return self.damage
@@ -93,7 +93,7 @@ class RPGMonster(RPGCharacter):
         return int(elementalEffect(n, self.element, element))
         
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon=rpgw.defaultweapon, armor="Training Robes", health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role="Undead", weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -114,10 +114,12 @@ class RPGPlayer(RPGCharacter):
             self.busytime = 0
 
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
-        n = adjustStats(n, "absorption", rpgc.armor.get(self.armor.lower()))
         super().addHealth(n)
         if death:
             self.resolveDeath()
+
+    def getMaxhealth(self):
+        return self.maxhealth + self.armor.maxhealth
 
     def getElement(self):
         a = rpgc.armor.get(self.armor)
@@ -130,7 +132,7 @@ class RPGPlayer(RPGCharacter):
             return False
         self.health = adjustStats(self.health, "armor", item, amount=amount)
         self.setMaxhealth(adjustStats(self.maxhealth, "maxhealth", item, amount=amount))
-        self.health = min(self.maxhealth, adjustStats(self.health, "health", item, amount=amount))
+        self.health = min(self.getMaxhealth(), adjustStats(self.health, "health", item, amount=amount))
         self.damage = adjustStats(self.damage, "damage", item, amount=amount)
         self.critical = adjustStats(self.critical, "critical", item, amount=amount)
         self.weaponskill = adjustStats(self.weaponskill, "weaponskill", item, amount=amount)
@@ -139,12 +141,15 @@ class RPGPlayer(RPGCharacter):
     def buyArmor(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
-        self.armor = item.name
+        self.money += int(math.floor(self.armor.cost*0.25))
+        self.armor = item
+        self.addHealth(0)
         return True
 
     def buyWeapon(self, item : rpgsi.RPGInvItem):
         if not self.addMoney(-1 * item.cost):
             return False
+        self.money += int(math.floor(self.weapon.cost*0.25))
         self.weapon = item
         return True
 
@@ -152,7 +157,7 @@ class RPGPlayer(RPGCharacter):
         if (self.role == "Undead") or (self.health <= 0):
             return
         lvl = self.getLevel()
-        self.money += n
+        self.money += int(n+(self.armor.money/100))
         self.exp += n
         if self.getLevel()>lvl:
             self.levelups += 1
@@ -196,9 +201,9 @@ class RPGPlayer(RPGCharacter):
         return True
 
     def setMaxhealth(self, n : int):
-        r = self.health/self.maxhealth
+        r = self.health/self.getMaxhealth()
         self.maxhealth = n
-        self.health = int(math.ceil(r*self.maxhealth))
+        self.health = int(math.ceil(r*self.getMaxhealth()))
 
     def addArmor(self, n : int):
         self.health = max(self.health, self.health + n)
@@ -206,15 +211,15 @@ class RPGPlayer(RPGCharacter):
     def getDamage(self, element=rpgc.element_none):
         n = super().getDamage(element=element)
         n = elementalEffect(n, self.weapon.element, element)
-        n = adjustStats(n, "damage", rpgc.armor.get(self.armor.lower()))
         return int(n + self.weapon.damage)
 
     def getWeaponskill(self):
         n = super().getWeaponskill()
-        n = adjustStats(n, "weaponskill", rpgc.armor.get(self.armor.lower()))
         return int(n + self.weapon.weaponskill)
 
     def getCritical(self):
         n = super().getCritical()
-        n = adjustStats(n, "critical", rpgc.armor.get(self.armor.lower()))
         return int(n + self.weapon.critical)
+
+    def autoHealthRegen(self):
+        self.addHealth((self.getMaxhealth()*0.05)+self.armor.healthregen)

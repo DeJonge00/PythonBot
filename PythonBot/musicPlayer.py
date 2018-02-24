@@ -158,7 +158,8 @@ class MusicPlayer:
         else:
             player.volume = state.volume
             song = VoiceEntry(ctx.message, player)
-            await self.bot.say(embed=song.embed(title="Song added"))
+            if state.songs.qsize() > 0:
+                await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 
     async def showQueue(self, message : discord.Message, page : int, new=False):

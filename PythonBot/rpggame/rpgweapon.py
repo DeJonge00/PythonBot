@@ -7,17 +7,33 @@ def generateWeapon(cost : int):
     name = str(random.choice(rpgc.weaponprefixes))
     i = randint(0, len(rpgc.weaponelems)-1)
     name += " " + rpgc.weaponelems[i] + " " + str(random.choice(rpgc.weapons))# + " " + str(random.choice(rpgc.weaponsuffixes))
-    elem = math.floor((i+1)/2)
+    elem = math.ceil((i+2)/2)
     if i%2==0:
         elem *= -1
-    n = randint(0,99)
+
     damage = weaponskill = critical = 0
-    if n<45:
-        damage = randint(int(0.005*cost),int(0.015*cost))
-    elif n<80:
-        weaponskill = randint(int(0.001*cost),int(0.005*cost))
+    points = math.floor(cost/90)
+    first = randint(0, 99)
+    if first < 45:
+        r = randint(0, points)
+        damage += r
+        points -= r
+    elif first < 80:
+        r = randint(0, points)
+        weaponskill += math.floor(r/3)
+        points -= r
     else:
-        critical = randint(int(0.001*cost),int(0.002*cost))
+        r = randint(0, points)
+        critical += math.floor(r/7)
+        points -= r
+
+    second = randint(0, 99)
+    if second < 45:
+        damage += points
+    elif second < 80:
+        weaponskill += math.floor(points/3)
+    else:
+        critical += math.floor(points/7)
     return RPGWeapon(name, cost, elem, damage, weaponskill, critical)
 
 class RPGWeapon:

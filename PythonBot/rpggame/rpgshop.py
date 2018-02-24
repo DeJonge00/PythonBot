@@ -1,5 +1,5 @@
 import asyncio, constants, discord, removeMessage, math
-from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti, rpgweapon as rpgw
+from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti, rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
 from discord.ext.commands import Bot
 
@@ -9,12 +9,8 @@ SHOP_EMBED_COLOR = 0x00969b
 class RPGShop:
     def __init__(self, bot):
         self.bot = bot
-        self.weapons = []
-
-    def reloadShopWeapons(self):
-        self.weapons = []
-        for i in range(1,6):
-            self.weapons.append(rpgw.generateWeapon(i*1000))
+        self.weapons = {}
+        self.armors = {}
 
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
@@ -25,6 +21,8 @@ class RPGShop:
             embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Items", value="Type '{}shop item' for a list of available items".format(constants.prefix), inline=False)
             embed.add_field(name="Weapons", value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix), inline=False)
+            embed.add_field(name="Armor", value="Type '{}shop armor' for the armor sold in this shop".format(constants.prefix), inline=False)
+            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(constants.prefix), inline=False)
             await self.bot.say(embed=embed)
 
     # {prefix}shop armor
@@ -34,28 +32,40 @@ class RPGShop:
         player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+            embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            embed.set_author(name="Blacksmith's Armory", icon_url=ctx.message.author.avatar_url)
-            for i in sorted(rpgc.armor.values(), key=lambda x: x.cost):
-                t = "Costs: {}{}".format(moneysign, i.cost)
-                abso = i.benefit.get("absorption")
-                if abso != None:
-                    t += "\nDamage multiplier: {}{}".format(abso[0], abso[1])
-                t += "\nElement: {}".format(rpgc.elementnames.get(i.element))
-                embed.add_field(name=i.name, value=t)
+            start = max(0, player.getLevel()-5)
+            for i in range(start, start+10):
+                a = self.armors.get(i)
+                if a is None:
+                    a = rpga.generateArmor(i*1000)
+                    self.armors[i] = a
+                t = "Costs: {}".format(a.cost)
+                if a.maxhealth != 0:
+                    t += ", maxhealth: {}".format(a.maxhealth)
+                if a.healthregen != 0:
+                    t += ", healthregen: {}".format(a.healthregen)
+                if a.money != 0:
+                    t += ", money: {}%".format(a.money)
+                embed.add_field(name=str(i) + ") " + a.name, value=t, inline=False)
             await self.bot.say(embed=embed)
             return
-        armor = rpgc.armor.get(" ".join(args).lower())
-        if armor == None:
+        try:
+            armor = self.armors.get(int(args[0]))
+        except ValueError:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
+        pa = player.armor
         if not player.buyArmor(armor):
             await self.bot.say("You do not have the money to buy the {}".format(armor.name))
             return
-        await self.bot.say("You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost))
+        t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
+        if pa.cost > 3:
+            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
+        await self.bot.say(t)
 
     # {prefix}shop item
-    @shop.command(pass_context=1, aliases=["i", "buy"], help="Special knowledge on enemy weakpoints")
+    @shop.command(pass_context=1, aliases=["i", "buy", "items"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
@@ -88,7 +98,10 @@ class RPGShop:
         try:
             a = int(args[1])
         except ValueError:
-            a = 1
+            if args[1] in ['m', 'max']:
+                a = math.floor(player.money/item.cost)
+            else:
+                a = 1
         except IndexError:
             a = 1
         if a < 0:
@@ -108,36 +121,45 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            for i in self.weapons:
-                t = "Costs: {}".format(i.cost)
-                if i.damage != 0:
-                    t += ", damage + {}".format(i.damage)
-                if i.weaponskill != 0:
-                    t += ", weaponskill + {}".format(i.weaponskill)
-                if i.critical != 0:
-                    t += ", critical + {}".format(i.critical)
-                embed.add_field(name=i.name, value=t, inline=False)
+            start = max(0, player.getLevel()-5)
+            for i in range(start, start+10):
+                w = self.weapons.get(i)
+                if w is None:
+                    w = rpgw.generateWeapon(i*1000)
+                    self.weapons[i] = w
+                t = "Costs: {}".format(w.cost)
+                if w.damage != 0:
+                    t += ", damage + {}".format(w.damage)
+                if w.weaponskill != 0:
+                    t += ", weaponskill + {}".format(w.weaponskill)
+                if w.critical != 0:
+                    t += ", critical + {}".format(w.critical)
+                embed.add_field(name=str(i) + ") " + w.name, value=t, inline=False)
             await self.bot.say(embed=embed)
             return
         try:
-            weapon = self.weapons[int(args[0])-1]
+            weapon = self.weapons.get(int(args[0]))
         except ValueError:
             await self.bot.say("That is not a weapon sold in this part of the country")
             return
+        pw = player.weapon
         if not player.buyWeapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        await self.bot.say("You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost))
+        t = "You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost)
+        if pw.cost > 3:
+            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pw.cost)))
+        await self.bot.say(t)
 
     # {prefix}train
-    @commands.command(pass_context=1, help="Train your skills!")
+    @commands.command(pass_context=1, aliases=["training"], help="Train your skills!")
     async def train(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)
             for i in rpgc.trainingitems.values():
-                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost))
+                embed.add_field(name=i.name, value="Minutes per statpoint: {}".format(i.cost), inline=False)
             await self.bot.say(embed=embed)
             return
         training = args[0]
