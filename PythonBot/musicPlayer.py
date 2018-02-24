@@ -158,7 +158,7 @@ class MusicPlayer:
         else:
             player.volume = state.volume
             song = VoiceEntry(ctx.message, player)
-            if state.songs.qsize > 0:
+            if state.songs.qsize() > 0:
                 await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 

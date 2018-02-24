@@ -10,14 +10,30 @@ def generateWeapon(cost : int):
     elem = math.ceil((i+2)/2)
     if i%2==0:
         elem *= -1
-    n = randint(0,99)
+
     damage = weaponskill = critical = 0
-    if n<45:
-        damage = randint(int(0.002*cost),int(0.004*cost))
-    elif n<80:
-        weaponskill = randint(int(0.0009*cost),int(0.002*cost))
+    points = math.floor(cost/90)
+    first = randint(0, 99)
+    if first < 45:
+        r = randint(0, points)
+        damage += r
+        points -= r
+    elif first < 80:
+        r = randint(0, points)
+        weaponskill += math.floor(r/3)
+        points -= r
     else:
-        critical = randint(int(0.0004*cost),int(0.0009*cost))
+        r = randint(0, points)
+        critical += math.floor(r/7)
+        points -= r
+
+    second = randint(0, 99)
+    if second < 45:
+        damage += points
+    elif second < 80:
+        weaponskill += math.floor(points/3)
+    else:
+        critical += math.floor(points/7)
     return RPGWeapon(name, cost, elem, damage, weaponskill, critical)
 
 class RPGWeapon:

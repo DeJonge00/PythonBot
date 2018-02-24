@@ -1,5 +1,5 @@
 import asyncio, datetime, constants, discord, log, math, pickle, random, requests, removeMessage, ipdb, os, os.path
-from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc, rpgweapon as rpgw
+from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
 from discord.ext.commands import Bot
 from PIL import Image, ImageFont, ImageDraw 
@@ -57,10 +57,10 @@ class RPGGame:
                     if len(defs)<=0:
                         break
                     defender = defs[random.randint(0,len(defs)-1)]
-                    ws = random.randint(0, attacker.getWeaponskill() + defender.getWeaponskill())
-                    if (ws < attacker.getWeaponskill()):
+                    ws = random.randint(0, max(attacker.getWeaponskill(), attacker.getCritical()) + defender.getWeaponskill())
+                    if (ws < max(attacker.getWeaponskill(), attacker.getCritical())):
                         if ws < attacker.getCritical():
-                            damage = int(math.floor(2.5*attacker.getDamage(defender.getElement())))
+                            damage = int(math.floor((2.5+(0.05*max(0, attacker.getCritical() - attacker.getWeaponskill())))*attacker.getDamage(defender.getElement())))
                             battlereport += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name, defender.name, damage)
                         else:
                             damage = int(math.floor(math.sqrt(random.randint(100, 400)/100) * attacker.getDamage(defender.getElement())))
@@ -107,7 +107,7 @@ class RPGGame:
                 await self.bot.send_message(channel, "Rip bossbattle")
                 print(title)
                 print(battlereport)
-        if sum([(x.health/x.maxhealth) for x in p1]) > sum([(x.health/x.maxhealth) for x in p2]):
+        if sum([(x.health/x.getMaxhealth()) for x in p1]) > sum([(x.health/x.getMaxhealth()) for x in p2]):
             return 1
         return 2 
 
@@ -121,10 +121,9 @@ class RPGGame:
                     print("No channel for {}".format(serverid))
                     return
                 lvl = max([x.getBosstier() for x in party])
-                list = rpgc.names.get("boss")
                 bosses = []
                 while (3*len(bosses)) < len(party):
-                    (name, elem, pic) = list[random.randint(0, len(list)-1)]
+                    (name, elem, pic) = random.choice(rpgc.bosses)
                     bosses.append(rpgchar.RPGMonster(name=name, health=int(47*lvl*lvl), damage=int(lvl*lvl), ws=int(lvl*lvl*0.5), element=elem))
                 winner = await self.resolveBattle("Bossbattle", channel, party, bosses, thumbnail=pic)
                 if winner==1:
@@ -137,8 +136,7 @@ class RPGGame:
         self.bossparties = {}
 
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
-        list = rpgc.names.get("monster")
-        (name, elem, pic) = list[random.randint(0, len(list)-1)]
+        (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.getLevel()
         winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/110))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/3.5))), element=elem)], short=False, thumbnail=pic)
         if winner==1:
@@ -194,7 +192,7 @@ class RPGGame:
                         l = list(self.players.keys())
                         for i in l:
                             player = self.players.get(i)
-                            if (player.busydescription == rpgchar.NONE) & (player.health >= player.maxhealth):
+                            if (player.busydescription == rpgchar.NONE) & (player.health >= player.getMaxhealth()):
                                 self.players.pop(i)
                     print("Players saved")
                 # Bossraids
@@ -206,8 +204,8 @@ class RPGGame:
                     self.bot.rpgshop.weapons = {}
                 # Player is busy
                 for u in self.players.values():
-                    if u.health < u.maxhealth:
-                        u.addHealth(u.maxhealth*0.05)
+                    if u.health < u.getMaxhealth():
+                        u.autoHealthRegen()
                     if u.busydescription != rpgchar.NONE:
                         if not(u.busydescription in [rpgchar.BOSSRAID]):
                             u.busytime -= 1
@@ -291,7 +289,7 @@ class RPGGame:
             embed.add_field(name="{}rpg [wander|w] <minutes>".format(constants.prefix), value="Go wandering, you might find a great treasure!", inline=False)
             embed.add_field(name="{}rpg [battle|b] <user>".format(constants.prefix), value="Battle another user for the lolz, no exp will be gained and no health will be lost", inline=False)
             embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(constants.prefix), value="Show your or another user's game statistics", inline=False)
-            embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w] <user>".format(constants.prefix), value="Show your or another user's weapon statistics", inline=False)
+            embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(constants.prefix), value="Show your or another user's weapon statistics", inline=False)
             embed.add_field(name="{}rpg [join|j]".format(constants.prefix), value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
             embed.add_field(name="{}rpg [party|p]".format(constants.prefix), value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
             embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
@@ -306,7 +304,7 @@ class RPGGame:
             embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
             embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(constants.prefix), value="Buy <amount> of <item> from the shop", inline=False)
             embed.add_field(name="{}shop [weapon|w] <number>".format(constants.prefix), value="Buy a certain weapon from the shop (hourly refresh of stock)", inline=False)
-            embed.add_field(name="{}shop [armor|a] <armorname>".format(constants.prefix), value="Buy a certain armor from the shop", inline=False)
+            embed.add_field(name="{}shop [armor|a] <number>".format(constants.prefix), value="Buy a certain armor from the shop (hourly refresh of stock)", inline=False)
             embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions", inline=False)
             embed.add_field(name="{}train <stat> <amount>".format(constants.prefix), value="Train yourself for <amount> points of the chosen <stat>", inline=False)
             embed.set_footer(text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(constants.prefix))
@@ -369,7 +367,7 @@ class RPGGame:
         #    return
         await self.resolveBattle("Mockbattle", ctx.message.channel, [attacker], [defender], thumbnail=ctx.message.author.avatar_url)
 
-    # {prefix}rpg info [weapon|w] <user>
+    # {prefix}rpg info [weapon|w|armor|a] <user>
     @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
     async def info(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -393,6 +391,20 @@ class RPGGame:
                     embed.add_field(name="Weaponskill", value=data.weapon.weaponskill, inline=False)
                 if data.weapon.critical != 0:
                     embed.add_field(name="Critical", value=data.weapon.critical, inline=False)
+                await self.bot.send_message(ctx.message.channel, embed=embed)
+                return
+            if args[0] in ['a', 'armor']:
+                embed = discord.Embed(colour=RPG_EMBED_COLOR)
+                embed.set_author(name="{}'s weapon".format(data.name), icon_url=ctx.message.author.avatar_url)
+                embed.add_field(name="Armor's name", value=data.armor.name, inline=False)
+                embed.add_field(name="Original cost", value=data.armor.cost, inline=False)
+                embed.add_field(name="Element", value=rpgc.elementnames.get(data.armor.element), inline=False)
+                if data.armor.maxhealth != 0:
+                    embed.add_field(name="Maxhealth", value=data.armor.maxhealth, inline=False)
+                if data.armor.healthregen != 0:
+                    embed.add_field(name="Healthregeneration", value=data.armor.healthregen, inline=False)
+                if data.armor.money != 0:
+                    embed.add_field(name="Extra money", value="{}%".format(data.armor.money), inline=False)
                 await self.bot.send_message(ctx.message.channel, embed=embed)
                 return
         try:
@@ -436,7 +448,7 @@ class RPGGame:
         draw.text((nameoffset, topoffset+3*next),"Weapon:",color,font=font)
         draw.text((statoffset, topoffset+3*next),data.weapon.name,color,font=font)
         draw.text((nameoffset, topoffset+4*next),"Armor:",color,font=font)
-        draw.text((statoffset, topoffset+4*next),data.armor,color,font=font)
+        draw.text((statoffset, topoffset+4*next),data.armor.name,color,font=font)
         if data.levelups > 0:
             stats = "Level up available!"
         else:
@@ -446,10 +458,7 @@ class RPGGame:
         draw.text((nameoffset, topoffset+6*next),"Money:",color,font=font)
         draw.text((statoffset, topoffset+6*next),"{}{}".format(rpgshop.moneysign, data.money),color,font=font)
         draw.text((nameoffset, topoffset+7*next),"Health:",color,font=font)
-        draw.text((statoffset, topoffset+7*next),"{}/{}".format(min(data.health, data.maxhealth),data.maxhealth),color,font=font)
-        if data.health > data.maxhealth:
-            draw.text((nameoffset, topoffset+7*next),"Armorplates:",color,font=font)
-            draw.text((statoffset, topoffset+7*next),"{}".format(data.health - data.maxhealth),color,font=font)
+        draw.text((statoffset, topoffset+7*next),"{}/{}".format(data.health,data.getMaxhealth()),color,font=font)
         draw.text((nameoffset, topoffset+8*next),"Damage:",color,font=font)
         draw.text((statoffset, topoffset+8*next),"{}".format(data.getDamage()),color,font=font)
         draw.text((nameoffset, topoffset+9*next),"Weaponskill:",color,font=font)
@@ -526,10 +535,10 @@ class RPGGame:
         else:
             winner = kingdata
             await self.bot.say("{0} beat down {1}\n{0} remains the true {2} of {3}!".format(kingdata.name, data.name, kingname, ctx.message.server.name))
-        winner.health = winner.maxhealth
+        winner.health = winner.getMaxhealth()
         winner.levelups += 1
 
-    async def addLevelup(self, channel, reward):
+    async def addLevelup(self, data, channel, reward):
         if reward==1:
             data.setMaxhealth(data.maxhealth + 80)
             await self.bot.send_message(channel, "Health raised!")
@@ -559,19 +568,19 @@ class RPGGame:
         
         if len(args) <= 0:
             while data.levelups > 0:
-                await self.bot.say("Available rewards are:\n1)\t+200 hp\n2)\t+2 ws\n3)\t+25 damage")
+                await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+2 ws\n3)\t+30 damage")
                 m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
                 if m==None:
                     return
                 try:
                     num = int(m.content)
-                    if self.addLevelup(ctx.message.channel, int(args[0])):
+                    if await self.addLevelup(data, ctx.message.channel, num):
                         data.levelups -= 1
                 except ValueError:
                     return
         else:
             try:
-                if self.addLevelup(ctx.message.channel, int(args[0])):
+                if await self.addLevelup(data, ctx.message.channel, int(args[0])):
                     data.levelups -= 1
             except ValueError:
                 await self.bot.say("Thats not even a number...")
