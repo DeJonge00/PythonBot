@@ -381,7 +381,7 @@ class RPGGame:
         if len(args)>0:
             if args[0] in ['w', 'weapon']:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
-                embed.set_author(name="{}'s equipment".format(data.name), icon_url=ctx.message.author.avatar_url)
+                embed.set_author(name="{}'s weapon".format(data.name), icon_url=ctx.message.author.avatar_url)
                 embed.add_field(name="Weapon's name", value=data.weapon.name, inline=False)
                 embed.add_field(name="Original cost", value=data.weapon.cost, inline=False)
                 embed.add_field(name="Element", value=rpgc.elementnames.get(data.weapon.element), inline=False)
@@ -395,7 +395,7 @@ class RPGGame:
                 return
             if args[0] in ['a', 'armor']:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
-                embed.set_author(name="{}'s weapon".format(data.name), icon_url=ctx.message.author.avatar_url)
+                embed.set_author(name="{}'s armor".format(data.name), icon_url=ctx.message.author.avatar_url)
                 embed.add_field(name="Armor's name", value=data.armor.name, inline=False)
                 embed.add_field(name="Original cost", value=data.armor.cost, inline=False)
                 embed.add_field(name="Element", value=rpgc.elementnames.get(data.armor.element), inline=False)
