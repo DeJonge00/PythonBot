@@ -1,4 +1,4 @@
-import asyncio, constants, discord, removeMessage, math, ipdb
+import asyncio, constants, discord, removeMessage, math
 from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti, rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
 from discord.ext.commands import Bot
