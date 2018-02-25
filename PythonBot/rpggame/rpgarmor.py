@@ -20,22 +20,22 @@ def generateArmor(cost : int):
         points -= r
     elif first < 80:
         r = randint(0, points)
-        healthregen += math.floor(r/5.5)
+        healthregen += int(r/5.5)
         points -= r
     else:
         r = randint(0, points)
-        money += math.floor(r/30)
-        maxhealth -= math.floor(r)
+        money += int(r/30)
+        maxhealth -= int(r)
         points -= r
 
     second = randint(0, 99)
     if second < 45:
-        maxhealth += points*1.5
+        maxhealth += int(points*1.5)
     elif second < 80:
-        healthregen += math.floor(points/5.5)
+        healthregen += int(points/5.5)
     else:
-        money += math.floor(points/30)
-        maxhealth -= math.floor(points)
+        money += int(points/30)
+        maxhealth -= int(points)
     return RPGArmor(name, cost, elem, maxhealth, healthregen, money)
 
 class RPGArmor:

@@ -202,6 +202,7 @@ class RPGGame:
                 if time.minute == 0:
                     await self.bossbattle()
                     self.bot.rpgshop.weapons = {}
+                    self.bot.rpgshop.armors = {}
                 # Player is busy
                 for u in self.players.values():
                     if u.health < u.getMaxhealth():
@@ -220,16 +221,19 @@ class RPGGame:
                             await self.adventureSecret(u, c)
                         if (u.busytime <= 0):
                             embed = discord.Embed(colour=RPG_EMBED_COLOR)
-                            if u.busydescription == rpgchar.ADVENTURE:
-                                type = "adventure"
-                                action = "adventuring"
-                            elif u.busydescription == rpgchar.TRAINING:
-                                type = action = "training"
-                            elif u.busydescription == rpgchar.WANDERING:
-                                type = action = "wandering"
+                            if u.health > 0:
+                                if u.busydescription == rpgchar.ADVENTURE:
+                                    type = "adventure"
+                                    action = "adventuring"
+                                elif u.busydescription == rpgchar.TRAINING:
+                                    type = action = "training"
+                                elif u.busydescription == rpgchar.WANDERING:
+                                    type = action = "wandering"
+                                else:
+                                    type = action = "Unknown"
+                                embed.add_field(name="Ended {}".format(type), value="You are now done {}".format(action))
                             else:
-                                type = action = "Unknown"
-                            embed.add_field(name="Ended {}".format(type), value="You are now done {}".format(action))
+                                embed.add_field(name="You Died".format(type), value="You were killed on one of your adventures".format(action))
                             c = await self.bot.get_user_info(str(u.userid))
                             if c != None:
                                 await self.bot.send_message(c, embed=embed)

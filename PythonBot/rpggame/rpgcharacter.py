@@ -122,23 +122,24 @@ class RPGPlayer(RPGCharacter):
         return self.maxhealth + self.armor.maxhealth
 
     def getElement(self):
-        a = rpgc.armor.get(self.armor)
+        a = self.armor.element
         if a==None:
             return rpgc.element_none
-        return a.element
+        return a
 
     def buyItem(self, item : rpgsi.RPGShopItem, amount=1):
         if not self.addMoney(-amount * item.cost):
             return False
-        self.health = adjustStats(self.health, "armor", item, amount=amount)
-        self.setMaxhealth(adjustStats(self.maxhealth, "maxhealth", item, amount=amount))
         self.health = min(self.getMaxhealth(), adjustStats(self.health, "health", item, amount=amount))
         self.damage = adjustStats(self.damage, "damage", item, amount=amount)
         self.critical = adjustStats(self.critical, "critical", item, amount=amount)
-        self.weaponskill = adjustStats(self.weaponskill, "weaponskill", item, amount=amount)
         return True
 
-    def buyArmor(self, item : rpgsi.RPGInvItem):
+    def buyTraining(self, item : rpgsi.RPGShopItem, amount=1):
+        self.setMaxhealth(adjustStats(self.maxhealth, "maxhealth", item, amount=amount))
+        self.weaponskill = adjustStats(self.weaponskill, "weaponskill", item, amount=amount)
+
+    def buyArmor(self, item : rpga.RPGArmor):
         if not self.addMoney(-1 * item.cost):
             return False
         self.money += int(math.floor(self.armor.cost*0.25))
@@ -146,7 +147,7 @@ class RPGPlayer(RPGCharacter):
         self.addHealth(0)
         return True
 
-    def buyWeapon(self, item : rpgsi.RPGInvItem):
+    def buyWeapon(self, item : rpgw.RPGWeapon):
         if not self.addMoney(-1 * item.cost):
             return False
         self.money += int(math.floor(self.weapon.cost*0.25))
@@ -157,7 +158,7 @@ class RPGPlayer(RPGCharacter):
         if (self.role == "Undead") or (self.health <= 0):
             return
         lvl = self.getLevel()
-        self.money += int(n+(self.armor.money/100))
+        self.money += int(n+(n*self.armor.money/100))
         self.exp += n
         if self.getLevel()>lvl:
             self.levelups += 1
