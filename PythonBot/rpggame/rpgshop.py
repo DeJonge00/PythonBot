@@ -79,7 +79,7 @@ class RPGShop:
                 for e in i.benefit:
                     x = i.benefit.get(e)
                     t += "\n{}{}{}".format(e, x[0], x[1])
-                embed.add_field(name=i.name, value=t)
+                embed.add_field(name=i.name, value=t, inline=False)
             await self.bot.say(embed=embed)
             return
         item = args[0].lower()
