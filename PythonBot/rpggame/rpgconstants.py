@@ -83,9 +83,18 @@ weaponsuffixes = [
     'blessed by Kappa', 
     'of Dankness', 
     'of Love', 
+    'of Power',
+    'of Doom',
+    'of Power of Doom of Apoc..',
     'found under a rock', 
     'crafted by your mom', 
-    'found in a happy meal'
+    'found in a happy meal',
+    'that also tells time',
+    'that protects your virginity',
+    'bought for 2$ in wallmart',
+    'scavenged on a weeb\'s corpse',
+    'used to clean dragon teeth',
+    'that can talk but not to you'
     ]
 
 names = {
