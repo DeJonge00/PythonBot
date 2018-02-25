@@ -1,4 +1,4 @@
-import asyncio, constants, discord, removeMessage, math
+import asyncio, constants, discord, removeMessage, math, ipdb
 from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants as rpgc, rpgtrainingitem as rpgti, rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -91,6 +91,9 @@ class RPGShop:
             item = "plates"
         elif item in ["c", "crit"]:
             item = "critical"
+        if item == "health" and player.health == player.maxhealth:
+            await self.bot.say("You're already full HP")
+            return
         item = rpgc.shopitems.get(item)
         if item==None:
             await self.bot.say("Thats not an item sold here")
@@ -98,10 +101,12 @@ class RPGShop:
         try:
             a = int(args[1])
         except ValueError:
-            if args[1] in ['m', 'max']:
+            if args[1] in ['m', 'max']:       
                 a = math.floor(player.money/item.cost)
             else:
                 a = 1
+            if args[0] in ['h', 'hp', 'health'] and args[1] in ['m', 'max']:
+                a = int((player.maxhealth - player.health)/25)                
         except IndexError:
             a = 1
         if a < 0:
