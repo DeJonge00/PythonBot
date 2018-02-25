@@ -188,5 +188,5 @@ class RPGShop:
         if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), c.id):
             await self.bot.say("You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime/training.cost), math.floor(rpgchar.maxtrainingtime/training.cost)))
             return
-        player.buyItem(training, amount=a)
+        player.buyTraining(training, amount=a)
         await self.bot.say("{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name, int(math.ceil(a*training.cost))))

@@ -158,7 +158,7 @@ class MusicPlayer:
         else:
             player.volume = state.volume
             song = VoiceEntry(ctx.message, player)
-            if state.songs.qsize() > 0:
+            if (state.songs.qsize() > 0) & (state.player.is_playing()):
                 await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 
@@ -262,6 +262,9 @@ class MusicPlayer:
                 state.player.resume()
                 await self.bot.say("Singing resumed")
                 return
+        else:
+            await self.bot.say("But Im not even playing??")
+            return
         await self.bot.say("I DUNNO WHAT TO DO ;-;")
 
     @music.command(pass_context=1, aliases=["q"], help="'{0}m q' to show the queue, '{0}m q <songname | url>' to add a song to the queue".format(constants.prefix))
