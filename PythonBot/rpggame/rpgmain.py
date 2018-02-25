@@ -381,7 +381,7 @@ class RPGGame:
         if len(args)>0:
             if args[0] in ['w', 'weapon']:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
-                embed.set_author(name="{}'s weapon".format(data.name), icon_url=ctx.message.author.avatar_url)
+                embed.set_author(name="{}'s equipment".format(data.name), icon_url=ctx.message.author.avatar_url)
                 embed.add_field(name="Weapon's name", value=data.weapon.name, inline=False)
                 embed.add_field(name="Original cost", value=data.weapon.cost, inline=False)
                 embed.add_field(name="Element", value=rpgc.elementnames.get(data.weapon.element), inline=False)
@@ -390,7 +390,7 @@ class RPGGame:
                 if data.weapon.weaponskill != 0:
                     embed.add_field(name="Weaponskill", value=data.weapon.weaponskill, inline=False)
                 if data.weapon.critical != 0:
-                    embed.add_field(name="Critical", value=data.weapon.critical, inline=False)
+                    embed.add_field(name="Critical", value=data.weapon.critical, inline=False)               
                 await self.bot.send_message(ctx.message.channel, embed=embed)
                 return
             if args[0] in ['a', 'armor']:
@@ -427,10 +427,23 @@ class RPGGame:
         topoffset = 18
         next = 23
 
-        draw.text((nameoffset, topoffset),"Username:",color,font=font)
-        draw.text((statoffset, topoffset),data.name,color,font=font)
-        draw.text((nameoffset, topoffset+next),"Class:",color,font=font)
-        draw.text((statoffset, topoffset+next),str(data.role),color,font=font)
+        if len(data.name) < 10:
+            data.name+= " 's informations"
+        draw.text((nameoffset, topoffset),data.name + ":",color,font=font)
+        draw.text((nameoffset, topoffset+next),str(data.role),color,font=font)         
+        if data.levelups > 0:
+            stats = "Level up available!"
+        else:
+            if len(str(data.exp)) > 3:
+                shortexp = str(int(data.exp / 1000)) + "k"
+            elif len(str(data.exp)) > 6:
+                shortexp = str(int(data.exp / 1000000)) + "m"
+            elif len(str(data.exp)) > 9:
+                shortexp = str(int(data.exp / 1000000000)) + "b"
+            stats = "lvl {} ({} xp)".format(data.getLevel(), shortexp)        
+        draw.text((statoffset, topoffset+next),stats,color,font=font) 
+        draw.text((nameoffset, topoffset+2*next),"Boss Tier:",color,font=font)
+        draw.text((statoffset, topoffset+2*next),"{}".format(data.getBosstier()),color,font=font)         
         if data.health <= 0:
             stats = "Dead"
         elif data.busydescription == rpgchar.ADVENTURE:
@@ -443,34 +456,22 @@ class RPGGame:
             stats = "Wandering for {}m".format(data.busytime)
         else:
             stats = "Alive"
-        draw.text((nameoffset, topoffset+2*next),"Status:",color,font=font)
-        draw.text((statoffset, topoffset+2*next),stats,color,font=font)
-        draw.text((nameoffset, topoffset+3*next),"Weapon:",color,font=font)
-        draw.text((statoffset, topoffset+3*next),data.weapon.name,color,font=font)
-        draw.text((nameoffset, topoffset+4*next),"Armor:",color,font=font)
-        draw.text((statoffset, topoffset+4*next),data.armor.name,color,font=font)
-        if data.levelups > 0:
-            stats = "Level up available!"
-        else:
-            stats = "{} ({})".format(data.exp, data.getLevel())
-        draw.text((nameoffset, topoffset+5*next),"Experience:",color,font=font)
-        draw.text((statoffset, topoffset+5*next),stats,color,font=font)
-        draw.text((nameoffset, topoffset+6*next),"Money:",color,font=font)
-        draw.text((statoffset, topoffset+6*next),"{}{}".format(rpgshop.moneysign, data.money),color,font=font)
-        draw.text((nameoffset, topoffset+7*next),"Health:",color,font=font)
-        draw.text((statoffset, topoffset+7*next),"{}/{}".format(data.health,data.getMaxhealth()),color,font=font)
-        draw.text((nameoffset, topoffset+8*next),"Damage:",color,font=font)
-        draw.text((statoffset, topoffset+8*next),"{}".format(data.getDamage()),color,font=font)
-        draw.text((nameoffset, topoffset+9*next),"Weaponskill:",color,font=font)
-        draw.text((statoffset, topoffset+9*next),"{}".format(data.getWeaponskill()),color,font=font)
-        draw.text((nameoffset, topoffset+10*next),"Critical:",color,font=font)
-        draw.text((statoffset, topoffset+10*next),"{}".format(data.getCritical()),color,font=font)
-        draw.text((nameoffset, topoffset+11*next),"Boss Tier:",color,font=font)
-        draw.text((statoffset, topoffset+11*next),"{}".format(data.getBosstier()),color,font=font)
+        draw.text((nameoffset, topoffset+3*next),"Status:",color,font=font)
+        draw.text((statoffset, topoffset+3*next),stats,color,font=font)   
+        draw.text((nameoffset, topoffset+4*next),"Money:",color,font=font)
+        draw.text((statoffset, topoffset+4*next),"{}{}".format(rpgshop.moneysign, data.money),color,font=font)
+        draw.text((nameoffset, topoffset+5*next),"Health:",color,font=font)
+        draw.text((statoffset, topoffset+5*next),"{}/{}".format(data.health,data.getMaxhealth()),color,font=font)
+        draw.text((nameoffset, topoffset+6*next),"Damage:",color,font=font)
+        draw.text((statoffset, topoffset+6*next),"{}".format(data.getDamage()),color,font=font)
+        draw.text((nameoffset, topoffset+7*next),"Weaponskill:",color,font=font)
+        draw.text((statoffset, topoffset+7*next),"{}".format(data.getWeaponskill()),color,font=font)
+        draw.text((nameoffset, topoffset+8*next),"Critical:",color,font=font)
+        draw.text((statoffset, topoffset+8*next),"{}".format(data.getCritical()),color,font=font)
 
         imname = '/home/nya/PythonBot/PythonBot/temp/{}.png'.format(ctx.message.author.id)
         im.save(imname)
-        await self.bot.send_file(ctx.message.channel, imname)
+        await self.bot.send_file(ctx.message.author, imname)
         os.remove(imname)
 
     # {prefix}rpg join
