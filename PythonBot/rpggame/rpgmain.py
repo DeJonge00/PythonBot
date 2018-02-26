@@ -748,3 +748,14 @@ class RPGGame:
             return
         dbcon.setRPGChannel(ctx.message.server.id, ctx.message.channel.id)
         await self.bot.say("This channel is now the rpg channel for this server")
+
+
+    #money for devs (testing purpose ONLY)
+    @rpg.command(pass_context=1, help="Reset channels!")
+    async def cashme(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        data = data = self.getPlayerData(ctx.message.author.id, name=ctx.message.author.display_name)
+        data.money += 99999999    
