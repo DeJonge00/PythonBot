@@ -61,7 +61,7 @@ class RPGShop:
             return
         t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
         if pa.cost > 3:
-            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
+            t += "\nYou sold your old armor for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
         await self.bot.say(t)
 
     # {prefix}shop item

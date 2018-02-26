@@ -7,7 +7,7 @@ def generateWeapon(cost : int):
     name = str(random.choice(rpgc.weaponprefixes))
     i = randint(0, len(rpgc.weaponelems)-1)
     name += " " + rpgc.weaponelems[i] + " " + str(random.choice(rpgc.weapons)) + " " + str(random.choice(rpgc.weaponsuffixes))
-    elem = math.ceil((i+2)/2)
+    elem = list(rpgc.elementnames.values())[i]
     if i%2==0:
         elem *= -1
 

@@ -135,11 +135,11 @@ monsters = [
     ("A Birdperson", element_air, "https://vignette.wikia.nocookie.net/rickandmorty/images/9/9d/BirdpersonTransparent.png/revision/latest?cb=20161223222905"),
     ("Angry Griffin", element_air, "http://www.dododex.com/media/creature/griffin.png"),
     ("Awakened Being", element_air, "https://vignette.wikia.nocookie.net/claymore/images/2/20/PriscillaAwakened.gif/revision/latest?cb=20080815194603"),
+    ("Enraged Spiritual Guide", element_air, "https://bravenewmoe.files.wordpress.com/2013/08/monogatari20second20season20-200520-20large2018.jpg"),
     ("Fallen Friend", element_air, "https://pm1.narvii.com/6351/867f04184d535dedf5d2062f7c7cac46f94776bd_hq.jpg"),
     ("Little Witch", element_air, "https://pre00.deviantart.net/c2bd/th/pre/i/2017/103/f/6/shiny_arc_by_moonflower20000-db5qf30.jpg"),
     ("Little Loli Dragon", element_air, "https://vignette.wikia.nocookie.net/vsbattles/images/d/d4/Blue_Eyes.png/revision/latest?cb=20160201020306"),
-    ("Enraged Spiritual Guide", element_air, "https://bravenewmoe.files.wordpress.com/2013/08/monogatari20second20season20-200520-20large2018.jpg"),
-    ("Single Air Bender", element_air, "https://orig08.deviantart.net/f3a9/f/2016/119/4/f/aang_about_web_by_dynamo1212-da0ox4c.jpg"),
+    ("Lone Air Nomad", element_air, "https://orig08.deviantart.net/f3a9/f/2016/119/4/f/aang_about_web_by_dynamo1212-da0ox4c.jpg"),
    
     ("Angry Goblin", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/b/b4/Goblin_Warrior.png/revision/latest?cb=20160508093347"),
     ("Hekatonkheires", element_dark, "https://vignette.wikia.nocookie.net/akamegakill/images/6/64/Coro.png/revision/latest?cb=20140803220237"),

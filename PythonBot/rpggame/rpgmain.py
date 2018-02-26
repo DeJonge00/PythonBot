@@ -30,12 +30,12 @@ class RPGGame:
             embed.set_thumbnail(url=thumbnail)
         title = ""
         if len(p1)==1:
-            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, p1[0].getElement())
+            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].getElement()))
         else:
             title += "A party of {}".format(len(p1))
         title += " vs "
         if len(p2)==1:
-            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, p2[0].getElement())
+            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, rpgc.elementnames.get(p2[0].getElement()))
         else:
             title += "A party of {}".format(len(p2))
         embed.add_field(name=battlename, value=title, inline=False)
@@ -138,7 +138,7 @@ class RPGGame:
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.getLevel()
-        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/110))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/3.5))), element=elem)], short=False, thumbnail=pic)
+        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/110))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/4))), element=elem)], short=False, thumbnail=pic)
         if winner==1:
             player.addExp(100*player.getLevel())
 
@@ -475,7 +475,7 @@ class RPGGame:
 
         imname = '/home/nya/PythonBot/PythonBot/temp/{}.png'.format(ctx.message.author.id)
         im.save(imname)
-        await self.bot.send_file(ctx.message.author, imname)
+        await self.bot.send_file(ctx.message.channel, imname)
         os.remove(imname)
 
     # {prefix}rpg join
