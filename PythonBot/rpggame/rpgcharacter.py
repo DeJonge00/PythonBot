@@ -25,7 +25,7 @@ DAMAGE = 10
 WEAPONSKILL = 1
 
 def getLevelByExp(exp : int):
-    return math.floor(math.sqrt(exp) / 20)+1
+    return math.floor(math.sqrt(exp) / 22)+1
 
 def adjustStats(n, stat, item, amount=1):
     if item != None:
@@ -34,8 +34,6 @@ def adjustStats(n, stat, item, amount=1):
             if m[0]=="*":
                 return int(math.floor(n*(math.pow(m[1], amount))))
             if m[0]=="-":
-                if stat=="armor":
-                    return max(n, n - (amount*m[1]))
                 return max(0, n - (amount*m[1]))
             if m[0]=="+":
                 return n + (amount*m[1])
@@ -113,10 +111,23 @@ class RPGPlayer(RPGCharacter):
             self.money = int(math.floor(self.money*0.5))
             self.busytime = 0
 
+    def addExp(self, n : int):
+        if self.health <= 0:
+            return
+        lvl = self.getLevel()
+        self.addMoney(n)
+        self.exp += n
+        if self.getLevel()>lvl:
+            self.levelups += 1
+
     def addHealth(self, n : int, death=True, element=rpgc.element_none):
         super().addHealth(n)
         if death:
             self.resolveDeath()
+
+    def addMoney(self, n : int):
+        n = (1+(self.armor.money/100))*n
+        self.money += n
 
     def getMaxhealth(self):
         return self.maxhealth + self.armor.maxhealth
@@ -131,6 +142,7 @@ class RPGPlayer(RPGCharacter):
         if not self.addMoney(-amount * item.cost):
             return False
         self.health = min(self.getMaxhealth(), adjustStats(self.health, "health", item, amount=amount))
+        self.maxhealth = adjustStats(self.maxhealth, "maxhealth", item, amount=amount)
         self.damage = adjustStats(self.damage, "damage", item, amount=amount)
         self.critical = adjustStats(self.critical, "critical", item, amount=amount)
         return True
@@ -153,15 +165,6 @@ class RPGPlayer(RPGCharacter):
         self.money += int(math.floor(self.weapon.cost*0.25))
         self.weapon = item
         return True
-
-    def addExp(self, n : int):
-        if (self.role == "Undead") or (self.health <= 0):
-            return
-        lvl = self.getLevel()
-        self.money += int(n+(n*self.armor.money/100))
-        self.exp += n
-        if self.getLevel()>lvl:
-            self.levelups += 1
 
     def getLevel(self):
         return getLevelByExp(self.exp)
