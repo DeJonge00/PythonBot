@@ -30,12 +30,12 @@ class RPGGame:
             embed.set_thumbnail(url=thumbnail)
         title = ""
         if len(p1)==1:
-            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].getElement()))
+            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].getElement())[0])
         else:
             title += "A party of {}".format(len(p1))
         title += " vs "
         if len(p2)==1:
-            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, rpgc.elementnames.get(p2[0].getElement()))
+            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, rpgc.elementnames.get(p2[0].getElement())[0])
         else:
             title += "A party of {}".format(len(p2))
         embed.add_field(name=battlename, value=title, inline=False)
@@ -128,7 +128,7 @@ class RPGGame:
                 winner = await self.resolveBattle("Bossbattle", channel, party, bosses, thumbnail=pic)
                 if winner==1:
                     for p in party:
-                        p.addExp(300*lvl)
+                        p.addExp(32*lvl*lvl*len(bosses)/len(party))
                         p.addBosstier()
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
@@ -138,7 +138,7 @@ class RPGGame:
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.getLevel()
-        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/110))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/4))), element=elem)], short=False, thumbnail=pic)
+        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/95))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/6))), element=elem)], short=False, thumbnail=pic)
         if winner==1:
             player.addExp(100*player.getLevel())
 
@@ -204,7 +204,7 @@ class RPGGame:
                     self.bot.rpgshop.weapons = {}
                     self.bot.rpgshop.armors = {}
                 # Player is busy
-                for u in self.players.values():
+                for u in list(self.players.values()):
                     if u.health < u.getMaxhealth():
                         u.autoHealthRegen()
                     if u.busydescription != rpgchar.NONE:
@@ -265,13 +265,15 @@ class RPGGame:
 
     async def handle(self, message : discord.Message):
         data = self.getPlayerData(message.author.id, name=message.author.display_name)
+        if data.role not in rpgc.names.get("role"): 
+            return
         if data.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]:
             return
         i = round(pow((data.getLevel())+1, 1/3)  # levelbonus
                 *max(0, min(50, (len(message.content) - 3) / 2))); # Textbonus
         if data.busydescription in [rpgchar.TRAINING, rpgchar.BOSSRAID]:
             i *= 0.5
-        data.addExp(int(i))
+        data.addMoney(int(i))
 
     def quit(self):
         self.running = False
@@ -288,7 +290,8 @@ class RPGGame:
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
             embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Introduction", value="Welcome adventurer, this game grants you the opportunity to slay monsters and rule a realm. You can train yourself and buy upgrades at the shop, and when you are done with adventuring, you can even challenge a boss every hour with a group of friends.", inline=False)
-            embed.add_field(name="Basics", value="If it sounds like a logical alias, it probably is\nYour health regenerates every minute\nThe weaponsmith refills his inventory every hour\nA boss can be fought at the hour mark", inline=False)
+            embed.add_field(name="Basics", value="Talking gains you extra money\nIf it sounds like a logical alias, it probably is\nYour health regenerates every minute\nThe weaponsmith refills his inventory every hour\nA boss can be fought at the hour mark", inline=False)
+            embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your role on the battlefield (A role is needed to play the game)", inline=False)
             embed.add_field(name="{}rpg [adventure|a] <minutes>".format(constants.prefix), value="Go on an adventure, find monsters to slay to gain exp", inline=False)
             embed.add_field(name="{}rpg [wander|w] <minutes>".format(constants.prefix), value="Go wandering, you might find a great treasure!", inline=False)
             embed.add_field(name="{}rpg [battle|b] <user>".format(constants.prefix), value="Battle another user for the lolz, no exp will be gained and no health will be lost", inline=False)
@@ -296,12 +299,11 @@ class RPGGame:
             embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(constants.prefix), value="Show your or another user's weapon statistics", inline=False)
             embed.add_field(name="{}rpg [join|j]".format(constants.prefix), value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
             embed.add_field(name="{}rpg [party|p]".format(constants.prefix), value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
-            embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix), value="Switch your rrole on the battlefield", inline=False)
-            embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
-            embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(constants.prefix), value="Choose a reward when you leveled up", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
             
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
+            embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(constants.prefix), value="Choose a reward when you leveled up", inline=False)
             embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="{}rpg king".format(constants.prefix), value="Show the current King of the server", inline=False)
             embed.add_field(name="{}rpg king [c|b|challenge|battle]".format(constants.prefix), value="Challenge the current King and try to take his spot (level 10+)", inline=False)
@@ -388,7 +390,7 @@ class RPGGame:
                 embed.set_author(name="{}'s weapon".format(data.name), icon_url=ctx.message.author.avatar_url)
                 embed.add_field(name="Weapon's name", value=data.weapon.name, inline=False)
                 embed.add_field(name="Original cost", value=data.weapon.cost, inline=False)
-                embed.add_field(name="Element", value=rpgc.elementnames.get(data.weapon.element), inline=False)
+                embed.add_field(name="Element", value=rpgc.elementnames.get(data.weapon.element)[0], inline=False)
                 if data.weapon.damage != 0:
                     embed.add_field(name="Damage", value=data.weapon.damage, inline=False)
                 if data.weapon.weaponskill != 0:
@@ -402,7 +404,7 @@ class RPGGame:
                 embed.set_author(name="{}'s armor".format(data.name), icon_url=ctx.message.author.avatar_url)
                 embed.add_field(name="Armor's name", value=data.armor.name, inline=False)
                 embed.add_field(name="Original cost", value=data.armor.cost, inline=False)
-                embed.add_field(name="Element", value=rpgc.elementnames.get(data.armor.element), inline=False)
+                embed.add_field(name="Element", value=rpgc.elementnames.get(data.armor.element)[0], inline=False)
                 if data.armor.maxhealth != 0:
                     embed.add_field(name="Maxhealth", value=data.armor.maxhealth, inline=False)
                 if data.armor.healthregen != 0:
@@ -431,7 +433,7 @@ class RPGGame:
         topoffset = 18
         next = 23
 
-        if len(data.name) < 10:
+        if len(data.name) < 12:
             data.name+= " 's informations"
         draw.text((nameoffset, topoffset),data.name + ":",color,font=font)
         draw.text((nameoffset, topoffset+next),str(data.role),color,font=font)         
@@ -712,7 +714,7 @@ class RPGGame:
         await self.bot.say("{}, you are now wandering for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # DB commands            
-    @rpg.command(pass_context=1, help="Reset channels!")
+    @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
     async def updatedb(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
@@ -720,7 +722,7 @@ class RPGGame:
             return
         dbcon.updatePlayers(self.players.values())
 
-    @rpg.command(pass_context=1, help="Reset channels!")
+    @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
     async def resetchannels(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -729,7 +731,7 @@ class RPGGame:
         dbcon.initChannels()
         await self.bot.say("RPG channels reset")
 
-    @rpg.command(pass_context=1, help="Reset rpg data!")
+    @rpg.command(pass_context=1, hidden=True, help="Reset rpg data!")
     async def resetstats(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
@@ -749,9 +751,8 @@ class RPGGame:
         dbcon.setRPGChannel(ctx.message.server.id, ctx.message.channel.id)
         await self.bot.say("This channel is now the rpg channel for this server")
 
-
     #money for devs (testing purpose ONLY)
-    @rpg.command(pass_context=1, help="Reset channels!")
+    @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
     async def cashme(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):

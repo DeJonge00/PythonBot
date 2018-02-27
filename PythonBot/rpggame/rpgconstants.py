@@ -8,19 +8,18 @@ element_holy = -3
 element_ice = 4
 element_fire = -4
 elementnames = {
-    element_none : "Normal", 
-    element_lightning : "Lightning", 
-    element_air : "Air", 
-    element_dark : "Dark", 
-    element_holy : "Holy", 
-    element_ice : "Ice", 
-    element_fire : "Fire"
+    element_none : ("Normal", "Plain"),
+    element_lightning : ("Lightning", "Thunder"),
+    element_air : ("Air", "Aerial"), 
+    element_dark : ("Dark", "Dark"),
+    element_holy : ("Holy", "Divine"),
+    element_ice : ("Ice", "Frozen"),
+    element_fire : ("Fire", "Flaming")
     }
-
-weaponelems = ['Plain', 'Thunder', 'Aerial', 'Dark', 'Divine', 'Frozen', 'Flaming']
 
 shopitems = {
     "health" : rpgsi.RPGShopItem("health", 100, {"health" : ("+", 25)}), 
+    "maxhealth" : rpgsi.RPGShopItem("maxhealth", 500, {"maxhealth" : ("+", 10)}),
     "damage" : rpgsi.RPGShopItem("damage", 250, {"damage" : ("+", 1)}),
     "critical" : rpgsi.RPGShopItem("critical", 4000, {"critical" : ("+", 1)})
     }
@@ -57,7 +56,7 @@ armors = [
     'Tankō'
     ]
 
-weaponprefixes = [
+prefixes = [
     'Cursed', 
     'Possesed', 
     'Rusty', 
@@ -70,31 +69,49 @@ weaponprefixes = [
     'New', 
     'Rare', 
     'Epic', 
-    'Legendary'
+    'Legendary',
+    'Incredible',
+    'Haunted',
+    'Great'
     ]
 
-weaponsuffixes = [
-    'stolen from a kid', 
-    'that fell off the tumbrel', 
-    'made from Dafaq\'s tears', 
-    'bought from the local dealer', 
+suffixes = [
+    'Stolen from a Kid', 
+    'Fallen off a Tumbrel', 
+    'Forged in Dafaq\'s Tears', 
+    'Bought from the Local Dealer', 
     'gifted by the Emperor', 
-    'as long as Nya\'s Dildo', 
     'blessed by Kappa', 
     'of Dankness', 
-    'of Love', 
+    'Infused with the Power of Love', 
     'of Power',
     'of Doom',
     'of Power of Doom of Apoc..',
-    'found under a rock', 
-    'crafted by your mom', 
-    'found in a happy meal',
-    'that also tells time',
-    'that protects your virginity',
-    'bought for 2$ in wallmart',
-    'scavenged on a weeb\'s corpse',
-    'used to clean dragon teeth',
-    'that can talk but not to you'
+    'that Lived under a Rock', 
+    'of Old Tales',
+    'from a Happy Meal',
+    'Scavenged on a Weeb\'s Corpse',
+    'used to Clean Dragon Teeth',
+    'that can Talk but not to You',
+    'from Angel\'s Forge',
+    'of a Forgotten Hero',
+    'used by Kings',
+    'Larger than a Man',
+    'Infused with a Greater Soul',
+    'Wished into Excistence',
+    'Created by the God of War',
+    'Given as a Blessing',
+    'of the Chosen One',
+    'for That Special Someone',
+    'for the Warrior',
+    'Gifted in Time of Peace',
+    'Known for its Unusual Stance',
+    'Known by All',
+    'the First of its Name',
+    'of a Thousand Pains',
+    'made from Meteors',
+    'made with Magic',
+    'Once Broken, Now Reforged'
     ]
 
 names = {
@@ -107,15 +124,19 @@ names = {
     }
 
 monsters = [
+    ("Armored Orc", element_none, "https://cdna.artstation.com/p/assets/images/images/002/689/366/large/ignacio-lazcano-orc-warhammer-fan-art.jpg?1464617720"),
     ("Boar", element_none, "https://vignette.wikia.nocookie.net/swordartonlineroleplay/images/4/4a/Frenzy_Boar.png/revision/latest?cb=20121115182555"),
     ("Black Wolf", element_none, "https://s-media-cache-ak0.pinimg.com/originals/40/80/39/40803940ed534c4b396a43a270e66e57.jpg"), 
     ("Desert Raider", element_none, "https://i.pinimg.com/736x/71/ca/fb/71cafb5cb719b0336547694db1038d3d--fantasy-warrior-character-ideas.jpg"),
     ("Drunk Dwarf", element_none, "https://fc06.deviantart.net/fs70/f/2011/234/c/b/party_dwarf_by_capprotti-d47g5pt.jpg"),
+    ("Dwarf Hunter and Companion", element_none, "https://i.pinimg.com/736x/a3/bf/2d/a3bf2de2d2a4e6fee2bb0f600c3bd8b1--world-of-warcraft-wallpaper-dwarf.jpg"),
+    ("Dwarf Monster Slayer", element_none, "https://i.pinimg.com/736x/50/7a/63/507a63e542c3abe8e0d90df9e8fd1a9f--fantasy-dwarf-sci-fi-fantasy.jpg"),
     ("Elven Ranger", element_none, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/75/Warhammer_Wood_Elf.png/revision/latest?cb=20130519024532"),
     ("Greatsword Champion", element_none, "https://vignette.wikia.nocookie.net/warhammerfb/images/8/85/Capture22233232.png/revision/latest?cb=20140206193843"),
     ("Gretchin", element_none, "http://wh40k.lexicanum.com/mediawiki/images/thumb/e/eb/SM_Gretchin.png/250px-SM_Gretchin.png"),
     ("Giant Spider", element_none, "https://vignette.wikia.nocookie.net/warhammerfb/images/3/3f/Warhammer_Giant_Spiders.png/revision/latest?cb=20170809014204"),
-    ("Hungry Spirit", element_none, "https://vignette.wikia.nocookie.net/studio-ghibli/images/f/f1/Pngghost.png/revision/latest?cb=20160424134002"),
+    ("Honourable Samurai", element_none, "https://wallscover.com/images/samurai-wallpaper-7.jpg"),
+    ("Hungry Spirit", element_none, "https://res.cloudinary.com/teepublic/image/private/s--VAXY9TGW--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1458926376/production/designs/458030_1.jpg"),
     ("Runaway Warbeast", element_none, "http://wh40k.lexicanum.com/mediawiki/images/thumb/6/6e/Cruorian_War_Beast.jpg/300px-Cruorian_War_Beast.jpg"),
     ("Malicious Chopper", element_none, "https://vignette.wikia.nocookie.net/villains/images/c/c9/Barry-0.png/revision/latest?cb=20150810173740"),
     ("Nya's Little Brother", element_none, "http://wh40k.lexicanum.com/mediawiki/images/thumb/a/a0/ChaosSpawn2.jpg/225px-ChaosSpawn2.jpg"),
@@ -142,16 +163,19 @@ monsters = [
     ("Lone Air Nomad", element_air, "https://orig08.deviantart.net/f3a9/f/2016/119/4/f/aang_about_web_by_dynamo1212-da0ox4c.jpg"),
    
     ("Angry Goblin", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/b/b4/Goblin_Warrior.png/revision/latest?cb=20160508093347"),
+    ("Dullahan", element_dark, "https://scontent.cdninstagram.com/t51.2885-15/s320x320/e35/1515532_1744165199149630_1378480017_n.jpg?ig_cache_key=MTE2NjczMDU1MTk3NjY4MjM1OA%3D%3D.2.l"),
     ("Hekatonkheires", element_dark, "https://vignette.wikia.nocookie.net/akamegakill/images/6/64/Coro.png/revision/latest?cb=20140803220237"),
     ("Khone Juggernaut", element_dark, "https://vignette.wikia.nocookie.net/warhammer40k/images/5/56/Juggernaut_of_Khorne.png/revision/latest?cb=20151215222741"),
     ("Lone Chaos Marauder", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/7f/Chaos_Marauder.png/revision/latest?cb=20151106043446"),
-    ("Mutated Monkey", element_dark, "https://orig00.deviantart.net/07df/f/2013/119/d/5/rainy_devil_cosplay___bakemonogatari_by_kohimebashiri-d63k393.jpg"),
+    ("Mutated Monster Monkey", element_dark, "https://orig00.deviantart.net/07df/f/2013/119/d/5/rainy_devil_cosplay___bakemonogatari_by_kohimebashiri-d63k393.jpg"),
     ("Skaven Assassin in Training", element_dark, "https://us.v-cdn.net/5022456/uploads/editor/tr/lllm5fvwginz.jpg"), 
     
     ("Awoken Spirit", element_holy, "https://vignette.wikia.nocookie.net/warhammerfb/images/4/41/WAR_CA_00806_07.jpg/revision/latest/scale-to-width-down/251?cb=20171119134426"),
+    ("Disgraced Samurai", element_holy, "https://pre00.deviantart.net/0ec9/th/pre/i/2015/162/8/8/fast_art____ghost_samurai_by_killbiro-d8wyee9.jpg"),
     ("Elven Slave", element_holy, "http://whfb.lexicanum.com/mediawiki/images/thumb/4/44/DEW.JPG/293px-DEW.JPG"),
     ("Elven Wanderer", element_holy, "https://vignette.wikia.nocookie.net/warhammerfb/images/2/26/Warhammer_Aenarion.png/revision/latest?cb=20161029054605"),
     ("Justice", element_holy, "http://www.1zoom.me/big2/39/207534-SweetAngel.jpg"),
+    ("Mounted Priest", element_holy, "https://i.pinimg.com/564x/4f/eb/a5/4feba5830be778ddfe52cb7cb7db71b7--war-hammer-warriors.jpg"),
     ("Saint of a Lost Faith", element_holy, "https://img00.deviantart.net/7081/i/2013/103/4/f/saint_celestine__warhammer_40_000__by_phallseanghell-d61lry2.jpg"),
     ("Tired Pilgrim", element_holy, "https://vignette.wikia.nocookie.net/warhammerfb/images/2/2d/Warhammer_Human_Nagash.jpg/revision/latest?cb=20170422040305"),
     ("Wandering Angel", element_holy, "https://i.pinimg.com/736x/42/92/59/429259b04d9825ec546cda7ae11095f4--fantasy-art-angels-fallen-angels.jpg"),
@@ -160,14 +184,16 @@ monsters = [
     ("Lava Salamander", element_fire, "http://4.bp.blogspot.com/-UEZJNqRarg0/T_H4FbsjPwI/AAAAAAAABK0/GxEgvp3qcqk/s1600/Fire_Lizard_by_bcook972001.jpeg"),
     ("Magma Slime", element_fire, "https://d1u5p3l4wpay3k.cloudfront.net/minecraft_gamepedia/thumb/c/c8/Magma_Cube_Jumping.png/150px-Magma_Cube_Jumping.png?version=745959687f245bc782a68f16eead18cc"),
     ("Molten Troll", element_fire, "https://img00.deviantart.net/79de/i/2014/039/1/c/lava_monster__cherufe__by_jubjubjedi-d56j69f.jpg"),
+    ("High Elf Phoenix Guard", element_fire, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/7d/Finubar.jpg/revision/latest?cb=20160120000131"),
     ("Wild Cursed Campfire", element_fire, "http://www.rachelhtmendell.com/wp-content/uploads/2017/07/fire-2197606_1920.jpg"),
                       
     ("Crystal Lizard", element_ice, "http://darksouls3.wiki.fextralife.com/file/Dark-Souls-3/ravenous_liz.jpg"),
+    ("Dwarf of the Northern Mountains", element_ice, "http://4.bp.blogspot.com/-5N1fMna0eOk/VAacUxkXs9I/AAAAAAAADks/ViQVG9mUREY/s1600/dwarf_by_armandeo64-d4sfgvm.jpg"),
     ("Evolved Fish", element_ice, "https://s-media-cache-ak0.pinimg.com/originals/4d/0f/8d/4d0f8d96222ee1840c2c388dc8997aea.jpg"),
     ("Frost Sorcerer Apprentice", element_ice, "https://i.pinimg.com/736x/e4/23/c3/e423c34e957a90ecf14e8dcacccaa92b.jpg"),
     ("Frozen Golem", element_ice, "https://i.pinimg.com/236x/a6/2d/f3/a62df3326559cb9ed161df2c6817fdb5--ice-magic-golem.jpg"),
     ("Lizardman with Magic Frost Weapon", element_ice, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRxmqhxYgUX30N8lidVmhS93NUaQjB-_ILTfNEqNKKUrEr-hr7Xg"),
-    ("Northern Dwarf", element_ice, "https://vignette.wikia.nocookie.net/warhammerfb/images/5/55/Grombrindal%2C_The_White_Dwarf.jpg/revision/latest?cb=20161231045405"),
+    ("Northern High Elf", element_ice, "https://vignette.wikia.nocookie.net/warhammerfb/images/6/64/Warhammer_High_Elf_Swordmasters_of_Hoeth.png/revision/latest?cb=20161205023222"),
     ("Snow Giant", element_ice, "https://orig00.deviantart.net/6cbb/f/2012/233/e/d/frost_giant_by_catherine_oc-d5bvjz1.jpg"),
     ("Cursed Ice Princess", element_ice, "https://cdna.artstation.com/p/assets/images/images/001/758/500/large/rafael-teruel-ice-queen-by-rafater-2.jpg?1452293194")
     ]
@@ -188,10 +214,12 @@ bosses = [
     ("Unknown Mutation", element_dark, "https://i.pinimg.com/736x/60/34/88/603488c24a5a10662ad451738afe2cec--warhammer-fantasy-warhammer-k.jpg"),
     ("Vampire Count", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/74/Mannfred_von_Carstein.PNG/revision/latest?cb=20150724201838"),
     
+    ("Experienced Dwarf King", element_holy, "https://vignette.wikia.nocookie.net/warhammerfb/images/f/fc/Thorgrim.jpg/revision/latest?cb=20160418145644"),
     ("Spear of the Holy Church", element_holy, "http://www.postavy.cz/foto/halflight-spear-of-the-church-foto.jpg"),
     ("Young Dragon", element_holy, "https://cdnb.artstation.com/p/assets/images/images/005/275/043/large/john-stone-holy-dragon-by-john-stone-art-db2ox97.jpg?1489830207"),
     
     ("Chaos Demon of Khorne", element_fire, "https://vignette.wikia.nocookie.net/warhammer40k/images/1/17/Bloodthirster_by_columbussage-d47j02l.jpg/revision/latest?cb=20120117042500"),
+    ("Phoenix", element_fire, "http://i90.photobucket.com/albums/k276/starry1_night/phoenixskyJPG.jpg"),
     ("Pyrese Dragon", element_fire, "https://vignette.wikia.nocookie.net/risingdawn/images/c/c1/Pyrese.jpg/revision/latest?cb=20131222230556"),
 
     ("Mammoth", element_ice, "https://i.ytimg.com/vi/ilr_CRV9MQ4/maxresdefault.jpg"),

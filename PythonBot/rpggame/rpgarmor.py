@@ -4,12 +4,9 @@ from rpggame import rpgconstants as rpgc
 
 
 def generateArmor(cost : int):
-    name = str(random.choice(rpgc.weaponprefixes))
-    i = randint(0, len(rpgc.weaponelems)-1)
-    name += " " + rpgc.weaponelems[i] + " " + str(random.choice(rpgc.armors))# + " " + str(random.choice(rpgc.weaponsuffixes))
-    elem = math.ceil((i+2)/2)
-    if i%2==0:
-        elem *= -1
+    name = str(random.choice(rpgc.prefixes))
+    i = random.choice(list(rpgc.elementnames.keys()))
+    name += " " + rpgc.elementnames.get(i)[1] + " " + str(random.choice(rpgc.armors)) + " " + str(random.choice(rpgc.suffixes))
 
     maxhealth = healthregen = money = 0
     points = math.floor(cost/100)
@@ -36,7 +33,7 @@ def generateArmor(cost : int):
     else:
         money += int(points/30)
         maxhealth -= int(points)
-    return RPGArmor(name, cost, elem, maxhealth, healthregen, money)
+    return RPGArmor(name, cost, i, maxhealth, healthregen, money)
 
 class RPGArmor:
     def __init__(self, name : str, cost : int, element=1, maxhealth=0, healthregen=0, money=0):

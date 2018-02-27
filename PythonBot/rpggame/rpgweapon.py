@@ -4,12 +4,9 @@ from rpggame import rpgconstants as rpgc
 
 
 def generateWeapon(cost : int):
-    name = str(random.choice(rpgc.weaponprefixes))
-    i = randint(0, len(rpgc.weaponelems)-1)
-    name += " " + rpgc.weaponelems[i] + " " + str(random.choice(rpgc.weapons)) + " " + str(random.choice(rpgc.weaponsuffixes))
-    elem = list(rpgc.elementnames.values())[i]
-    if i%2==0:
-        elem *= -1
+    name = str(random.choice(rpgc.prefixes))
+    i = random.choice(list(rpgc.elementnames.keys()))
+    name += " " + rpgc.elementnames.get(i)[1] + " " + str(random.choice(rpgc.weapons)) + " " + str(random.choice(rpgc.suffixes))
 
     damage = weaponskill = critical = 0
     points = math.floor(cost/90)
@@ -34,7 +31,7 @@ def generateWeapon(cost : int):
         weaponskill += math.floor(points/3)
     else:
         critical += math.floor(points/7)
-    return RPGWeapon(name, cost, elem, damage, weaponskill, critical)
+    return RPGWeapon(name, cost, i, damage, weaponskill, critical)
 
 class RPGWeapon:
     def __init__(self, name : str, cost : int, element=1, damage=0, weaponskill=0, critical=0):

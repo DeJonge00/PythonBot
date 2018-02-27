@@ -3,7 +3,7 @@ from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants 
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-moneysign = "$"
+moneysign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
 
 class RPGShop:
@@ -85,6 +85,8 @@ class RPGShop:
         item = args[0].lower()
         if item in ["h", "hp"]:
             item = "health"
+        if item in ["mh", "mhp"]:
+            item = "maxhealth"
         elif item in ["d", "dam"]:
             item = "damage"
         elif item in ["a", "armour", "armorplates", "armor"]:
