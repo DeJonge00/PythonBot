@@ -3,7 +3,7 @@ from rpggame import rpgcharacter as rpgchar, rpgshopitem as rpgsi, rpgconstants 
 from discord.ext import commands
 from discord.ext.commands import Bot
 
-moneysign = "$"
+moneysign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
 
 class RPGShop:
@@ -61,7 +61,7 @@ class RPGShop:
             return
         t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
         if pa.cost > 3:
-            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
+            t += "\nYou sold your old armor for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
         await self.bot.say(t)
 
     # {prefix}shop item
@@ -85,6 +85,8 @@ class RPGShop:
         item = args[0].lower()
         if item in ["h", "hp"]:
             item = "health"
+        if item in ["mh", "mhp"]:
+            item = "maxhealth"
         elif item in ["d", "dam"]:
             item = "damage"
         elif item in ["a", "armour", "armorplates", "armor"]:
