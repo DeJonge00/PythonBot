@@ -108,7 +108,9 @@ class RPGShop:
             else:
                 a = 1
             if args[0] in ['h', 'hp', 'health'] and args[1] in ['m', 'max']:
-                a = int((player.maxhealth - player.health)/25)                
+                a = int((player.maxhealth - player.health)/25)
+                if player.money < (a*item.cost):
+                    a = math.floor(player.money/item.cost)               
         except IndexError:
             a = 1
         if a < 0:
