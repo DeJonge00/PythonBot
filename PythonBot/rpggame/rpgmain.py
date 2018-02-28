@@ -440,9 +440,9 @@ class RPGGame:
         if data.levelups > 0:
             stats = "Level up available!"
         else:
-            if len(str(data.exp)) > 3:
+            if 6 >= len(str(data.exp)) > 3:
                 shortexp = str(int(data.exp / 1000)) + "k"
-            elif len(str(data.exp)) > 6:
+            elif 9 >= len(str(data.exp)) > 6:
                 shortexp = str(int(data.exp / 1000000)) + "m"
             elif len(str(data.exp)) > 9:
                 shortexp = str(int(data.exp / 1000000000)) + "b"
