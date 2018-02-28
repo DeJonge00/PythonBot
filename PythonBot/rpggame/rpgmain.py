@@ -440,12 +440,12 @@ class RPGGame:
         if data.levelups > 0:
             stats = "Level up available!"
         else:
-            if len(str(data.exp)) > 3:
-                shortexp = "{0:.2f}k".format(data.exp / 1000)
-            elif len(str(data.exp)) > 6:
-                shortexp = "{0:.2f}m".format(data.exp / 1000000)
-            elif len(str(data.exp)) > 9:
-                shortexp = "{0:.2f}b".format(data.exp / 1000000000)
+            if len(str(data.exp)) >= 9:
+                shortexp = str(int(data.exp / 1000000000)) + "b"
+            elif len(str(data.exp)) >= 6:
+                shortexp = str(int(data.exp / 1000000)) + "m"
+            elif len(str(data.exp)) >= 3:
+                shortexp = str(int(data.exp / 1000)) + "k"
             stats = "lvl {} ({} xp)".format(data.getLevel(), shortexp)        
         draw.text((statoffset, topoffset+next),stats,color,font=font) 
         draw.text((nameoffset, topoffset+2*next),"Boss Tier:",color,font=font)
