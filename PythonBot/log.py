@@ -6,6 +6,16 @@ async def error(event, filename="errors"):
     file.close
     print(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + event.encode("ascii", "replace").decode("ascii"))
 
+async def log(note, author, string, filename):
+    file = open("logs/" + filename + ".txt","a+")
+    text = "{} | {} | {} : {}".format(datetime.datetime.utcnow(), note.encode("ascii", "replace").decode("ascii"), author.encode("ascii", "replace").decode("ascii"), string)
+    try:
+        file.write(text + "\n")
+    except UnicodeEncodeError:
+        text = "{} | {} | Unknown posted a pic: {}".format(message.timestamp, message.channel.name.encode("ascii", "replace").decode("ascii"), number)
+        file.write(text + "\n")
+    print(text)
+
 async def message(message : discord.Message, action : str, number=0):
     file = open("logs/" + message.server.name + ".txt","a+")
     if action == "pic":

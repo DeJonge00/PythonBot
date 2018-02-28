@@ -441,11 +441,11 @@ class RPGGame:
             stats = "Level up available!"
         else:
             if len(str(data.exp)) > 3:
-                shortexp = str(int(data.exp / 1000)) + "k"
+                shortexp = "{0:.2f}k".format(data.exp / 1000)
             elif len(str(data.exp)) > 6:
-                shortexp = str(int(data.exp / 1000000)) + "m"
+                shortexp = "{0:.2f}m".format(data.exp / 1000000)
             elif len(str(data.exp)) > 9:
-                shortexp = str(int(data.exp / 1000000000)) + "b"
+                shortexp = "{0:.2f}b".format(data.exp / 1000000000)
             stats = "lvl {} ({} xp)".format(data.getLevel(), shortexp)        
         draw.text((statoffset, topoffset+next),stats,color,font=font) 
         draw.text((nameoffset, topoffset+2*next),"Boss Tier:",color,font=font)
@@ -548,13 +548,13 @@ class RPGGame:
     async def addLevelup(self, data, channel, reward):
         if reward==1:
             data.setMaxhealth(data.maxhealth + 80)
-            await self.bot.send_message(channel, "Health raised!")
+            await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth))
         elif reward==2:
             data.weaponskill += 2
-            await self.bot.send_message(channel, "Weaponskill raised!")
+            await self.bot.send_message(channel, "Your base weaponskill is now {}".format(data.weaponskill))
         elif reward==3:
             data.damage += 30
-            await self.bot.send_message(channel, "Damage raised!")
+            await self.bot.send_message(channel, "Your base damage is now {}".format(data.damage))
         else:
             await self.bot.send_message(channel, "Dunno what you mean tbh")
             return False

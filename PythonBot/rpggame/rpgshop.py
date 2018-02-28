@@ -55,6 +55,9 @@ class RPGShop:
         except ValueError:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
+        if armor is None:
+            await self.bot.say("That is not an armor sold in this part of the country")
+            return
         pa = player.armor
         if not player.buyArmor(armor):
             await self.bot.say("You do not have the money to buy the {}".format(armor.name))
@@ -148,6 +151,9 @@ class RPGShop:
             weapon = self.weapons.get(int(args[0]))
         except ValueError:
             await self.bot.say("That is not a weapon sold in this part of the country")
+            return
+        if weapon is None:
+            await self.bot.say("That is not an armor sold in this part of the country")
             return
         pw = player.weapon
         if not player.buyWeapon(weapon):

@@ -66,7 +66,7 @@ def initBot():
         if (message.author.bot):
             return
         if (message.channel.is_private):
-            print(message.author.name + " | said in dm's: " + message.content)
+            await log.log("direct message", message.author.name, message.content, "dm")
         else:
             if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
                 print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)

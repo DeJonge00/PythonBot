@@ -25,7 +25,7 @@ DAMAGE = 10
 WEAPONSKILL = 1
 
 def getLevelByExp(exp : int):
-    return math.floor(math.sqrt(exp) / 22)+1
+    return math.floor(math.sqrt(exp) / 20)+1
 
 def adjustStats(n, stat, item, amount=1):
     if item != None:

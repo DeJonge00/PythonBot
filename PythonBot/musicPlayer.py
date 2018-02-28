@@ -71,6 +71,7 @@ class VoiceState:
                 await self.play_next_song.wait()
                 if len(self.songs._queue)==0:
                     await self.bot.send_message(self.current.channel, "The queue is now empty...")
+                    self.current = None
             except Exception as e:
                 print(e)
     
@@ -158,7 +159,7 @@ class MusicPlayer:
         else:
             player.volume = state.volume
             song = VoiceEntry(ctx.message, player)
-            if (state.songs.qsize() > 0) & (state.is_playing()):
+            if (state.current != None):
                 await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 
