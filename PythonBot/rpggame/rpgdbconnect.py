@@ -51,8 +51,6 @@ def getPlayer(playerid):
     i = c.fetchone()
     c.execute("SELECT * FROM busy WHERE playerID={}".format(playerid))
     b = c.fetchone()
-    c.execute("SELECT * from tierboss WHERE playerID={}".format(playerid))
-    t = c.fetchone()
     c.execute("SELECT * from weapon WHERE playerID={}".format(playerid))
     w = c.fetchone()
     c.execute("SELECT * from armor WHERE playerID={}".format(playerid))
@@ -66,10 +64,9 @@ def getPlayer(playerid):
         player.exp = i[1]
         player.levelups = i[2]
         player.money = i[3]
+        player.bosstier = i[4]
     if b != None:
         player.setBusy(b[3], b[1], b[2])
-    if t != None:
-        player.bosstier = t[1]
     if w != None:
         player.weapon = rpgw.RPGWeapon(w[1], w[2], w[3], w[4], w[5], w[6])
     if a != None:
@@ -86,17 +83,13 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             else :
                 c.execute("UPDATE stats SET role = '{1}', health = {2} , maxhealth = {3}, damage = {4}, weaponskill = {5}, critical = {6} WHERE playerID = {0}".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))        
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO items (playerID, exp, levelups, money) VALUES ({}, {}, {}, {})".format(s.userid, s.exp, s.levelups, s.money))
+                c.execute("INSERT INTO items (playerID, exp, levelups, money, bosstier) VALUES ({}, {}, {}, {}, {})".format(s.userid, s.exp, s.levelups, s.money, s.bosstier))
             else :
-                c.execute("UPDATE items SET exp = {}, levelups = {}, money = {} WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.userid))
+                c.execute("UPDATE items SET exp = {}, levelups = {}, money = {}, bosstier = {} WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.userid, s.bosstier))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
             else :
                 c.execute("UPDATE busy SET busytime = {1}, busychannel = '{2}', busydescr='{3}' WHERE playerID = {0}".format(s.userid, s.busytime, s.busychannel, s.busydescription))
-            if c.execute("SELECT playerID FROM tierboss WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO tierboss (playerID, bosstier) VALUES ({0}, {1})".format(s.userid, s.bosstier))
-            else :
-                c.execute("UPDATE tierboss SET bosstier = {1} WHERE playerID = {0}".format(s.userid, s.bosstier))
             if c.execute("SELECT playerID FROM weapon WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO weapon (playerID, name, cost, element, damage, weaponskill, critical) VALUES ({}, \"{}\", {}, {}, {}, {}, {})".format(s.userid, s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill, s.weapon.critical))
             else :
@@ -127,9 +120,9 @@ def resetPlayers():
     c = conn.cursor()
     c.execute("DELETE from items") 
     c.execute("DELETE from busy")
-    c.execute("DELETE from tierboss")
     c.execute("DELETE from rpgkings")
     c.execute("DELETE from weapon")
+    c.execute("DELETE from armor")
     #stats must be the last one
     c.execute("DELETE from stats")   
     conn.commit()

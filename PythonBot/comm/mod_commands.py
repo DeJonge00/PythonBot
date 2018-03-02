@@ -19,13 +19,13 @@ class Mod:
             await self.bot.kick(user)
     
     #{prefix}reset
-    @commands.group(pass_context=1, help="'>help reset' for full options")
+    @commands.group(pass_context=1, hidden=True, help="'>help reset' for full options")
     async def reset(self, ctx):
         if ctx.invoked_subcommand is None:
             pass
 
     # {prefix}emojispam <user>
-    @commands.command(pass_context=1, help="Add a user to the emojispam list")
+    @commands.command(pass_context=1, hidden=True, help="Add a user to the emojispam list")
     async def emojispam(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
         if not(ctx.message.author.id==constants.NYAid):
@@ -67,7 +67,7 @@ class Mod:
                 await self.bot.change_nickname(ctx.message.mentions[0], "")
 
     # {prefix}reset pats
-    @reset.command(pass_context=1, help="Reset pat db")
+    @reset.command(pass_context=1, hidden=True, help="Reset pat db")
     async def pats(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -105,7 +105,7 @@ class Mod:
         await self.bot.purge_from(ctx.message.channel, limit=l)
 
     # {prefix}resetgoodbye
-    @reset.command(pass_context=1, help="Resets all goodbye messages")
+    @reset.command(pass_context=1, hidden=True, help="Resets all goodbye messages")
     async def goodbye(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -140,7 +140,7 @@ class Mod:
         await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
 
     # {prefix}resetwelcome
-    @reset.command(pass_context=1, help="Resets all welcome messages")
+    @reset.command(pass_context=1, hidden=True, help="Resets all welcome messages")
     async def welcome(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -175,7 +175,7 @@ class Mod:
         await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
 
     # {prefix}spam <amount> <user>
-    @commands.command(pass_context=1, help="Spam a user messages")
+    @commands.command(pass_context=1, hidden=True, help="Spam a user messages")
     async def spam(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -192,7 +192,7 @@ class Mod:
                     await self.bot.send_message(user, "Have a random number: " + str(randint(0,10000)) + " :heart:")
 
     # {prefix}spongespam <user>
-    @commands.command(pass_context=1, help="Add a user to the spongespam list")
+    @commands.command(pass_context=1, hidden=True, help="Add a user to the spongespam list")
     async def spongespam(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not(ctx.message.author.id==constants.NYAid):
@@ -228,7 +228,7 @@ class Mod:
 #        reload(PythonBot)
 
     # {prefix}quit
-    @commands.command(pass_context=1, help="Lets me go to sleep")
+    @commands.command(pass_context=1, hidden=True, help="Lets me go to sleep")
     async def quit(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if not((ctx.message.author.id==constants.NYAid) | (ctx.message.author.id==constants.KAPPAid)):

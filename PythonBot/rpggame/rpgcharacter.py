@@ -25,7 +25,7 @@ DAMAGE = 10
 WEAPONSKILL = 1
 
 def getLevelByExp(exp : int):
-    return math.floor(math.sqrt(exp) / 20)+1
+    return math.floor(math.sqrt(exp) / 25)+1
 
 def adjustStats(n, stat, item, amount=1):
     if item != None:
@@ -126,8 +126,18 @@ class RPGPlayer(RPGCharacter):
             self.resolveDeath()
 
     def addMoney(self, n : int):
+        if n < 0:
+            return False
         n = (1+(self.armor.money/100))*n
         self.money += n
+
+    def subtractMoney(self, n : int):
+        if n < 0:
+            return False
+        if self.money - n < 0:
+            return False
+        self.money = int(math.floor(self.money - n))
+        return True
 
     def getMaxhealth(self):
         return self.maxhealth + self.armor.maxhealth
@@ -139,7 +149,7 @@ class RPGPlayer(RPGCharacter):
         return a
 
     def buyItem(self, item : rpgsi.RPGShopItem, amount=1):
-        if not self.addMoney(-amount * item.cost):
+        if not self.subtractMoney(amount * item.cost):
             return False
         self.health = min(self.getMaxhealth(), adjustStats(self.health, "health", item, amount=amount))
         self.maxhealth = adjustStats(self.maxhealth, "maxhealth", item, amount=amount)
@@ -152,7 +162,7 @@ class RPGPlayer(RPGCharacter):
         self.weaponskill = adjustStats(self.weaponskill, "weaponskill", item, amount=amount)
 
     def buyArmor(self, item : rpga.RPGArmor):
-        if not self.addMoney(-1 * item.cost):
+        if not self.subtractMoney(item.cost):
             return False
         self.money += int(math.floor(self.armor.cost*0.25))
         self.armor = item
@@ -160,7 +170,7 @@ class RPGPlayer(RPGCharacter):
         return True
 
     def buyWeapon(self, item : rpgw.RPGWeapon):
-        if not self.addMoney(-1 * item.cost):
+        if not self.subtractMoney(item.cost):
             return False
         self.money += int(math.floor(self.weapon.cost*0.25))
         self.weapon = item
@@ -198,19 +208,10 @@ class RPGPlayer(RPGCharacter):
         self.busychannel = 0
         self.busydescription = NONE
 
-    def addMoney(self, n : int):
-        if self.money + n < 0:
-            return False
-        self.money = int(math.floor(self.money + n))
-        return True
-
     def setMaxhealth(self, n : int):
         r = self.health/self.getMaxhealth()
         self.maxhealth = n
         self.health = int(math.ceil(r*self.getMaxhealth()))
-
-    def addArmor(self, n : int):
-        self.health = max(self.health, self.health + n)
 
     def getDamage(self, element=rpgc.element_none):
         n = super().getDamage(element=element)

@@ -138,7 +138,7 @@ class RPGGame:
     async def adventureEncounter(self, player : rpgchar.RPGPlayer, channel : discord.Channel):
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.getLevel()
-        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(math.floor(player.exp/95))), damage=int(math.floor(7*lvl)), ws=int(math.floor(2+(lvl*lvl/6))), element=elem)], short=False, thumbnail=pic)
+        winner = await self.resolveBattle("Adventure encounter", channel, [player], [rpgchar.RPGMonster(name=name, health=(int(10+math.floor(player.exp/95))), damage=int(math.floor(7*lvl)), ws=int(math.floor(1+(0.07*(player.exp)**(0.6)))), element=elem)], short=False, thumbnail=pic)
         if winner==1:
             player.addExp(100*player.getLevel())
 
@@ -221,16 +221,16 @@ class RPGGame:
                             await self.adventureSecret(u, c)
                         if (u.busytime <= 0):
                             embed = discord.Embed(colour=RPG_EMBED_COLOR)
+                            if u.busydescription == rpgchar.ADVENTURE:
+                                type = "adventure"
+                                action = "adventuring"
+                            elif u.busydescription == rpgchar.TRAINING:
+                                type = action = "training"
+                            elif u.busydescription == rpgchar.WANDERING:
+                                type = action = "wandering"
+                            else:
+                                type = action = "Unknown"
                             if u.health > 0:
-                                if u.busydescription == rpgchar.ADVENTURE:
-                                    type = "adventure"
-                                    action = "adventuring"
-                                elif u.busydescription == rpgchar.TRAINING:
-                                    type = action = "training"
-                                elif u.busydescription == rpgchar.WANDERING:
-                                    type = action = "wandering"
-                                else:
-                                    type = action = "Unknown"
                                 embed.add_field(name="Ended {}".format(type), value="You are now done {}".format(action))
                             else:
                                 embed.add_field(name="You Died".format(type), value="You were killed on one of your adventures".format(action))
@@ -274,6 +274,7 @@ class RPGGame:
         if data.busydescription in [rpgchar.TRAINING, rpgchar.BOSSRAID]:
             i *= 0.5
         data.addMoney(int(i))
+        data.addExp(1)
 
     def quit(self):
         self.running = False
@@ -440,12 +441,14 @@ class RPGGame:
         if data.levelups > 0:
             stats = "Level up available!"
         else:
-            if len(str(data.exp)) >= 9:
+            if data.exp > 1000000000:
                 shortexp = str(int(data.exp / 1000000000)) + "b"
-            elif len(str(data.exp)) >= 6:
+            elif data.exp > 1000000:
                 shortexp = str(int(data.exp / 1000000)) + "m"
-            elif len(str(data.exp)) >= 3:
+            elif data.exp > 1000:
                 shortexp = str(int(data.exp / 1000)) + "k"
+            else:
+                shortexp = str(int(data.exp))
             stats = "lvl {} ({} xp)".format(data.getLevel(), shortexp)        
         draw.text((statoffset, topoffset+next),stats,color,font=font) 
         draw.text((nameoffset, topoffset+2*next),"Boss Tier:",color,font=font)

@@ -12,7 +12,7 @@ class Images:
         self.bot = my_bot
 
     # {prefix}pp <user>
-    @commands.command(pass_context=1, aliases=['avatar'], help="Show a profile pic, in max 200x200")
+    @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
     async def pp(self, ctx, *args):
         await self.bot.delete_message(ctx.message)
         if len(ctx.message.mentions) <= 0:
@@ -25,7 +25,7 @@ class Images:
         return await self.bot.send_message(ctx.message.channel, embed=embed)
     
     # {prefix}meme <meme> <toptext>|<bottomtext>
-    @commands.command(pass_context=1, help="Make a meme out of the arguments")
+    @commands.command(pass_context=1, hidden=True, help="Make a meme out of the arguments")
     async def meme(self, ctx, *args):
         await self.bot.delete_message(ctx.message)
         if (len(args) >= 1) & (args[0] == "list"):
@@ -74,7 +74,7 @@ class Images:
         os.remove(name)
 
     # {prefix}spin <user>
-    @commands.command(pass_context=1, help="You spin your head right round, right round. Like a record baby!")
+    @commands.command(pass_context=1, hidden=True, help="You spin your head right round, right round. Like a record baby!")
     async def spin(self, ctx, *args):
         await self.bot.delete_message(ctx.message)
         if len(ctx.message.mentions) <= 0:

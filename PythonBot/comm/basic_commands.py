@@ -195,7 +195,7 @@ class Basics:
         await send_random.string(self.bot, ctx.message.channel, constants.hug, [ctx.message.author.mention, " ".join(args)])
 
      # {prefix}kick
-    @commands.command(pass_context=1, help="Kick someone for funzies")
+    @commands.command(pass_context=1, help="Fake kick someone")
     async def kick(self, ctx, *args):
         if len(ctx.message.mentions) > 0:
             await self.bot.send_typing(ctx.message.channel)
@@ -334,7 +334,7 @@ class Basics:
             return
 
     # {prefix}serverinfo
-    @commands.command(pass_context=1, help="Get a user's information!")
+    @commands.command(pass_context=1, help="Get the server's information!")
     async def serverinfo(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         server = ctx.message.server

@@ -298,7 +298,7 @@ class MusicPlayer:
         state = self.get_voice_state(ctx.message.server)
         await self.stopPlaying(ctx)
         try:
-            self.voice_states.pop(server.id)
+            self.voice_states.pop(ctx.message.server.id)
         except KeyError as e:
             print(e)
 
@@ -340,7 +340,7 @@ class MusicPlayer:
                     await self.bot.say("Only the requester, {}, can skip that song".format(songs[n].requester.name))
                     return
         state.skip_votes.add(ctx.message.author.id)
-        votesNeeded = math.ceil(len(self.bot.voice_client_in(ctx.message.server).channel.voice_members)/3)
+        votesNeeded = math.ceil(len([x for x in self.bot.voice_client_in(ctx.message.server).channel.voice_members if not x.bot])/3)
         votes = len(state.skip_votes)
         if votes >= votesNeeded:
             state.skip()
