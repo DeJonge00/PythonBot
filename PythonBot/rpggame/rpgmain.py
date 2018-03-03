@@ -234,6 +234,7 @@ class RPGGame:
                                 embed.add_field(name="Ended {}".format(type), value="You are now done {}".format(action))
                             else:
                                 embed.add_field(name="You Died".format(type), value="You were killed on one of your adventures".format(action))
+                                embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGAa--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1466191557/production/designs/549487_1.jpg")
                             c = await self.bot.get_user_info(str(u.userid))
                             if c != None:
                                 await self.bot.send_message(c, embed=embed)
@@ -303,7 +304,7 @@ class RPGGame:
             await self.bot.send_message(ctx.message.author, embed=embed)
             
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
-            embed.add_field(name="{}rpg [top|t]".format(constants.prefix), value="Show the best players of the game", inline=False)
+            embed.add_field(name="{}rpg [top|t] <exp|money|bosstier> <page>".format(constants.prefix), value="Show the best players of the game", inline=False)
             embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(constants.prefix), value="Choose a reward when you leveled up", inline=False)
             embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="{}rpg king".format(constants.prefix), value="Show the current King of the server", inline=False)
@@ -639,7 +640,14 @@ class RPGGame:
             return
         await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
 
-    # {prefix}rpg top #
+    def getGroup(self, s : str):
+        if s in ['m', 'money']:
+            return "money"
+        if s in ['b', 'bt', 'bosstier']:
+            return "bosstier"
+        return "exp"
+
+    # {prefix}rpg top <exp|money|bosstier> <amount>
     @rpg.command(pass_context=1, aliases=['t'], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -647,18 +655,29 @@ class RPGGame:
             await self.bot.say("This command does not work in a private channel")
             return
         if len(args) > 0:
-            try:
-                n = int(args[0])-1
-            except ValueError:
-                n = 0
+            if len(args) > 1:
+                try:
+                    n = int(args[1])-1
+                except ValueError:
+                    n = 0
+                group = self.getGroup(args[0])
+            else:
+                try:
+                    n = int(args[0])-1
+                    group = "exp"
+                except ValueError:
+                    n = 0
+                    group = self.getGroup(args[0])
         else:
             n = 0
+            group = "exp"
+
         # Construct return message
         USERS_PER_PAGE = 10
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n+1), inline=False)
         dbcon.updatePlayers(self.players.values())
-        list = dbcon.getTopPlayers()
+        list = dbcon.getTopPlayers(group, (n+1)*USERS_PER_PAGE)
         if (len(list) < (USERS_PER_PAGE*n)):
             await self.bot.say("There are only {} pages...".format(math.ceil(len(list)/USERS_PER_PAGE)))
             return
@@ -670,19 +689,16 @@ class RPGGame:
         
         for m in list[i:end]:
             i += 1
-            member = self.players.get(str(m[0]))
-            if member != None:
-                name = member.name
-                exp = member.exp
-                lvl = member.getLevel()
+            try:
+                name = ctx.message.server.get_member(str(m[0])).display_name
+            except AttributeError:
+                name = "id{}".format(m[0])
+            if group=="money":
+                result += "Rank {}:\n\t**{}**, {}{}\n".format(i, name, rpgshop.moneysign, m[1])
+            elif group=="bosstier":
+                result += "Rank {}:\n\t**{}**, tier {}\n".format(i, name, m[1])
             else:
-                try:
-                    name = ctx.message.server.get_member(str(m[0])).display_name
-                except AttributeError:
-                    name = "id{}".format(m[0])
-                exp = m[1]
-                lvl = rpgchar.getLevelByExp(m[1])
-            result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i, name, exp, lvl)
+                result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i, name, m[1], rpgchar.getLevelByExp(m[1]))
         embed.add_field(name="Ranks and names", value=result)
         await self.bot.send_message(ctx.message.channel, embed=embed)
     
@@ -724,6 +740,7 @@ class RPGGame:
             await self.bot.say("Hahahaha, no")
             return
         dbcon.updatePlayers(self.players.values())
+        self.players = {}
 
     @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
     async def resetchannels(self, ctx, *args):

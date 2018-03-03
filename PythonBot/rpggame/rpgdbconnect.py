@@ -85,7 +85,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             if c.execute("SELECT playerID FROM items WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO items (playerID, exp, levelups, money, bosstier) VALUES ({}, {}, {}, {}, {})".format(s.userid, s.exp, s.levelups, s.money, s.bosstier))
             else :
-                c.execute("UPDATE items SET exp = {}, levelups = {}, money = {}, bosstier = {} WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.userid, s.bosstier))
+                c.execute("UPDATE items SET exp = {}, levelups = {}, money = {}, bosstier = {} WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.bosstier, s.userid))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
             else :
@@ -106,10 +106,10 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     finally:
         conn.close()
 
-def getTopPlayers(server="all"):
+def getTopPlayers(group : str, amount : int, server="all"):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    c.execute("SELECT playerID, exp FROM items ORDER BY exp DESC")
+    c.execute("SELECT playerID, {0} FROM items ORDER BY {0} DESC LIMIT {1}".format(group, amount))
     a = c.fetchall()
     conn.commit()
     conn.close()
