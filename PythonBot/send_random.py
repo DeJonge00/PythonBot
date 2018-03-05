@@ -11,7 +11,7 @@ async def file(my_bot, channel, folder):
     l = listdir(folder)
     i = randint(0,len(l)-1)
     print(i)
-    await my_bot.send_file(channel, homedir + folder + "/" + l[i])
+    return await my_bot.send_file(channel, homedir + folder + "/" + l[i])
 
 def getFile(folder):
     i = randint(0,len(listdir(folder))-1)

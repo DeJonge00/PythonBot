@@ -44,10 +44,31 @@ class PythonBot(Bot):
         self.RPGGAME = rpggame
         super(PythonBot, self).__init__(command_prefix=constants.prefix, pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
 
+    async def timeLoop(self):
+        await self.wait_until_ready()
+        self.running = True
+        while self.running:
+            time = datetime.datetime.utcnow()
+
+            if self.RPGGAME:
+                await self.rpggame.gameTick(time)
+
+            endtime = datetime.datetime.utcnow()
+            #print("Sleeping for " + str(60-(endtime).second) + "s")
+            await asyncio.sleep(60-endtime.second)
+
+    def quit(self):
+        self.running = False
+        if self.RPGGAME:
+            self.rpggame.quit()
+        if self.MUSIC:
+            self.musicplayer.quit()
+
 def initBot():
     bot = PythonBot()
     logging.basicConfig()
     initCogs(bot)
+    bot.loop.create_task(bot.timeLoop())
 
     @bot.event
     async def on_ready():

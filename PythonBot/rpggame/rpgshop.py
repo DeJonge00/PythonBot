@@ -90,7 +90,7 @@ class RPGShop:
             item = "health"
         if item in ["mh", "mhp"]:
             item = "maxhealth"
-        elif item in ["d", "dam"]:
+        elif item in ["d", "dam", 'dmg']:
             item = "damage"
         elif item in ["a", "armour", "armorplates", "armor"]:
             item = "plates"

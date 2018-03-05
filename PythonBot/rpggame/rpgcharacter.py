@@ -129,7 +129,7 @@ class RPGPlayer(RPGCharacter):
         if n < 0:
             return False
         n = (1+(self.armor.money/100))*n
-        self.money += n
+        self.money = int(self.money + n)
 
     def subtractMoney(self, n : int):
         if n < 0:
@@ -152,7 +152,7 @@ class RPGPlayer(RPGCharacter):
         if not self.subtractMoney(amount * item.cost):
             return False
         self.health = min(self.getMaxhealth(), adjustStats(self.health, "health", item, amount=amount))
-        self.maxhealth = adjustStats(self.maxhealth, "maxhealth", item, amount=amount)
+        self.setMaxhealth(adjustStats(self.maxhealth, "maxhealth", item, amount=amount))
         self.damage = adjustStats(self.damage, "damage", item, amount=amount)
         self.critical = adjustStats(self.critical, "critical", item, amount=amount)
         return True

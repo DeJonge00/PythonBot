@@ -275,6 +275,12 @@ class MusicPlayer:
             return await self.showQueue(ctx.message, 1, new=True)
         await self.playSong(ctx, " ".join(song))
     
+    @music.command(pass_context=1, aliases=["quit"], help="Empty the queue and skip the current song, then leave the voice channel")
+    async def stop(self, ctx):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        await self.stopPlaying(ctx)
+        await self.bot.say("Baibai o/")
+
     @music.command(pass_context=1, aliases=["r"], help="Repeat the current song")
     async def repeat(self, ctx, *song):
         await removeMessage.deleteMessage(self.bot, ctx)
@@ -352,16 +358,11 @@ class MusicPlayer:
             return
         await self.bot.say("Votes to skip: {}/{}".format(votes,votesNeeded))
 
-    @music.command(pass_context=1, aliases=["quit"], help="Empty the queue and skip the current song, then leave the voice channel")
-    async def stop(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        await self.stopPlaying(ctx)
-        await self.bot.say("Baibai o/")
-
     @music.command(pass_context=1, aliases=["v"], help="Change the volume of the songs")
     async def volume(self, ctx, vol : int):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if(not await removeMessage.nyaCheck(self.bot, ctx)):
+        if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
             return
         state = self.get_voice_state(ctx.message.server)
         if not 0 < vol < 200:

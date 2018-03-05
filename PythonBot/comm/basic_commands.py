@@ -1,6 +1,7 @@
 import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
 from discord.ext import commands
 from discord.ext.commands import Bot
+from os import listdir
 from urbanpyctionary.client import Client
 from secret import secrets
 from rpggame import rpgdbconnect as dbcon
@@ -19,6 +20,7 @@ class Basics:
             self.bot.biri = {}
             self.bot.cat = {}
             self.bot.cuddle = {}
+            self.bot.ded = {}
         self.patTimes = {}
 
     # {prefix}60
@@ -74,6 +76,37 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
     
+    # {prefix}countdown time
+    @commands.command(pass_context=1, help="Give someone a compliment")
+    async def countdown(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        try:
+            n = int(args[0])
+        except ValueError:
+            await self.bot.say("Thats not a number uwu")
+            return
+        except IndexError:
+            await self.bot.say("I cannot hear you")
+            return
+        if n < 1:
+            await self.bit.say("Lol r00d")
+            return
+        timers = [3600,1800,600,300,120,60,30,15,10,9,8,7,6,5,4,3,2,1]
+        if n > timers[0]:
+            await asyncio.sleep(n-timers[0])
+            n = timers[0]
+        for i in range(len(timers)):
+            if n >= timers[i]:
+                await self.bot.say("{}, you gotta do stuff in {} seconds!!!".format(ctx.message.author.mention, n))
+                if i+1 < len(timers):
+                    await asyncio.sleep((timers[i]-timers[i+1]))
+                    n = timers[i+1]
+                else:
+                    await asyncio.sleep(n-timers[i])
+                    n -= timers[i]
+        await asyncio.sleep(n)
+        await self.bot.say("{}, you gotta do stuff NOW!!!".format(ctx.message.author.mention))
+
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
     async def cuddle(self, ctx, *args):
@@ -85,9 +118,9 @@ class Basics:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.cuddle[ctx.message.channel.id] = datetime.datetime.utcnow()
-        gif = send_random.getFile("cuddle")+".gif"
+        folder = "cuddle"
+        m = await self.bot.send_file(ctx.message.channel, send_random.homedir + folder + "/" + random.choice(listdir(folder)))
         if len(ctx.message.mentions)>0:
-            m = await self.bot.send_file(ctx.message.channel, gif)
             await self.bot.edit_message(m, new_content="Lots of cuddles for {} :heart:".format(ctx.message.mentions[0].mention))
 
     # {prefix}ded

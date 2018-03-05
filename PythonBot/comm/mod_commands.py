@@ -206,11 +206,7 @@ class Mod:
 
     async def quitBot(self):
         try:
-            if self.bot.RPGGAME:
-                self.bot.rpggame.quit()
-            if self.bot.MUSIC:
-                if self.bot.musicplayer != None:
-                    self.bot.musicplayer.quit()
+            self.bot.quit()
         except Exception as e:
             print(e)
         await self.bot.logout()
@@ -244,4 +240,4 @@ class Mod:
         if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        await self.bot.rpggame.bossbattle()
+        print("Test")
