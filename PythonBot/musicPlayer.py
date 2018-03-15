@@ -38,8 +38,9 @@ class VoiceState:
         self.skip_votes = set()
         self.audio_player = self.bot.loop.create_task(self.audio_player_task())
         self.volume = 1.0
-        self.repeat=False
-        self.lastmessage = datetime.now()
+        self.repeat = False
+        self.lastmessage = None
+        self.timestamp = datetime.now()
 
     def is_playing(self):
         if self.voice is None or self.current is None:
@@ -73,16 +74,21 @@ class VoiceState:
                 if len(self.songs._queue)==0:
                     await self.bot.send_message(self.current.channel, "The queue is now empty...")
                     self.current = None
+                self.timestamp = datetime.now()
             except Exception as e:
                 print(e)
-                self.lastmessage = datetime.now()
     
+    async def disconnect(self):
+        if self.voice != None:
+            await self.voice.disconnect()
+            self.voice = None
+
     async def quit(self):
         self.songs = asyncio.Queue()
         if self.is_playing():
-            state.skip()
-        if self.voice != None:
-            await self.voice.disconnect()
+            self.skip()
+        await self.disconnect()
+        
 
 class MusicPlayer:
     def __init__(self, my_bot):
@@ -92,9 +98,9 @@ class MusicPlayer:
 
     async def musicLoop(self, time : datetime):
         for s in self.voice_states.values():
-            if (not s.is_playing()) and ((s.lastmessage - time).seconds > 15*60):
-                await s.quit()
-    
+            if (not s.is_playing()) and ((time - s.timestamp).seconds > (15*60)):
+                await s.disconnect()
+
     def get_voice_state(self, server):
         state = self.voice_states.get(server.id)
         if state is None:
@@ -105,8 +111,8 @@ class MusicPlayer:
 
     async def stopPlaying(self, ctx):
         state = self.get_voice_state(ctx.message.server)
+        state.songs = asyncio.Queue()
         await state.quit()
-        state = None
 
     async def handleReaction(self, reaction):
         state = self.get_voice_state(reaction.message.server)
@@ -139,27 +145,29 @@ class MusicPlayer:
                 state.voice = await state.voice.move_to(channel)
             else:
                 state.voice = await self.bot.join_voice_channel(channel)
+            return state
+        except AttributeError as e:
+            fmt = '```py\n{}: {}\n```'
+            print(fmt.format(type(e).__name__, e))
         except Exception as e:
             embed = discord.Embed(colour=0x0000FF)
             embed.add_field(name="{}".format(type(e).__name__), value='{}'.format(e))
             fmt = '```py\n{}: {}\n```'
-            #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
-            print(fmt.format(type(e).__name__, e))
             await self.bot.send_message(ctx.message.channel, embed=embed)
 
     async def playSong(self, ctx, song):
         state = self.get_voice_state(ctx.message.server)
         if state.voice is None:
-            await self.joinVC(ctx)
-            state = self.get_voice_state(ctx.message.server)
+            state = await self.joinVC(ctx)
         try:
             player = await state.voice.create_ytdl_player(song, before_options=constants.ytdl_before, ytdl_options=constants.ytdl_options, after=state.toggle_next)
+        except AttributeError as e:
+            fmt = '```py\n{}: {}\n```'
+            print(fmt.format(type(e).__name__, e))
         except Exception as e:
             embed = discord.Embed(colour=0x0000FF)
-            embed.add_field(name="Something went wrong", value="{}".format(type(e).__name__))
+            embed.add_field(name="{}".format(type(e).__name__), value='{}'.format(e))
             fmt = '```py\n{}: {}\n```'
-            #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
-            print(fmt.format(type(e).__name__, e))
             await self.bot.send_message(ctx.message.channel, embed=embed)
         else:
             player.volume = state.volume
@@ -335,16 +343,12 @@ class MusicPlayer:
                     await self.bot.say("I'm not sure that's a number...")
                     return
                 songs = list(state.songs._queue)
-                print(songs)
                 if n >= len(songs):
                     await self.bot.say("The song queue is not that long...")
                 if (ctx.message.author.id==songs[n].requester.id) | (ctx.message.author.id==constants.NYAid):
                     s = songs[n]
                     del songs[n]
-                    print(songs)
                     state.songs._queue = deque(songs)
-                    print("Q")
-                    print(state.songs._queue)
                     await self.bot.say("Removed a song from the queue: {}".format(s))
                     return
                 else:
