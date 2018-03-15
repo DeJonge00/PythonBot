@@ -1,4 +1,4 @@
-import asyncio, discord, constants, log, pickle, removeMessage, pymysql
+import asyncio, discord, constants, log, pickle, removeMessage, pymysql, unicodedata
 from rpggame import rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
 from secret import secrets
@@ -43,7 +43,7 @@ def getBusyPlayers():
     return players
 
 def getPlayer(playerid):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT * FROM stats WHERE playerID={}".format(playerid))
     s = c.fetchone()
@@ -67,6 +67,7 @@ def getPlayer(playerid):
         player.bosstier = i[4]
     if b != None:
         player.setBusy(b[3], b[1], b[2])
+        player.kingtimer = b[4]
     if w != None:
         player.weapon = rpgw.RPGWeapon(w[1], w[2], w[3], w[4], w[5], w[6])
     if a != None:
@@ -74,7 +75,7 @@ def getPlayer(playerid):
     return player
 
 def updatePlayers(stats : [rpgchar.RPGPlayer]):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     try:
         for s in stats:
@@ -87,9 +88,9 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
             else :
                 c.execute("UPDATE items SET exp = {}, levelups = {}, money = {}, bosstier = {} WHERE playerID = {}".format(s.exp, s.levelups, s.money, s.bosstier, s.userid))
             if c.execute("SELECT playerID FROM busy WHERE playerID = {0}".format(s.userid)) == 0 :
-                c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr) VALUES ({0}, {1}, '{2}', '{3}')".format(s.userid, s.busytime, s.busychannel, s.busydescription))
+                c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr, kingtimer) VALUES ({0}, {1}, '{2}', '{3}', {4})".format(s.userid, s.busytime, s.busychannel, s.busydescription, s.kingtimer))
             else :
-                c.execute("UPDATE busy SET busytime = {1}, busychannel = '{2}', busydescr='{3}' WHERE playerID = {0}".format(s.userid, s.busytime, s.busychannel, s.busydescription))
+                c.execute("UPDATE busy SET busytime = {1}, busychannel = '{2}', busydescr='{3}', kingtimer={4} WHERE playerID = {0}".format(s.userid, s.busytime, s.busychannel, s.busydescription, s.kingtimer))
             if c.execute("SELECT playerID FROM weapon WHERE playerID = {0}".format(s.userid)) == 0 :
                 c.execute("INSERT INTO weapon (playerID, name, cost, element, damage, weaponskill, critical) VALUES ({}, \"{}\", {}, {}, {}, {}, {})".format(s.userid, s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill, s.weapon.critical))
             else :

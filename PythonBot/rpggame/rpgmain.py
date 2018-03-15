@@ -15,6 +15,7 @@ class RPGGame:
         self.bot = my_bot
         self.bossparties = {}
         self.players = {}
+        self.gameInit()
 
     def addHealthRep(self, embed : discord.Embed, players : [rpgchar.RPGCharacter]):
         hrep = ""
@@ -515,6 +516,14 @@ class RPGGame:
             await self.bot.say("The current {} of {} is {}".format(kingname, ctx.message.server.name, ctx.message.server.get_member(str(king)).display_name))
             return
         data = self.getPlayerData(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.busydescription != rpgchar.NONE:
+            await self.bot.say("Please finish what you are doing before a fight")
+            return
+        now = datetime.datetime.now()
+        if data.kingtimer != 0:
+            if (now - datetime.datetime.fromtimestamp(data.kingtimer)).seconds < 3600:
+                await self.bot.say("You are still tired from your last battle, rest for an hour or so and you can try again")
+                return
         if dbcon.isKing(data.userid):
             await self.bot.say("You are already a {} of another world".format(kingname))
             return
@@ -538,6 +547,8 @@ class RPGGame:
         else:
             winner = kingdata
             await self.bot.say("{0} beat down {1}\n{0} remains the true {2} of {3}!".format(kingdata.name, data.name, kingname, ctx.message.server.name))
+        data.kingtimer = now.timestamp()
+        kingdata.kingtimer = now.timestamp()
         winner.health = winner.getMaxhealth()
         winner.levelups += 1
 

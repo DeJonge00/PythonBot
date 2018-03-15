@@ -206,7 +206,7 @@ class Mod:
 
     async def quitBot(self):
         try:
-            self.bot.quit()
+            await self.bot.quit()
         except Exception as e:
             print(e)
         await self.bot.logout()

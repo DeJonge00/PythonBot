@@ -3,6 +3,7 @@ from discord.ext import commands
 from collections import deque
 from discord.ext.commands import Bot
 import urllib.request, urllib.parse, re
+from datetime import datetime, timedelta
 embedColor = 0x93cc04
 
 class VoiceEntry:
@@ -38,7 +39,7 @@ class VoiceState:
         self.audio_player = self.bot.loop.create_task(self.audio_player_task())
         self.volume = 1.0
         self.repeat=False
-        self.lastmessage = None
+        self.lastmessage = datetime.now()
 
     def is_playing(self):
         if self.voice is None or self.current is None:
@@ -74,11 +75,14 @@ class VoiceState:
                     self.current = None
             except Exception as e:
                 print(e)
+                self.lastmessage = datetime.now()
     
-    def quit(self):
+    async def quit(self):
         self.songs = asyncio.Queue()
         if self.is_playing():
-            self.player.stop()
+            state.skip()
+        if self.voice != None:
+            await self.voice.disconnect()
 
 class MusicPlayer:
     def __init__(self, my_bot):
@@ -86,6 +90,11 @@ class MusicPlayer:
         import opuslib
         self.voice_states = {}
 
+    async def musicLoop(self, time : datetime):
+        for s in self.voice_states.values():
+            if (not s.is_playing()) and ((s.lastmessage - time).seconds > 15*60):
+                await s.quit()
+    
     def get_voice_state(self, server):
         state = self.voice_states.get(server.id)
         if state is None:
@@ -96,11 +105,7 @@ class MusicPlayer:
 
     async def stopPlaying(self, ctx):
         state = self.get_voice_state(ctx.message.server)
-        state.songs = asyncio.Queue()
-        state.skip()
-        voiceClient = self.bot.voice_client_in(ctx.message.server)
-        if voiceClient != None:
-            await voiceClient.disconnect()
+        await state.quit()
         state = None
 
     async def handleReaction(self, reaction):
@@ -136,7 +141,7 @@ class MusicPlayer:
                 state.voice = await self.bot.join_voice_channel(channel)
         except Exception as e:
             embed = discord.Embed(colour=0x0000FF)
-            embed.add_field(name="Something went wrong", value="{}".format(type(e).__name__))
+            embed.add_field(name="{}".format(type(e).__name__), value='{}'.format(e))
             fmt = '```py\n{}: {}\n```'
             #await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
             print(fmt.format(type(e).__name__, e))
@@ -373,6 +378,6 @@ class MusicPlayer:
             state.player.volume = vol/100
         await self.bot.say("Volume set to {}%".format(vol))
 
-    def quit(self):
+    async def quit(self):
         for s in self.voice_states.values():
-            s.quit()
+            await s.quit()

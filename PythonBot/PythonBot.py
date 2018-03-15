@@ -52,17 +52,19 @@ class PythonBot(Bot):
 
             if self.RPGGAME:
                 await self.rpggame.gameTick(time)
+            if self.MUSIC:
+                await self.musicplayer.musicLoop(time)
 
             endtime = datetime.datetime.utcnow()
             #print("Sleeping for " + str(60-(endtime).second) + "s")
             await asyncio.sleep(60-endtime.second)
 
-    def quit(self):
+    async def quit(self):
         self.running = False
         if self.RPGGAME:
             self.rpggame.quit()
         if self.MUSIC:
-            self.musicplayer.quit()
+            await self.musicplayer.quit()
 
 def initBot():
     bot = PythonBot()

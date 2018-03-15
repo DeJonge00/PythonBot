@@ -98,7 +98,7 @@ suffixes = [
     'used by Kings',
     'Larger than a Man',
     'Infused with a Greater Soul',
-    'Wished into Excistence',
+    'Wished into Existence',
     'Created by the God of War',
     'Given as a Blessing',
     'of the Chosen One',

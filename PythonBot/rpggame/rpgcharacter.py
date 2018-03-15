@@ -103,6 +103,7 @@ class RPGPlayer(RPGCharacter):
         self.busychannel = 0
         self.busydescription = NONE
         self.bosstier = 1
+        self.kingtimer = 0
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
     def resolveDeath(self):
