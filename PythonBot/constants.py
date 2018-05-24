@@ -149,7 +149,8 @@ ded = [
             "Sooooo... Let's do lewd stuff now?",
             "Just like your love life :smile:",
             "You look like you want to do my homework?",
-            "Let's talk about your mom then!"
+            "Let's talk about your mom then!",
+            "Fun fact #318: People die when they are killed"
         ]
 
 faces = [

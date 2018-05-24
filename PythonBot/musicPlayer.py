@@ -1,9 +1,7 @@
 import argparse, asyncio, constants, discord, removeMessage, math 
 from discord.ext import commands
 from collections import deque
-from discord.ext.commands import Bot
-import urllib.request, urllib.parse, re
-from datetime import datetime, timedelta
+from datetime import datetime
 embedColor = 0x93cc04
 
 class VoiceEntry:
@@ -14,7 +12,7 @@ class VoiceEntry:
         self.player = player
 
     def __str__(self):
-        return  "'{0}' ({1[0]}.{1[1]}) requested by **{2}**".format(self.player.title, divmod(self.player.duration, 60), self.requester.display_name)
+        return "'{0}' ({1[0]}.{1[1]}) requested by **{2}**".format(self.player.title, divmod(self.player.duration, 60), self.requester.display_name)
 
     def embed(self, title="Music"):
         embed = discord.Embed(colour=embedColor)
@@ -22,11 +20,12 @@ class VoiceEntry:
         embed.add_field(name="Title", value=self.player.title + "  ")
         embed.add_field(name="Duration", value="{0[0]}m {0[1]}s".format(divmod(self.player.duration, 60)))
         embed.add_field(name="Requester", value=self.requester.display_name)
-        if self.player.likes != None:
+        if not self.player.likes:
             embed.add_field(name="👍", value=self.player.likes)
-        if self.player.dislikes != None:
+        if not self.player.dislikes:
             embed.add_field(name="👎", value=self.player.dislikes)
         return embed
+
 
 class VoiceState:
     def __init__(self, bot):
@@ -98,7 +97,7 @@ class MusicPlayer:
 
     async def musicLoop(self, time : datetime):
         for s in self.voice_states.values():
-            if (not s.is_playing()) and ((time - s.timestamp).seconds > (15*60)):
+            if (not s.is_playing()) and ((time - s.timestamp).seconds > (10*60)):
                 await s.disconnect()
 
     def get_voice_state(self, server):
