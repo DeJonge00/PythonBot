@@ -313,7 +313,7 @@ class Basics:
         self.patTimes[ctx.message.author.id] = time
 
         n = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
-        s = '' if n == 1 else s = 's'
+        s = '' if n == 1 else 's'
         m = "{} has pat {} {} time{} now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, n, s)
         if n%100==0:
             m += "\nWoooooaaaaahh LEGENDARY!!!"
