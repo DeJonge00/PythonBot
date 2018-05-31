@@ -5,6 +5,8 @@ from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from os import listdir
 from PIL.GifImagePlugin import getheader, getdata
+import removeMessage
+
 
 # Normal commands
 class Images:
@@ -14,7 +16,7 @@ class Images:
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
     async def pp(self, ctx, *args):
-        await self.bot.delete_message(ctx.message)
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
@@ -27,7 +29,7 @@ class Images:
     # {prefix}meme <meme> <toptext>|<bottomtext>
     @commands.command(pass_context=1, hidden=True, help="Make a meme out of the arguments")
     async def meme(self, ctx, *args):
-        await self.bot.delete_message(ctx.message)
+        await removeMessage.deleteMessage(self.bot, ctx)
         if (len(args) >= 1) & (args[0] == "list"):
             return await self.bot.send_message(ctx.message.channel, "Memelist: onedoesnotsimply")
         if len(args) < 2:
@@ -76,7 +78,7 @@ class Images:
     # {prefix}spin <user>
     @commands.command(pass_context=1, hidden=True, help="You spin your head right round, right round. Like a record baby!")
     async def spin(self, ctx, *args):
-        await self.bot.delete_message(ctx.message)
+        await removeMessage.deleteMessage(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
@@ -100,5 +102,5 @@ class Images:
         img = Image.open(BytesIO(response.content))
         if img.height > 200:
             f = 200/img.height
-            img = img.resize(((int)(img.height*f),(int)(img.width*f)))
+            img = img.resize((int(img.height*f),int(img.width*f)))
         img.save(name)

@@ -280,3 +280,78 @@ spellresult = [
             "The target was immune!",
             "It was not very effective!"
         ]
+
+nyan_gifs = [
+    'https://media.giphy.com/media/isPYEL6KxFi6Y/giphy.gif',
+    'https://media3.giphy.com/media/AHj0lQstZ9I9W/giphy.gif',
+    'https://i.imgur.com/tOqM6XL.gif',
+    'https://media.giphy.com/media/Gcgy6Wbu4PrsA/giphy.gif',
+    'https://media.giphy.com/media/sXqH54DtQWARa/giphy.gif',
+    'https://media.giphy.com/media/HitPGTy09xSDK/giphy.gif',
+    'https://media.giphy.com/media/cxPtMDHG8Ljry/giphy.gif',
+    'https://media.giphy.com/media/ONGP8XALvsy3e/giphy.gif',
+    'https://media.giphy.com/media/sZVEyTg7CzbJ6/giphy.gif',
+    'https://media.giphy.com/media/K3JA8v31JrSkU/giphy.gif',
+    'https://media.giphy.com/media/GYFZS7mXH747C/giphy.gif',
+    'https://media.giphy.com/media/ZfvPtqQcFFjAQ/giphy.gif',
+    'https://media.giphy.com/media/E2TzDxzrWXLDG/giphy.gif',
+    'https://media.giphy.com/media/KbMHYvRFFnNYY/giphy.gif',
+    'https://media.giphy.com/media/urPD9zxVCLXTW/giphy.gif',
+    'https://media.giphy.com/media/jCaU8WfesJfH2/giphy.gif',
+    'https://media.giphy.com/media/Qja1ZLA9BUNyg/giphy.gif',
+    'https://media.giphy.com/media/sAe9GRj5LAqpq/giphy.gif',
+    'https://media.giphy.com/media/Dw65sEWxndVfi/giphy.gif',
+    'https://media.giphy.com/media/K5EX3z11qpMfC/giphy.gif',
+    'https://78.media.tumblr.com/38b02b09730c95775f579b5a0b35319e/tumblr_ogn060Fu2r1vztiw8o1_400.gif',
+    'https://78.media.tumblr.com/5b96155c7221911a5b29b0b2cc6e9ba3/tumblr_o1xktlVpr81s5rcozo1_500.gif',
+    'https://78.media.tumblr.com/f1e74179eb27765ef7c5e08536e150e7/tumblr_nli7wyrwXz1t2yvn6o1_500.gif'
+
+]
+
+happy_gifs = [
+    'https://media.giphy.com/media/IbY1pcwcQZCmY/giphy.gif',
+    'https://78.media.tumblr.com/6679afd9790a301108d08a945acbf9e1/tumblr_mff6qkwbvT1qk3jbxo1_400.gif',
+    'https://media.giphy.com/media/cxPtMDHG8Ljry/giphy.gif',
+    'https://media.giphy.com/media/1ZpjBPNukaKys/giphy.gif',
+    'https://78.media.tumblr.com/191164793bcb85080ad77e759d2225b5/tumblr_o3xiwlHO331v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/a69cb6f512fbb6a0058a47b39ad1c7eb/tumblr_o21fnl2XoV1v57tj1o1_500.gif',
+    'https://i.imgur.com/FfhDGkV.gifv'
+]
+
+lewd_gifs = [
+    'https://media.giphy.com/media/YOul1IMoGJxWU/giphy.gif',
+    'https://media.giphy.com/media/xRKHBTcyLDG1y/giphy.gif',
+    'https://media.giphy.com/media/8H4gAfCd9ChZS/giphy.gif',
+    'https://media.giphy.com/media/pHH0RsynZHGlG/giphy.gif',
+    'https://media.giphy.com/media/ndYAqx8RKKUIE/giphy.gif',
+    'https://media.giphy.com/media/tNRgDg7qNydu8/giphy.gif',
+    'https://media.giphy.com/media/12lLTU2L0CIufC/giphy.gif',
+    'https://media.giphy.com/media/Yhc1zjftHFFyo/giphy.gif',
+    'https://media.giphy.com/media/fzFoOkVjpJ7ws/giphy.gif',
+    'https://media.giphy.com/media/DHT6OLrSGU8z6/giphy.gif',
+    'https://78.media.tumblr.com/13b0f0392221cdfe0abba9ec138aecc2/tumblr_od3p7cdBF61vd3pvao1_500.gif',
+    'https://78.media.tumblr.com/50376c27d54a9133e660d7364d105d53/tumblr_obgbppAwCT1ufkuk3o1_500.gif',
+    'https://78.media.tumblr.com/006bcd9fd7d1815a761024bd485ad61d/tumblr_o272y3X2Qw1v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/e12abbabebc5afb749000a21342b0dd0/tumblr_o1sp466LcO1v57tj1o1_540.gif'
+]
+
+plsno_gifs = [
+    'https://78.media.tumblr.com/d3ad3dd269d6e4576111ad087ecf2c47/tumblr_mus72zx1pq1sl0k4to3_500.gif',
+    'https://78.media.tumblr.com/851efcb4d5f4ce20e7b52b1535b89cc4/tumblr_o5ab6lBFaE1s5rcozo1_500.gif',
+    'https://78.media.tumblr.com/f73df7fce8eda72ea6ed090fc7230dda/tumblr_nisw1pLqzJ1tkcfuko1_r2_500.gif',
+    'https://78.media.tumblr.com/382c5ecc93a0d1a9e4b7798d36f5cbeb/tumblr_oraotc2qlb1v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/7c6cd05d84657af9e8a24fd87c34b804/tumblr_oi01npmL5e1v57tj1o1_400.gif',
+    'https://78.media.tumblr.com/24b56250189e60ae6964ffe1e6efae6e/tumblr_ofai3k8ad01sqh6yeo1_500.gif',
+    'https://78.media.tumblr.com/c8f585e6671610e48e81187bd2aead76/tumblr_o0yk9fV4Ng1v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/31b542bb9f23d09dc19b1bd67b6f8a24/tumblr_o0xzesTqVc1v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/6775a17c70ab8a47d1dc1d9914d8d26f/tumblr_o2ggoakPw01v57tj1o1_500.gif',
+    'https://78.media.tumblr.com/1e4c2bf39c5e47dfe278704297afd794/tumblr_o27gp9yxN91s5rcozo3_1280.gif',
+    'https://78.media.tumblr.com/24110fa8b9b728fdfd7a745a59ad80db/tumblr_o21c35LffG1s5rcozo1_500.gif',
+    'https://78.media.tumblr.com/2e8fb3fb2c14a3f760022bd0c0876661/tumblr_o1sesxkEYo1v57tj1o1_500.gif'
+]
+
+sad_gifs = [
+    'https://media.giphy.com/media/AcC4iokjdkmk0/giphy.gif',
+    'https://media.giphy.com/media/jqXH5VeTYNeTu/giphy.gif',
+    'https://78.media.tumblr.com/5566467b394ddab7899fe5fa3057212b/tumblr_o2o9mvfIGK1s5rcozo1_500.gif'
+]

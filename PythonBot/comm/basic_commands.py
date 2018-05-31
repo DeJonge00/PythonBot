@@ -1,8 +1,8 @@
-import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3
+import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3, requests
 from discord.ext import commands
 from discord.ext.commands import Bot
 from os import listdir
-from urbanpyctionary.client import Client
+import urbandictionary as ud
 from secret import secrets
 from rpggame import rpgdbconnect as dbcon
 
@@ -21,6 +21,11 @@ class Basics:
             self.bot.cat = {}
             self.bot.cuddle = {}
             self.bot.ded = {}
+            self.bot.nyan = {}
+            self.bot.happy = {}
+            self.bot.sadness = {}
+            self.bot.lewd = {}
+            self.bot.plsno = {}
         self.patTimes = {}
 
     # {prefix}60
@@ -29,8 +34,8 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if TIMER:
             t = self.bot.fps.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
+            if t is not None:
+                if (datetime.datetime.utcnow() - t).seconds < 60:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.fps[ctx.message.channel.id] = datetime.datetime.utcnow()
@@ -48,7 +53,26 @@ class Basics:
             await self.bot.send_typing(ctx.message.channel)
             self.bot.biri[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "biribiri")
-    
+
+    # {prefix}botstats
+    @commands.command(pass_context=1, help="Biri's botstats!", aliases=['botinfo'])
+    async def botstats(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        embed = discord.Embed(colour=0x000000)
+        embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
+        embed.add_field(name='Name', value=str(self.bot.user.name))
+        embed.add_field(name='Id', value=str(self.bot.user.id))
+        embed.add_field(name="Birthdate", value=self.bot.user.created_at.strftime("%D, %H:%M:%S"))
+        embed.add_field(name='Servers', value=str(len(self.bot.servers)))
+        embed.add_field(name='Lewd dm channels', value=str(len(self.bot.private_channels)))
+        embed.add_field(name='Emojis', value=str(len([_ for _ in self.bot.get_all_emojis()])))
+        embed.add_field(name='Fake friends', value=str(len([_ for _ in self.bot.get_all_members()])))
+        embed.add_field(name='Commands', value=str(len(self.bot.commands)))
+        embed.add_field(name='Owner', value='Nya#2698')
+        embed.add_field(name='Landlord', value='Kappa#2915')
+        embed.set_image(url=self.bot.user.avatar_url)
+        return await self.bot.send_message(ctx.message.channel, embed=embed)
+
     # {prefix}cast <user>
     @commands.command(pass_context=1, help="Cast a spell!")
     async def cast(self, ctx, *args):
@@ -77,9 +101,12 @@ class Basics:
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
     
     # {prefix}countdown time
-    @commands.command(pass_context=1, help="Give someone a compliment")
+    @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        if not ctx.message.channel.is_private:
+            await self.bot.say('This can only be used in private for spam reasons')
+            return
         try:
             n = int(args[0])
         except ValueError:
@@ -164,19 +191,20 @@ class Basics:
     async def emoji(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if len(args) <= 0:
-            return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS");
+            return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS")
+
+        try:
+            emojiid = re.findall('\d+', ctx.message.content)[0]
+        except IndexError:
+            emoji = re.findall('[a-zA-Z]+', ctx.message.content)
+            for e in self.bot.get_all_emojis():
+                if e.name in emoji:
+                    emojiid = e.id
+                    break
+        ext = 'gif' if requests.get('https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
-        try:
-            emoji = re.findall('\d+', args[0])[0];
-            print(emoji);
-            embed.set_image(url="https://discordapp.com/api/emojis/{0}.png".format(emoji));
-        except:
-            emoji = args[0].split(':')[0];
-            emojis = self.bot.get_all_emojis();
-            for e in emojis:
-                if(e.name == emoji):
-                    embed.set_image(url="https://discordapp.com/api/emojis/{0.id}.png".format(e))
+        embed.set_image(url="https://discordapp.com/api/emojis/{}.{}".format(emojiid, ext))
         return await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}emojify <words>
@@ -218,6 +246,19 @@ class Basics:
             self.bot.heresy[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "heresy")
 
+    # {prefix}happy
+    @commands.command(pass_context=1, help="Awwww yeaaahhh!")
+    async def happy(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.happy.get(ctx.message.channel.id)
+            if not t is None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.happy[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Happinesssss', ctx.message.author.avatar_url, constants.happy_gifs)
+
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
     async def hug(self, ctx, *args):
@@ -253,6 +294,19 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
+    # {prefix}lewd
+    @commands.command(pass_context=1, help="LLEEEEEEEEWWDD!!!")
+    async def lewd(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.lewd.get(ctx.message.channel.id)
+            if not t is None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.lewd[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Leeeeeewwwdd!', ctx.message.author.avatar_url, constants.lewd_gifs)
+
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
     async def lottery(self, ctx, *args):
@@ -271,13 +325,13 @@ class Basics:
         i = self.bot.user
         while not (i == ctx.message.author):
             r = await self.bot.wait_for_reaction(['👍'], message=m)
-            if not ((self.bot.user == r.user) | (r.user.id in lotterylist)):
+            if not r.user.bot:
                 lotterylist.add(r.user)
             i = r.user
         # Select winner
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.choice(lotterylist).name + " is the lucky winner!"
+        mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.sample(lotterylist, 1)[0].name + " is the lucky winner!"
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
@@ -293,6 +347,37 @@ class Basics:
             await self.bot.send_typing(ctx.message.channel)
             self.bot.nonazi[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "nonazi")
+
+    # {prefix}nyan
+    @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
+    async def nyan(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.nyan.get(ctx.message.channel.id)
+            if not t is None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.nyan[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Nyan', ctx.message.author.avatar_url, constants.nyan_gifs)
+
+    # # {prefix}nyanya
+    # @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
+    # async def nyanya(self, ctx, *args):
+    #     await removeMessage.deleteMessage(self.bot, ctx)
+    #     if TIMER:
+    #         t = self.bot.nyan.get(ctx.message.channel.id)
+    #         if not t is None:
+    #             if (datetime.datetime.utcnow() - t).seconds < (60):
+    #                 return
+    #         await self.bot.send_typing(ctx.message.channel)
+    #         self.bot.nyan[ctx.message.channel.id] = datetime.datetime.utcnow()
+    #
+    #     embed = discord.Embed(colour=0x00969b)
+    #     embed.set_author(name='Catgirls for you <3', icon_url=ctx.message.author.avatar_url)
+    #     embed.set_image(url = [x for x in requests.get('https://weeb.sh/').text.split('"') if 'images' in x][1])
+    #     embed.set_footer(text='see weeb.sh for more')
+    #     await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
@@ -323,53 +408,80 @@ class Basics:
             m += "\nSugoi!"
         await self.bot.say(m);
 
+    # {prefix}plsno
+    @commands.command(pass_context=1, help="Nonononononono!")
+    async def plsno(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.plsno.get(ctx.message.channel.id)
+            if not t is None:
+                if (datetime.datetime.utcnow() - t).seconds < (60):
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.plsno[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Pls no', ctx.message.author.avatar_url, constants.plsno_gifs)
+
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
     async def role(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if len(args)<=0:
+        if len(args) <= 0:
             await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(constants.prefix))
             return
         else:
             rolename = args[0].lower()
-        authorhasperms = (ctx.message.channel.permissions_for(ctx.message.author).manage_roles)
-        if len(ctx.message.mentions)<=0:
+        authorhasperms = ctx.message.channel.permissions_for(ctx.message.author).manage_roles or (ctx.message.server.owner.id == ctx.message.author.id)
+        if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
             if not authorhasperms:
                 await self.bot.send_message(ctx.message.channel, "You do not have the permissions to give other people roles")
                 return
             user = ctx.message.mentions[0]
-        if ((ctx.message.server.id == constants.NINECHATid) & (rolename in ['nsfw', 'muted'])):
-            role = None
-            for r in ctx.message.server.roles:
-                if r.name.toLower().replace(' ','') == rolename:
-                    role = r
-                    break
-            if role != None:
-                try:
-                    if role in ctx.message.author.roles:
-                        await self.bot.remove_roles(user, role)
-                        await self.bot.send_message(ctx.message.channel, "Role {} succesfully removed".format(role.name))
-                        return
-                    else:
-                        await self.bot.add_roles(user, role)
-                        await self.bot.send_message(ctx.message.channel, "Role {} succesfully added".format(role.name))
-                        return
-                except discord.Forbidden:
-                    await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
-                    return
-            else:
-                await self.bot.send_message(ctx.message.channel, "Role {} not found (it's case sensitive)".format(role))
-                return
-        else:
+        if not (authorhasperms or rolename in ['nsfw', 'muted']):
             await self.bot.say("You lack the permissions for that")
             return
+        role = None
+        for r in ctx.message.server.roles:
+            if r.name.lower().replace(' ', '') == rolename:
+                role = r
+                break
+        if not role:
+            await self.bot.send_message(ctx.message.channel, "Role {} not found".format(role))
+            return
+        try:
+            if role in ctx.message.author.roles:
+                await self.bot.remove_roles(user, role)
+                await self.bot.send_message(ctx.message.channel, "Role {} succesfully removed".format(role.name))
+                return
+            else:
+                await self.bot.add_roles(user, role)
+                await self.bot.send_message(ctx.message.channel, "Role {} succesfully added".format(role.name))
+                return
+        except discord.Forbidden:
+            await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
+            return
+
+    # {prefix}sadness
+    @commands.command(pass_context=1, help="Cri!")
+    async def sadness(self, ctx, *args):
+        await removeMessage.deleteMessage(self.bot, ctx)
+        if TIMER:
+            t = self.bot.sadness.get(ctx.message.channel.id)
+            if not t is None:
+                if (datetime.datetime.utcnow() - t).seconds < 60:
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.sadness[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Sadnessss', ctx.message.author.avatar_url, constants.sad_gifs)
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!")
     async def serverinfo(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
+        if ctx.message.channel.is_private:
+            await self.bot.say('That cannot be done in private')
+            return
         server = ctx.message.server
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=server.name, icon_url=ctx.message.author.avatar_url)
@@ -383,8 +495,8 @@ class Basics:
         embed.add_field(name="Custom Emoji", value=len(server.emojis))
         embed.add_field(name="Roles", value=len(server.roles))
         embed.add_field(name="Channels", value=len(server.channels))
-        if len(server.features)>0:
-            f  = ""
+        if len(server.features) > 0:
+            f = ""
             for feat in server.features:
                 f += "{}\n".format(feat)
             embed.add_field(name="Features", value=f)
@@ -403,23 +515,22 @@ class Basics:
         embed = discord.Embed(colour=0x0000FF)
         embed.add_field(name="Urban Dictionary Query", value=q)
         try:
-            c = Client(API_key = secrets.urbankey)
-            r = c.get(q)
-            embed.add_field(name="Definition", value=r[1].definition, inline=False)
-            embed.add_field(name="Author", value=r[1].author)
-            embed.add_field(name="👍", value=r[1].thumbs_up)
-            embed.add_field(name="👎", value=r[1].thumbs_down)
+            r = ud.define(q)[0]
+            embed.add_field(name="Definition", value=r.definition, inline=False)
+            embed.add_field(name="Example", value=r.example)
+            embed.add_field(name="👍", value=r.upvotes)
+            embed.add_field(name="👎", value=r.downvotes)
             await self.bot.send_message(ctx.message.channel, embed=embed)
             return
-        except Exception as e:
+        except IndexError:
             embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
-            return await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}userinfo <user>
     @commands.command(pass_context=1, help="Get a user's information!", aliases=["user", "info"])
     async def userinfo(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if len(ctx.message.mentions)<=0:
+        if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
             user = ctx.message.mentions[0]

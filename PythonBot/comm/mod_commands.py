@@ -1,6 +1,8 @@
-import asyncio, discord, constants, log, pickle, removeMessage, sqlite3
+import asyncio, discord, constants, log, pickle, removeMessage, sqlite3, os, requests
 from discord.ext import commands
 from random import randint
+from PIL import Image
+from io import BytesIO
 
 # Mod commands
 class Mod:
@@ -48,6 +50,40 @@ class Mod:
         for i in self.bot.servers:
             m += i.name + "\n";
         await self.bot.send_message(ctx.message.channel, m)
+
+    # {prefix}newpp <attach new pp>
+    @commands.command(pass_context=1, help="Nickname a person")
+    async def newpp(self, ctx, *args):
+        if not(ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
+            await self.bot.say("Hahahaha, no")
+            return
+        if len(ctx.message.attachments) > 0:
+            url = ctx.message.attachments[0].get('url')
+        elif len(ctx.message.mentions) > 0:
+            url = '.'.join(ctx.message.mentions[0].avatar_url.split('.')[:-1])+'.png'
+            print(url)
+        else:
+            await self.bot.say('Pls give me smth...')
+            return
+        try:
+            # TODO: Fix saving pic first
+            name = 'temp/newpp.png'
+            Image.open(BytesIO(requests.get(url).content)).save(name)
+            await removeMessage.deleteMessage(self.bot, ctx)
+            with open(name, 'rb') as file:
+                await self.bot.edit_profile(avatar=file.read())
+            await self.bot.say('Make-up is done sweety <3')
+        except requests.exceptions.MissingSchema:
+            await self.bot.say('Thats not a valid target')
+        except OSError:
+            await self.bot.say('Thats not a valid target')
+        except discord.HTTPException:
+            await self.bot.say('Discord pls')
+        finally:
+            try:
+                os.remove(name)
+            except:
+                pass
 
     # {prefix}nickname <@person>
     @commands.command(pass_context=1, help="Nickname a person", aliases=["nick", "nn"])
