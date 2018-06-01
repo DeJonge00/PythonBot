@@ -126,5 +126,6 @@
 |               |`rpg,b&d,bnd` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
 |               |`rpg,b&d,bnd` `weapon`                                 |Show shop weapon inventory
 |               |`rpg,b&d,bnd` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
-Developer's note:
+
+### Developer's note:
 Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)
