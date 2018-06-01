@@ -281,7 +281,7 @@ class Basics:
             m = await self.bot.say(embed=embed)
 
     # {prefix}kill <person>
-    @commands.command(pass_context=1, help="Wish someone a happy death!")
+    @commands.command(pass_context=1, help="Wish someone a happy death! (is a bit explicit)")
     async def kill(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
@@ -311,7 +311,7 @@ class Basics:
     @commands.command(pass_context=1, help="Set up a lottery!")
     async def lottery(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if len(args)<1:
+        if len(args) < 1:
             desc = "Something something LOTTERY!!"
         else:
             desc = " ".join(args)
@@ -328,6 +328,7 @@ class Basics:
             if not r.user.bot:
                 lotterylist.add(r.user)
             i = r.user
+
         # Select winner
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)

@@ -86,14 +86,14 @@ def initBot():
     # Handle incoming events
     @bot.event
     async def on_message(message):
-        if (message.author.bot):
+        if message.author.bot:
             return
-        if (message.channel.is_private):
+        if message.channel.is_private:
             await log.log("direct message", message.author.name, message.content, "dm")
         else:
-            if (message.server.id == constants.NINECHATid) & (message.server.get_member(constants.NYAid)==None):
+            if (message.server.id == constants.NINECHATid) & (not message.server.get_member(constants.NYAid)):
                 print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
-            if message.content:
+            if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
         if len(message.attachments) > 0:
             await message_handler.new_pic(bot, message)

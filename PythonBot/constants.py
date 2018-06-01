@@ -20,6 +20,7 @@ WIZZid = "224620110277509120"
 PRIVATESERVERid = "226010107513798656"
 NINECHATid = "225995968703627265"
 LEGITSOCIALid = "319581059467575297"
+bot_list_servers = ['264445053596991498', '110373943822540800']
 
 ytdl_options = dict(
     format="bestaudio/best",
@@ -230,7 +231,7 @@ kill = [
             "{u[0]}, Imma tie your limbs with a rope so tight, they will die and fall off",
             "{u[0]}, Imma insert superglue in every hole on your body I can find",
             "{u[0]}, Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat"
-            "{u[0]}, Imma hang you by your ballz from the ceiling fan and use you as a pinyata"
+            "{u[0]}, Imma hang you by your balls from the ceiling fan and use you as a pinata"
         ]
 
 lewd = [
