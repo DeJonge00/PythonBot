@@ -130,4 +130,4 @@
 ### Developer's note:
 Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)
 
-![discordbots.org](https://discordbots.org/api/widget/244410964693221377.svg "Logo Title Text 1")
+[![Discord Bots](https://discordbots.org/api/widget/244410964693221377.svg)](https://discordbots.org/bot/244410964693221377)
