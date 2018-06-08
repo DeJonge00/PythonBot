@@ -1,4 +1,4 @@
-import asyncio, discord, constants, log, pickle, removeMessage, sqlite3, os, requests
+import asyncio, discord, constants, log, pickle, removeMessage, sqlite3, os, requests, dbconnect
 from discord.ext import commands
 from random import randint
 from PIL import Image
@@ -160,19 +160,13 @@ class Mod:
     async def setgoodbye(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
-        c = conn.cursor()
-        c.execute("SELECT * FROM goodbye WHERE serverID=" + ctx.message.server.id)
-        r = c.fetchone()
-        if r == None:
-            c.execute("INSERT INTO goodbye VALUES ('" + ctx.message.server.id + "', '" + " ".join(args) + "')")
-        else:
-            c.execute("UPDATE goodbye SET message='"+ " ".join(args) +"' WHERE serverID=" + ctx.message.server.id)
-        conn.commit()
-        conn.close()
+        if len(" ".join(args)) > 120:
+            await self.bot.say("Sorry, this message is too long...")
+            return
+        dbconnect.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
 
     # {prefix}resetwelcome
@@ -195,19 +189,13 @@ class Mod:
     async def setwelcome(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not((ctx.message.author.id==constants.NYAid) | (perms.manage_server)):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
             await self.bot.say("Hahahaha, no")
             return
-        conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
-        c = conn.cursor()
-        c.execute("SELECT * FROM welcome WHERE serverID=" + ctx.message.server.id)
-        r = c.fetchone()
-        if r == None:
-            c.execute("INSERT INTO welcome VALUES ('" + ctx.message.server.id + "', '" + " ".join(args) + "')")
-        else:
-            c.execute("UPDATE welcome SET message='"+ " ".join(args) +"' WHERE serverID=" + ctx.message.server.id)
-        conn.commit()
-        conn.close()
+        if len(" ".join(args)) > 120:
+            await self.bot.say("Sorry, this message is too long...")
+            return
+        dbconnect.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
 
     # {prefix}spam <amount> <user>

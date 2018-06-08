@@ -20,7 +20,7 @@ WIZZid = "224620110277509120"
 PRIVATESERVERid = "226010107513798656"
 NINECHATid = "225995968703627265"
 LEGITSOCIALid = "319581059467575297"
-bot_list_servers = ['264445053596991498', '110373943822540800']
+bot_list_servers = ['264445053596991498', '110373943822540800', '374071874222686211']
 
 ytdl_options = dict(
     format="bestaudio/best",
@@ -50,7 +50,8 @@ qa = [
             "If there is one thing I am sure of, it is that traps are gay af",
             "About a 4% chance of that...",
             "Not. Even. Close.",
-            "Do not question the unquestionable"
+            "Do not question the unquestionable",
+            "All day, every day. Just don't involve me..."
         ]
 
 response = [
@@ -108,7 +109,13 @@ response = [
             "Would you kindly shut the fuck up?",
             "No. Just... **No**",
             "Want to do some gichi gichi? ( ͡° ͜ʖ ͡°)",
-            "Don't hack me senpai"
+            "Don't hack me senpai",
+            "That's sarcasm right??",
+            "o/",
+            "True, in more ways than one",
+            "*Gimme some rope, I'm coming loose*",
+            "You should go outside sometime",
+            "Omegalul"
         ]
 
 # random responses
@@ -169,7 +176,14 @@ faces = [
             "(▀̿Ĺ̯▀̿ ̿)",
             "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
             "ლ(ಠ益ಠლ)",
-            "(｡◕‿‿◕｡)"
+            "(｡◕‿‿◕｡)",
+            "٩(̾●̮̮̃̾•̃̾)۶",
+            "d[ o_0 ]b",
+            "✌⊂(✰‿✰)つ✌",
+            "(⋗_⋖)",
+            "(◔/‿\◔)",
+            "ˁ(OᴥO)ˀ",
+            "( ͜。 ͡ʖ ͜。)"
         ]
 
 hangmanwords = [
@@ -183,30 +197,31 @@ hangmanwords = [
             "Anime is love, anime is life",
             "This sentence is false",
             "Send nudes please",
-            "Lolicon intensifies"
+            "Lolicon intensifies",
+            "Blood for the blood god"
     ]
 
 hug = [
-            "{u[0]} gives {u[1]} a really big hug",
-            "{u[0]} teleports in to hug {u[1]}",
-            "{u[0]} transforms into a pillow and hugs {u[1]}",
-            "{u[0]} executes realBigHug.exe on {u[1]}",
-            "{u[0]} immediately ceases doing important stuff to hug {u[1]}",
-            "{u[0]} said: \"Let there be hugs\", and {u[1]} got hugs",
-            "{u[0]}-chan hug hug {u[1]}",
-            "{u[0]} blows {u[1]} a sweet pink kiss",
-            "{u[0]} stops fapping to kpop for a hug with {u[1]}",
-            "{u[0]} fabulously flies in for a hug with {u[1]}",
-            "{u[0]} practices a new more cuddly type of hug on {u[1]}",
-            "{u[0]} stabs a lot of people to be the only one to hug {u[1]}",
-            "{u[0]} morphs into a hugmonster and attacks {u[1]}",
-            "{u[0]} uses a love power-up to hug {u[1]}",
-            "{u[0]} used special move \"HUG\" on {u[1]}",
-            "{u[0]} orders a hug-airstrike on {u[1]}",
-            "{u[1]} sprung {u[0]}'s hugtrap",
-            "{u[0]} finished the moment with a super cute hug for {u[1]}",
-            "{u[0]} has some cuddle-time with {u[1]}",
-            "{u[0]} *hugs {u[1]} lovingly*"
+            "*{u[0]} gives {u[1]} a really big hug*",
+            "*{u[0]} teleports in to hug {u[1]}*",
+            "*{u[0]} transforms into a pillow and hugs {u[1]}*",
+            "*{u[0]} executes realBigHug.exe on {u[1]}*",
+            "*{u[0]} immediately ceases doing important stuff to hug {u[1]}*",
+            "*{u[0]} said: \"Let there be hugs\", and {u[1]} got hugs*",
+            "*{u[0]}-chan hug hug {u[1]}*",
+            "*{u[0]} blows {u[1]} a sweet pink kiss*",
+            "*{u[0]} stops fapping to kpop for a hug with {u[1]}*",
+            "*{u[0]} fabulously flies in for a hug with {u[1]}*",
+            "*{u[0]} practices a new more cuddly type of hug on {u[1]}*",
+            "*{u[0]} stabs a lot of people to be the only one to hug {u[1]}*",
+            "*{u[0]} morphs into a hugmonster and attacks {u[1]}*",
+            "*{u[0]} uses a love power-up to hug {u[1]}*",
+            "*{u[0]} used special move \"HUG\" on {u[1]}*",
+            "*{u[0]} orders a hug-airstrike on {u[1]}*",
+            "*{u[1]} sprung {u[0]}'s hugtrap*",
+            "*{u[0]} finished the moment with a super cute hug for {u[1]}*",
+            "*{u[0]} has some cuddle-time with {u[1]}*",
+            "*{u[0]} hugs {u[1]} lovingly*"
         ]
 
 kill = [
@@ -316,7 +331,8 @@ happy_gifs = [
     'https://media.giphy.com/media/1ZpjBPNukaKys/giphy.gif',
     'https://78.media.tumblr.com/191164793bcb85080ad77e759d2225b5/tumblr_o3xiwlHO331v57tj1o1_500.gif',
     'https://78.media.tumblr.com/a69cb6f512fbb6a0058a47b39ad1c7eb/tumblr_o21fnl2XoV1v57tj1o1_500.gif',
-    'https://i.imgur.com/FfhDGkV.gifv'
+    'https://i.imgur.com/FfhDGkV.gifv',
+    'https://orig00.deviantart.net/e2ab/f/2017/107/1/5/miyuki_dancing_thing_by_mrsneakyphotoshop-db67cbs.gif'
 ]
 
 lewd_gifs = [
@@ -333,7 +349,8 @@ lewd_gifs = [
     'https://78.media.tumblr.com/13b0f0392221cdfe0abba9ec138aecc2/tumblr_od3p7cdBF61vd3pvao1_500.gif',
     'https://78.media.tumblr.com/50376c27d54a9133e660d7364d105d53/tumblr_obgbppAwCT1ufkuk3o1_500.gif',
     'https://78.media.tumblr.com/006bcd9fd7d1815a761024bd485ad61d/tumblr_o272y3X2Qw1v57tj1o1_500.gif',
-    'https://78.media.tumblr.com/e12abbabebc5afb749000a21342b0dd0/tumblr_o1sp466LcO1v57tj1o1_540.gif'
+    'https://78.media.tumblr.com/e12abbabebc5afb749000a21342b0dd0/tumblr_o1sp466LcO1v57tj1o1_540.gif',
+    'https://i.gifer.com/Qctm.gif'
 ]
 
 plsno_gifs = [
@@ -354,5 +371,6 @@ plsno_gifs = [
 sad_gifs = [
     'https://media.giphy.com/media/AcC4iokjdkmk0/giphy.gif',
     'https://media.giphy.com/media/jqXH5VeTYNeTu/giphy.gif',
-    'https://78.media.tumblr.com/5566467b394ddab7899fe5fa3057212b/tumblr_o2o9mvfIGK1s5rcozo1_500.gif'
+    'https://78.media.tumblr.com/5566467b394ddab7899fe5fa3057212b/tumblr_o2o9mvfIGK1s5rcozo1_500.gif',
+    'http://gifimage.net/wp-content/uploads/2017/08/lucky-star-gif-20.gif'
 ]

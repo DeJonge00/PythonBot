@@ -179,7 +179,7 @@ class RPGGame:
 
     async def gameTick(self, time):
         try:
-            if time.minute%5 == 0:
+            if time.minute % 5 == 0:
                 print(time)
             # Saving stats to db
             if time.minute%15 == 0:
@@ -204,7 +204,7 @@ class RPGGame:
             for u in list(self.players.values()):
                 if u.health < u.getMaxhealth():
                     u.autoHealthRegen()
-                if u.busydescription != rpgchar.NONE:
+                if u.busydescription is not rpgchar.NONE:
                     if not(u.busydescription in [rpgchar.BOSSRAID]):
                         u.busytime -= 1
                     c = self.bot.get_channel(str(u.busychannel))
@@ -216,7 +216,7 @@ class RPGGame:
                                 await self.adventureEncounter(u, c)
                     if (u.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]) and (random.randint(0,14)<=0):
                         await self.adventureSecret(u, c)
-                    if (u.busytime <= 0):
+                    if u.busytime <= 0:
                         embed = discord.Embed(colour=RPG_EMBED_COLOR)
                         if u.busydescription == rpgchar.ADVENTURE:
                             type = "adventure"

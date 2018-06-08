@@ -1,4 +1,4 @@
-from rpggame import rpgshopitem as rpgsi, rpgtrainingitem as rpgti
+from rpggame import rpgshopitem as rpgsi
 
 element_none = 1
 element_lightning = 2

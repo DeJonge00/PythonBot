@@ -2,7 +2,7 @@
 import asyncio, discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3, constants
+import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3, constants, dbconnect
 from secret import secrets
 
 # Basic configs
@@ -108,48 +108,31 @@ def initBot():
     @bot.event
     async def on_message_delete(message):
         await message_handler.deleted(message)
-    @bot.event
-    async def on_member_join(member):
-        await log.error(member.server.name + " | Member " + member.name + " just joined", filename=member.server.name)
-        conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
-        c = conn.cursor()
-        c.execute("SELECT message FROM welcome WHERE serverID=" + member.server.id)
-        mes = c.fetchone()
-        conn.commit()
-        conn.close()
-        if mes == None:
+    async def on_member_message(member, func_name, text):
+        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name)
+        response = dbconnect.get_message(func_name, member.server.id)
+        if not response:
             return
-        mes = mes[0]
+        channel, mes = response
         embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User joined!", value=mes.format(member.mention))
-        m = await bot.send_message(member.server.default_channel, embed=embed)
+        embed.add_field(name="User {}!".format(text), value=mes.format(member.mention))
+        channel = bot.get_channel(channel)
+        if not channel:
+            print('CHANNEL NOT FOUND')
+            return
+        m = await bot.send_message(channel, embed=embed)
         if REMOVE_JOIN_MESSAGE:
             await asyncio.sleep(30)
             try:
                 await bot.delete_message(m)
             except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
+                print(member.server + " | No permission to delete messages")
+    @bot.event
+    async def on_member_join(member):
+        await on_member_message(member, 'on_member_join', 'joined')
     @bot.event
     async def on_member_remove(member):
-        await log.error(member.server.name + " | Member " + member.name + " just left", filename=member.server.name)
-        conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
-        c = conn.cursor()
-        c.execute("SELECT message FROM goodbye WHERE serverID=" + member.server.id)
-        mes = c.fetchone()
-        conn.commit()
-        conn.close()
-        if mes == None:
-            return
-        mes = mes[0]
-        embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User left!", value=mes.format(member.mention))
-        m = await bot.send_message(member.server.default_channel, embed=embed)
-        if REMOVE_LEAVE_MESSAGE:
-            await asyncio.sleep(30)
-            try:
-                await bot.delete_message(m)
-            except discord.Forbidden:
-                print(ctx.message.server + " | No permission to delete messages")
+        await on_member_message(member, 'on_member_remove', 'left')
     @bot.event
     async def on_channel_delete(channel):
         await log.error("deleted channel: " + channel.name, filename=channel.server.name)
@@ -268,6 +251,7 @@ def initBot():
     @bot.event
     async def on_member_unban(member):
         await log.error("user " + member.name + " unbanned", filename=member.server.name)
+    
     return bot
 
 # Start the bot

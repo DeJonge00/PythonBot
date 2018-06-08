@@ -6,10 +6,10 @@
 
 |Message                                |Reaction
 |---                                    |---
-|'\o/'                                  |Praise the sun!
-|'ded' (After a period of no messages)  |Cry about a ded chat
-|'(╯°□°）╯︵ ┻━┻'                        | '┬─┬ ノ( ゜-゜ノ)'
-|Mentions or 'biri' or 'biribiri'       |I will talk to your lonely self
+|`\o/`                                  |Praise the sun!
+|`ded` (After a period of no messages)  |Cry about a ded chat
+|`(╯°□°）╯︵ ┻━┻`                        | `┬─┬ ノ( ゜-゜ノ)`
+|Mentions, `biri` or `biribiri`         |I will talk to your lonely self
 
 ### Basic commands
 
@@ -106,26 +106,28 @@
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
 |rpg            |`rpg,b&d,bnd`                                          |Show the info for the RPG game
-|role           |`rpg,b&d,bnd` `role` `rolename`                        |Assign yourself a role (required to start the game)
+|role           |`rpg,b&d,bnd` `r,role` `rolename`                        |Assign yourself a role (required to start the game)
 |adventure      |`rpg,b&d,bnd` `a,adventure` `{time}`                   |Go on an adventure to slay monsters
 |wander         |`rpg,b&d,bnd` `w,wander` `{time}`                      |Go wandering, its a less costly adventuring
 |battle         |`rpg,b&d,bnd` `b,battle` `{user}`                      |Battle another player of the game
 |info           |`rpg,b&d,bnd` `i,info` `{user}`                        |View a user's battlestats
 |               |`rpg,b&d,bnd` `i,info` `weapon,w,armor,a` `{user}`     |View a user's weapon/armor stats
-|party          |`rpg,b&d,bnd` `party`                                  |Show the current party that will challenge the boss at the hour mark
-|join           |`rpg,b&d,bnd` `join`                                   |Join the upcoming bossfight
+|party          |`rpg,b&d,bnd` `p,party`                                  |Show the current party that will challenge the boss at the hour mark
+|join           |`rpg,b&d,bnd` `j,join`                                   |Join the upcoming bossfight
 |king           |`rpg,b&d,bnd` `k,king`                                 |Show who is the server's current king
 |               |`rpg,b&d,bnd` `k,king` `c,b,challenge,battle`          |Challenge the king (level 10 required)
-|levelup        |`rpg,b&d,bnd` `levelup`                                |Claim your levelup rewards
+|levelup        |`rpg,b&d,bnd` `levelup,lvlup,lvl`                                |Claim your levelup rewards
 |top            |`rpg,b&d,bnd` `top` `exp,money,bosstier`               |Show the top players of the game
-|train          |`rpg,b&d,bnd` `ws,weapon,weaponskill`                  |Train your weaponskill
-|               |`rpg,b&d,bnd` `h,hp,health,maxhealth`                  |Train your maximum healthpool
-|shop           |`rpg,b&d,bnd` `armor`                                  |Show shop armor inventory
-|               |`rpg,b&d,bnd` `armor` `{itemnumber}`                   |Buy armor number `{itemnumber}`
-|               |`rpg,b&d,bnd` `item`                                   |Show shop item inventory
-|               |`rpg,b&d,bnd` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
-|               |`rpg,b&d,bnd` `weapon`                                 |Show shop weapon inventory
-|               |`rpg,b&d,bnd` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
+|train          |`rpg,b&d,bnd` `t,train` `ws,weapon,weaponskill`                  |Train your weaponskill
+|               |`rpg,b&d,bnd` `t,train` `h,hp,health,maxhealth`                  |Train your maximum healthpool
+|shop           |`rpg,b&d,bnd` `s,shop` `armor`                                  |Show shop armor inventory
+|               |`rpg,b&d,bnd` `s,shop` `armor` `{itemnumber}`                   |Buy armor number `{itemnumber}`
+|               |`rpg,b&d,bnd` `s,shop` `item`                                   |Show shop item inventory
+|               |`rpg,b&d,bnd` `s,shop` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
+|               |`rpg,b&d,bnd` `s,shop` `weapon`                                 |Show shop weapon inventory
+|               |`rpg,b&d,bnd` `s,shop` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
 
 ### Developer's note:
 Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)
+
+![discordbots.org](https://discordbots.org/api/widget/244410964693221377.svg "Logo Title Text 1")
