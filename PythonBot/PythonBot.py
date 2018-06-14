@@ -10,6 +10,7 @@ pi = 3.14159265358979323846264
 REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
+
 def initCogs(bot):
     # Add commands
     import comm.basic_commands
@@ -35,6 +36,7 @@ def initCogs(bot):
     import comm.misc_commands
     bot.add_cog(comm.misc_commands.Misc(bot))
 
+
 class PythonBot(Bot):
     def __init__(self, music=True, rpggame=True):
         self.praise = datetime.datetime.utcnow()
@@ -51,7 +53,7 @@ class PythonBot(Bot):
             time = datetime.datetime.utcnow()
 
             if self.RPGGAME:
-                await self.rpggame.gameTick(time)
+                await self.rpggame.game_tick(time)
             if self.MUSIC:
                 await self.musicplayer.musicLoop(time)
 
@@ -66,7 +68,12 @@ class PythonBot(Bot):
         if self.MUSIC:
             await self.musicplayer.quit()
 
-def initBot():
+    @staticmethod
+    def str_cmd(s: str):
+        return s.encode("ascii", "replace").decode("ascii")
+
+
+def init_bot():
     bot = PythonBot()
     logging.basicConfig()
     initCogs(bot)
@@ -95,19 +102,23 @@ def initBot():
                 print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
             if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
-        if len(message.attachments) > 0:
-            await message_handler.new_pic(bot, message)
         # Commands in the message
         await bot.process_commands(message)
+        # Pics
+        if len(message.attachments) > 0:
+            await message_handler.new_pic(bot, message)
         # Send message to rpggame for exp
         if bot.RPGGAME:
             await bot.rpggame.handle(message)
+
     @bot.event
     async def on_message_edit(before, after):
         await message_handler.edit(before)
+
     @bot.event
     async def on_message_delete(message):
         await message_handler.deleted(message)
+
     async def on_member_message(member, func_name, text):
         await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name)
         response = dbconnect.get_message(func_name, member.server.id)
@@ -115,7 +126,7 @@ def initBot():
             return
         channel, mes = response
         embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User {}!".format(text), value=mes.format(member.mention))
+        embed.add_field(name="User {}!".format(bot.str_cmd(text)), value=mes.format(member.mention))
         channel = bot.get_channel(channel)
         if not channel:
             print('CHANNEL NOT FOUND')
@@ -129,10 +140,10 @@ def initBot():
                 print(member.server + " | No permission to delete messages")
     @bot.event
     async def on_member_join(member):
-        await on_member_message(member, 'on_member_join', 'joined')
+        await on_member_message(member, "on_member_join", 'joined')
     @bot.event
     async def on_member_remove(member):
-        await on_member_message(member, 'on_member_remove', 'left')
+        await on_member_message(member, "on_member_remove", 'left')
     @bot.event
     async def on_channel_delete(channel):
         await log.error("deleted channel: " + channel.name, filename=channel.server.name)
@@ -251,8 +262,12 @@ def initBot():
     @bot.event
     async def on_member_unban(member):
         await log.error("user " + member.name + " unbanned", filename=member.server.name)
-    
+    @bot.event
+    async def on_server_join(server):
+        user = bot.get_server(constants.PRIVATESERVERid).get_member(constants.NYAid)
+        await bot.send_message(user, "I joined a new server named {}, senpai!".format(server.name))
     return bot
 
+
 # Start the bot
-initBot().run(secrets.bot_token)
+init_bot().run(secrets.bot_token)

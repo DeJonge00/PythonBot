@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgarmor as rpga
 
+DEFAULT_ROLE = 'Undead'
+
 # Busydescription status
 NONE = 0
 ADVENTURE = 1
@@ -78,6 +80,7 @@ class RPGCharacter:
     def getElement(self):
         return rpgc.element_none
 
+
 class RPGMonster(RPGCharacter):
     def __init__(self, name="Monster", health=30, damage=10, ws=1, element=rpgc.element_none):
         self.element = element
@@ -91,7 +94,7 @@ class RPGMonster(RPGCharacter):
         return int(elementalEffect(n, self.element, element))
         
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role="Undead", weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
+    def __init__(self, userid : int, username : str, role=DEFAULT_ROLE, weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0

@@ -1,9 +1,18 @@
-import asyncio, datetime, constants, discord, log, random, re, removeMessage, send_random, wikipedia, sqlite3, requests
-from discord.ext import commands
-from discord.ext.commands import Bot
+import asyncio
+import constants
+import datetime
+import discord
+import random
+import re
+import removeMessage
+import requests
+import send_random
+import wikipedia
 from os import listdir
+
 import urbandictionary as ud
-from secret import secrets
+from discord.ext import commands
+
 from rpggame import rpgdbconnect as dbcon
 
 TIMER = True
@@ -87,9 +96,8 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         if TIMER:
             t = self.bot.cat.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
+            if t and (datetime.datetime.utcnow() - t).seconds < 60:
+                return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.cat[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "cat")
@@ -99,7 +107,7 @@ class Basics:
     async def compliment(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
-    
+
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
@@ -176,7 +184,7 @@ class Basics:
         try:
             await self.bot.delete_message(ctx.message)
         except discord.Forbidden:
-            print(ctx.message.server.name + " | No permission to delete messages")
+            print(self.bot.str_cmd(ctx.message.server.name) + " | No permission to delete messages")
 
     # {prefix}echo <words>
     @commands.command(pass_context=1, help="I'll be a parrot!")
@@ -483,25 +491,35 @@ class Basics:
         if ctx.message.channel.is_private:
             await self.bot.say('That cannot be done in private')
             return
-        server = ctx.message.server
+        server = None
+        if (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]) and len(args) > 0:
+            for s in self.bot.servers:
+                if s.name.lower().encode("ascii", "replace").decode("ascii") == ' '.join(args):
+                    server = s
+                    break
+        if not server:
+            server = ctx.message.server
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=server.name, icon_url=ctx.message.author.avatar_url)
-        if server.icon != None:
+        if server.icon:
             embed.set_thumbnail(url=server.icon_url)
         embed.add_field(name="Server ID", value=server.id)
         embed.add_field(name="Creation date", value=server.created_at)
         embed.add_field(name="Region", value=server.region)
         embed.add_field(name="Members", value=server.member_count)
-        embed.add_field(name="Owner", value=server.owner.display_name)
+        embed.add_field(name="Owner", value='{} ({})'.format(server.owner.display_name, server.owner))
         embed.add_field(name="Custom Emoji", value=len(server.emojis))
         embed.add_field(name="Roles", value=len(server.roles))
         embed.add_field(name="Channels", value=len(server.channels))
+        if ctx.message.author.id in [constants.NYAid, constants.KAPPAid]:
+            for c in server.channels:
+                print(self.bot.str_cmd(c.name))
         if len(server.features) > 0:
             f = ""
             for feat in server.features:
                 f += "{}\n".format(feat)
             embed.add_field(name="Features", value=f)
-        if server.splash != None:
+        if server.splash:
             embed.add_field(name="Splash", value=server.splash)
         await self.bot.say(embed=embed)
 

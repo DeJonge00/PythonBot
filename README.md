@@ -118,14 +118,14 @@
 |               |`rpg,b&d,bnd` `k,king` `c,b,challenge,battle`          |Challenge the king (level 10 required)
 |levelup        |`rpg,b&d,bnd` `levelup,lvlup,lvl`                                |Claim your levelup rewards
 |top            |`rpg,b&d,bnd` `top` `exp,money,bosstier`               |Show the top players of the game
-|train          |`rpg,b&d,bnd` `t,train` `ws,weapon,weaponskill`                  |Train your weaponskill
-|               |`rpg,b&d,bnd` `t,train` `h,hp,health,maxhealth`                  |Train your maximum healthpool
-|shop           |`rpg,b&d,bnd` `s,shop` `armor`                                  |Show shop armor inventory
-|               |`rpg,b&d,bnd` `s,shop` `armor` `{itemnumber}`                   |Buy armor number `{itemnumber}`
-|               |`rpg,b&d,bnd` `s,shop` `item`                                   |Show shop item inventory
-|               |`rpg,b&d,bnd` `s,shop` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
-|               |`rpg,b&d,bnd` `s,shop` `weapon`                                 |Show shop weapon inventory
-|               |`rpg,b&d,bnd` `s,shop` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
+|train          |`t,train` `ws,weapon,weaponskill`                  |Train your weaponskill
+|               |`t,train` `h,hp,health,maxhealth`                  |Train your maximum healthpool
+|shop           |`s,shop` `armor`                                  |Show shop armor inventory
+|               |`s,shop` `armor` `{itemnumber}`                   |Buy armor number `{itemnumber}`
+|               |`s,shop` `item`                                   |Show shop item inventory
+|               |`s,shop` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
+|               |`s,shop` `weapon`                                 |Show shop weapon inventory
+|               |`s,shop` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
 
 ### Developer's note:
 Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)

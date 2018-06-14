@@ -7,9 +7,9 @@ from secret import secrets
 def setRPGChannel(serverid : int, channelid : int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(serverid))
+    c.execute("SELECT channelID FROM rpgchannel WHERE serverID=%s", serverid)
     t = c.fetchone()
-    if t == None:
+    if not t:
         c.execute("INSERT INTO rpgchannel VALUES ('{}', '{}')".format(serverid, channelid))
     else:
         c.execute("UPDATE rpgchannel SET channelID={} WHERE serverID={}".format(channelid, serverid))
@@ -24,7 +24,7 @@ def getRPGChannel(serverid : str):
     t = c.fetchone()
     conn.commit()
     conn.close()
-    if t==None:
+    if not t:
         print("Channel not specified for server")
         return None
     return t[0]
@@ -82,7 +82,7 @@ def updatePlayers(stats : [rpgchar.RPGPlayer]):
     c = conn.cursor()
     try:
         for s in stats:
-            if s.role is not rpgchar.NONE:
+            if s.role is not rpgchar.DEFAULT_ROLE:
                 if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0:
                     c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill, critical) VALUES ({0}, '{1}', {2}, {3}, {4}, {5}, {6})".format(s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))
                 else :

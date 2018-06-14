@@ -29,7 +29,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
+        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
@@ -71,7 +71,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["i", "buy", "items"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
+        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
@@ -127,7 +127,7 @@ class RPGShop:
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
+        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
@@ -192,7 +192,7 @@ class RPGShop:
         except IndexError:
             a = math.ceil(rpgchar.mintrainingtime/training.cost)
 
-        player = self.bot.rpggame.getPlayerData(ctx.message.author.id, ctx.message.author.display_name)
+        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if player.busydescription != rpgchar.NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return

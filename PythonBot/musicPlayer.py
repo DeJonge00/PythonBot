@@ -1,4 +1,4 @@
-import argparse, asyncio, constants, discord, removeMessage, math 
+import argparse, asyncio, constants, discord, removeMessage, math, re
 from discord.ext import commands
 from collections import deque
 from datetime import datetime
@@ -155,6 +155,9 @@ class MusicPlayer:
             await self.bot.send_message(ctx.message.channel, embed=embed)
 
     async def playSong(self, ctx, song):
+        if not re.match('([a-zA-Z0-9 ]*)|(^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$)', song):
+            await self.bot.say('I cannot find anything for that sadly...')
+            return
         state = self.get_voice_state(ctx.message.server)
         if state.voice is None:
             state = await self.joinVC(ctx)

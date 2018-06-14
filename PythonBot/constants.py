@@ -34,6 +34,15 @@ ytdl_options = dict(
 
 ytdl_before = "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
 
+s_to_ringels_whitelist = []
+sponge_capitalization_blacklist = bot_list_servers
+praise_the_sun_blacklist = bot_list_servers
+ayy_lmao_blacklist = bot_list_servers
+lenny_blacklist = bot_list_servers
+ded_blacklist = bot_list_servers
+table_unflip_blacklist = bot_list_servers
+bot_talk_blacklist = bot_list_servers
+
 # talking to bb
 qa = [
             "What are you asking me for?",

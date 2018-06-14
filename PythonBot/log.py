@@ -1,41 +1,28 @@
 import datetime,  discord, unicodedata, constants
 
-async def error(event, filename="errors"):
-    file = open("logs/" + filename.replace('/', '').encode("ascii", "replace").decode("ascii") + ".txt","a+")
-    file.write(str(datetime.datetime.utcnow()) + " | " + event.encode("ascii", "replace").decode("ascii") + "\n")
-    file.close
-    print(datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + event.encode("ascii", "replace").decode("ascii"))
 
-async def log(note, author, string, filename):
-    file = open("logs/" + filename.replace('/', '').encode("ascii", "replace").decode("ascii") + ".txt","a+")
-    text = "{} | {} | {} : {}".format(datetime.datetime.utcnow().strftime("%H:%M:%S"), note.encode("ascii", "replace").decode("ascii"), author.encode("ascii", "replace").decode("ascii"), string)
-    try:
-        file.write(text + "\n")
-    except UnicodeEncodeError:
-        text = "{} | {} | Unknown posted a pic: {}".format(message.timestamp.strftime("%H:%M:%S"), message.channel.name.encode("ascii", "replace").decode("ascii"), number)
-        file.write(text + "\n")
+def str_cmd(s: str):
+    return s.encode("ascii", "replace").decode("ascii")
+
+
+async def error(event, filename="errors"):
+    text = datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + str_cmd(event)
+    file = open("logs/" + str_cmd(filename.replace('/', '')) + ".txt", "a+")
+    file.write(text + '\n')
+    file.close()
     print(text)
 
-async def message(message : discord.Message, action : str, number=0):
-    file = open("logs/" + message.server.name.replace('/', '').encode("ascii", "replace").decode("ascii") + ".txt","a+")
+
+async def message(mess: discord.Message, action: str, number=0):
+    file = open("logs/" + str_cmd(mess.server.name.replace('/', '')) + ".txt", "a+")
     if action == "pic":
-        text = "{} | {} | {} posted a pic: {}".format(message.timestamp.strftime("%H:%M:%S"), message.channel.name.encode("ascii", "replace").decode("ascii"), message.author.name.encode("ascii", "replace").decode("ascii"), number)
-        try:
-            file.write(text + "\n")
-        except UnicodeEncodeError:
-            text = "{} | {} | Unknown posted a pic: {}".format(message.timestamp.strftime("%H:%M:%S"), message.channel.name.encode("ascii", "replace").decode("ascii"), number)
-            file.write(text + "\n")
-        print(text)
+        text = "{} | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(mess.channel.name), str_cmd(mess.author.name), number)
     else:
-        members = list(map(message.server.get_member, message.raw_mentions))
-        cont = message.content
+        members = list(map(mess.server.get_member, mess.raw_mentions))
+        cont = mess.content
         for user in members:
             cont = cont.replace(user.mention, "@" + user.name)
-        text = "{} | {} | {} | {} | {} : {}".format(message.timestamp.strftime("%H:%M:%S"), message.server.name.encode("ascii", "replace").decode("ascii"), message.channel.name.encode("ascii", "replace").decode("ascii"), message.author.name.encode("ascii", "replace").decode("ascii"), action, cont.encode("ascii", "replace").decode("ascii"))
-        try:
-            file.write(text + "\n")
-        except UnicodeEncodeError:
-            text = "{} | {} | {} | {} | Unknown : {}".format(message.timestamp.strftime("%H:%M:%S"), message.server.name.encode("ascii", "replace").decode("ascii"), message.channel.name.encode("ascii", "replace").decode("ascii"), action, cont.encode("ascii", "replace").decode("ascii"))
-            file.write(text + "\n")
-        print(text)
-    file.close
+        text = "{} | {} | {} | {} | {} : {}".format(mess.timestamp.strftime("%H:%M:%S"), mess.server.name.encode("ascii", "replace").decode("ascii"), str_cmd(mess.channel.name), str_cmd(mess.author.name), action, str_cmd(cont))
+    file.write(text + "\n")
+    print(text)
+    file.close()
