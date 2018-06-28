@@ -69,11 +69,11 @@ class Basics:
         await removeMessage.deleteMessage(self.bot, ctx)
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
-        embed.add_field(name='Name', value=str(self.bot.user.name))
+        embed.add_field(name='Profile', value=str(self.bot.user.mention))
+        embed.add_field(name='Name', value=str(self.bot.user))
         embed.add_field(name='Id', value=str(self.bot.user.id))
         embed.add_field(name="Birthdate", value=self.bot.user.created_at.strftime("%D, %H:%M:%S"))
         embed.add_field(name='Servers', value=str(len(self.bot.servers)))
-        embed.add_field(name='Lewd dm channels', value=str(len(self.bot.private_channels)))
         embed.add_field(name='Emojis', value=str(len([_ for _ in self.bot.get_all_emojis()])))
         embed.add_field(name='Fake friends', value=str(len([_ for _ in self.bot.get_all_members()])))
         embed.add_field(name='Commands', value=str(len(self.bot.commands)))
@@ -190,9 +190,15 @@ class Basics:
     @commands.command(pass_context=1, help="I'll be a parrot!")
     async def echo(self, ctx, *args):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if ctx.message.content == "":
-            return await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
-        return await self.bot.send_message(ctx.message.channel, " ".join(args))
+        if len(args) > 0:
+            return await self.bot.send_message(ctx.message.channel, " ".join(args))
+        if len(ctx.message.attachments) > 0:
+            embed = discord.Embed(colour=0x000000)
+            embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
+            embed.set_image(url=ctx.message.attachments[0].get('url'))
+            await self.bot.send_message(ctx.message.channel, embed=embed)
+            return
+        return await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
 
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")

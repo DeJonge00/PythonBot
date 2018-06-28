@@ -26,28 +26,32 @@ ARMOR = 0
 DAMAGE = 10
 WEAPONSKILL = 1
 
-def getLevelByExp(exp : int):
+
+def getLevelByExp(exp: int):
     return math.floor(math.sqrt(exp) / 25)+1
 
+
 def adjustStats(n, stat, item, amount=1):
-    if item != None:
+    if item:
         m = item.benefit.get(stat)
-        if m != None:
-            if m[0]=="*":
+        if m:
+            if m[0] == "*":
                 return int(math.floor(n*(math.pow(m[1], amount))))
-            if m[0]=="-":
+            if m[0] == "-":
                 return max(0, n - (amount*m[1]))
-            if m[0]=="+":
+            if m[0] == "+":
                 return n + (amount*m[1])
     return n
 
+
 def elementalEffect(n, a_elem, d_elem):
     if a_elem != rpgc.element_none:
-        if (a_elem == (-1*d_elem)):
+        if a_elem == (-1*d_elem):
             n = math.floor(n*1.2)
-        if (a_elem == d_elem):
+        if a_elem == d_elem:
             n = math.floor(n*0.8)
     return n
+
 
 class RPGCharacter:
     def __init__(self, name, health, maxhealth, damage, weaponskill, critical, element=rpgc.element_none):
@@ -92,9 +96,10 @@ class RPGMonster(RPGCharacter):
     def getDamage(self, element = rpgc.element_none):
         n = super().getDamage(element=element)
         return int(elementalEffect(n, self.element, element))
-        
+
+
 class RPGPlayer(RPGCharacter):
-    def __init__(self, userid : int, username : str, role=DEFAULT_ROLE, weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
+    def __init__(self, userid: str, username: str, role=DEFAULT_ROLE, weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, health=HEALTH, maxhealth=HEALTH, damage=DAMAGE, ws=WEAPONSKILL, critical=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = 0
@@ -110,7 +115,7 @@ class RPGPlayer(RPGCharacter):
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
     def resolveDeath(self):
-        if (self.health <= 0):
+        if self.health <= 0:
             self.exp = max(0, self.exp -100*self.getLevel())
             self.money = int(math.floor(self.money*0.5))
             self.busytime = 0

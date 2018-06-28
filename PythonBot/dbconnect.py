@@ -6,12 +6,16 @@ from secret import secrets
 def set_message(func_name: str, serverid: str, channelid: str, message: str):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "member_update", charset="utf8", use_unicode=True)
     c = conn.cursor()
-    c.execute("SELECT serverID FROM {} WHERE serverID'=%s".format(func_name), (serverid))
+    c.execute("SELECT serverID FROM {} WHERE serverID=%s".format(func_name), (serverid))
     t = c.fetchone()
     if t:
-        c.execute("UPDATE {} SET channelID=%s, message=%s WHERE serverID=%s".format(func_name), (channelid, message, serverid))
+        if message:
+            c.execute("UPDATE {} SET channelID=%s, message=%s WHERE serverID=%s".format(func_name), (channelid, message, serverid))
+        else:
+            c.execute("DELETE FROM {} WHERE serverID=%s".format(func_name), (serverid))
     else:
-        c.execute("INSERT INTO {} VALUES (%s, %s, %s)".format(func_name), (serverid, channelid, message))
+        if message:
+            c.execute("INSERT INTO {} VALUES (%s, %s, %s)".format(func_name), (serverid, channelid, message))
     conn.commit()
     conn.close()
 

@@ -204,11 +204,14 @@ class Mod:
         if len(" ".join(args)) > 120:
             await self.bot.say("Sorry, this message is too long...")
             return
-        if re.match('.*{.+}.*', '{x}'):
+        if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
         dbconnect.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
-        await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
+        if len(args) > 0:
+            await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
+            return
+        await self.bot.say("Goodbye message for this server has been reset")
 
     # {prefix}resetwelcome
     @reset.command(pass_context=1, hidden=True, help="Resets all welcome messages")
@@ -236,11 +239,14 @@ class Mod:
         if len(" ".join(args)) > 120:
             await self.bot.say("Sorry, this message is too long...")
             return
-        if re.match('.*{.+}.*', '{x}'):
+        if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
         dbconnect.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
-        await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
+        if len(args) > 0:
+            await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
+            return
+        await self.bot.say("Welcome message for this server has been reset")
 
     # {prefix}spam <amount> <user>
     @commands.command(pass_context=1, hidden=True, help="Spam a user messages")

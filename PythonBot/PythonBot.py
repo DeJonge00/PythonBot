@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-import asyncio, discord
-from discord.ext import commands
+import asyncio
+import discord
+
 from discord.ext.commands import Bot
-import customHelpFormatter, datetime, log, logging, message_handler, pickle, random, sys, sqlite3, constants, dbconnect
-from secret import secrets
+
+import constants
+import customHelpFormatter
+import datetime
+import dbconnect
+import log
+import logging
+import message_handler
 
 # Basic configs
 pi = 3.14159265358979323846264
