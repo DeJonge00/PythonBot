@@ -24,12 +24,18 @@ async def log(note, author, string, filename):
 async def message(mess: discord.Message, action: str, number=0):
     file = open("logs/" + str_cmd(mess.server.name.replace('/', '')) + ".txt", "a+")
     if action == "pic":
-        text = "{} | {} | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(mess.server.name), str_cmd(mess.channel.name), str_cmd(mess.author.name), number)
+        if mess.channel.is_private:
+            text = "{} | direct message | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(mess.channel.name), str_cmd(mess.author.name), number)
+        else:
+            text = "{} | {} | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(mess.server.name), str_cmd(mess.channel.name), str_cmd(mess.author.name), number)
     else:
         members = list(map(mess.server.get_member, mess.raw_mentions))
         cont = mess.content
         for user in members:
-            cont = cont.replace(user.mention, "@" + user.name)
+            try:
+                cont = cont.replace(user.mention, "@" + user.name)
+            except AttributeError:
+                pass
         text = "{} | {} | {} | {} | {} : {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(mess.server.name), str_cmd(mess.channel.name), str_cmd(mess.author.name), action, str_cmd(cont))
     file.write(text + "\n")
     print(text)

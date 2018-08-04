@@ -24,7 +24,7 @@ async def new(bot, message):
         await send_random.file(bot, message.channel, "sun")
         bot.praise = datetime.datetime.utcnow()
         return
-    if (message.server.id not in constants.ayy_lmao_blacklist or message.author.id is constants.NYAid) and (message.content.lower() == "ayy"):
+    if (message.server.id not in constants.ayy_lmao_blacklist or message.author.id == constants.NYAid) and (message.content.lower() == "ayy"):
         await bot.send_message(message.channel, "lmao")
         return
     if message.author.id in [constants.NYAid, constants.TRISTANid] and message.content.lower() == "qyy":
@@ -83,7 +83,7 @@ async def new(bot, message):
             await bot.add_reaction(message, ":hand:348350777661587466")
         else:
             await bot.add_reaction(message, "\u2764")
-    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] is constants.prefix and \
+    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == constants.prefix and \
             (bot.user in message.mentions or
              (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri']))) > 0)):
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \

@@ -163,7 +163,7 @@ monsters = [
     ("Lone Air Nomad", element_air, "https://orig08.deviantart.net/f3a9/f/2016/119/4/f/aang_about_web_by_dynamo1212-da0ox4c.jpg"),
    
     ("Angry Goblin", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/b/b4/Goblin_Warrior.png/revision/latest?cb=20160508093347"),
-    ("Dullahan", element_dark, "https://scontent.cdninstagram.com/t51.2885-15/s320x320/e35/1515532_1744165199149630_1378480017_n.jpg?ig_cache_key=MTE2NjczMDU1MTk3NjY4MjM1OA%3D%3D.2.l"),
+    ("Dullahan", element_dark, "https://pre00.deviantart.net/6c54/th/pre/f/2010/068/f/7/durarara___dusk_by_yumera.jpg"),
     ("Hekatonkheires", element_dark, "https://vignette.wikia.nocookie.net/akamegakill/images/6/64/Coro.png/revision/latest?cb=20140803220237"),
     ("Khone Juggernaut", element_dark, "https://vignette.wikia.nocookie.net/warhammer40k/images/5/56/Juggernaut_of_Khorne.png/revision/latest?cb=20151215222741"),
     ("Lone Chaos Marauder", element_dark, "https://vignette.wikia.nocookie.net/warhammerfb/images/7/7f/Chaos_Marauder.png/revision/latest?cb=20151106043446"),

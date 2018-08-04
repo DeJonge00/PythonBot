@@ -12,6 +12,8 @@ import log
 import logging
 import message_handler
 
+from secret import secrets
+
 # Basic configs
 pi = 3.14159265358979323846264
 REMOVE_JOIN_MESSAGE = False
@@ -51,7 +53,8 @@ class PythonBot(Bot):
         self.spongelist = []
         self.MUSIC = music
         self.RPGGAME = rpggame
-        super(PythonBot, self).__init__(command_prefix=constants.prefix, pm_help=1, formatter=customHelpFormatter.customHelpFormatter())
+        super(PythonBot, self).__init__(command_prefix=constants.prefix, pm_help=1,
+                                        formatter=customHelpFormatter.customHelpFormatter())
 
     async def timeLoop(self):
         await self.wait_until_ready()
@@ -62,11 +65,11 @@ class PythonBot(Bot):
             if self.RPGGAME:
                 await self.rpggame.game_tick(time)
             if self.MUSIC:
-                await self.musicplayer.musicLoop(time)
+                await self.musicplayer.music_loop(time)
 
             endtime = datetime.datetime.utcnow()
-            #print("Sleeping for " + str(60-(endtime).second) + "s")
-            await asyncio.sleep(60-endtime.second)
+            # print("Sleeping for " + str(60-(endtime).second) + "s")
+            await asyncio.sleep(60 - endtime.second)
 
     async def quit(self):
         self.running = False
@@ -104,9 +107,12 @@ def init_bot():
             return
         if message.channel.is_private:
             await log.log("direct message", message.author.name, message.content, "dm")
+            for pic in message.attachments:
+                await log.message(message, "pic", pic["url"])
         else:
             if (message.server.id == constants.NINECHATid) & (not message.server.get_member(constants.NYAid)):
-                print(message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
+                print(
+                    message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
             if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
         # Commands in the message
@@ -145,47 +151,43 @@ def init_bot():
                 await bot.delete_message(m)
             except discord.Forbidden:
                 print(member.server + " | No permission to delete messages")
+
     @bot.event
-    async def on_member_join(member):
+    async def on_member_join(member: discord.Member):
+        if member.bot:
+            return
         await on_member_message(member, "on_member_join", 'joined')
+
     @bot.event
-    async def on_member_remove(member):
+    async def on_member_remove(member: discord.Member):
+        if member.bot:
+            return
         await on_member_message(member, "on_member_remove", 'left')
+
     @bot.event
     async def on_channel_delete(channel):
         await log.error("deleted channel: " + channel.name, filename=channel.server.name)
+
     @bot.event
     async def on_channel_create(channel):
         if channel.is_private:
-            pass
-            #await log.error("created private channel", filename="private")
-        else:
-            await log.error("created channel: " + channel.name, filename=channel.server.name)
-    @bot.event
-    async def on_channel_update(before, after):
-        m = "Channel updated:"
-        if before.id != after.id:
-            m += " id from: " + before.id + " to: " + after.id
-        if before.name != after.name:
-            m += " name from: " + before.name + " to: " + after.name
-        if before.position != after.position:
-            m += " position from: " + str(before.position) + " to: " + str(after.position)
-        if before._permission_overwrites != after._permission_overwrites:
-            m += " _permission_overwrites changed"
-        await log.error(m, filename=before.server.name)
+            return
+        await log.error("created channel: " + channel.name, filename=channel.server.name)
+
     @bot.event
     async def on_voice_state_update(before, after):
         if bot.MUSIC:
             if before.id == constants.NYAid:
                 channel = after.voice.voice_channel
-                if (channel != None) & (before.voice.voice_channel != channel):
+                if channel and (before.voice.voice_channel != channel):
                     state = bot.musicplayer.get_voice_state(before.server)
                     if bot.is_voice_connected(before.server):
                         if channel == bot.voice_client_in(before.server):
                             return
                         state.voice = await state.voice.move_to(channel)
                     else:
-                        state.voice = await bot.join_voice_channel(channel)
+                        state.voice = bot.join_voice_channel(channel)
+
     @bot.event
     async def on_member_update(before, after):
         changed = False
@@ -215,6 +217,7 @@ def init_bot():
             changed = True
         if changed:
             await log.error(m, filename=before.server.name)
+
     @bot.event
     async def on_server_update(before, after):
         m = "server " + before.name + " updated: "
@@ -227,9 +230,10 @@ def init_bot():
             if not r in before.roles:
                 m += " +role: " + r.name
         if before.region != after.region:
-            m += " region from: " + before.region + " to: " + after.region
+            m += " region from: " + str(before.region) + " to: " + str(after.region)
         if not m == "server " + before.name + " updated: ":
-            await log.error(m, filename=before.server.name)
+            await log.error(m, filename=before.name)
+
     @bot.event
     async def on_server_role_update(before, after):
         m = "Role " + before.name + " updated: "
@@ -246,33 +250,39 @@ def init_bot():
                 if y:
                     m += " +permission: " + x
         if not m == "role " + before.name + " updated: ":
-            await log.error(m, filename=before.server.name)
+            await log.error(m, filename=before.name)
+
     @bot.event
     async def on_server_emojis_update(before, after):
         m = "emojis updated: "
         if len(before) != len(after):
             m += " size from: " + str(len(before)) + " to: " + str(len(after))
         if not "emojis updated: ":
-            await log.error(m, filename=before.server.name)
+            await log.error(m, filename=before.name)
+
     @bot.event
     async def on_reaction_add(reaction, user):
         if user.bot:
             return
-        if (reaction.emoji=="\N{BROKEN HEART}") | (reaction.message.author.id==constants.NYAid):
+        if reaction.emoji == "\N{BROKEN HEART}":
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
-        if bot.musicplayer != None:
-            await bot.musicplayer.handleReaction(reaction)
+        if bot.musicplayer:
+            await bot.musicplayer.handle_reaction(reaction)
+
     @bot.event
     async def on_member_ban(member):
         await log.error("user " + member.name + " banned", filename=member.server.name)
+
     @bot.event
     async def on_member_unban(member):
         await log.error("user " + member.name + " unbanned", filename=member.server.name)
+
     @bot.event
     async def on_server_join(server):
         user = bot.get_server(constants.PRIVATESERVERid).get_member(constants.NYAid)
         await bot.send_message(user, "I joined a new server named {}, senpai!".format(server.name))
+
     return bot
 
 

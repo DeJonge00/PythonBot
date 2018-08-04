@@ -24,6 +24,7 @@ BATTLE_TURNS = {"Bossbattle": 99}
 class RPGGame:
     def __init__(self, my_bot):
         self.bot = my_bot
+        self.logger = logging.getLogger(__name__)
         self.boss_parties = {}
         self.players = {}
         self.game_init()
@@ -138,10 +139,13 @@ class RPGGame:
                     (name, elem, pic) = random.choice(rpgc.bosses)
                     bosses.append(rpgchar.RPGMonster(name=name, health=int(47*lvl*lvl), damage=int(lvl*lvl), ws=int(lvl*lvl*0.5), element=elem))
                 winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
+                print('w', winner, 'p', party)
                 if winner == 1:
                     for p in party:
                         p.addExp(32*lvl*lvl*len(bosses)/len(party))
+                        print(str(p), 'bt', p.bosstier)
                         p.addBosstier()
+                        print(str(p), 'bt', p.bosstier)
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
                 p.resetBusy()
@@ -186,7 +190,6 @@ class RPGGame:
         self.players = dbcon.getBusyPlayers()
         self.boss_parties = self.get_boss_parties()
         logging.basicConfig(level=logging.DEBUG)
-        self.logger = logging.getLogger(__name__)
         print("RPG Gameloop started!")
 
     async def game_tick(self, time):
@@ -223,35 +226,37 @@ class RPGGame:
                     if not(u.busydescription in [rpgchar.BOSSRAID]):
                         u.busytime -= 1
                     c = self.bot.get_channel(str(u.busychannel))
-                    if not c:
-                        c = await self.bot.get_user_info(str(u.busychannel))
-                    if u.busydescription == rpgchar.ADVENTURE:
-                        if c:
+                    try:
+                        if not c:
+                            c = await self.bot.get_user_info(str(u.busychannel))
+                        if u.busydescription == rpgchar.ADVENTURE:
                             if random.randint(0, 4) <= 0:
                                 await self.adventure_encounter(u, c)
-                    if (u.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]) and (random.randint(0,14)<=0):
-                        await self.adventure_secret(u, c)
-                    if u.busytime <= 0:
-                        embed = discord.Embed(colour=RPG_EMBED_COLOR)
-                        if u.busydescription == rpgchar.ADVENTURE:
-                            action_type = "adventure"
-                            action_name = "adventuring"
-                        elif u.busydescription == rpgchar.TRAINING:
-                            action_type = action_name = "training"
-                        elif u.busydescription == rpgchar.WANDERING:
-                            action_type = action_name = "wandering"
-                        else:
-                            action_type = action_name = "Unknown"
-                        if u.health > 0:
-                            embed.add_field(name="Ended {}".format(action_type), value="You are now done {}".format(action_name))
-                        else:
-                            embed.add_field(name="You Died".format(action_type), value="You were killed on one of your adventures".format(action_name))
-                            embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGAa--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1466191557/production/designs/549487_1.jpg")
-                        c = await self.bot.get_user_info(str(u.userid))
-                        if c:
-                            await self.bot.send_message(c, embed=embed)
-                        else:
-                            print("Channel not found, {} is done with {}".format(u.name, u.busydesription))
+                        if (u.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]) and (random.randint(0, 14) <= 0):
+                            await self.adventure_secret(u, c)
+                        if u.busytime <= 0:
+                            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+                            if u.busydescription == rpgchar.ADVENTURE:
+                                action_type = "adventure"
+                                action_name = "adventuring"
+                            elif u.busydescription == rpgchar.TRAINING:
+                                action_type = action_name = "training"
+                            elif u.busydescription == rpgchar.WANDERING:
+                                action_type = action_name = "wandering"
+                            else:
+                                action_type = action_name = "Unknown"
+                            if u.health > 0:
+                                embed.add_field(name="Ended {}".format(action_type), value="You are now done {}".format(action_name))
+                            else:
+                                embed.add_field(name="You Died".format(action_type), value="You were killed on one of your adventures".format(action_name))
+                                embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGAa--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1466191557/production/designs/549487_1.jpg")
+                            c = await self.bot.get_user_info(str(u.userid))
+                            if c:
+                                await self.bot.send_message(c, embed=embed)
+                            else:
+                                print("Channel not found, {} is done with {}".format(u.name, u.busydesription))
+                            u.resetBusy()
+                    except discord.errors.NotFound:
                         u.resetBusy()
         except Exception as e:
             print(e)
@@ -783,9 +788,10 @@ class RPGGame:
         await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
-    async def setchannel(self, ctx, *args):
+    async def setchannel(self, ctx):
         await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        perms = ctx.message.channel.permissions_for(ctx.message.author)
+        if not(ctx.message.author.id == constants.NYAid or perms.manage_server or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         dbcon.setRPGChannel(ctx.message.server.id, ctx.message.channel.id)
