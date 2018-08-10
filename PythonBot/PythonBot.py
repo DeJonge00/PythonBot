@@ -116,7 +116,10 @@ def init_bot():
             if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
         # Commands in the message
-        await bot.process_commands(message)
+        try:
+            await bot.process_commands(message)
+        except discord.errors.Forbidden:
+            bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
         # Pics
         if len(message.attachments) > 0:
             await message_handler.new_pic(bot, message)
@@ -133,7 +136,8 @@ def init_bot():
         await message_handler.deleted(message)
 
     async def on_member_message(member, func_name, text):
-        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name)
+        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name,
+                        serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
         if not response:
             return
@@ -164,29 +168,19 @@ def init_bot():
             return
         await on_member_message(member, "on_member_remove", 'left')
 
-    @bot.event
-    async def on_channel_delete(channel):
-        await log.error("deleted channel: " + channel.name, filename=channel.server.name)
-
-    @bot.event
-    async def on_channel_create(channel):
-        if channel.is_private:
-            return
-        await log.error("created channel: " + channel.name, filename=channel.server.name)
-
-    @bot.event
-    async def on_voice_state_update(before, after):
-        if bot.MUSIC:
-            if before.id == constants.NYAid:
-                channel = after.voice.voice_channel
-                if channel and (before.voice.voice_channel != channel):
-                    state = bot.musicplayer.get_voice_state(before.server)
-                    if bot.is_voice_connected(before.server):
-                        if channel == bot.voice_client_in(before.server):
-                            return
-                        state.voice = await state.voice.move_to(channel)
-                    else:
-                        state.voice = bot.join_voice_channel(channel)
+    # @bot.event
+    # async def on_voice_state_update(before, after):
+    #     if bot.MUSIC:
+    #         if before.id == constants.NYAid:
+    #             channel = after.voice.voice_channel
+    #             if channel and (before.voice.voice_channel != channel):
+    #                 state = bot.musicplayer.get_voice_state(before.server)
+    #                 if bot.is_voice_connected(before.server):
+    #                     if channel == bot.voice_client_in(before.server):
+    #                         return
+    #                     state.voice = await state.voice.move_to(channel)
+    #                 else:
+    #                     state.voice = bot.join_voice_channel(channel)
 
     @bot.event
     async def on_member_update(before, after):
@@ -216,7 +210,7 @@ def init_bot():
             m += " avatar changed"
             changed = True
         if changed:
-            await log.error(m, filename=before.server.name)
+            await log.error(m, filename=before.server.name, serverid=before.server.id)
 
     @bot.event
     async def on_server_update(before, after):
@@ -232,7 +226,7 @@ def init_bot():
         if before.region != after.region:
             m += " region from: " + str(before.region) + " to: " + str(after.region)
         if not m == "server " + before.name + " updated: ":
-            await log.error(m, filename=before.name)
+            await log.error(m, filename=before.name, serverid=before.id)
 
     @bot.event
     async def on_server_role_update(before, after):
@@ -250,15 +244,7 @@ def init_bot():
                 if y:
                     m += " +permission: " + x
         if not m == "role " + before.name + " updated: ":
-            await log.error(m, filename=before.name)
-
-    @bot.event
-    async def on_server_emojis_update(before, after):
-        m = "emojis updated: "
-        if len(before) != len(after):
-            m += " size from: " + str(len(before)) + " to: " + str(len(after))
-        if not "emojis updated: ":
-            await log.error(m, filename=before.name)
+            await log.error(m, filename=before.name, serverid=before.server.id)
 
     @bot.event
     async def on_reaction_add(reaction, user):
@@ -272,15 +258,15 @@ def init_bot():
 
     @bot.event
     async def on_member_ban(member):
-        await log.error("user " + member.name + " banned", filename=member.server.name)
+        await log.error("user " + member.name + " banned", filename=member.server.name, serverid=member.server.id)
 
     @bot.event
     async def on_member_unban(member):
-        await log.error("user " + member.name + " unbanned", filename=member.server.name)
+        await log.error("user " + member.name + " unbanned", filename=member.server.name, serverid=member.server.id)
 
     @bot.event
     async def on_server_join(server):
-        user = bot.get_server(constants.PRIVATESERVERid).get_member(constants.NYAid)
+        user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
         await bot.send_message(user, "I joined a new server named {}, senpai!".format(server.name))
 
     return bot

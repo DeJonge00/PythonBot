@@ -16,7 +16,7 @@ class RPGShop:
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
         if ctx.invoked_subcommand is None:
-            await removeMessage.deleteMessage(self.bot, ctx)
+            await removeMessage.delete_message(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Items", value="Type '{}shop item' for a list of available items".format(constants.prefix), inline=False)
@@ -28,7 +28,7 @@ class RPGShop:
     # {prefix}shop armor
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -70,7 +70,7 @@ class RPGShop:
     # {prefix}shop item
     @shop.command(pass_context=1, aliases=["i", "buy", "items"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -126,7 +126,7 @@ class RPGShop:
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -168,7 +168,7 @@ class RPGShop:
     # {prefix}train
     @commands.command(pass_context=1, aliases=["training"], help="Train your skills!")
     async def train(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)

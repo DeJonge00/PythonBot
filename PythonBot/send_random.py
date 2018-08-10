@@ -11,9 +11,7 @@ EMBED_COLOR = 0x00969b
 
 async def file(my_bot, channel, folder):
     l = listdir(folder)
-    i = randint(0,len(l)-1)
-    print(i)
-    return await my_bot.send_file(channel, homedir + folder + "/" + l[i])
+    return await my_bot.send_file(channel, homedir + folder + "/" + l[randint(0, len(l) - 1)])
 
 
 async def embeddedGif(my_bot, c, n, p, l):
@@ -24,11 +22,11 @@ async def embeddedGif(my_bot, c, n, p, l):
 
 
 def getFile(folder):
-    i = randint(0,len(listdir(folder))-1)
+    i = randint(0, len(listdir(folder)) - 1)
     print(i)
     return "{}{}/{}".format(homedir, folder, i)
 
 
 async def string(my_bot, channel, list, users=[]):
-    i = randint(0,len(list)-1)
+    i = randint(0, len(list) - 1)
     await my_bot.send_message(channel, list[i].format(u=users))

@@ -18,6 +18,7 @@ from rpggame import rpgdbconnect as dbcon
 TIMER = True
 EMBED_COLOR = 0x008909
 
+
 # Normal commands
 class Basics:
     def __init__(self, my_bot):
@@ -40,7 +41,7 @@ class Basics:
     # {prefix}60
     @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
     async def fps(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.fps.get(ctx.message.channel.id)
             if t is not None:
@@ -53,7 +54,7 @@ class Basics:
     # {prefix}biribiri
     @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
     async def biribiri(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.biri.get(ctx.message.channel.id)
             if t != None:
@@ -66,7 +67,7 @@ class Basics:
     # {prefix}botstats
     @commands.command(pass_context=1, help="Biri's botstats!", aliases=['botinfo'])
     async def botstats(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         embed.add_field(name='Profile', value=str(self.bot.user.mention))
@@ -85,15 +86,22 @@ class Basics:
     # {prefix}cast <user>
     @commands.command(pass_context=1, help="Cast a spell!")
     async def cast(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) <= 0:
-            return await self.bot.send_message(ctx.message.channel, "{}, you cannot cast without a target...".format(ctx.message.author.name))
-        return await self.bot.send_message(ctx.message.channel, "{} casted **{}** on {}.\n{}".format(ctx.message.author.name, constants.spell[random.randint(0, len(constants.spell)-1)], " ".join(args), constants.spellresult[random.randint(0, len(constants.spellresult)-1)]))
-    
+            return await self.bot.send_message(ctx.message.channel, "{}, you cannot cast without a target...".format(
+                ctx.message.author.name))
+        return await self.bot.send_message(ctx.message.channel,
+                                           "{} casted **{}** on {}.\n{}".format(ctx.message.author.name,
+                                                                                constants.spell[random.randint(0, len(
+                                                                                    constants.spell) - 1)],
+                                                                                " ".join(args), constants.spellresult[
+                                                                                    random.randint(0, len(
+                                                                                        constants.spellresult) - 1)]))
+
     # {prefix}cat
     @commands.command(pass_context=1, help="CATS!")
     async def cat(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.cat.get(ctx.message.channel.id)
             if t and (datetime.datetime.utcnow() - t).seconds < 60:
@@ -105,13 +113,13 @@ class Basics:
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
 
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if not ctx.message.channel.is_private:
             await self.bot.say('This can only be used in private for spam reasons')
             return
@@ -126,18 +134,18 @@ class Basics:
         if n < 1:
             await self.bit.say("Lol r00d")
             return
-        timers = [3600,1800,600,300,120,60,30,15,10,9,8,7,6,5,4,3,2,1]
+        timers = [3600, 1800, 600, 300, 120, 60, 30, 15, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
         if n > timers[0]:
-            await asyncio.sleep(n-timers[0])
+            await asyncio.sleep(n - timers[0])
             n = timers[0]
         for i in range(len(timers)):
             if n >= timers[i]:
                 await self.bot.say("{}, you gotta do stuff in {} seconds!!!".format(ctx.message.author.mention, n))
-                if i+1 < len(timers):
-                    await asyncio.sleep((timers[i]-timers[i+1]))
-                    n = timers[i+1]
+                if i + 1 < len(timers):
+                    await asyncio.sleep((timers[i] - timers[i + 1]))
+                    n = timers[i + 1]
                 else:
-                    await asyncio.sleep(n-timers[i])
+                    await asyncio.sleep(n - timers[i])
                     n -= timers[i]
         await asyncio.sleep(n)
         await self.bot.say("{}, you gotta do stuff NOW!!!".format(ctx.message.author.mention))
@@ -145,7 +153,7 @@ class Basics:
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
     async def cuddle(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.cuddle.get(ctx.message.channel.id)
             if t != None:
@@ -154,14 +162,16 @@ class Basics:
             await self.bot.send_typing(ctx.message.channel)
             self.bot.cuddle[ctx.message.channel.id] = datetime.datetime.utcnow()
         folder = "cuddle"
-        m = await self.bot.send_file(ctx.message.channel, send_random.homedir + folder + "/" + random.choice(listdir(folder)))
-        if len(ctx.message.mentions)>0:
-            await self.bot.edit_message(m, new_content="Lots of cuddles for {} :heart:".format(ctx.message.mentions[0].mention))
+        m = await self.bot.send_file(ctx.message.channel,
+                                     send_random.homedir + folder + "/" + random.choice(listdir(folder)))
+        if len(ctx.message.mentions) > 0:
+            await self.bot.edit_message(m, new_content="Lots of cuddles for {} :heart:".format(
+                ctx.message.mentions[0].mention))
 
     # {prefix}ded
     @commands.command(pass_context=1, help="Ded chat reminder!")
     async def ded(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.ded.get(ctx.message.channel.id)
             if t != None:
@@ -176,7 +186,7 @@ class Basics:
     async def delete(self, ctx, *args):
         if len(args) > 0:
             s = args[0]
-            try: 
+            try:
                 s = float(s)
             except ValueError:
                 s = 1
@@ -189,7 +199,7 @@ class Basics:
     # {prefix}echo <words>
     @commands.command(pass_context=1, help="I'll be a parrot!")
     async def echo(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) > 0:
             return await self.bot.send_message(ctx.message.channel, " ".join(args))
         if len(ctx.message.attachments) > 0:
@@ -203,7 +213,7 @@ class Basics:
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")
     async def emoji(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS")
 
@@ -215,7 +225,8 @@ class Basics:
                 if e.name in emoji:
                     emojiid = e.id
                     break
-        ext = 'gif' if requests.get('https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
+        ext = 'gif' if requests.get(
+            'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         embed.set_image(url="https://discordapp.com/api/emojis/{}.{}".format(emojiid, ext))
@@ -224,8 +235,11 @@ class Basics:
     # {prefix}emojify <words>
     @commands.command(pass_context=1, help="Use emojis to instead of ascii to spell!")
     async def emojify(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         text = " ".join(args).lower()
+        if not text:
+            await self.bot.say('Please give me a string to emojify...')
+            return
         etext = ""
         for c in text:
             if (c.isalpha()) & (c != " "):
@@ -244,18 +258,17 @@ class Basics:
     # {prefix}face
     @commands.command(pass_context=1, help="Make a random face!")
     async def face(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         await send_random.string(self.bot, ctx.message.channel, constants.faces)
 
     # {prefix}heresy
     @commands.command(pass_context=1, help="Fight the heresy!")
     async def heresy(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.heresy.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
+            if t and (datetime.datetime.utcnow() - t).seconds < 60:
+                return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.heresy[ctx.message.channel.id] = datetime.datetime.utcnow()
         await send_random.file(self.bot, ctx.message.channel, "heresy")
@@ -263,55 +276,74 @@ class Basics:
     # {prefix}happy
     @commands.command(pass_context=1, help="Awwww yeaaahhh!")
     async def happy(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.happy.get(ctx.message.channel.id)
-            if not t is None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
+            if t:
+                if (datetime.datetime.utcnow() - t).seconds < 60:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.happy[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Happinesssss', ctx.message.author.avatar_url, constants.happy_gifs)
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Happinesssss', ctx.message.author.avatar_url,
+                                      constants.happy_gifs)
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
     async def hug(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
-            await self.bot.send_message(ctx.message.channel, ctx.messageauthor.mention + "Trying to give yourself a hug? Haha, so lonely...")
+        await removeMessage.delete_message(self.bot, ctx)
+        if (ctx.message.content == "") or (ctx.message.content.lower() == ctx.message.author.name.lower()) or (
+                ctx.message.author in ctx.message.mentions):
+            await self.bot.send_message(ctx.message.channel,
+                                        ctx.message.author.mention + "Trying to give yourself a hug? Haha, so lonely...")
             return
-        await send_random.string(self.bot, ctx.message.channel, constants.hug, [ctx.message.author.mention, " ".join(args)])
+        await send_random.string(self.bot, ctx.message.channel, constants.hug,
+                                 [ctx.message.author.mention, " ".join(args)])
 
-     # {prefix}kick
+    # {prefix}kick
     @commands.command(pass_context=1, help="Fake kick someone")
     async def kick(self, ctx, *args):
         if len(ctx.message.mentions) > 0:
             await self.bot.send_typing(ctx.message.channel)
-            if (ctx.message.author == ctx.message.mentions[0]):
-                await self.bot.send_message(ctx.message.channel, "You could just leave yourself if you want to go :thinking:")
+            if ctx.message.author == ctx.message.mentions[0]:
+                await self.bot.send_message(ctx.message.channel,
+                                            "You could just leave yourself if you want to go :thinking:")
                 return
             embed = discord.Embed(colour=0xFF0000)
-            embed.add_field(name="User left", value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed!")
+            embed.add_field(name="User left",
+                            value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed!")
             m = await self.bot.say(embed=embed)
 
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death! (is a bit explicit)")
     async def kill(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (ctx.message.author in ctx.message.mentions)):
+        await removeMessage.delete_message(self.bot, ctx)
+        if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (
+                ctx.message.author in ctx.message.mentions)):
             return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
         await send_random.string(self.bot, ctx.message.channel, constants.kill, [" ".join(args)])
+
+    # {prefix}hug <person>
+    @commands.command(pass_context=1, help="Give someone a little kiss!")
+    async def kiss(self, ctx, *args):
+        await removeMessage.delete_message(self.bot, ctx)
+        if (ctx.message.content == "") or (ctx.message.content.lower() == ctx.message.author.name.lower()) or (
+                ctx.message.author in ctx.message.mentions):
+            await self.bot.say("{} Trying to kiss yourself? Let me do that for you...\n*kisses {}*".format(
+                                            ctx.message.author.mention, ctx.message.author.mention))
+            return
+        await send_random.string(self.bot, ctx.message.channel, constants.kisses,
+                                 [ctx.message.author.mention, " ".join(args)])
 
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
     async def lenny(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
     # {prefix}lewd
     @commands.command(pass_context=1, help="LLEEEEEEEEWWDD!!!")
     async def lewd(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.lewd.get(ctx.message.channel.id)
             if not t is None:
@@ -319,12 +351,13 @@ class Basics:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.lewd[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Leeeeeewwwdd!', ctx.message.author.avatar_url, constants.lewd_gifs)
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Leeeeeewwwdd!', ctx.message.author.avatar_url,
+                                      constants.lewd_gifs)
 
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
     async def lottery(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) < 1:
             desc = "Something something LOTTERY!!"
         else:
@@ -346,14 +379,15 @@ class Basics:
         # Select winner
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.sample(lotterylist, 1)[0].name + " is the lucky winner!"
+        mess = "Out of the " + str(len(lotterylist)) + " participants, " + random.sample(lotterylist, 1)[
+            0].name + " is the lucky winner!"
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
     # {prefix}nonazi
     @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")
     async def nonazi(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.nonazi.get(ctx.message.channel.id)
             if t != None:
@@ -366,7 +400,7 @@ class Basics:
     # {prefix}nyan
     @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
     async def nyan(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.nyan.get(ctx.message.channel.id)
             if not t is None:
@@ -374,7 +408,8 @@ class Basics:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.nyan[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Nyan', ctx.message.author.avatar_url, constants.nyan_gifs)
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Nyan', ctx.message.author.avatar_url,
+                                      constants.nyan_gifs)
 
     # # {prefix}nyanya
     # @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
@@ -397,60 +432,67 @@ class Basics:
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
     async def pat(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             return await self.bot.say(ctx.message.author.mention + " You cant pat air lmao")
         if ctx.message.mentions[0].id == ctx.message.author.id:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
-        
+
         time = datetime.datetime.utcnow()
         t = self.patTimes.get(ctx.message.author.id)
 
-        if (t != None):
-            if ((time-t).total_seconds() < 60):
-                await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
-                return
+        if t and (time - t).total_seconds() < 60:
+            await self.bot.say(ctx.message.author.mention + " Not so fast, b-b-baka!")
+            return
         self.patTimes[ctx.message.author.id] = time
 
         n = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
         s = '' if n == 1 else 's'
         m = "{} has pat {} {} time{} now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, n, s)
-        if n%100==0:
+        if n % 100 == 0:
             m += "\nWoooooaaaaahh LEGENDARY!!!"
-        elif n%25==0:
+        elif n % 25 == 0:
             m += "\nWow, that is going somewhere!"
-        elif n%10==0:
+        elif n % 10 == 0:
             m += "\nSugoi!"
         await self.bot.say(m);
 
     # {prefix}plsno
     @commands.command(pass_context=1, help="Nonononononono!")
     async def plsno(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.plsno.get(ctx.message.channel.id)
-            if not t is None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
+            if t and (datetime.datetime.utcnow() - t).seconds < 60:
+                return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.plsno[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Pls no', ctx.message.author.avatar_url, constants.plsno_gifs)
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Pls no', ctx.message.author.avatar_url,
+                                      constants.plsno_gifs)
+
+    # {prefix}hug <person>
+    @commands.command(pass_context=1, help="Purr like you never purred before!")
+    async def purr(self, ctx):
+        await removeMessage.delete_message(self.bot, ctx)
+        await self.bot.say(random.choice(constants.purr).format(ctx.message.author.mention))
 
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
     async def role(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(args) <= 0:
             await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(constants.prefix))
             return
         else:
             rolename = args[0].lower()
-        authorhasperms = ctx.message.channel.permissions_for(ctx.message.author).manage_roles or (ctx.message.server.owner.id == ctx.message.author.id)
+        authorhasperms = ctx.message.channel.permissions_for(ctx.message.author).manage_roles or (
+                ctx.message.server.owner.id == ctx.message.author.id)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
             if not authorhasperms:
-                await self.bot.send_message(ctx.message.channel, "You do not have the permissions to give other people roles")
+                await self.bot.send_message(ctx.message.channel,
+                                            "You do not have the permissions to give other people roles")
                 return
             user = ctx.message.mentions[0]
         if not (authorhasperms or rolename in ['nsfw', 'muted']):
@@ -480,7 +522,7 @@ class Basics:
     # {prefix}sadness
     @commands.command(pass_context=1, help="Cri!")
     async def sadness(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if TIMER:
             t = self.bot.sadness.get(ctx.message.channel.id)
             if not t is None:
@@ -488,12 +530,13 @@ class Basics:
                     return
             await self.bot.send_typing(ctx.message.channel)
             self.bot.sadness[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Sadnessss', ctx.message.author.avatar_url, constants.sad_gifs)
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Sadnessss', ctx.message.author.avatar_url,
+                                      constants.sad_gifs)
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!")
     async def serverinfo(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if ctx.message.channel.is_private:
             await self.bot.say('That cannot be done in private')
             return
@@ -532,7 +575,7 @@ class Basics:
     # {prefix}urban <query>
     @commands.command(pass_context=1, help="Search the totally official wiki!", aliases=["ud", "urbandictionary"])
     async def urban(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         q = " ".join(args)
         if q == "":
             await self.bot.send_message(ctx.message.channel, "...")
@@ -554,7 +597,7 @@ class Basics:
     # {prefix}userinfo <user>
     @commands.command(pass_context=1, help="Get a user's information!", aliases=["user", "info"])
     async def userinfo(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
@@ -583,15 +626,15 @@ class Basics:
         embed.add_field(name="Playing", value=game)
         embed.add_field(name="Joined date", value=user.joined_at.strftime("%D, %H:%M:%S"))
         m = "everyone"
-        for r in range(1,len(user.roles)):
+        for r in range(1, len(user.roles)):
             m += "\n" + user.roles[r].name
-        embed.add_field(name="Roles", value = m)
+        embed.add_field(name="Roles", value=m)
         await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}wikipedia <query>
     @commands.command(pass_context=1, help="Search the wiki!", aliases=["wiki"])
     async def wikipedia(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         q = " ".join(args)
         if q == "":
             return await self.bot.send_message(ctx.message.channel, "...")

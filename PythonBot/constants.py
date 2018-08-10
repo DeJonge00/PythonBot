@@ -22,6 +22,9 @@ NINECHATid = "225995968703627265"
 LEGITSOCIALid = "319581059467575297"
 bot_list_servers = ['264445053596991498', '110373943822540800', '374071874222686211']
 
+# Channel id's
+SNOWFLAKE_GENERAL = '378190443533434890'
+
 ytdl_options = dict(
     format="bestaudio/best",
     extractaudio=True,
@@ -170,6 +173,24 @@ ded = [
             "Fun fact #318: People die when they are killed"
         ]
 
+purr = [
+    '*{0} purrs and wags tail*',
+    '*{0} purrs with sparkling eyes*',
+    '*{0} purrs loudly*',
+    '*{0}\'s purring noises intensify*',
+    '*{0} purrs excitedly*',
+    '*{0} smiles and purrs softly*'
+]
+
+kisses = [
+    '*{u[0]} kisses {u[1]} softly on the cheeks*',
+    '*{u[1]} gets a surprise kiss from {u[0]}*',
+    "*{u[0]} blows {u[1]} a sweet pink kiss*",
+    '*{u[0]} lewdly kisses {u[1]}*',
+    '*{u[0]} shares a secret kiss with {u[1]}*',
+    '*{u[1]} gets smooched by {u[0]}*'
+]
+
 faces = [
             "(づ◔ ͜ʖ◔)づ",
             "ヾ(๑╹◡╹)ﾉ\"",
@@ -218,7 +239,6 @@ hug = [
             "*{u[0]} immediately ceases doing important stuff to hug {u[1]}*",
             "*{u[0]} said: \"Let there be hugs\", and {u[1]} got hugs*",
             "*{u[0]}-chan hug hug {u[1]}*",
-            "*{u[0]} blows {u[1]} a sweet pink kiss*",
             "*{u[0]} stops fapping to kpop for a hug with {u[1]}*",
             "*{u[0]} fabulously flies in for a hug with {u[1]}*",
             "*{u[0]} practices a new more cuddly type of hug on {u[1]}*",

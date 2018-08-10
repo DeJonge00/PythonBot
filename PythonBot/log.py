@@ -1,12 +1,15 @@
 import datetime
 import discord
+import constants
 
 
 def str_cmd(s: str):
     return s.encode("ascii", "replace").decode("ascii")
 
 
-async def error(event, filename="errors"):
+async def error(event, filename="errors", serverid=None):
+    if serverid in constants.bot_list_servers:
+        return
     text = datetime.datetime.utcnow().strftime("%H:%M:%S") + " | " + str_cmd(event)
     file = open("logs/" + str_cmd(filename.replace('/', '')) + ".txt", "a+")
     file.write(text + '\n')
@@ -22,6 +25,8 @@ async def log(note, author, string, filename):
 
 
 async def message(mess: discord.Message, action: str, number=0):
+    if mess.server.id in constants.bot_list_servers:
+        return
     file = open("logs/" + str_cmd(mess.server.name.replace('/', '')) + ".txt", "a+")
     if action == "pic":
         if mess.channel.is_private:

@@ -4,6 +4,7 @@ from random import randint
 from PIL import Image
 from io import BytesIO
 
+
 # Mod commands
 class Mod:
     def __init__(self, my_bot):
@@ -12,15 +13,15 @@ class Mod:
     # {prefix}banish <@person>
     @commands.command(pass_context=1, help="BANHAMMER")
     async def banish(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not((ctx.message.author.id==constants.NYAid) | (perms.kick_members)):
+        if not ((ctx.message.author.id == constants.NYAid) | (perms.kick_members)):
             await self.bot.say("Hahahaha, no")
             return
         for user in ctx.message.mentions:
             await self.bot.kick(user)
-    
-    #{prefix}reset
+
+    # {prefix}reset
     @commands.group(pass_context=1, hidden=True, help="'>help reset' for full options")
     async def reset(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -29,8 +30,8 @@ class Mod:
     # {prefix}emojispam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the emojispam list")
     async def emojispam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         if len(ctx.message.mentions) > 0:
@@ -42,8 +43,8 @@ class Mod:
     # {prefix}farecho <server>|<channel>|<words>
     @commands.command(pass_context=1, hidden=True, help="I'll be a parrot!")
     async def farecho(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
-        if not(ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
             await self.bot.say("Hahahaha, no")
             return
         try:
@@ -75,30 +76,34 @@ class Mod:
             msg = await self.bot.wait_for_message(timeout=180, channel=channel)
             if not msg:
                 return
-            print('Response to farecho ({}, {}, {}): {}'.format(msg.author.encode("ascii", "replace").decode("ascii"), server_name.encode("ascii", "replace").decode("ascii"), channel_name.encode("ascii", "replace").decode("ascii"), msg.content.encode("ascii", "replace").decode("ascii")))
+            print('Response to farecho ({}, {}, {}): {}'.format(msg.author.encode("ascii", "replace").decode("ascii"),
+                                                                server_name.encode("ascii", "replace").decode("ascii"),
+                                                                channel_name.encode("ascii", "replace").decode("ascii"),
+                                                                msg.content.encode("ascii", "replace").decode("ascii")))
 
     # {prefix}getServerList 
     @commands.command(pass_context=1, hidden=1, help="getServerList")
     async def getserverlist(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id == constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         m = ""
         for i in self.bot.servers:
             m += "{}, members={}, owner={}\n".format(i.name, sum([1 for _ in i.members]), i.owner)
-        await self.bot.send_message(ctx.message.channel, m)
+        # await self.bot.send_message(ctx.message.channel, m)
+        print(m)
 
     # {prefix}newpp <attach new pp>
     @commands.command(pass_context=1, help="Nickname a person")
     async def newpp(self, ctx, *args):
-        if not(ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
+        if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
             await self.bot.say("Hahahaha, no")
             return
         if len(ctx.message.attachments) > 0:
             url = ctx.message.attachments[0].get('url')
         elif len(ctx.message.mentions) > 0:
-            url = '.'.join(ctx.message.mentions[0].avatar_url.split('.')[:-1])+'.png'
+            url = '.'.join(ctx.message.mentions[0].avatar_url.split('.')[:-1]) + '.png'
             print(url)
         else:
             await self.bot.say('Pls give me smth...')
@@ -107,7 +112,7 @@ class Mod:
             # TODO: Fix saving pic first
             name = 'temp/newpp.png'
             Image.open(BytesIO(requests.get(url).content)).save(name)
-            await removeMessage.deleteMessage(self.bot, ctx)
+            await removeMessage.delete_message(self.bot, ctx)
             with open(name, 'rb') as file:
                 await self.bot.edit_profile(avatar=file.read())
             await self.bot.say('Make-up is done sweety <3')
@@ -126,16 +131,16 @@ class Mod:
     # {prefix}nickname <@person>
     @commands.command(pass_context=1, help="Nickname a person", aliases=["nick", "nn"])
     async def nickname(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if len(ctx.message.mentions) > 0:
             if len(args) > 1:
-                if not((ctx.message.author.id==constants.NYAid) | (perms.manage_nicknames)):
+                if not ((ctx.message.author.id == constants.NYAid) | (perms.manage_nicknames)):
                     await self.bot.say("Hahahaha, no")
                     return
                 await self.bot.change_nickname(ctx.message.mentions[0], " ".join(args[1:]))
             else:
-                if not((ctx.message.author.id==constants.NYAid) | (perms.change_nickname)):
+                if not ((ctx.message.author.id == constants.NYAid) | (perms.change_nickname)):
                     await self.bot.say("Hahahaha, no")
                     return
                 await self.bot.change_nickname(ctx.message.mentions[0], "")
@@ -143,8 +148,8 @@ class Mod:
     # {prefix}reset pats
     @reset.command(pass_context=1, hidden=True, help="Reset pat db")
     async def pats(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         conn = sqlite3.connect(constants.PATSDB)
@@ -160,9 +165,9 @@ class Mod:
     # {prefix}purge <amount>
     @commands.command(pass_context=1, help="Remove a weird chat")
     async def purge(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not((ctx.message.author.id==constants.NYAid) | (perms.manage_messages)):
+        if not ((ctx.message.author.id == constants.NYAid) | (perms.manage_messages)):
             await self.bot.say("Hahahaha, no")
             return
         if len(args) > 0:
@@ -172,17 +177,18 @@ class Mod:
                 l = 10
         else:
             l = 10
-        if len(ctx.message.mentions)>0:
+        if len(ctx.message.mentions) > 0:
             def c(message):
                 return message.author in ctx.message.mentions
+
             return await self.bot.purge_from(ctx.message.channel, check=c, limit=l)
         await self.bot.purge_from(ctx.message.channel, limit=l)
 
     # {prefix}resetgoodbye
     @reset.command(pass_context=1, hidden=True, help="Resets all goodbye messages")
     async def goodbye(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         conn = sqlite3.connect(constants.GOODBYEMESSAGEFILE)
@@ -196,7 +202,7 @@ class Mod:
     # {prefix}setgoodbye <message>
     @commands.command(pass_context=1, help="Sets a goodbye message")
     async def setgoodbye(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
             await self.bot.say("Hahahaha, no")
@@ -216,8 +222,8 @@ class Mod:
     # {prefix}resetwelcome
     @reset.command(pass_context=1, hidden=True, help="Resets all welcome messages")
     async def welcome(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         conn = sqlite3.connect(constants.WELCOMEMESSAGEFILE)
@@ -231,7 +237,7 @@ class Mod:
     # {prefix}setwelcome <message>
     @commands.command(pass_context=1, help="Sets a welcome message")
     async def setwelcome(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
             await self.bot.say("Hahahaha, no")
@@ -251,8 +257,8 @@ class Mod:
     # {prefix}spam <amount> <user>
     @commands.command(pass_context=1, hidden=True, help="Spam a user messages")
     async def spam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         if len(ctx.message.mentions) > 0:
@@ -263,13 +269,13 @@ class Mod:
                 except ValueError:
                     a = 10
                 for i in range(a):
-                    await self.bot.send_message(user, "Have a random number: " + str(randint(0,10000)) + " :heart:")
+                    await self.bot.send_message(user, "Have a random number: " + str(randint(0, 10000)) + " :heart:")
 
     # {prefix}spongespam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the spongespam list")
     async def spongespam(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid):
             await self.bot.say("Hahahaha, no")
             return
         if len(ctx.message.mentions) > 0:
@@ -286,32 +292,32 @@ class Mod:
         await self.bot.logout()
         await self.bot.close()
 
-#    # {prefix}restart
-#    @commands.command(pass_context=1, help="Lets me go to sleep AND BE RESURRECTED \\o/")
-#    async def restart(self, ctx, *args):
-#        await removeMessage.deleteMessage(self.bot, ctx)
-#        if not(ctx.message.author.id==constants.NYAid):
-#            await self.bot.say("Hahahaha, no")
-#            return
-#        await self.bot.send_message(ctx.message.channel, "*I'll be back...*")
-#        
-#        reload(PythonBot)
+    #    # {prefix}restart
+    #    @commands.command(pass_context=1, help="Lets me go to sleep AND BE RESURRECTED \\o/")
+    #    async def restart(self, ctx, *args):
+    #        await removeMessage.deleteMessage(self.bot, ctx)
+    #        if not(ctx.message.author.id==constants.NYAid):
+    #            await self.bot.say("Hahahaha, no")
+    #            return
+    #        await self.bot.send_message(ctx.message.channel, "*I'll be back...*")
+    #
+    #        reload(PythonBot)
 
     # {prefix}quit
     @commands.command(pass_context=1, hidden=True, help="Lets me go to sleep")
     async def quit(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
-        if not((ctx.message.author.id==constants.NYAid) | (ctx.message.author.id==constants.KAPPAid)):
+        await removeMessage.delete_message(self.bot, ctx)
+        if not ((ctx.message.author.id == constants.NYAid) | (ctx.message.author.id == constants.KAPPAid)):
             await self.bot.say("Hahahaha, no")
             return
         await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
         await self.quitBot()
-        
+
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
-    async def test(self, ctx, *args):    
-        #await removeMessage.deleteMessage(self.bot, ctx)
-        if not(ctx.message.author.id==constants.NYAid or ctx.message.author.id==constants.KAPPAid):
+    async def test(self, ctx, *args):
+        # await removeMessage.deleteMessage(self.bot, ctx)
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
         print("Test")

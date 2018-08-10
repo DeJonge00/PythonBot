@@ -19,7 +19,7 @@ class Hangman:
     # {prefix}hangman <create> {custom | sentence} | <guess>
     @commands.command(pass_context=1, help="Hangman game", aliases=["hm"])
     async def hangman(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         game = self.games.get(ctx.message.server.id)
 
         if len(args) <=0:

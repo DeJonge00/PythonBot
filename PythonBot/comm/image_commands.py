@@ -16,7 +16,7 @@ class Images:
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
     async def pp(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
@@ -29,7 +29,7 @@ class Images:
     # {prefix}meme <meme> <toptext>|<bottomtext>
     @commands.command(pass_context=1, hidden=True, help="Make a meme out of the arguments")
     async def meme(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if (len(args) >= 1) & (args[0] == "list"):
             return await self.bot.send_message(ctx.message.channel, "Memelist: onedoesnotsimply")
         if len(args) < 2:
@@ -78,7 +78,7 @@ class Images:
     # {prefix}spin <user>
     @commands.command(pass_context=1, hidden=True, help="You spin your head right round, right round. Like a record baby!")
     async def spin(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:

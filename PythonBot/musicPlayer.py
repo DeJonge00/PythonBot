@@ -220,7 +220,7 @@ class MusicPlayer:
     @commands.group(pass_context=1, aliases=["m"], help="'{}help music' for full options".format(constants.prefix))
     async def music(self, ctx):
         if ctx.invoked_subcommand is None:
-            await removeMessage.deleteMessage(self.bot, ctx)
+            await removeMessage.delete_message(self.bot, ctx)
             embed = discord.Embed(colour=embedColor)
             embed.set_author(name="Help", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="current", value="Show information about the song currently playing", inline=False)
@@ -243,7 +243,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["c"], help="Show information about the song currently playing")
     async def current(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         if not state.current:
             await self.bot.say("I am not performing at the moment")
@@ -253,7 +253,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["j"], help="Let me join a voice channel")
     async def join(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
         state = self.get_voice_state(ctx.message.server)
         force = False
         if len(args) > 0:
@@ -266,7 +266,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["l"], help="Send me away from the voice channel")
     async def leave(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx, istyping=False)
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
         channel = ctx.message.author.voice.voice_channel
         voice_client = self.bot.voice_client_in(ctx.message.server)
         if not voice_client:
@@ -282,7 +282,7 @@ class MusicPlayer:
                    help="'{0}m p' to pause or resume singing, '{0}m p <songname | url>' to add a song to the queue".format(
                        constants.prefix))
     async def play(self, ctx, *song):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(song) > 0:
             await self.play_song(ctx, " ".join(song))
             return
@@ -305,7 +305,7 @@ class MusicPlayer:
                    help="'{0}m q' to show the queue, '{0}m q <songname | url>' to add a song to the queue".format(
                        constants.prefix))
     async def queue(self, ctx, *song):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if len(song) <= 0:
             return await self.show_queue(ctx.message, 1, new=True)
         await self.play_song(ctx, " ".join(song))
@@ -313,13 +313,13 @@ class MusicPlayer:
     @music.command(pass_context=1, aliases=["quit"],
                    help="Empty the queue and skip the current song, then leave the voice channel")
     async def stop(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         await self.stop_playing(ctx)
         await self.bot.say("Baibai o/")
 
     @music.command(pass_context=1, aliases=["r"], help="Repeat the current song")
     async def repeat(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         if not state.voice:
             await self.bot.say("I am not singing at the moment")
@@ -336,7 +336,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, help="Reset the player for this channel")
     async def reset(self, ctx):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         await self.stop_playing(ctx)
         try:
             self.voice_states.pop(ctx.message.server.id)
@@ -345,7 +345,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["s"], help="Vote to skip a song, or just skip it if you are the requester")
     async def skip(self, ctx, *args):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         state = self.get_voice_state(ctx.message.server)
         if not state.voice:
             await self.bot.say("I am not plaing songs right now...")
@@ -392,7 +392,7 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["v"], help="Change the volume of the songs")
     async def volume(self, ctx, vol: int):
-        await removeMessage.deleteMessage(self.bot, ctx)
+        await removeMessage.delete_message(self.bot, ctx)
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
