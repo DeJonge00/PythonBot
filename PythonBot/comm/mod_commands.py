@@ -49,6 +49,8 @@ class Mod:
             return
         try:
             server_name, channel_name, message = ' '.join(args).split('|')
+            server_name = server_name.lower()
+            channel_name = channel_name.lower()
         except ValueError:
             await self.bot.say('Not the right arguments, sweety')
             return

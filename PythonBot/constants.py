@@ -274,7 +274,7 @@ kill = [
             "{u[0]}, Imma slit your throat slowly, using a hot salted knife",
             "{u[0]}, Imma tie your limbs with a rope so tight, they will die and fall off",
             "{u[0]}, Imma insert superglue in every hole on your body I can find",
-            "{u[0]}, Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat"
+            "{u[0]}, Imma cut your leg off, take out the bone and sharpen it into a knife to slit your throat",
             "{u[0]}, Imma hang you by your balls from the ceiling fan and use you as a pinata"
         ]
 

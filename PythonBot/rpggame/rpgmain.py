@@ -239,9 +239,13 @@ class RPGGame:
                 await self.boss_battle()
                 self.bot.rpgshop.weapons = {}
                 self.bot.rpgshop.armors = {}
+        except Exception as e:
+            print(e)
+            self.logger.exception(e)
 
-            # Player is doing rpg stuff
-            for u in list(self.players.values()):
+        # Player is doing rpg stuff
+        for u in list(self.players.values()):
+            try:
                 if u.health < u.getMaxhealth():
                     u.autoHealthRegen()
                 if u.busydescription is not rpgchar.NONE:
@@ -287,9 +291,9 @@ class RPGGame:
                             u.resetBusy()
                     except discord.errors.NotFound:
                         u.resetBusy()
-        except Exception as e:
-            print(e)
-            self.logger.exception(e)
+            except Exception as e:
+                print(e)
+                self.logger.exception(e)
 
     def get_party(self, serverid):
         party = self.boss_parties.get(serverid)
