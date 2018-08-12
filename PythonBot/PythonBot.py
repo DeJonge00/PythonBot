@@ -257,17 +257,22 @@ def init_bot():
             await bot.musicplayer.handle_reaction(reaction)
 
     @bot.event
-    async def on_member_ban(member):
-        await log.error("user " + member.name + " banned", filename=member.server.name, serverid=member.server.id)
+    async def on_member_ban(member: discord.Member):
+        await log.error(member.server.name + " | User " + member.name + " banned", filename=member.server.name, serverid=member.server.id)
 
     @bot.event
-    async def on_member_unban(member):
-        await log.error("user " + member.name + " unbanned", filename=member.server.name, serverid=member.server.id)
+    async def on_member_unban(member: discord.Member):
+        await log.error("User " + member.name + " unbanned", filename=member.server.name, serverid=member.server.id)
 
     @bot.event
-    async def on_server_join(server):
+    async def on_server_join(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
         await bot.send_message(user, "I joined a new server named {}, senpai!".format(server.name))
+
+    @bot.event
+    async def on_server_remove(server: discord.Server):
+        user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
+        await bot.send_message(user, "A new server named {} just removed me from service :sadness:".format(server.name))
 
     return bot
 
