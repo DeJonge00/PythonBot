@@ -44,12 +44,12 @@ class RPGGame:
             embed.set_thumbnail(url=thumbnail)
         title = ""
         if len(p1) == 1:
-            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].getElement())[0])
+            title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].get_element())[0])
         else:
             title += "A party of {}".format(len(p1))
         title += " vs "
         if len(p2) == 1:
-            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, rpgc.elementnames.get(p2[0].getElement())[0])
+            title += "{} ({}hp, {})".format(p2[0].name, p2[0].health, rpgc.elementnames.get(p2[0].get_element())[0])
         else:
             title += "A party of {}".format(len(p2))
         embed.add_field(name=battle_name, value=title, inline=False)
@@ -71,25 +71,25 @@ class RPGGame:
                     if len(defs) <= 0:
                         break
                     defender = defs[random.randint(0, len(defs) - 1)]
-                    ws = random.randint(0, max(attacker.getWeaponskill(),
-                                               attacker.getCritical()) + defender.getWeaponskill())
-                    if ws < max(attacker.getWeaponskill(), attacker.getCritical()):
-                        if ws < attacker.getCritical():
+                    ws = random.randint(0, max(attacker.get_weaponskill(),
+                                               attacker.get_critical()) + defender.get_weaponskill())
+                    if ws < max(attacker.get_weaponskill(), attacker.get_critical()):
+                        if ws < attacker.get_critical():
                             damage = int(math.floor((2.5 + (0.05 * max(0,
-                                                                       attacker.getCritical() - attacker.getWeaponskill()))) * attacker.getDamage(
-                                defender.getElement())))
+                                                                       attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(
+                                defender.get_element())))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
                                                                                                    damage)
                         else:
                             damage = int(math.floor(
-                                math.sqrt(random.randint(100, 400) / 100) * attacker.getDamage(defender.getElement())))
+                                math.sqrt(random.randint(100, 400) / 100) * attacker.get_damage(defender.get_element())))
                             battle_report += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name,
                                                                                           damage)
                         if battle_name == "Mockbattle":
-                            defender.addHealth(-1 * damage, death=False)
+                            defender.add_health(-1 * damage, death=False)
                         else:
-                            defender.addHealth(-1 * damage)
+                            defender.add_health(-1 * damage)
             p3 = p1
             p1 = p2
             p2 = p3
@@ -133,10 +133,10 @@ class RPGGame:
                 await self.bot.send_message(channel, title)
                 await self.bot.send_message(channel, battle_report)
             except discord.errors.HTTPException:
-                await self.bot.send_message(channel, "Rip bossbattle")
+                await self.bot.send_message(channel, "Unable to post battlereport ~~plsdontkillme~~")
                 print(title)
                 print(battle_report)
-        if sum([(x.health / x.getMaxhealth()) for x in p1]) > sum([(x.health / x.getMaxhealth()) for x in p2]):
+        if sum([(x.health / x.get_maxhealth()) for x in p1]) > sum([(x.health / x.get_maxhealth()) for x in p2]):
             return 1
         return 2
 
@@ -145,11 +145,11 @@ class RPGGame:
         for serverid in self.boss_parties:
             party = self.boss_parties.get(serverid)
             if len(party) > 0:
-                channel = self.bot.get_channel(dbcon.getRPGChannel(str(serverid)))
+                channel = self.bot.get_channel(dbcon.get_rpg_channel(str(serverid)))
                 if not channel:
                     print("No channel for {}".format(serverid))
                     return
-                lvl = max([x.getBosstier() for x in party])
+                lvl = max([x.get_bosstier() for x in party])
                 bosses = []
                 while (3 * len(bosses)) < len(party):
                     (name, elem, pic) = random.choice(rpgc.bosses)
@@ -159,30 +159,30 @@ class RPGGame:
                 print('w', winner, 'p', party)
                 if winner == 1:
                     for p in party:
-                        p.addExp(32 * lvl * lvl * len(bosses) / len(party))
+                        p.add_exp(32 * lvl * lvl * len(bosses) / len(party))
                         print(str(p), 'bt', p.bosstier)
-                        p.addBosstier()
+                        p.add_bosstier()
                         print(str(p), 'bt', p.bosstier)
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
-                p.resetBusy()
+                p.reset_busy()
         self.boss_parties = {}
 
     async def adventure_encounter(self, player: rpgchar.RPGPlayer, channel: discord.Channel):
         (name, elem, pic) = random.choice(rpgc.monsters)
-        lvl = player.getLevel()
+        lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
             rpgchar.RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 95))),
                                damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp) ** (0.6)))),
                                element=elem)], short=False, thumbnail=pic)
         if winner == 1:
-            player.addExp(100 * player.getLevel())
+            player.add_exp(100 * player.get_level())
 
     async def adventure_secret(self, player: rpgchar.RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
         (name, stat, amount) = secrets_list[random.randint(0, len(secrets_list) - 1)]
         if stat.lower() == "health":
-            player.addHealth(amount)
+            player.add_health(amount)
         elif stat.lower() == "weaponskill":
             player.weaponskill += amount
         elif stat.lower() == "money":
@@ -207,7 +207,7 @@ class RPGGame:
         return parties
 
     def game_init(self):
-        self.players = dbcon.getBusyPlayers()
+        self.players = dbcon.get_busy_players()
         self.boss_parties = self.get_boss_parties()
         logging.basicConfig(level=logging.DEBUG)
         print("RPG Gameloop started!")
@@ -220,7 +220,7 @@ class RPGGame:
             if time.minute % 15 == 0:
                 p = self.players.values()
                 if len(p) > 0:
-                    dbcon.updatePlayers(p)
+                    dbcon.update_players(p)
                     player_ids = list(self.players.keys())
                     for i in player_ids:
                         player = self.players.get(i)
@@ -231,7 +231,7 @@ class RPGGame:
             if time.minute == 55:
                 # Bossraids
                 for p in self.boss_parties:
-                    await self.bot.send_message(self.bot.get_channel(dbcon.getRPGChannel(str(p))),
+                    await self.bot.send_message(self.bot.get_channel(dbcon.get_rpg_channel(str(p))),
                                                 "A party of {} is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate".format(
                                                     len(self.boss_parties.get(p))))
 
@@ -246,8 +246,8 @@ class RPGGame:
         # Player is doing rpg stuff
         for u in list(self.players.values()):
             try:
-                if u.health < u.getMaxhealth():
-                    u.autoHealthRegen()
+                if u.health < u.get_maxhealth():
+                    u.do_auto_health_regen()
                 if u.busydescription is not rpgchar.NONE:
                     if not (u.busydescription in [rpgchar.BOSSRAID]):
                         u.busytime -= 1
@@ -288,9 +288,9 @@ class RPGGame:
                                     pass
                             else:
                                 print("Channel not found, {} is done with {}".format(u.name, u.busydesription))
-                            u.resetBusy()
+                            u.reset_busy()
                     except discord.errors.NotFound:
-                        u.resetBusy()
+                        u.reset_busy()
             except Exception as e:
                 print(e)
                 self.logger.exception(e)
@@ -305,7 +305,7 @@ class RPGGame:
     def get_player_data(self, userid, name=None):
         p = self.players.get(str(userid))
         if not p:
-            p = dbcon.getPlayer(str(userid))
+            p = dbcon.get_single_player(str(userid))
             self.players[str(userid)] = p
         if name:
             p.name = name
@@ -326,7 +326,7 @@ class RPGGame:
 
     def quit(self):
         # Save rpg stats
-        dbcon.updatePlayers(self.players.values())
+        dbcon.update_players(self.players.values())
         print("RPGStats saved")
 
     # RPG intro/help
@@ -657,7 +657,7 @@ class RPGGame:
 
     async def addLevelup(self, data, channel, reward):
         if reward == 1:
-            data.setMaxhealth(data.maxhealth + 80)
+            data.set_maxhealth(data.maxhealth + 80)
             await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth))
         elif reward == 2:
             data.weaponskill += 2
@@ -724,11 +724,11 @@ class RPGGame:
             return
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Boss raiding party", value="{} adventurers".format(len(party)), inline=False)
-        embed.add_field(name="Estimated boss level", value=max([x.getBosstier() for x in party]), inline=False)
+        embed.add_field(name="Estimated boss level", value=max([x.get_bosstier() for x in party]), inline=False)
         m = ""
         for n in party:
             member = ctx.message.server.get_member(str(n.userid))
-            m += "{}, level {}\n".format(member.display_name, n.getLevel())
+            m += "{}, level {}\n".format(member.display_name, n.get_level())
         embed.add_field(name="Adventurers", value=m, inline=False)
         await self.bot.say(embed=embed)
 
@@ -784,8 +784,8 @@ class RPGGame:
         users_per_page = 10
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n + 1), inline=False)
-        dbcon.updatePlayers(self.players.values())
-        player_list = dbcon.getTopPlayers(group, (n + 1) * users_per_page)
+        dbcon.update_players(self.players.values())
+        player_list = dbcon.get_top_players(group, (n + 1) * users_per_page)
         if len(player_list) < (users_per_page * n):
             await self.bot.say("There are only {} pages...".format(math.ceil(len(player_list) / users_per_page)))
             return
@@ -858,7 +858,7 @@ class RPGGame:
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        dbcon.updatePlayers(self.players.values())
+        dbcon.update_players(self.players.values())
         self.players = {}
 
     @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
@@ -878,7 +878,7 @@ class RPGGame:
             return
         self.boss_parties = {}
         self.players = {}
-        dbcon.resetPlayers()
+        dbcon.reset_rpg_database()
         await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
@@ -888,7 +888,7 @@ class RPGGame:
         if not (ctx.message.author.id == constants.NYAid or perms.manage_server or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
-        dbcon.setRPGChannel(ctx.message.server.id, ctx.message.channel.id)
+        dbcon.set_rpg_channel(ctx.message.server.id, ctx.message.channel.id)
         await self.bot.say("This channel is now the rpg channel for this server")
 
     # money for devs (testing purpose ONLY)

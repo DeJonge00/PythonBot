@@ -4,7 +4,7 @@ from secret import secrets
 
 
 # Channels
-def setRPGChannel(server_id: int, channel_id: str):
+def set_rpg_channel(server_id: int, channel_id: str):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID=%s", server_id)
@@ -17,7 +17,7 @@ def setRPGChannel(server_id: int, channel_id: str):
     conn.close()
 
 
-def getRPGChannel(server_id: str):
+def get_rpg_channel(server_id: str):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(server_id))
@@ -31,8 +31,8 @@ def getRPGChannel(server_id: str):
 
 
 # Rpg
-def getBusyPlayers():
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+def get_busy_players():
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
     c = conn.cursor()
     c.execute("SELECT playerID FROM busy WHERE busytime>0")
     t = c.fetchall()
@@ -40,11 +40,11 @@ def getBusyPlayers():
     conn.close()
     players = {}
     for p in t:
-        players[p[0]] = getPlayer(p[0])
+        players[p[0]] = get_single_player(p[0])
     return players
 
 
-def getPlayer(player_id: str):
+def get_single_player(player_id: str):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT * FROM stats WHERE playerID={}".format(player_id))
@@ -68,7 +68,7 @@ def getPlayer(player_id: str):
         player.money = i[3]
         player.bosstier = i[4]
     if b:
-        player.setBusy(b[3], b[1], b[2])
+        player.set_busy(b[3], b[1], b[2])
         player.kingtimer = b[4]
     if w:
         player.weapon = rpgw.RPGWeapon(w[1], w[2], w[3], w[4], w[5], w[6])
@@ -77,7 +77,7 @@ def getPlayer(player_id: str):
     return player
 
 
-def updatePlayers(stats: [rpgchar.RPGPlayer]):
+def update_players(stats: [rpgchar.RPGPlayer]):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     try:
@@ -112,7 +112,7 @@ def updatePlayers(stats: [rpgchar.RPGPlayer]):
         conn.close()
 
 
-def getTopPlayers(group: str, amount: int):
+def get_top_players(group: str, amount: int):
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("SELECT playerID, {0} FROM items ORDER BY {0} DESC LIMIT {1}".format(group, amount))
@@ -122,7 +122,7 @@ def getTopPlayers(group: str, amount: int):
     return a
 
 
-def resetPlayers():
+def reset_rpg_database():
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
     c.execute("DELETE from items") 

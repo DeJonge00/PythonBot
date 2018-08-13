@@ -34,7 +34,7 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            start = max(0, player.getLevel()-5)
+            start = max(0, player.get_level() - 5)
             for i in range(start, start+10):
                 a = self.armors.get(i)
                 if a is None:
@@ -59,7 +59,7 @@ class RPGShop:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
         pa = player.armor
-        if not player.buyArmor(armor):
+        if not player.buy_armor(armor):
             await self.bot.say("You do not have the money to buy the {}".format(armor.name))
             return
         t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
@@ -118,7 +118,7 @@ class RPGShop:
         if a < 0:
             await self.bot.say("Lmao, that sounds intelligent")
             return
-        if player.buyItem(item, amount=a):
+        if player.buy_item(item, amount=a):
             await self.bot.say("{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a*item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, item.name, math.floor(player.money/item.cost)))
@@ -132,7 +132,7 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
-            start = max(0, player.getLevel()-5)
+            start = max(0, player.get_level() - 5)
             for i in range(start, start+10):
                 w = self.weapons.get(i)
                 if w is None:
@@ -157,7 +157,7 @@ class RPGShop:
             await self.bot.say("That is not an armor sold in this part of the country")
             return
         pw = player.weapon
-        if not player.buyWeapon(weapon):
+        if not player.buy_weapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
         t = "You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost)
@@ -199,8 +199,8 @@ class RPGShop:
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not player.setBusy(rpgchar.TRAINING, math.ceil(a*training.cost), c.id):
+        if not player.set_busy(rpgchar.TRAINING, math.ceil(a * training.cost), c.id):
             await self.bot.say("You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime/training.cost), math.floor(rpgchar.maxtrainingtime/training.cost)))
             return
-        player.buyTraining(training, amount=a)
+        player.buy_training(training, amount=a)
         await self.bot.say("{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name, int(math.ceil(a*training.cost))))
