@@ -1,5 +1,7 @@
 import pymysql
-from rpggame import rpgcharacter as rpgchar, rpgweapon as rpgw, rpgarmor as rpga
+from rpggame import rpgweapon as rpgw, rpgarmor as rpga
+from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
+from rpggame.rpgpet import RPGPet
 from secret import secrets
 
 
@@ -34,7 +36,7 @@ def get_rpg_channel(server_id: str):
 def get_busy_players():
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
     c = conn.cursor()
-    c.execute("SELECT playerID FROM busy WHERE busytime>0")
+    c.execute("SELECT id FROM busy WHERE time>0")
     t = c.fetchall()
     conn.commit()
     conn.close()
@@ -44,65 +46,114 @@ def get_busy_players():
     return players
 
 
+TYPE_WEAPON = 0
+TYPE_ARMOR = 1
+TYPE_PET = 2
+
+
 def get_single_player(player_id: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
+    playerweapon = None
+    playerarmor = None
+    playerpet = None
+
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8",
+                           use_unicode=True)
     c = conn.cursor()
-    c.execute("SELECT * FROM stats WHERE playerID={}".format(player_id))
-    s = c.fetchone()
-    c.execute("SELECT * FROM items WHERE playerID={}".format(player_id))
-    i = c.fetchone()
-    c.execute("SELECT * FROM busy WHERE playerID={}".format(player_id))
-    b = c.fetchone()
-    c.execute("SELECT * from weapon WHERE playerID={}".format(player_id))
-    w = c.fetchone()
-    c.execute("SELECT * from armor WHERE playerID={}".format(player_id))
-    a = c.fetchone()
-    conn.commit()
-    conn.close()
-    if not s:
-        return rpgchar.RPGPlayer(player_id, str(player_id))
-    player = rpgchar.RPGPlayer(player_id, str(player_id), role=s[1], health=s[2], maxhealth=s[3], damage=s[4], ws=s[5], critical=s[6])
-    if i:
-        player.exp = i[1]
-        player.levelups = i[2]
-        player.money = i[3]
-        player.bosstier = i[4]
-    if b:
-        player.set_busy(b[3], b[1], b[2])
-        player.kingtimer = b[4]
-    if w:
-        player.weapon = rpgw.RPGWeapon(w[1], w[2], w[3], w[4], w[5], w[6])
-    if a:
-        player.armor = rpga.RPGArmor(a[1], a[2], a[3], a[4], a[5], a[6])
+    try:
+        c.execute("SELECT * FROM characters WHERE id={}".format(player_id))
+        _, exp, health, maxhealth, damage, weaponskill, critical = c.fetchone()
+        c.execute("SELECT * FROM players WHERE id={}".format(player_id))
+        _, money, role, levelups, bosstier = c.fetchone()
+        c.execute("SELECT * FROM items WHERE playerid={}".format(player_id))
+        for _, itemid, type, name in c.fetchall():
+            if type in [TYPE_WEAPON, TYPE_ARMOR]:
+                c.execute("SELECT * from equipment WHERE id={}".format(itemid))
+                if type == TYPE_WEAPON:
+                    _, cost, element, dam, ws, cr = c.fetchone()
+                    playerweapon = rpgw.RPGWeapon(name=name, cost=cost, element=element, damage=dam, weaponskill=ws,
+                                                  critical=cr)
+                if type == TYPE_ARMOR:
+                    _, cost, element, mh, hr, bonusmoney = c.fetchone()
+                    playerarmor = rpga.RPGArmor(name=name, cost=cost, element=element, maxhealth=mh,
+                                                healthregen=hr, money=bonusmoney)
+            if type == TYPE_PET:
+                c.execute("SELECT * FROM characters WHERE id={}".format(itemid))
+                _, exp, hp, mh, dam, ws, cr = c.fetchone()
+                playerpet = RPGPet(name=name, exp=exp, health=hp, maxhealth=m, damage=dam, weaponskill=ws, critical=cr)
+        c.execute("SELECT * FROM busy WHERE id={}".format(player_id))
+        _, desc, time, channel, kingtime = c.fetchone()
+    except IndexError:
+        return RPGPlayer(player_id, player_id)
+    finally:
+        conn.commit()
+        conn.close()
+
+    player = RPGPlayer(player_id, player_id, role=role, health=health, maxhealth=maxhealth, damage=damage,
+                       ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money, bosstier=bosstier,
+                       kingtimer=kingtime)
+    player.set_busy(desc, time, channel)
+
+    if playerweapon:
+        player.weapon = playerweapon
+    if playerarmor:
+        player.armor = playerarmor
+    if playerpet:
+        player.pet = playerpet
     return player
 
 
-def update_players(stats: [rpgchar.RPGPlayer]):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8", use_unicode=True)
+def update_players(stats: [RPGPlayer]):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB", charset="utf8",
+                           use_unicode=True)
     c = conn.cursor()
     try:
         for s in stats:
-            if s.role is not rpgchar.DEFAULT_ROLE:
+            if s.role is not DEFAULT_ROLE:
                 if c.execute("SELECT playerID FROM stats WHERE playerID = {0}".format(s.userid)) == 0:
-                    c.execute("INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)", (s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))
+                    c.execute(
+                        "INSERT INTO stats (playerID, role, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (s.userid, s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))
                 else:
-                    c.execute("UPDATE stats SET role = %s, health = %s , maxhealth = %s, damage = %s, weaponskill = %s, critical = %s WHERE playerID = %s", (s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical, s.userid))
+                    c.execute(
+                        "UPDATE stats SET role = %s, health = %s , maxhealth = %s, damage = %s, weaponskill = %s, critical = %s WHERE playerID = %s",
+                        (s.role, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical, s.userid))
                 if c.execute("SELECT playerID FROM items WHERE playerID = %s", s.userid) == 0:
-                    c.execute("INSERT INTO items (playerID, exp, levelups, money, bosstier) VALUES (%s, %s, %s, %s, %s)", (s.userid, s.exp, s.levelups, s.money, s.bosstier))
+                    c.execute(
+                        "INSERT INTO items (playerID, exp, levelups, money, bosstier) VALUES (%s, %s, %s, %s, %s)",
+                        (s.userid, s.exp, s.levelups, s.money, s.bosstier))
                 else:
-                    c.execute("UPDATE items SET exp = %s, levelups = %s, money = %s, bosstier = %s WHERE playerID = %s", (s.exp, s.levelups, s.money, s.bosstier, s.userid))
+                    c.execute("UPDATE items SET exp = %s, levelups = %s, money = %s, bosstier = %s WHERE playerID = %s",
+                              (s.exp, s.levelups, s.money, s.bosstier, s.userid))
                 if c.execute("SELECT playerID FROM busy WHERE playerID = %s", s.userid) == 0:
-                    c.execute("INSERT INTO busy (playerID, busytime, busychannel, busydescr, kingtimer) VALUES (%s, %s, %s, %s, %s)", (s.userid, s.busytime, s.busychannel, s.busydescription, s.kingtimer))
+                    c.execute(
+                        "INSERT INTO busy (playerID, busytime, busychannel, busydescr, kingtimer) VALUES (%s, %s, %s, %s, %s)",
+                        (s.userid, s.busytime, s.busychannel, s.busydescription, s.kingtimer))
                 else:
-                    c.execute("UPDATE busy SET busytime = %s, busychannel = %s, busydescr=%s, kingtimer=%s WHERE playerID = %s", (s.busytime, s.busychannel, s.busydescription, s.kingtimer, s.userid))
+                    c.execute(
+                        "UPDATE busy SET busytime = %s, busychannel = %s, busydescr=%s, kingtimer=%s WHERE playerID = %s",
+                        (s.busytime, s.busychannel, s.busydescription, s.kingtimer, s.userid))
                 if c.execute("SELECT playerID FROM weapon WHERE playerID = %s", s.userid) == 0:
-                    c.execute("INSERT INTO weapon (playerID, name, cost, element, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)", (s.userid, s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill, s.weapon.critical))
+                    c.execute(
+                        "INSERT INTO weapon (playerID, name, cost, element, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (
+                            s.userid, s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage,
+                            s.weapon.weaponskill,
+                            s.weapon.critical))
                 else:
-                    c.execute("UPDATE weapon SET name = %s, cost=%s, element=%s, damage=%s, weaponskill=%s, critical=%s WHERE playerID = %s", (s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill, s.weapon.critical, s.userid))
+                    c.execute(
+                        "UPDATE weapon SET name = %s, cost=%s, element=%s, damage=%s, weaponskill=%s, critical=%s WHERE playerID = %s",
+                        (s.weapon.name, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill,
+                         s.weapon.critical, s.userid))
                 if c.execute("SELECT playerID FROM armor WHERE playerID = %s", s.userid) == 0:
-                    c.execute("INSERT INTO armor (playerID, name, cost, element, maxhealth, healthregen, money) VALUES (%s, %s, %s, %s, %s, %s, %s)", (s.userid, s.armor.name, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen, s.armor.money))
+                    c.execute(
+                        "INSERT INTO armor (playerID, name, cost, element, maxhealth, healthregen, money) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (s.userid, s.armor.name, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen,
+                         s.armor.money))
                 else:
-                    c.execute("UPDATE armor SET name = %s, cost=%s, element=%s, maxhealth=%s, healthregen=%s, money=%s WHERE playerID = %s", (s.armor.name, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen, s.armor.money, s.userid))
+                    c.execute(
+                        "UPDATE armor SET name = %s, cost=%s, element=%s, maxhealth=%s, healthregen=%s, money=%s WHERE playerID = %s",
+                        (s.armor.name, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen,
+                         s.armor.money, s.userid))
                 conn.commit()
     except pymysql.err.InternalError as e:
         print(e)
@@ -125,13 +176,13 @@ def get_top_players(group: str, amount: int):
 def reset_rpg_database():
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
     c = conn.cursor()
-    c.execute("DELETE from items") 
+    c.execute("DELETE from items")
     c.execute("DELETE from busy")
     c.execute("DELETE from rpgkings")
     c.execute("DELETE from weapon")
     c.execute("DELETE from armor")
     # Stats must be the last one
-    c.execute("DELETE from stats")   
+    c.execute("DELETE from stats")
     conn.commit()
     conn.close()
 
@@ -173,7 +224,7 @@ def incrementPats(patter_id: str, pattee_id: str):
     c.execute("SELECT patsNbr FROM pats_counters WHERE patterID=%s AND patteeID=%s", (patter_id, pattee_id))
     pats = c.fetchone()
     if pats:
-        pats = pats[0]+1
+        pats = pats[0] + 1
         c.execute("UPDATE pats_counters SET patsNbr=%s WHERE patterID=%s AND patteeID=%s", (pats, patter_id, pattee_id))
     else:
         pats = 1
@@ -181,4 +232,3 @@ def incrementPats(patter_id: str, pattee_id: str):
     conn.commit()
     conn.close()
     return pats
-

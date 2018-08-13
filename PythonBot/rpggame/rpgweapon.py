@@ -3,13 +3,14 @@ from random import randint
 from rpggame import rpgconstants as rpgc
 
 
-def generateWeapon(cost : int):
+def generateWeapon(cost: int):
     name = str(random.choice(rpgc.prefixes))
     i = random.choice(list(rpgc.elementnames.keys()))
-    name += " " + rpgc.elementnames.get(i)[1] + " " + str(random.choice(rpgc.weapons)) + " " + str(random.choice(rpgc.suffixes))
+    name += " " + rpgc.elementnames.get(i)[1] + " " + str(random.choice(rpgc.weapons)) + " " + str(
+        random.choice(rpgc.suffixes))
 
     damage = weaponskill = critical = 0
-    points = math.floor(cost/90)
+    points = math.floor(cost / 90)
     first = randint(0, 99)
     if first < 45:
         r = randint(0, points)
@@ -17,24 +18,25 @@ def generateWeapon(cost : int):
         points -= r
     elif first < 80:
         r = randint(0, points)
-        weaponskill += math.floor(r/3)
+        weaponskill += math.floor(r / 3)
         points -= r
     else:
         r = randint(0, points)
-        critical += math.floor(r/7)
+        critical += math.floor(r / 7)
         points -= r
 
     second = randint(0, 99)
     if second < 45:
         damage += points
     elif second < 80:
-        weaponskill += math.floor(points/3)
+        weaponskill += math.floor(points / 3)
     else:
-        critical += math.floor(points/7)
+        critical += math.floor(points / 7)
     return RPGWeapon(name, cost, i, damage, weaponskill, critical)
 
+
 class RPGWeapon:
-    def __init__(self, name : str, cost : int, element=1, damage=0, weaponskill=0, critical=0):
+    def __init__(self, name: str, cost: int, element=1, damage=0, weaponskill=0, critical=0):
         self.name = name
         self.cost = cost
         self.element = element
@@ -44,5 +46,6 @@ class RPGWeapon:
 
     def __str__(self):
         return "{}: d+{}, ws+{}, c+{}".format(self.name, self.damage, self.weaponskill, self.critical)
+
 
 defaultweapon = RPGWeapon("Training Sword", 0)

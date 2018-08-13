@@ -1,25 +1,27 @@
 from rpggame import rpgcharacter as rpgc, rpgarmor as rpga, rpgweapon as rpgw, rpgshopitem as rpgsi
 import math
 
+DEFAULT_ROLE = 'Undead'
+
 
 class RPGPlayer(rpgc.RPGCharacter):
-    def __init__(self, userid: str, username: str, role=rpgc.DEFAULT_ROLE, weapon=rpgw.defaultweapon,
-                 armor=rpga.defaultarmor, pet=None, health=rpgc.HEALTH, maxhealth=rpgc.HEALTH, damage=rpgc.DAMAGE,
-                 ws=rpgc.WEAPONSKILL, critical=0,
-                 element=rpgc.element_none):
+    def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=rpgc.DEFAULT_ROLE,
+                 weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, pet=None, health=rpgc.HEALTH,
+                 maxhealth=rpgc.HEALTH, damage=rpgc.DAMAGE,
+                 ws=rpgc.WEAPONSKILL, critical=0, bosstier=1, kingtimer=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
-        self.exp = 0
-        self.levelups = 0
-        self.money = 0
+        self.exp = exp
+        self.levelups = levelups
+        self.money = money
         self.weapon = weapon
         self.armor = armor
         self.pet = pet
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = rpgc.NONE
-        self.bosstier = 1
-        self.kingtimer = 0
+        self.bosstier = bosstier
+        self.kingtimer = kingtimer
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
     def resolve_death(self):
@@ -62,7 +64,8 @@ class RPGPlayer(rpgc.RPGCharacter):
     def buy_item(self, item: rpgsi.RPGShopItem, amount=1):
         if not self.subtract_money(amount * item.cost):
             return False
-        self.health = min(self.get_maxhealth(), rpgc.RPGCharacter.adjustStats(self.health, "health", item, amount=amount))
+        self.health = min(self.get_maxhealth(),
+                          rpgc.RPGCharacter.adjustStats(self.health, "health", item, amount=amount))
         self.set_maxhealth(rpgc.RPGCharacter.adjustStats(self.maxhealth, "maxhealth", item, amount=amount))
         self.damage = rpgc.RPGCharacter.adjustStats(self.damage, "damage", item, amount=amount)
         self.critical = rpgc.RPGCharacter.adjustStats(self.critical, "critical", item, amount=amount)

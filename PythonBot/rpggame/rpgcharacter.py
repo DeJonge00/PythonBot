@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgarmor as rpga
 
-DEFAULT_ROLE = 'Undead'
 
 # Busydescription status
 NONE = 0
