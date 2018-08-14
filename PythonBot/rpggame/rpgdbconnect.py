@@ -55,7 +55,7 @@ TYPE_PET = 2
 def get_single_player(player_id: str):
     playerweapon = None
     playerarmor = None
-    playerpet = None
+    playerpets = []
 
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg", charset="utf8",
                            use_unicode=True)
@@ -79,8 +79,8 @@ def get_single_player(player_id: str):
                                                 healthregen=hr, money=bonusmoney)
             if type == TYPE_PET:
                 c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
-                _, exp, hp, mh, dam, ws, cr = c.fetchone()
-                playerpet = RPGPet(name=name, exp=exp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws, critical=cr)
+                petid, exp, hp, mh, dam, ws, cr = c.fetchone()
+                playerpets.append(RPGPet(petid=petid, name=name, exp=exp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws, critical=cr))
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
     except CommandInvokeError:
@@ -100,8 +100,8 @@ def get_single_player(player_id: str):
         player.weapon = playerweapon
     if playerarmor:
         player.armor = playerarmor
-    if playerpet:
-        player.pet = playerpet
+    if playerpets:
+        player.pets = playerpets
     return player
 
 
@@ -173,7 +173,6 @@ def update_players(stats: [RPGPlayer]):
                             (s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen, s.armor.money,
                              armorid))
                 if s.pets:
-                    print(s.pets)
                     c.execute("SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
                     try:
                         petid = c.fetchone()[0]
@@ -181,7 +180,6 @@ def update_players(stats: [RPGPlayer]):
                         petid = 0
                     for p in s.pets:
                         petid += 1
-                        print(petid)
                         if not p.petid:
                             c.execute(
                                 "INSERT INTO characters (characterid, exp, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",

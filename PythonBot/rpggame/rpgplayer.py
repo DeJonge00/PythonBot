@@ -143,4 +143,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.add_health((self.get_max_health() * 0.05) + self.armor.healthregen)
 
     def add_pet(self, pet: RPGPet):
+        if len(self.pets) >= 3:
+            return False
         self.pets.append(pet)
+        return True

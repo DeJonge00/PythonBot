@@ -47,12 +47,12 @@ class RPGGame:
             embed.set_thumbnail(url=thumbnail)
         newp = p1
         for c in p1:
-            if isinstance(RPGPlayer, c):
+            if isinstance(c, RPGPlayer):
                 newp += c.pets
         p1 = newp
         newp = p2
         for c in p2:
-            if isinstance(RPGPlayer, c):
+            if isinstance(c, RPGPlayer):
                 newp += c.pets
         p2 = newp
 
@@ -78,10 +78,10 @@ class RPGGame:
         turns = BATTLE_TURNS.get(battle_name)
         if not turns:
             turns = STANDARD_BATTLE_TURNS
-        while (i < turns) and (sum([x.health for x in p1 if not isinstance(RPGPet, x)]) > 0) and (sum([x.health for x in p2 if not isinstance(RPGPet, x)]) > 0):
+        while (i < turns) and (sum([x.health for x in p1 if not isinstance(x, RPGPet)]) > 0) and (sum([x.health for x in p2 if not isinstance(x, RPGPet)]) > 0):
             for attacker in p1:
                 if attacker.health > 0:
-                    defs = [x for x in p2 if x.health > 0 and not isinstance(RPGPet, x)]
+                    defs = [x for x in p2 if x.health > 0 and not isinstance(x, RPGPet)]
                     if len(defs) <= 0:
                         break
                     defender = random.choice(defs)
@@ -141,6 +141,7 @@ class RPGGame:
                 p1[i].health = h1[i]
             for i in range(len(p2)):
                 p2[i].health = h2[i]
+
         try:
             await self.bot.send_message(channel, embed=embed)
         except discord.errors.HTTPException:
@@ -152,6 +153,10 @@ class RPGGame:
                 print(title)
                 print(battle_report)
         if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
+            # Reward new pet
+            petwinner = random.choice([x for x in p1 if isinstance(x, RPGPlayer)])
+            if petwinner.add_pet(RPGPet(name='Pet ' + p2[0].name, damage=petwinner.get_bosstier(), weaponskill=petwinner.get_bosstier())):
+                await self.bot.send_message(channel, '{} found a baby {}, a new pet!'.format(str(petwinner), 'Pet ' + p2[0].name))
             return 1
         return 2
 
@@ -196,6 +201,7 @@ class RPGGame:
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
         (name, stat, amount) = secrets_list[random.randint(0, len(secrets_list) - 1)]
+        amount *= min(1, int(math.sqrt(player.get_level())))
         if stat.lower() == "health":
             player.add_health(amount)
         elif stat.lower() == "weaponskill":
