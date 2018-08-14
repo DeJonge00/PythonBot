@@ -36,7 +36,8 @@ def generate_weapon(cost: int):
 
 
 class RPGWeapon:
-    def __init__(self, name: str, cost: int, element=1, damage=0, weaponskill=0, critical=0):
+    def __init__(self, weaponid=None, name='Training Sword', cost=0, element=1, damage=0, weaponskill=0, critical=0):
+        self.weaponid = weaponid
         self.name = name
         self.cost = cost
         self.element = element

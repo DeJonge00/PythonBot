@@ -38,7 +38,8 @@ def generateArmor(cost: int):
 
 
 class RPGArmor:
-    def __init__(self, name: str, cost: int, element=1, maxhealth=0, healthregen=0, money=0):
+    def __init__(self, armorid=None, name="Training Robes", cost=0, element=1, maxhealth=0, healthregen=0, money=0):
+        self.armorid = armorid
         self.name = name
         self.cost = cost
         self.element = element
@@ -50,4 +51,4 @@ class RPGArmor:
         return "{}: mh+{}, hr+{}, m+{}%".format(self.name, self.maxhealth, self.healthregen, self.money)
 
 
-defaultarmor = RPGArmor("Training Robes", 0)
+defaultarmor = RPGArmor()

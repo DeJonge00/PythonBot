@@ -78,7 +78,8 @@ class RPGGame:
         turns = BATTLE_TURNS.get(battle_name)
         if not turns:
             turns = STANDARD_BATTLE_TURNS
-        while (i < turns) and (sum([x.health for x in p1 if not isinstance(x, RPGPet)]) > 0) and (sum([x.health for x in p2 if not isinstance(x, RPGPet)]) > 0):
+        while (i < turns) and (sum([x.health for x in p1 if not isinstance(x, RPGPet)]) > 0) and (
+                sum([x.health for x in p2 if not isinstance(x, RPGPet)]) > 0):
             for attacker in p1:
                 if attacker.health > 0:
                     defs = [x for x in p2 if x.health > 0 and not isinstance(x, RPGPet)]
@@ -155,8 +156,10 @@ class RPGGame:
         if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
             # Reward new pet
             petwinner = random.choice([x for x in p1 if isinstance(x, RPGPlayer)])
-            if petwinner.add_pet(RPGPet(name='Pet ' + p2[0].name, damage=petwinner.get_bosstier(), weaponskill=petwinner.get_bosstier())):
-                await self.bot.send_message(channel, '{} found a baby {}, a new pet!'.format(str(petwinner), 'Pet ' + p2[0].name))
+            if petwinner.add_pet(RPGPet(name='Pet ' + p2[0].name, damage=petwinner.get_bosstier() * 10,
+                                        weaponskill=petwinner.get_bosstier())):
+                await self.bot.send_message(channel, '{} found a baby {}, a new pet!'.format(str(petwinner),
+                                                                                             'Pet ' + p2[0].name))
             return 1
         return 2
 
@@ -965,20 +968,39 @@ class RPGGame:
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         data.pets = []
-        await self.bot.say('Slaughering pets complete')
+        await self.bot.say('Slaughtering pets complete')
 
     @rpg.command(pass_context=1, hidden=True)
-    async def listpets(self, ctx):
+    async def pets(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx, istyping=False)
-        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
-            await self.bot.say("Hahahaha, no")
-            return
         if len(ctx.message.mentions) > 0:
             u = ctx.message.mentions[0]
         else:
             u = ctx.message.author
         data = self.get_player_data(u.id, name=u.display_name)
-        m = '{}\'s pets:'.format(u.display_name)
+
+        if args[0] in ['remove', 'release', 'r']:
+            if len(data.pets) <= 0:
+                await self.bot.say('You have no pets to remove...')
+                return
+            if len(args) <= 1 < len(data.pets):
+                await self.bot.say('Please say which pet to remove')
+                return
+            l = len(data.pets)
+            pet_name = ' '.join(args[1:])
+            data.pets = [p for p in data.pets if p.name.lower() != pet_name.lower()]
+            l -= len(data.pets)
+            if l <= 0:
+                await self.bot.say('No pets named {} found to remove'.format(pet_name))
+            else:
+                await self.bot.say('{} pets named {} released into the wild'.format(l, pet_name))
+            return
+
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.set_author(name='{}\'s pets:'.format(ctx.message.author.display_name), url=ctx.message.author.avatar_url)
         for pet in data.pets:
-            m += '\n' + str(pet)
-        await self.bot.say(m)
+            embed.add_field(name=pet.name, value='Health: {}/{}\nDamage: {}\nWeaponskill: {}'.format(pet.get_health(),
+                                                                                                     pet.get_max_health(),
+                                                                                                     pet.get_damage(),
+                                                                                                     pet.get_weaponskill()))
+        await self.bot.say(embed=embed)
