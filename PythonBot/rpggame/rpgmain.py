@@ -15,8 +15,8 @@ from discord.ext import commands
 
 from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc
 from rpggame.rpgmonster import RPGMonster
-from rpggame.rpgplayer import RPGPlayer
-from rpggame.rpgplayer import DEFAULT_ROLE
+from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
+from rpggame.rpgpet import RPGPet
 
 RPG_STATS_FILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
@@ -45,6 +45,17 @@ class RPGGame:
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         if thumbnail:
             embed.set_thumbnail(url=thumbnail)
+        newp = p1
+        for c in p1:
+            if isinstance(RPGPlayer, c):
+                newp += c.pets
+        p1 = newp
+        newp = p2
+        for c in p2:
+            if isinstance(RPGPlayer, c):
+                newp += c.pets
+        p2 = newp
+
         title = ""
         if len(p1) == 1:
             title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].get_element())[0])
@@ -67,13 +78,13 @@ class RPGGame:
         turns = BATTLE_TURNS.get(battle_name)
         if not turns:
             turns = STANDARD_BATTLE_TURNS
-        while (i < turns) and (sum([x.health for x in p1]) > 0) and (sum([x.health for x in p2]) > 0):
+        while (i < turns) and (sum([x.health for x in p1 if not isinstance(RPGPet, x)]) > 0) and (sum([x.health for x in p2 if not isinstance(RPGPet, x)]) > 0):
             for attacker in p1:
                 if attacker.health > 0:
-                    defs = [x for x in p2 if x.health > 0]
+                    defs = [x for x in p2 if x.health > 0 and not isinstance(RPGPet, x)]
                     if len(defs) <= 0:
                         break
-                    defender = defs[random.randint(0, len(defs) - 1)]
+                    defender = random.choice(defs)
                     ws = random.randint(0, max(attacker.get_weaponskill(),
                                                attacker.get_critical()) + defender.get_weaponskill())
                     if ws < max(attacker.get_weaponskill(), attacker.get_critical()):
@@ -832,7 +843,7 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["w"], help="Wander in the beautiful country")
     async def wander(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
@@ -922,5 +933,46 @@ class RPGGame:
 
     @rpg.command(pass_context=1, hidden=True)
     async def listloadedplayers(self, ctx, *args):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
         for player in self.players.values():
             print('{} {}: descr:{} time:{}'.format(player.userid, player.name, player.busydescription, player.busytime))
+
+    @rpg.command(pass_context=1, hidden=True)
+    async def addpet(self, ctx, num: int):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        for _ in range(num):
+            data.add_pet(RPGPet())
+        await self.bot.say('{} cats added'.format(num))
+
+    @rpg.command(pass_context=1, hidden=True)
+    async def clearpets(self, ctx, *args):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data.pets = []
+        await self.bot.say('Slaughering pets complete')
+
+    @rpg.command(pass_context=1, hidden=True)
+    async def listpets(self, ctx):
+        await removeMessage.delete_message(self.bot, ctx, istyping=False)
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        if len(ctx.message.mentions) > 0:
+            u = ctx.message.mentions[0]
+        else:
+            u = ctx.message.author
+        data = self.get_player_data(u.id, name=u.display_name)
+        m = '{}\'s pets:'.format(u.display_name)
+        for pet in data.pets:
+            m += '\n' + str(pet)
+        await self.bot.say(m)

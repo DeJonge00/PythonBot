@@ -79,7 +79,7 @@ class RPGCharacter:
         return rpgc.element_none
 
     def __str__(self, **kwargs):
-        return "{} ({})".format(self.name, self.health)
+        return "{} ({}/{})".format(self.name, self.health, self.maxhealth)
 
 
 

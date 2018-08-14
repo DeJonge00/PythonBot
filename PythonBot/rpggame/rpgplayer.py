@@ -1,5 +1,6 @@
 from rpggame import rpgcharacter as rpgc, rpgarmor as rpga, rpgweapon as rpgw, rpgshopitem as rpgsi
 from rpggame.rpgconstants import element_none
+from rpggame.rpgpet import RPGPet
 import math
 
 DEFAULT_ROLE = 'Undead'
@@ -7,7 +8,7 @@ DEFAULT_ROLE = 'Undead'
 
 class RPGPlayer(rpgc.RPGCharacter):
     def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE,
-                 weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, pet=None, health=rpgc.HEALTH,
+                 weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, pets=[], health=rpgc.HEALTH,
                  maxhealth=rpgc.HEALTH, damage=rpgc.DAMAGE,
                  ws=rpgc.WEAPONSKILL, critical=0, bosstier=1, kingtimer=0, element=element_none):
         self.userid = userid
@@ -17,7 +18,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.money = money
         self.weapon = weapon
         self.armor = armor
-        self.pet = pet
+        self.pets = pets
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = rpgc.NONE
@@ -140,3 +141,6 @@ class RPGPlayer(rpgc.RPGCharacter):
 
     def do_auto_health_regen(self):
         self.add_health((self.get_max_health() * 0.05) + self.armor.healthregen)
+
+    def add_pet(self, pet: RPGPet):
+        self.pets.append(pet)
