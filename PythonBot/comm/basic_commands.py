@@ -14,6 +14,7 @@ import urbandictionary as ud
 from discord.ext import commands
 
 from rpggame import rpgdbconnect as dbcon
+from secret.secrets import prefix
 
 TIMER = True
 EMBED_COLOR = 0x008909
@@ -217,6 +218,7 @@ class Basics:
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, "I NEED MORE ARGUMENTS")
 
+        emojiid = None
         try:
             emojiid = re.findall('\d+', ctx.message.content)[0]
         except IndexError:
@@ -225,6 +227,9 @@ class Basics:
                 if e.name in emoji:
                     emojiid = e.id
                     break
+        if not emojiid:
+            await self.bot.say('Sorry, emoji not found...')
+            return
         ext = 'gif' if requests.get(
             'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
         embed = discord.Embed(colour=0x000000)
@@ -481,7 +486,7 @@ class Basics:
     async def role(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         if len(args) <= 0:
-            await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(constants.prefix))
+            await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(prefix))
             return
         else:
             rolename = args[0].lower()

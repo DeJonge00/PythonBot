@@ -26,6 +26,10 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.kingtimer = kingtimer
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
+    @staticmethod
+    def get_level_by_exp(exp: int):
+        return math.floor(math.sqrt(exp) / 25) + 1
+
     def resolve_death(self):
         if self.health <= 0:
             self.exp = max(0, self.exp - 100 * self.get_level())
@@ -93,7 +97,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         return True
 
     def get_level(self):
-        return rpgc.RPGCharacter.get_level_by_exp(self.exp)
+        return RPGPlayer.get_level_by_exp(self.exp)
 
     def get_bosstier(self):
         return self.bosstier
@@ -140,7 +144,11 @@ class RPGPlayer(rpgc.RPGCharacter):
         return int(n + self.weapon.critical)
 
     def do_auto_health_regen(self):
-        self.add_health((self.get_max_health() * 0.05) + self.armor.healthregen)
+        if self.busydescription == rpgc.NONE:
+            percentage = 0.02
+        else:
+            percentage = 0.05
+        self.add_health((self.get_max_health() * percentage) + self.armor.healthregen)
 
     def add_pet(self, pet: RPGPet):
         if len(self.pets) >= 3:

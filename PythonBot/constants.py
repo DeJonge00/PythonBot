@@ -1,7 +1,4 @@
-prefix = ">"
 RPGDB = 'logs/rpg.db'
-WELCOMEMESSAGEFILE = "logs/welcomeMessages.db"
-GOODBYEMESSAGEFILE = "logs/leaveMessages.db"
 pidfile = "logs/pid.txt"
 
 SERVICE = False

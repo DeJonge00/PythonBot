@@ -34,10 +34,6 @@ class RPGCharacter:
         self.critical = critical
 
     @staticmethod
-    def get_level_by_exp(exp: int):
-        return math.floor(math.sqrt(exp) / 25) + 1
-
-    @staticmethod
     def adjust_stats(n, stat, item, amount=1):
         if item:
             m = item.benefit.get(stat)

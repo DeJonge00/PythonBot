@@ -195,8 +195,8 @@ def update_players(stats: [RPGPlayer]):
                                       (s.userid, petid, TYPE_PET, p.name))
                         else:
                             c.execute(
-                                "UPDATE characters SET exp=%s, health=%s, maxhealth=%, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
-                                (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, petid))
+                                "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
+                                (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
                         # TODO Remove pets without reference
 
                 conn.commit()

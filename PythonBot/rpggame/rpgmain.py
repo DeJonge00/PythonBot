@@ -17,6 +17,7 @@ from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpg
 from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
 from rpggame.rpgpet import RPGPet
+from secret.secrets import prefix
 
 RPG_STATS_FILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
@@ -45,17 +46,6 @@ class RPGGame:
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         if thumbnail:
             embed.set_thumbnail(url=thumbnail)
-        newp = p1
-        for c in p1:
-            if isinstance(c, RPGPlayer):
-                newp += c.pets
-        p1 = newp
-        newp = p2
-        for c in p2:
-            if isinstance(c, RPGPlayer):
-                newp += c.pets
-        p2 = newp
-
         title = ""
         if len(p1) == 1:
             title += "{} ({}hp, {})".format(p1[0].name, p1[0].health, rpgc.elementnames.get(p1[0].get_element())[0])
@@ -78,11 +68,15 @@ class RPGGame:
         turns = BATTLE_TURNS.get(battle_name)
         if not turns:
             turns = STANDARD_BATTLE_TURNS
-        while (i < turns) and (sum([x.health for x in p1 if not isinstance(x, RPGPet)]) > 0) and (
-                sum([x.health for x in p2 if not isinstance(x, RPGPet)]) > 0):
-            for attacker in p1:
+        while (i < turns) and (sum([x.health for x in p1]) > 0) and (
+                sum([x.health for x in p2]) > 0):
+            print(p1)
+            attackers = list(p1)
+            for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
+                attackers += p.pets
+            for attacker in attackers:
                 if attacker.health > 0:
-                    defs = [x for x in p2 if x.health > 0 and not isinstance(x, RPGPet)]
+                    defs = [x for x in p2 if x.health > 0]
                     if len(defs) <= 0:
                         break
                     defender = random.choice(defs)
@@ -155,7 +149,7 @@ class RPGGame:
                 print(battle_report)
         if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
             # Reward new pet
-            petwinner = random.choice([x for x in p1 if isinstance(x, RPGPlayer)])
+            petwinner = random.choice(p1)
             if petwinner.add_pet(RPGPet(name='Pet ' + p2[0].name, damage=petwinner.get_bosstier() * 10,
                                         weaponskill=petwinner.get_bosstier())):
                 await self.bot.send_message(channel, '{} found a baby {}, a new pet!'.format(str(petwinner),
@@ -183,9 +177,9 @@ class RPGGame:
                 if winner == 1:
                     for p in party:
                         p.add_exp(32 * lvl * lvl * len(bosses) / len(party))
-                        print(str(p), 'bt', p.bosstier)
                         p.add_bosstier()
-                        print(str(p), 'bt', p.bosstier)
+                        for pet in p.pets:
+                            pet.add_exp(32 * lvl * lvl * len(bosses) / len(party))
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
                 p.reset_busy()
@@ -360,7 +354,7 @@ class RPGGame:
             await removeMessage.delete_message(self.bot, ctx)
             await self.bot.say(
                 "Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(
-                    constants.prefix))
+                    prefix))
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
             embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Introduction",
@@ -369,50 +363,50 @@ class RPGGame:
             embed.add_field(name="Basics",
                             value="Talking gains you extra money\nIf it sounds like a logical alias, it probably is\nYour health regenerates every minute\nThe weaponsmith refills his inventory every hour\nA boss can be fought at the hour mark",
                             inline=False)
-            embed.add_field(name="{}rpg [role|r|class|c]".format(constants.prefix),
+            embed.add_field(name="{}rpg [role|r|class|c]".format(prefix),
                             value="Switch your role on the battlefield (A role is needed to play the game)",
                             inline=False)
-            embed.add_field(name="{}rpg [adventure|a] <minutes>".format(constants.prefix),
+            embed.add_field(name="{}rpg [adventure|a] <minutes>".format(prefix),
                             value="Go on an adventure, find monsters to slay to gain exp", inline=False)
-            embed.add_field(name="{}rpg [wander|w] <minutes>".format(constants.prefix),
+            embed.add_field(name="{}rpg [wander|w] <minutes>".format(prefix),
                             value="Go wandering, you might find a great treasure!", inline=False)
-            embed.add_field(name="{}rpg [battle|b] <user>".format(constants.prefix),
+            embed.add_field(name="{}rpg [battle|b] <user>".format(prefix),
                             value="Battle another user for the lolz, no exp will be gained and no health will be lost",
                             inline=False)
-            embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(constants.prefix),
+            embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(prefix),
                             value="Show your or another user's game statistics", inline=False)
-            embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(constants.prefix),
+            embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(prefix),
                             value="Show your or another user's weapon statistics", inline=False)
-            embed.add_field(name="{}rpg [join|j]".format(constants.prefix),
+            embed.add_field(name="{}rpg [join|j]".format(prefix),
                             value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
-            embed.add_field(name="{}rpg [party|p]".format(constants.prefix),
+            embed.add_field(name="{}rpg [party|p]".format(prefix),
                             value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
 
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
-            embed.add_field(name="{}rpg [top|t] <exp|money|bosstier> <page>".format(constants.prefix),
+            embed.add_field(name="{}rpg [top|t] <exp|money|bosstier> <page>".format(prefix),
                             value="Show the best players of the game", inline=False)
-            embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(constants.prefix),
+            embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(prefix),
                             value="Choose a reward when you leveled up", inline=False)
             embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="{}rpg king".format(constants.prefix), value="Show the current King of the server",
+            embed.add_field(name="{}rpg king".format(prefix), value="Show the current King of the server",
                             inline=False)
-            embed.add_field(name="{}rpg king [c|b|challenge|battle]".format(constants.prefix),
+            embed.add_field(name="{}rpg king [c|b|challenge|battle]".format(prefix),
                             value="Challenge the current King and try to take his spot (level 10+)", inline=False)
-            embed.add_field(name="{}shop".format(constants.prefix), value="Show the rpg shop inventory", inline=False)
-            embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(constants.prefix),
+            embed.add_field(name="{}shop".format(prefix), value="Show the rpg shop inventory", inline=False)
+            embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(prefix),
                             value="Buy <amount> of <item> from the shop", inline=False)
-            embed.add_field(name="{}shop [weapon|w] <number>".format(constants.prefix),
+            embed.add_field(name="{}shop [weapon|w] <number>".format(prefix),
                             value="Buy a certain weapon from the shop (hourly refresh of stock)", inline=False)
-            embed.add_field(name="{}shop [armor|a] <number>".format(constants.prefix),
+            embed.add_field(name="{}shop [armor|a] <number>".format(prefix),
                             value="Buy a certain armor from the shop (hourly refresh of stock)", inline=False)
-            embed.add_field(name="{}train".format(constants.prefix), value="Show the available training sessions",
+            embed.add_field(name="{}train".format(prefix), value="Show the available training sessions",
                             inline=False)
-            embed.add_field(name="{}train <stat> <amount>".format(constants.prefix),
+            embed.add_field(name="{}train <stat> <amount>".format(prefix),
                             value="Train yourself for <amount> points of the chosen <stat>", inline=False)
             embed.set_footer(
                 text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(
-                    constants.prefix))
+                    prefix))
             await self.bot.send_message(ctx.message.author, embed=embed)
 
     # {prefix}rpg adventure #
@@ -865,7 +859,7 @@ class RPGGame:
                 n = 10
         else:
             n = 10
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.NONE:
             await self.bot.say("You are already doing other things")
             return
@@ -979,7 +973,7 @@ class RPGGame:
             u = ctx.message.author
         data = self.get_player_data(u.id, name=u.display_name)
 
-        if args[0] in ['remove', 'release', 'r']:
+        if len(args) > 0 and args[0] in ['remove', 'release', 'r']:
             if len(data.pets) <= 0:
                 await self.bot.say('You have no pets to remove...')
                 return
@@ -999,7 +993,7 @@ class RPGGame:
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.set_author(name='{}\'s pets:'.format(ctx.message.author.display_name), url=ctx.message.author.avatar_url)
         for pet in data.pets:
-            embed.add_field(name=pet.name, value='Health: {}/{}\nDamage: {}\nWeaponskill: {}'.format(pet.get_health(),
+            embed.add_field(name=pet.name, value='Health: {}/{}\nDamage: {}\nWeaponskill: {}'.format(pet.health,
                                                                                                      pet.get_max_health(),
                                                                                                      pet.get_damage(),
                                                                                                      pet.get_weaponskill()))
