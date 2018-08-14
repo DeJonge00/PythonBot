@@ -1,3 +1,4 @@
+from discord.ext.commands.errors import CommandInvokeError
 import pymysql
 from rpggame import rpgweapon as rpgw, rpgarmor as rpga
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
@@ -36,7 +37,7 @@ def get_rpg_channel(server_id: str):
 def get_busy_players():
     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
     c = conn.cursor()
-    c.execute("SELECT id FROM busy WHERE time>0")
+    c.execute("SELECT playerid FROM busy WHERE time>0")
     t = c.fetchall()
     conn.commit()
     conn.close()
@@ -79,10 +80,12 @@ def get_single_player(player_id: str):
             if type == TYPE_PET:
                 c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
                 _, exp, hp, mh, dam, ws, cr = c.fetchone()
-                playerpet = RPGPet(name=name, exp=exp, health=hp, maxhealth=m, damage=dam, weaponskill=ws, critical=cr)
+                playerpet = RPGPet(name=name, exp=exp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws, critical=cr)
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
-    except IndexError:
+    except CommandInvokeError:
+        return RPGPlayer(player_id, player_id)
+    except TypeError:
         return RPGPlayer(player_id, player_id)
     finally:
         conn.commit()
@@ -115,7 +118,7 @@ def update_players(stats: [RPGPlayer]):
                         (s.userid, s.exp, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical))
                 else:
                     c.execute(
-                        "UPDATE characters SET exp = %s, health = %s , maxhealth = %s, damage = %s, weaponskill = %s, critical = %s WHERE playerid = %s",
+                        "UPDATE characters SET exp = %s, health = %s , maxhealth = %s, damage = %s, weaponskill = %s, critical = %s WHERE characterid = %s",
                         (s.exp, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical, s.userid))
 
                 if c.execute("SELECT playerid FROM players WHERE playerid = %s", s.userid) == 0:
@@ -124,7 +127,7 @@ def update_players(stats: [RPGPlayer]):
                         (s.userid, s.money, s.role, s.levelups, s.bosstier))
                 else:
                     c.execute(
-                        "UPDATE items SET money = %s, role = %s, levelups = %s, bosstier = %s WHERE playerid = %s",
+                        "UPDATE players SET money = %s, role = %s, levelups = %s, bosstier = %s WHERE playerid = %s",
                         (s.money, s.role, s.levelups, s.bosstier, s.userid))
 
                 if c.execute("SELECT playerid FROM busy WHERE playerid = %s", s.userid) == 0:
@@ -182,7 +185,8 @@ def update_players(stats: [RPGPlayer]):
                         petid = c.fetchone()[1]
                         c.execute(
                             "UPDATE characters SET exp=%s, health=%s, maxhealth=%, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
-                            (s.pet.exp, s.pet.health, s.pet.maxhealth, s.pet.damage, s.pet.weaponskill, s.pet.critical, petid))
+                            (s.pet.exp, s.pet.health, s.pet.maxhealth, s.pet.damage, s.pet.weaponskill, s.pet.critical,
+                             petid))
 
                 conn.commit()
     except pymysql.err.InternalError as e:

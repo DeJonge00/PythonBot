@@ -14,6 +14,9 @@ from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands
 
 from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc
+from rpggame.rpgmonster import RPGMonster
+from rpggame.rpgplayer import RPGPlayer
+from rpggame.rpgplayer import DEFAULT_ROLE
 
 RPG_STATS_FILE = 'logs/rpgstats.txt'
 RPG_EMBED_COLOR = 0x710075
@@ -38,7 +41,7 @@ class RPGGame:
             embed.add_field(name="Health report", value=health_report, inline=False)
 
     async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [rpgchar.RPGCharacter],
-                             p2: [rpgchar.RPGMonster], short=False, thumbnail=None):
+                             p2: [RPGMonster], short=False, thumbnail=None):
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         if thumbnail:
             embed.set_thumbnail(url=thumbnail)
@@ -83,7 +86,8 @@ class RPGGame:
                                                                                                    damage)
                         else:
                             damage = int(math.floor(
-                                math.sqrt(random.randint(100, 400) / 100) * attacker.get_damage(defender.get_element())))
+                                math.sqrt(random.randint(100, 400) / 100) * attacker.get_damage(
+                                    defender.get_element())))
                             battle_report += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name,
                                                                                           damage)
                         if battle_name == "Mockbattle":
@@ -136,7 +140,7 @@ class RPGGame:
                 await self.bot.send_message(channel, "Unable to post battlereport ~~plsdontkillme~~")
                 print(title)
                 print(battle_report)
-        if sum([(x.health / x.get_maxhealth()) for x in p1]) > sum([(x.health / x.get_maxhealth()) for x in p2]):
+        if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
             return 1
         return 2
 
@@ -153,8 +157,8 @@ class RPGGame:
                 bosses = []
                 while (3 * len(bosses)) < len(party):
                     (name, elem, pic) = random.choice(rpgc.bosses)
-                    bosses.append(rpgchar.RPGMonster(name=name, health=int(47 * lvl * lvl), damage=int(lvl * lvl),
-                                                     ws=int(lvl * lvl * 0.5), element=elem))
+                    bosses.append(RPGMonster(name=name, health=int(47 * lvl * lvl), damage=int(lvl * lvl),
+                                             ws=int(lvl * lvl * 0.5), element=elem))
                 winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
                 print('w', winner, 'p', party)
                 if winner == 1:
@@ -168,17 +172,17 @@ class RPGGame:
                 p.reset_busy()
         self.boss_parties = {}
 
-    async def adventure_encounter(self, player: rpgchar.RPGPlayer, channel: discord.Channel):
+    async def adventure_encounter(self, player: RPGPlayer, channel: discord.Channel):
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
-            rpgchar.RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 95))),
-                               damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp) ** (0.6)))),
-                               element=elem)], short=False, thumbnail=pic)
+            RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 95))),
+                       damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp) ** (0.6)))),
+                       element=elem)], short=False, thumbnail=pic)
         if winner == 1:
             player.add_exp(100 * player.get_level())
 
-    async def adventure_secret(self, player: rpgchar.RPGPlayer, channel: discord.Channel):
+    async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
         (name, stat, amount) = secrets_list[random.randint(0, len(secrets_list) - 1)]
         if stat.lower() == "health":
@@ -224,7 +228,7 @@ class RPGGame:
                     player_ids = list(self.players.keys())
                     for i in player_ids:
                         player = self.players.get(i)
-                        if (player.busydescription == rpgchar.NONE) & (player.health >= player.getMaxhealth()):
+                        if (player.busydescription == rpgchar.NONE) & (player.health >= player.get_max_health()):
                             self.players.pop(i)
                 print("Players saved")
 
@@ -246,7 +250,7 @@ class RPGGame:
         # Player is doing rpg stuff
         for u in list(self.players.values()):
             try:
-                if u.health < u.get_maxhealth():
+                if u.health < u.get_max_health():
                     u.do_auto_health_regen()
                 if u.busydescription is not rpgchar.NONE:
                     if not (u.busydescription in [rpgchar.BOSSRAID]):
@@ -302,7 +306,7 @@ class RPGGame:
             self.boss_parties[serverid] = party
         return party
 
-    def get_player_data(self, userid, name=None):
+    def get_player_data(self, userid, name=None) -> RPGPlayer:
         p = self.players.get(str(userid))
         if not p:
             p = dbcon.get_single_player(str(userid))
@@ -317,12 +321,12 @@ class RPGGame:
             return
         if data.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]:
             return
-        i = round(pow((data.getLevel()) + 1, 1 / 3)  # levelbonus
+        i = round(pow((data.get_level()) + 1, 1 / 3)  # levelbonus
                   * max(0, min(50, (len(message.content) - 3) / 2)))  # Textbonus
         if data.busydescription in [rpgchar.TRAINING, rpgchar.BOSSRAID]:
             i *= 0.5
-        data.addMoney(int(i))
-        data.addExp(1)
+        data.add_money(int(i))
+        data.add_exp(1)
 
     def quit(self):
         # Save rpg stats
@@ -395,8 +399,8 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
     async def adventure(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -408,7 +412,7 @@ class RPGGame:
                 n = 10
         else:
             n = 10
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.NONE:
             await self.bot.say("You are already doing other things")
             return
@@ -421,7 +425,7 @@ class RPGGame:
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not data.setBusy(rpgchar.ADVENTURE, n, c.id):
+        if not data.set_busy(rpgchar.ADVENTURE, n, c.id):
             await self.bot.say(
                 "{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
             return
@@ -433,7 +437,7 @@ class RPGGame:
     async def battle(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -444,7 +448,7 @@ class RPGGame:
         if ctx.message.mentions[0] == ctx.message.author:
             await self.bot.say("Suicide is never the answer :angry:")
             return
-        attacker = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        attacker = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         # if attacker.busydescription != rpgchar.NONE:
         #    await self.bot.say("You are already doing something else at the moment...")
         #    return
@@ -462,8 +466,8 @@ class RPGGame:
         if len(ctx.message.mentions) > 0:
             data = self.get_player_data(ctx.message.mentions[0].id, name=ctx.message.mentions[0].display_name)
         else:
-            data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+            data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -498,9 +502,10 @@ class RPGGame:
                 await self.bot.send_message(ctx.message.channel, embed=embed)
                 return
         try:
-            im = Image.open("/home/nya/PythonBot/PythonBot/rpggame/{}.png".format(data.role.lower()))
+            im = Image.open("rpggame/{}.png".format(data.role.lower()))
         except:
-            im = Image.open("/home/nya/PythonBot/PythonBot/rpggame/undead.png")
+            raise
+            im = Image.open("rpggame/undead.png")
         if ctx.message.channel.is_private:
             url = ctx.message.author.avatar_url
         else:
@@ -532,10 +537,10 @@ class RPGGame:
                 shortexp = str(int(data.exp / 1000)) + "k"
             else:
                 shortexp = str(int(data.exp))
-            stats = "lvl {} ({} xp)".format(data.getLevel(), shortexp)
+            stats = "lvl {} ({} xp)".format(data.get_level(), shortexp)
         draw.text((statoffset, topoffset + next), stats, color, font=font)
         draw.text((nameoffset, topoffset + 2 * next), "Boss Tier:", color, font=font)
-        draw.text((statoffset, topoffset + 2 * next), "{}".format(data.getBosstier()), color, font=font)
+        draw.text((statoffset, topoffset + 2 * next), "{}".format(data.get_bosstier()), color, font=font)
         if data.health <= 0:
             stats = "Dead"
         elif data.busydescription == rpgchar.ADVENTURE:
@@ -553,31 +558,31 @@ class RPGGame:
         draw.text((nameoffset, topoffset + 4 * next), "Money:", color, font=font)
         draw.text((statoffset, topoffset + 4 * next), "{}{}".format(rpgshop.moneysign, data.money), color, font=font)
         draw.text((nameoffset, topoffset + 5 * next), "Health:", color, font=font)
-        draw.text((statoffset, topoffset + 5 * next), "{}/{}".format(data.health, data.getMaxhealth()), color,
+        draw.text((statoffset, topoffset + 5 * next), "{}/{}".format(data.health, data.get_max_health()), color,
                   font=font)
         draw.text((nameoffset, topoffset + 6 * next), "Damage:", color, font=font)
-        draw.text((statoffset, topoffset + 6 * next), "{}".format(data.getDamage()), color, font=font)
+        draw.text((statoffset, topoffset + 6 * next), "{}".format(data.get_damage()), color, font=font)
         draw.text((nameoffset, topoffset + 7 * next), "Weaponskill:", color, font=font)
-        draw.text((statoffset, topoffset + 7 * next), "{}".format(data.getWeaponskill()), color, font=font)
+        draw.text((statoffset, topoffset + 7 * next), "{}".format(data.get_weaponskill()), color, font=font)
         draw.text((nameoffset, topoffset + 8 * next), "Critical:", color, font=font)
-        draw.text((statoffset, topoffset + 8 * next), "{}".format(data.getCritical()), color, font=font)
+        draw.text((statoffset, topoffset + 8 * next), "{}".format(data.get_critical()), color, font=font)
 
-        imname = '/home/nya/PythonBot/PythonBot/temp/{}.png'.format(ctx.message.author.id)
+        imname = 'temp/{}.png'.format(ctx.message.author.id)
         im.save(imname)
         await self.bot.send_file(ctx.message.channel, imname)
         os.remove(imname)
 
     # {prefix}rpg join
     @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
-    async def join(self, ctx, *args):
+    async def join(self, ctx):
         await removeMessage.delete_message(self.bot, ctx)
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.NONE:
             await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(
                 ctx.message.author.mention))
@@ -590,7 +595,7 @@ class RPGGame:
             await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
             return
         party.append(data)
-        data.setBusy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
+        data.set_busy(rpgchar.BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say(
             "{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(
                 ctx.message.author.mention, len(party)))
@@ -604,7 +609,7 @@ class RPGGame:
             await self.bot.say("This command cannot work in a private channel")
             return
         king = dbcon.getKing(ctx.message.server.id)
-        if (len(args) <= 0):
+        if len(args) <= 0:
             if king is None:
                 await self.bot.say("There is currently no {} in {}".format(kingname, ctx.message.server.name))
                 return
@@ -627,7 +632,7 @@ class RPGGame:
             return
         if not (args[0] in ["c", "b", "challenge", "battle"]):
             return
-        if data.getLevel() < 10:
+        if data.get_level() < 10:
             await self.bot.say("You need to be at least level 10 to challenge the current {}".format(kingname))
             return
         if king is None:
@@ -652,12 +657,12 @@ class RPGGame:
                                                                              ctx.message.server.name))
         data.kingtimer = now.timestamp()
         kingdata.kingtimer = now.timestamp()
-        winner.health = winner.getMaxhealth()
+        winner.health = winner.get_max_health()
         winner.levelups += 1
 
     async def addLevelup(self, data, channel, reward):
         if reward == 1:
-            data.set_maxhealth(data.maxhealth + 80)
+            data.set_max_health(data.maxhealth + 80)
             await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth))
         elif reward == 2:
             data.weaponskill += 2
@@ -674,13 +679,13 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["lvlup", "lvl"], help="Join a raid to kill a boss!")
     async def levelup(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.levelups <= 0:
             await self.bot.say("You have no level-ups available")
             return
@@ -689,7 +694,7 @@ class RPGGame:
             while data.levelups > 0:
                 await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+2 ws\n3)\t+30 damage")
                 m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
-                if m == None:
+                if not m:
                     return
                 try:
                     num = int(m.content)
@@ -712,8 +717,8 @@ class RPGGame:
         if ctx.message.channel.is_private:
             await self.bot.say("This command cannot work in a private channel")
             return
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -736,7 +741,7 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="Switch your role on the battlefield")
     async def role(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
-        data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if len(args) <= 0:
             await self.bot.say("{}, the currently available roles are: {}".format(ctx.message.author.mention,
                                                                                   ", ".join(rpgc.names.get("role"))))
@@ -751,11 +756,17 @@ class RPGGame:
             return
         await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
 
-    def getGroup(self, s: str):
+    def get_group(self, s: str):
         if s in ['m', 'money']:
             return "money"
         if s in ['b', 'bt', 'bosstier']:
             return "bosstier"
+        if s in ['c', 'critical']:
+            return 'critical'
+        if s in ['ws', 'weaponskill']:
+            return 'weaponskill'
+        if s in ['d', 'dam', 'damage']:
+            return 'damage'
         return "exp"
 
     # {prefix}rpg top <exp|money|bosstier> <amount>
@@ -768,14 +779,14 @@ class RPGGame:
                     n = int(args[1]) - 1
                 except ValueError:
                     n = 0
-                group = self.getGroup(args[0])
+                group = self.get_group(args[0])
             else:
                 try:
                     n = int(args[0]) - 1
                     group = "exp"
                 except ValueError:
                     n = 0
-                    group = self.getGroup(args[0])
+                    group = self.get_group(args[0])
         else:
             n = 0
             group = "exp"
@@ -813,7 +824,7 @@ class RPGGame:
                 result += "Rank {}:\n\t**{}**, tier {}\n".format(top_start, name, player_score)
             else:
                 result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(top_start, name, player_score,
-                                                                    rpgchar.getLevelByExp(player_score))
+                                                                    rpgchar.RPGCharacter.get_level_by_exp(player_score))
         embed.add_field(name="Ranks and names", value=result)
         await self.bot.send_message(ctx.message.channel, embed=embed)
 
@@ -822,7 +833,7 @@ class RPGGame:
     async def wander(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == rpgchar.DEFAULT_ROLE:
+        if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -845,7 +856,7 @@ class RPGGame:
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not data.setBusy(rpgchar.WANDERING, n, c.id):
+        if not data.set_busy(rpgchar.WANDERING, n, c.id):
             await self.bot.say(
                 "{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
             return

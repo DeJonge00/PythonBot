@@ -1,8 +1,6 @@
-import discord, math
-from discord.ext import commands
-from discord.ext.commands import Bot
-from rpggame import rpgconstants as rpgc, rpgshopitem as rpgsi, rpgweapon as rpgw, rpgarmor as rpga
+import math
 
+from rpggame import rpgconstants as rpgc
 
 # Busydescription status
 NONE = 0
@@ -63,9 +61,9 @@ class RPGCharacter:
 
     # Add (negative) health, returns true if successful
     def add_health(self, n: int, death=True, element=rpgc.element_none):
-        self.health = int(max(0, min(self.get_maxhealth(), self.health + n)))
+        self.health = int(max(0, min(self.get_max_health(), self.health + n)))
 
-    def get_maxhealth(self):
+    def get_max_health(self):
         return self.maxhealth
 
     def get_damage(self, element=rpgc.element_none):

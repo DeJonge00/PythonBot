@@ -53,7 +53,7 @@ class PythonBot(Bot):
         self.spongelist = []
         self.MUSIC = music
         self.RPGGAME = rpggame
-        super(PythonBot, self).__init__(command_prefix=constants.prefix, pm_help=1,
+        super(PythonBot, self).__init__(command_prefix=secrets.prefix, pm_help=1,
                                         formatter=customHelpFormatter.customHelpFormatter())
 
     async def timeLoop(self):

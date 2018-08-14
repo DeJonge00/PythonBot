@@ -3,7 +3,7 @@ from random import randint
 from rpggame import rpgconstants as rpgc
 
 
-def generateWeapon(cost: int):
+def generate_weapon(cost: int):
     name = str(random.choice(rpgc.prefixes))
     i = random.choice(list(rpgc.elementnames.keys()))
     name += " " + rpgc.elementnames.get(i)[1] + " " + str(random.choice(rpgc.weapons)) + " " + str(

@@ -1,10 +1,14 @@
-import asyncio, constants, discord, removeMessage, math
-from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 from discord.ext import commands
-from discord.ext.commands import Bot
+
+import constants
+import discord
+import math
+import removeMessage
+from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 
 moneysign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
+
 
 class RPGShop:
     def __init__(self, bot):
@@ -19,10 +23,17 @@ class RPGShop:
             await removeMessage.delete_message(self.bot, ctx)
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="Items", value="Type '{}shop item' for a list of available items".format(constants.prefix), inline=False)
-            embed.add_field(name="Weapons", value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix), inline=False)
-            embed.add_field(name="Armor", value="Type '{}shop armor' for the armor sold in this shop".format(constants.prefix), inline=False)
-            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(constants.prefix), inline=False)
+            embed.add_field(name="Items",
+                            value="Type '{}shop item' for a list of available items".format(constants.prefix),
+                            inline=False)
+            embed.add_field(name="Weapons",
+                            value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix),
+                            inline=False)
+            embed.add_field(name="Armor",
+                            value="Type '{}shop armor' for the armor sold in this shop".format(constants.prefix),
+                            inline=False)
+            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(constants.prefix),
+                            inline=False)
             await self.bot.say(embed=embed)
 
     # {prefix}shop armor
@@ -35,10 +46,10 @@ class RPGShop:
             embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             start = max(0, player.get_level() - 5)
-            for i in range(start, start+10):
+            for i in range(start, start + 10):
                 a = self.armors.get(i)
                 if a is None:
-                    a = rpga.generateArmor(i*1000)
+                    a = rpga.generateArmor(i * 1000)
                     self.armors[i] = a
                 t = "Costs: {}".format(a.cost)
                 if a.maxhealth != 0:
@@ -64,7 +75,7 @@ class RPGShop:
             return
         t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
         if pa.cost > 3:
-            t += "\nYou sold your old armor for {}{}".format(moneysign, int(math.floor(0.25*pa.cost)))
+            t += "\nYou sold your old armor for {}{}".format(moneysign, int(math.floor(0.25 * pa.cost)))
         await self.bot.say(t)
 
     # {prefix}shop item
@@ -78,7 +89,7 @@ class RPGShop:
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             for i in sorted(rpgc.shopitems.values(), key=lambda x: x.cost):
                 t = "Costs: {}{}".format(moneysign, i.cost)
-                t += "\nYou can afford {} of this item".format(math.floor(player.money/i.cost))
+                t += "\nYou can afford {} of this item".format(math.floor(player.money / i.cost))
                 for e in i.benefit:
                     x = i.benefit.get(e)
                     t += "\n{}{}{}".format(e, x[0], x[1])
@@ -100,28 +111,30 @@ class RPGShop:
             await self.bot.say("You're already full HP")
             return
         item = rpgc.shopitems.get(item)
-        if item==None:
+        if item == None:
             await self.bot.say("Thats not an item sold here")
             return
         try:
             a = int(args[1])
         except ValueError:
-            if args[1] in ['m', 'max']: 
-                a = math.floor(player.money/item.cost)
-                m = int((player.maxhealth - player.health)/25)
-                if args[0] in ['h', 'hp', 'health'] and (player.money >= (m*item.cost)):
+            if args[1] in ['m', 'max']:
+                a = math.floor(player.money / item.cost)
+                m = int((player.maxhealth - player.health) / 25)
+                if args[0] in ['h', 'hp', 'health'] and (player.money >= (m * item.cost)):
                     a = m
             else:
-                a = 1               
+                a = 1
         except IndexError:
             a = 1
         if a < 0:
             await self.bot.say("Lmao, that sounds intelligent")
             return
         if player.buy_item(item, amount=a):
-            await self.bot.say("{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a*item.cost))
+            await self.bot.say(
+                "{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a * item.cost))
         else:
-            await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(ctx.message.author.mention, a, item.name, math.floor(player.money/item.cost)))
+            await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(
+                ctx.message.author.mention, a, item.name, math.floor(player.money / item.cost)))
 
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
@@ -133,10 +146,10 @@ class RPGShop:
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
             start = max(0, player.get_level() - 5)
-            for i in range(start, start+10):
+            for i in range(start, start + 10):
                 w = self.weapons.get(i)
                 if w is None:
-                    w = rpgw.generateWeapon(i*1000)
+                    w = rpgw.generate_weapon(i * 1000)
                     self.weapons[i] = w
                 t = "Costs: {}".format(w.cost)
                 if w.damage != 0:
@@ -162,7 +175,7 @@ class RPGShop:
             return
         t = "You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost)
         if pw.cost > 3:
-            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25*pw.cost)))
+            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25 * pw.cost)))
         await self.bot.say(t)
 
     # {prefix}train
@@ -182,15 +195,15 @@ class RPGShop:
         elif training in ['hp', 'h', 'health']:
             training = "maxhealth"
         training = rpgc.trainingitems.get(training)
-        if training==None:
+        if training == None:
             await self.bot.say("Thats not an available training")
             return
         try:
             a = int(args[1])
         except ValueError:
-            a = math.ceil(rpgchar.mintrainingtime/training.cost)
+            a = math.ceil(rpgchar.mintrainingtime / training.cost)
         except IndexError:
-            a = math.ceil(rpgchar.mintrainingtime/training.cost)
+            a = math.ceil(rpgchar.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if player.busydescription != rpgchar.NONE:
@@ -200,7 +213,11 @@ class RPGShop:
         if c.is_private:
             c = ctx.message.author
         if not player.set_busy(rpgchar.TRAINING, math.ceil(a * training.cost), c.id):
-            await self.bot.say("You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime/training.cost), math.floor(rpgchar.maxtrainingtime/training.cost)))
+            await self.bot.say(
+                "You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime / training.cost),
+                                                                math.floor(rpgchar.maxtrainingtime / training.cost)))
             return
         player.buy_training(training, amount=a)
-        await self.bot.say("{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name, int(math.ceil(a*training.cost))))
+        await self.bot.say(
+            "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
+                                                                     int(math.ceil(a * training.cost))))
