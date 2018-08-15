@@ -526,7 +526,6 @@ class RPGGame:
         try:
             im = Image.open("rpggame/{}.png".format(data.role.lower()))
         except:
-            raise
             im = Image.open("rpggame/undead.png")
         if ctx.message.channel.is_private:
             url = ctx.message.author.avatar_url
@@ -839,14 +838,14 @@ class RPGGame:
             try:
                 name = player_names[player_id]
             except KeyError:
-                name = 'id' + player_id
+                name = 'id' + str(player_id)
             if group == "money":
                 result += "Rank {}:\n\t**{}**, {}{}\n".format(top_start, name, rpgshop.moneysign, player_score)
             elif group == "bosstier":
                 result += "Rank {}:\n\t**{}**, tier {}\n".format(top_start, name, player_score)
             else:
                 result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(top_start, name, player_score,
-                                                                    rpgchar.RPGCharacter.get_level_by_exp(player_score))
+                                                                    RPGPlayer.get_level_by_exp(player_score))
         embed.add_field(name="Ranks and names", value=result)
         await self.bot.send_message(ctx.message.channel, embed=embed)
 
@@ -893,26 +892,6 @@ class RPGGame:
             return
         dbcon.update_players(self.players.values())
         self.players = {}
-
-    @rpg.command(pass_context=1, hidden=True, help="Reset channels!")
-    async def resetchannels(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if not (ctx.message.author.id == constants.NYAid):
-            await self.bot.say("Hahahaha, no")
-            return
-        dbcon.initChannels()
-        await self.bot.say("RPG channels reset")
-
-    @rpg.command(pass_context=1, hidden=True, help="Reset rpg data!")
-    async def resetstats(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
-            await self.bot.say("Hahahaha, no")
-            return
-        self.boss_parties = {}
-        self.players = {}
-        dbcon.reset_rpg_database()
-        await self.bot.say("RPG stats reset")
 
     @rpg.command(pass_context=1, help="Set rpg channel!")
     async def setchannel(self, ctx):

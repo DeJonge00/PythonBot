@@ -71,18 +71,18 @@ def get_single_player(player_id: str):
                 c.execute("SELECT * from equipment WHERE equipmentid=%s", (itemid,))
                 if type == TYPE_WEAPON:
                     _, cost, element, dam, ws, cr = c.fetchone()
-                    playerweapon = rpgw.RPGWeapon(name=name, cost=cost, element=element, damage=dam, weaponskill=ws,
+                    playerweapon = rpgw.RPGWeapon(weaponid=itemid, name=name, cost=cost, element=element, damage=dam, weaponskill=ws,
                                                   critical=cr)
                 if type == TYPE_ARMOR:
                     _, cost, element, mh, hr, bonusmoney = c.fetchone()
-                    playerarmor = rpga.RPGArmor(name=name, cost=cost, element=element, maxhealth=mh,
+                    playerarmor = rpga.RPGArmor(armorid=itemid, name=name, cost=cost, element=element, maxhealth=mh,
                                                 healthregen=hr, money=bonusmoney)
-            if type == TYPE_PET:
-                c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
-                petid, petexp, hp, mh, dam, ws, cr = c.fetchone()
-                playerpets.append(
-                    RPGPet(petid=petid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
-                           critical=cr))
+            # if type == TYPE_PET:
+            #     c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
+            #     _, petexp, hp, mh, dam, ws, cr = c.fetchone()
+            #     playerpets.append(
+            #         RPGPet(petid=itemid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
+            #                critical=cr))
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
     except CommandInvokeError:
@@ -167,27 +167,29 @@ def update_players(stats: [RPGPlayer]):
                              s.armor.money))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, armorid, TYPE_ARMOR, s.armor.name))
-                if s.pets:
-                    for p in s.pets:
-                        if not p.petid:
-                            c.execute(
-                                "SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
-                            try:
-                                petid = c.fetchone()[0] + 1
-                            except:
-                                petid = 0
-
-                            c.execute(
-                                "INSERT INTO characters (characterid, exp, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                                (petid, p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical))
-                            c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
-                                      (s.userid, petid, TYPE_PET, p.name))
-                        else:
-                            c.execute(
-                                "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
-                                (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
-                        # TODO Add pet nicknames
-                        # TODO Remove pets without reference
+                # if s.pets:
+                #     print(s.pets)
+                #     for p in s.pets:
+                #         print(p, p.petid)
+                #         if not p.petid:
+                #             c.execute(
+                #                 "SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
+                #             try:
+                #                 petid = c.fetchone()[0] + 1
+                #             except:
+                #                 petid = 0
+                #
+                #             c.execute(
+                #                 "INSERT INTO characters (characterid, exp, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                #                 (petid, p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical))
+                #             c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
+                #                       (s.userid, petid, TYPE_PET, p.name))
+                #         else:
+                #             c.execute(
+                #                 "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
+                #                 (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
+                #         # TODO Add pet nicknames
+                #         # TODO Remove pets without reference
 
                 conn.commit()
     except pymysql.err.InternalError as e:
@@ -205,7 +207,7 @@ def get_top_players(group: str, amount: int):
         if group in ['money', 'bosstier']:
             c.execute("SELECT playerid, {0} FROM items ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         elif group in ['exp', 'damage', 'weaponskill', 'critical']:
-            c.execute("SELECT playerid, {0} FROM characters ORDER BY {0} DESC LIMIT {1}".format(group, amount))
+            c.execute("SELECT characterid, {0} FROM characters ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         else:
             return None
         a = c.fetchall()
@@ -214,17 +216,17 @@ def get_top_players(group: str, amount: int):
         conn.close()
     return a
 
-
-def reset_rpg_database():
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
-    c = conn.cursor()
-    c.execute("DELETE from busy")
-    c.execute("DELETE from equipment")
-    c.execute("DELETE from players")
-    c.execute("DELETE from characters")
-    c.execute("DELETE from items")
-    conn.commit()
-    conn.close()
+#
+# def reset_rpg_database():
+#     conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
+#     c = conn.cursor()
+#     c.execute("DELETE from busy")
+#     c.execute("DELETE from equipment")
+#     c.execute("DELETE from players")
+#     c.execute("DELETE from characters")
+#     c.execute("DELETE from items")
+#     conn.commit()
+#     conn.close()
 
 
 def setKing(user_id, server_id):
