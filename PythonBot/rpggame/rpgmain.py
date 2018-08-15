@@ -70,7 +70,6 @@ class RPGGame:
             turns = STANDARD_BATTLE_TURNS
         while (i < turns) and (sum([x.health for x in p1]) > 0) and (
                 sum([x.health for x in p2]) > 0):
-            print(p1)
             attackers = list(p1)
             for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
                 attackers += p.pets
@@ -84,7 +83,9 @@ class RPGGame:
                                                attacker.get_critical()) + defender.get_weaponskill())
                     if ws < attacker.get_weaponskill():
                         if ws < attacker.get_critical():
-                            damage = int(math.floor((2.5 + (0.03 * max(0, attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(defender.get_element())))
+                            damage = int(math.floor((2.5 + (0.03 * max(0,
+                                                                       attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(
+                                defender.get_element())))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
                                                                                                    damage)
@@ -146,12 +147,6 @@ class RPGGame:
                 print(title)
                 print(battle_report)
         if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
-            # Reward new pet
-            petwinner = random.choice(p1)
-            if petwinner.add_pet(RPGPet(name='Pet ' + p2[0].name, damage=petwinner.get_bosstier() * 10,
-                                        weaponskill=petwinner.get_bosstier())):
-                await self.bot.send_message(channel, '{} found a baby {}, a new pet!'.format(str(petwinner),
-                                                                                             'Pet ' + p2[0].name))
             return 1
         return 2
 
@@ -178,6 +173,13 @@ class RPGGame:
                         p.add_bosstier()
                         for pet in p.pets:
                             pet.add_exp(32 * lvl * lvl * len(bosses) / len(party))
+
+                    petwinner = random.choice(party)
+                    petname = 'Pet ' + bosses[0].name
+                    if petwinner.add_pet(RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
+                                                weaponskill=petwinner.get_bosstier())):
+                        await self.bot.send_message(channel,
+                                                    '{} found a baby {}, a new pet!'.format(str(petwinner), petname))
         for p in self.players.values():
             if p.busydescription == rpgchar.BOSSRAID:
                 p.reset_busy()
@@ -405,6 +407,14 @@ class RPGGame:
             embed.set_footer(
                 text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(
                     prefix))
+            await self.bot.send_message(ctx.message.author, embed=embed)
+
+            # Pets help
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.add_field(name="{}rpg [pet,pets] <user>".format(prefix),
+                            value="Show the pets owned by you or another user", inline=False)
+            embed.add_field(name="{}rpg [pet,pets] [release,remove,r] <pet name>".format(prefix),
+                            value="Release all pets with the name <pet name>, be warned, they will be gone forever!", inline=False)
             await self.bot.send_message(ctx.message.author, embed=embed)
 
     # {prefix}rpg adventure #
@@ -962,7 +972,7 @@ class RPGGame:
         data.pets = []
         await self.bot.say('Slaughtering pets complete')
 
-    @rpg.command(pass_context=1, hidden=True)
+    @rpg.command(pass_context=1, aliases=['pet'])
     async def pets(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx, istyping=False)
         if len(ctx.message.mentions) > 0:
@@ -989,10 +999,8 @@ class RPGGame:
             return
 
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.set_author(name='{}\'s pets:'.format(ctx.message.author.display_name), url=ctx.message.author.avatar_url)
+        embed.set_author(name='{}\'s pets:'.format(u.display_name), url=u.avatar_url)
         for pet in data.pets:
-            embed.add_field(name=pet.name, value='Health: {}/{}\nDamage: {}\nWeaponskill: {}'.format(pet.health,
-                                                                                                     pet.get_max_health(),
-                                                                                                     pet.get_damage(),
-                                                                                                     pet.get_weaponskill()))
+            stats = 'Exp: {} (L{})\nHealth: {}/{}\nDamage: {}\nWeaponskill: {}'.format(pet.exp, pet.get_level(), pet.health, pet.get_max_health(), pet.get_damage(), pet.get_weaponskill())
+            embed.add_field(name=pet.name, value=stats)
         await self.bot.say(embed=embed)

@@ -10,7 +10,6 @@ import send_random
 import wikipedia
 from os import listdir
 
-import urbandictionary as ud
 from discord.ext import commands
 
 from rpggame import rpgdbconnect as dbcon
@@ -582,20 +581,32 @@ class Basics:
     async def urban(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         q = " ".join(args)
-        if q == "":
+        if not q:
             await self.bot.send_message(ctx.message.channel, "...")
             return
         embed = discord.Embed(colour=0x0000FF)
-        embed.add_field(name="Urban Dictionary Query", value=q)
         try:
-            r = ud.define(q)[0]
-            embed.add_field(name="Definition", value=r.definition, inline=False)
-            embed.add_field(name="Example", value=r.example)
-            embed.add_field(name="👍", value=r.upvotes)
-            embed.add_field(name="👎", value=r.downvotes)
+            params = {'term': q}
+            r = requests.get('http://api.urbandictionary.com/v0/define', params=params).json().get('list')
+            if len(r) <= 0:
+                embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
+                await self.bot.send_message(ctx.message.channel, embed=embed)
+            r = r[0]
+            embed.add_field(name="Urban Dictionary Query", value=r.get('word'))
+            definition = r.get('definition')
+            if len(definition) > 500:
+                definition = definition[:500] + '...'
+            embed.add_field(name="Definition", value=definition, inline=False)
+            example = r.get('example')
+            if len(definition) < 500:
+                if len(example) + len(definition) > 500:
+                    example = example[:500-len(definition)]
+                embed.add_field(name="Example", value=example)
+            embed.add_field(name="👍", value=r.get('thumbs_up'))
+            embed.add_field(name="👎", value=r.get('thumbs_down'))
             await self.bot.send_message(ctx.message.channel, embed=embed)
             return
-        except IndexError:
+        except KeyError:
             embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
             await self.bot.send_message(ctx.message.channel, embed=embed)
 

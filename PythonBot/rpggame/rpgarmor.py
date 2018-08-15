@@ -1,6 +1,20 @@
-import random, ipdb, math
+import random, math
 from random import randint
 from rpggame import rpgconstants as rpgc
+
+
+class RPGArmor:
+    def __init__(self, armorid=None, name="Training Robes", cost=0, element=1, maxhealth=0, healthregen=0, money=0):
+        self.armorid = armorid
+        self.name = name
+        self.cost = cost
+        self.element = element
+        self.maxhealth = maxhealth
+        self.healthregen = healthregen
+        self.money = money
+
+    def __str__(self):
+        return "{}: mh+{}, hr+{}, m+{}%".format(self.name, self.maxhealth, self.healthregen, self.money)
 
 
 def generateArmor(cost: int):
@@ -34,21 +48,7 @@ def generateArmor(cost: int):
     else:
         money += int(points / 30)
         maxhealth -= int(points)
-    return RPGArmor(name, cost, i, maxhealth, healthregen, money)
-
-
-class RPGArmor:
-    def __init__(self, armorid=None, name="Training Robes", cost=0, element=1, maxhealth=0, healthregen=0, money=0):
-        self.armorid = armorid
-        self.name = name
-        self.cost = cost
-        self.element = element
-        self.maxhealth = maxhealth
-        self.healthregen = healthregen
-        self.money = money
-
-    def __str__(self):
-        return "{}: mh+{}, hr+{}, m+{}%".format(self.name, self.maxhealth, self.healthregen, self.money)
+    return RPGArmor(name=name, cost=cost, element=i, maxhealth=maxhealth, healthregen=healthregen, money=money)
 
 
 defaultarmor = RPGArmor()

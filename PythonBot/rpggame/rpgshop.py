@@ -1,6 +1,7 @@
 from discord.ext import commands
 
 import constants
+from secret.secrets import prefix
 import discord
 import math
 import removeMessage
@@ -24,15 +25,15 @@ class RPGShop:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Items",
-                            value="Type '{}shop item' for a list of available items".format(constants.prefix),
+                            value="Type '{}shop item' for a list of available items".format(prefix),
                             inline=False)
             embed.add_field(name="Weapons",
-                            value="Type '{}shop weapon' for a list of available weapons".format(constants.prefix),
+                            value="Type '{}shop weapon' for a list of available weapons".format(prefix),
                             inline=False)
             embed.add_field(name="Armor",
-                            value="Type '{}shop armor' for the armor sold in this shop".format(constants.prefix),
+                            value="Type '{}shop armor' for the armor sold in this shop".format(prefix),
                             inline=False)
-            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(constants.prefix),
+            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(prefix),
                             inline=False)
             await self.bot.say(embed=embed)
 

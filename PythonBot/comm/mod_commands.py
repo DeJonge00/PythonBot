@@ -3,6 +3,7 @@ from discord.ext import commands
 from random import randint
 from PIL import Image
 from io import BytesIO
+from datetime import datetime
 
 
 # Mod commands
@@ -322,4 +323,8 @@ class Mod:
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        print("Test")
+        import copydb
+        time = datetime.now()
+        print(time.isoformat())
+        copydb.get_all_players()
+        print((time - datetime.now()).seconds)

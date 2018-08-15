@@ -2,6 +2,7 @@ import constants, discord, datetime, log, requests, random, send_random, string,
 from discord.ext.commands import Bot
 from PIL import Image
 from io import BytesIO
+from secret.secrets import prefix
 
 NicknameAutoChange = False
 
@@ -83,7 +84,7 @@ async def new(bot, message):
             await bot.add_reaction(message, ":hand:348350777661587466")
         else:
             await bot.add_reaction(message, "\u2764")
-    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == constants.prefix and \
+    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and \
             (bot.user in message.mentions or
              (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri']))) > 0)):
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \

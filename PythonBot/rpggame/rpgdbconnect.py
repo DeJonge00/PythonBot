@@ -79,9 +79,9 @@ def get_single_player(player_id: str):
                                                 healthregen=hr, money=bonusmoney)
             if type == TYPE_PET:
                 c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
-                petid, exp, hp, mh, dam, ws, cr = c.fetchone()
+                petid, petexp, hp, mh, dam, ws, cr = c.fetchone()
                 playerpets.append(
-                    RPGPet(petid=petid, name=name, exp=exp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
+                    RPGPet(petid=petid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
                            critical=cr))
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
@@ -93,7 +93,7 @@ def get_single_player(player_id: str):
         conn.commit()
         conn.close()
 
-    player = RPGPlayer(player_id, player_id, role=role, health=health, maxhealth=maxhealth, damage=damage,
+    player = RPGPlayer(player_id, str(player_id), role=role, health=health, maxhealth=maxhealth, damage=damage,
                        ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money, bosstier=bosstier,
                        kingtimer=kingtime)
     player.set_busy(desc, time, channel)
@@ -144,40 +144,29 @@ def update_players(stats: [RPGPlayer]):
                 if s.weapon != rpgw.defaultweapon:
                     if not s.weapon.weaponid:
                         try:
-                            c.execute("SELECT equipmentid FROM equipment ORDER BY characterid DESC")
+                            c.execute("SELECT equipmentid FROM equipment ORDER BY equipmentid DESC")
                             weaponid = c.fetchone()[0] + 1
                         except:
                             weaponid = 0
                         c.execute(
-                            "INSERT INTO equipment (equipmentid, cost, element, bonus1, bonus2, bonus3) VALUES (%s, %s, %s, %s, %s)",
-                            (weaponid, s.weapon.name, s.weapon.cost, s.weapon.element,
-                             s.weapon.damage, s.weapon.weaponskill, s.weapon.critical))
+                            "INSERT INTO equipment (equipmentid, cost, element, bonus1, bonus2, bonus3) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (weaponid, s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill,
+                             s.weapon.critical))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, weaponid, TYPE_WEAPON, s.weapon.name))
-                    else:
-                        c.execute(
-                            "UPDATE equipment SET cost=%s, element=%s, bonus1=%s, bonus2=%s, bonus3=%s WHERE equipmentid = %s",
-                            (s.weapon.cost, s.weapon.element, s.weapon.damage, s.weapon.weaponskill,
-                             s.weapon.critical, s.weapon.id))
-
                 if s.armor != rpga.defaultarmor:
                     if not s.armor.armorid:
                         try:
-                            c.execute("SELECT equipmentid FROM equipment ORDER BY characterid DESC")
+                            c.execute("SELECT equipmentid FROM equipment ORDER BY equipmentid DESC")
                             armorid = c.fetchone()[0] + 1
                         except:
                             armorid = 0
                         c.execute(
-                            "INSERT INTO equipment (equipmentid, cost, element, bonus1, bonus2, bonus3) VALUES (%s, %s, %s, %s, %s)",
-                            (s.armor.name, s.armor.cost, s.armor.element,
-                             s.armor.maxhealth, s.armor.healthregen, s.armor.money))
+                            "INSERT INTO equipment (equipmentid, cost, element, bonus1, bonus2, bonus3) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (s.armor.armorid, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen,
+                             s.armor.money))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
-                                  (s.userid, armorid, TYPE_ARMOR, s.weapon.name))
-                    else:
-                        c.execute(
-                            "UPDATE equipment SET cost=%s, element=%s, bonus1=%s, bonus2=%s, bonus3=%s WHERE equipmentid = %s",
-                            (s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen, s.armor.money,
-                             s.armor.armorid))
+                                  (s.userid, armorid, TYPE_ARMOR, s.armor.name))
                 if s.pets:
                     for p in s.pets:
                         if not p.petid:
@@ -197,6 +186,7 @@ def update_players(stats: [RPGPlayer]):
                             c.execute(
                                 "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
                                 (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
+                        # TODO Add pet nicknames
                         # TODO Remove pets without reference
 
                 conn.commit()
