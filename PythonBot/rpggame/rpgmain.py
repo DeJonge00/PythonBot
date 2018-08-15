@@ -82,11 +82,9 @@ class RPGGame:
                     defender = random.choice(defs)
                     ws = random.randint(0, max(attacker.get_weaponskill(),
                                                attacker.get_critical()) + defender.get_weaponskill())
-                    if ws < max(attacker.get_weaponskill(), attacker.get_critical()):
+                    if ws < attacker.get_weaponskill():
                         if ws < attacker.get_critical():
-                            damage = int(math.floor((2.5 + (0.05 * max(0,
-                                                                       attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(
-                                defender.get_element())))
+                            damage = int(math.floor((2.5 + (0.03 * max(0, attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(defender.get_element())))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
                                                                                                    damage)
@@ -189,8 +187,8 @@ class RPGGame:
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
-            RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 95))),
-                       damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp) ** (0.6)))),
+            RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 75))),
+                       damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp ** 0.6)))),
                        element=elem)], short=False, thumbnail=pic)
         if winner == 1:
             player.add_exp(100 * player.get_level())
