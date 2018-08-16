@@ -169,10 +169,11 @@ class RPGGame:
                 print('w', winner, 'p', party)
                 if winner == 1:
                     for p in party:
-                        p.add_exp(32 * lvl * lvl * len(bosses) / len(party))
+                        reward = 32 * lvl * lvl * len(bosses) / len(party)
+                        p.add_exp(reward)
                         p.add_bosstier()
                         for pet in p.pets:
-                            pet.add_exp(32 * lvl * lvl * len(bosses) / len(party))
+                            pet.add_exp(reward)
 
                     petwinner = random.choice(party)
                     petname = 'Pet ' + bosses[0].name
@@ -929,6 +930,8 @@ class RPGGame:
             return
         for player in self.players.values():
             print('{} {}: descr:{} time:{}'.format(player.userid, player.name, player.busydescription, player.busytime))
+            for pet in player.pets:
+                print('  ', pet.petid, pet.name)
 
     @rpg.command(pass_context=1, hidden=True)
     async def addpet(self, ctx, num: int):

@@ -18,7 +18,9 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.money = money
         self.weapon = weapon
         self.armor = armor
+        print('player1', pets)
         self.pets = pets
+        print('self.player1', pets)
         self.busytime = 0
         self.busychannel = 0
         self.busydescription = rpgc.NONE

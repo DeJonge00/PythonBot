@@ -8,7 +8,9 @@ from secret import secrets
 
 # Channels
 def set_rpg_channel(server_id: int, channel_id: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID=%s", server_id)
     t = c.fetchone()
@@ -21,7 +23,9 @@ def set_rpg_channel(server_id: int, channel_id: str):
 
 
 def get_rpg_channel(server_id: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(server_id))
     t = c.fetchone()
@@ -35,7 +39,9 @@ def get_rpg_channel(server_id: str):
 
 # Rpg
 def get_busy_players():
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT playerid FROM busy WHERE time>0")
     t = c.fetchall()
@@ -43,7 +49,7 @@ def get_busy_players():
     conn.close()
     players = {}
     for p in t:
-        players[p[0]] = get_single_player(p[0])
+        players[str(p[0])] = get_single_player(p[0])
     return players
 
 
@@ -57,8 +63,8 @@ def get_single_player(player_id: str):
     playerarmor = None
     playerpets = []
 
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg", charset="utf8",
-                           use_unicode=True)
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword, database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     try:
         c.execute("SELECT * FROM characters WHERE characterid=%s", (player_id,))
@@ -71,18 +77,19 @@ def get_single_player(player_id: str):
                 c.execute("SELECT * from equipment WHERE equipmentid=%s", (itemid,))
                 if type == TYPE_WEAPON:
                     _, cost, element, dam, ws, cr = c.fetchone()
-                    playerweapon = rpgw.RPGWeapon(weaponid=itemid, name=name, cost=cost, element=element, damage=dam, weaponskill=ws,
+                    playerweapon = rpgw.RPGWeapon(weaponid=itemid, name=name, cost=cost, element=element, damage=dam,
+                                                  weaponskill=ws,
                                                   critical=cr)
                 if type == TYPE_ARMOR:
                     _, cost, element, mh, hr, bonusmoney = c.fetchone()
                     playerarmor = rpga.RPGArmor(armorid=itemid, name=name, cost=cost, element=element, maxhealth=mh,
                                                 healthregen=hr, money=bonusmoney)
-            # if type == TYPE_PET:
-            #     c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
-            #     _, petexp, hp, mh, dam, ws, cr = c.fetchone()
-            #     playerpets.append(
-            #         RPGPet(petid=itemid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
-            #                critical=cr))
+            if type == TYPE_PET:
+                c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
+                _, petexp, hp, mh, dam, ws, cr = c.fetchone()
+                playerpets.append(
+                    RPGPet(petid=itemid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
+                           critical=cr))
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
     except CommandInvokeError:
@@ -92,12 +99,10 @@ def get_single_player(player_id: str):
     finally:
         conn.commit()
         conn.close()
-
-    player = RPGPlayer(player_id, str(player_id), role=role, health=health, maxhealth=maxhealth, damage=damage,
+    player = RPGPlayer(userid=player_id, pets=[], username=str(player_id), role=role, health=health, maxhealth=maxhealth, damage=damage,
                        ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money, bosstier=bosstier,
                        kingtimer=kingtime)
     player.set_busy(desc, time, channel)
-
     if playerweapon:
         player.weapon = playerweapon
     if playerarmor:
@@ -108,8 +113,9 @@ def get_single_player(player_id: str):
 
 
 def update_players(stats: [RPGPlayer]):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg", charset="utf8",
-                           use_unicode=True)
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     try:
         for s in stats:
@@ -139,7 +145,7 @@ def update_players(stats: [RPGPlayer]):
                 else:
                     c.execute(
                         "UPDATE busy SET description = %s, time = %s, channel = %s, kingtime = %s WHERE playerid = %s",
-                        (s.busytime, s.busychannel, s.busydescription, s.kingtimer, s.userid))
+                        (s.busydescription, s.busytime, s.busychannel, s.kingtimer, s.userid))
 
                 if s.weapon != rpgw.defaultweapon:
                     if not s.weapon.weaponid:
@@ -201,7 +207,9 @@ def update_players(stats: [RPGPlayer]):
 
 
 def get_top_players(group: str, amount: int):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "rpg")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     try:
         if group in ['money', 'bosstier']:
@@ -215,6 +223,7 @@ def get_top_players(group: str, amount: int):
         conn.commit()
         conn.close()
     return a
+
 
 #
 # def reset_rpg_database():
@@ -230,7 +239,9 @@ def get_top_players(group: str, amount: int):
 
 
 def setKing(user_id, server_id):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     if c.execute("SELECT playerID FROM rpgkings WHERE serverID=%s", server_id) == 0:
         c.execute("INSERT INTO rpgkings (serverID, playerID) VALUES (%s, %s)", (server_id, user_id))
@@ -241,7 +252,9 @@ def setKing(user_id, server_id):
 
 
 def getKing(server_id):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT playerID FROM rpgkings WHERE serverID=%s", server_id)
     king = c.fetchone()
@@ -251,7 +264,9 @@ def getKing(server_id):
 
 
 def isKing(user_id):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "RPGDB")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="RPGDB", charset="utf8", use_unicode=True)
     c = conn.cursor()
     r = c.execute("SELECT serverID FROM rpgkings WHERE playerID=%s ", user_id)
     conn.commit()
@@ -261,7 +276,9 @@ def isKing(user_id):
 
 # Pats
 def incrementPats(patter_id: str, pattee_id: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "PATS")
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="PATS", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT patsNbr FROM pats_counters WHERE patterID=%s AND patteeID=%s", (patter_id, pattee_id))
     pats = c.fetchone()
