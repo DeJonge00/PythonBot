@@ -99,7 +99,8 @@ def get_single_player(player_id: str):
     finally:
         conn.commit()
         conn.close()
-    player = RPGPlayer(userid=player_id, pets=[], username=str(player_id), role=role, health=health, maxhealth=maxhealth, damage=damage,
+    player = RPGPlayer(userid=player_id, pets=[], username=str(player_id), role=role, health=health,
+                       maxhealth=maxhealth, damage=damage,
                        ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money, bosstier=bosstier,
                        kingtimer=kingtime)
     player.set_busy(desc, time, channel)
@@ -173,29 +174,29 @@ def update_players(stats: [RPGPlayer]):
                              s.armor.money))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, armorid, TYPE_ARMOR, s.armor.name))
-                # if s.pets:
-                #     print(s.pets)
-                #     for p in s.pets:
-                #         print(p, p.petid)
-                #         if not p.petid:
-                #             c.execute(
-                #                 "SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
-                #             try:
-                #                 petid = c.fetchone()[0] + 1
-                #             except:
-                #                 petid = 0
-                #
-                #             c.execute(
-                #                 "INSERT INTO characters (characterid, exp, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                #                 (petid, p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical))
-                #             c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
-                #                       (s.userid, petid, TYPE_PET, p.name))
-                #         else:
-                #             c.execute(
-                #                 "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
-                #                 (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
-                #         # TODO Add pet nicknames
-                #         # TODO Remove pets without reference
+                if s.pets:
+                    print(s.pets)
+                    for p in s.pets:
+                        print(p, p.petid)
+                        if not p.petid:
+                            c.execute(
+                                "SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
+                            try:
+                                petid = c.fetchone()[0] + 1
+                            except:
+                                petid = 0
+
+                            c.execute(
+                                "INSERT INTO characters (characterid, exp, health, maxhealth, damage, weaponskill, critical) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                                (petid, p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical))
+                            c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
+                                      (s.userid, petid, TYPE_PET, p.name))
+                        else:
+                            c.execute(
+                                "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
+                                (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
+                        # TODO Add pet nicknames
+                        # TODO Remove pets without reference
 
                 conn.commit()
     except pymysql.err.InternalError as e:
