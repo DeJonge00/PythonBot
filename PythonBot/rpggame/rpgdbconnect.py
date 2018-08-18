@@ -76,19 +76,19 @@ def get_single_player(player_id: str):
             if type in [TYPE_WEAPON, TYPE_ARMOR]:
                 c.execute("SELECT * from equipment WHERE equipmentid=%s", (itemid,))
                 if type == TYPE_WEAPON:
-                    _, cost, element, dam, ws, cr = c.fetchone()
-                    playerweapon = rpgw.RPGWeapon(weaponid=itemid, name=name, cost=cost, element=element, damage=dam,
+                    weaponid, cost, element, dam, ws, cr = c.fetchone()
+                    playerweapon = rpgw.RPGWeapon(weaponid=weaponid, name=name, cost=cost, element=element, damage=dam,
                                                   weaponskill=ws,
                                                   critical=cr)
                 if type == TYPE_ARMOR:
-                    _, cost, element, mh, hr, bonusmoney = c.fetchone()
-                    playerarmor = rpga.RPGArmor(armorid=itemid, name=name, cost=cost, element=element, maxhealth=mh,
+                    armorid, cost, element, mh, hr, bonusmoney = c.fetchone()
+                    playerarmor = rpga.RPGArmor(armorid=armorid, name=name, cost=cost, element=element, maxhealth=mh,
                                                 healthregen=hr, money=bonusmoney)
             if type == TYPE_PET:
                 c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
-                _, petexp, hp, mh, dam, ws, cr = c.fetchone()
+                petid, petexp, hp, mh, dam, ws, cr = c.fetchone()
                 playerpets.append(
-                    RPGPet(petid=itemid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
+                    RPGPet(petid=petid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
                            critical=cr))
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
         _, desc, time, channel, kingtime = c.fetchone()
@@ -149,6 +149,14 @@ def update_players(stats: [RPGPlayer]):
                         (s.busydescription, s.busytime, s.busychannel, s.kingtimer, s.userid))
 
                 if s.weapon != rpgw.defaultweapon:
+                    # delete weapons that arent in the RPGPlayers slot
+                    c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", s.userid, TYPE_WEAPON)
+                    old_weapons = c.fetchall()
+                    for p in old_weapons:
+                        if p[0] != s.weapon.weaponid:
+                            c.execute("DELETE FROM equipment WHERE equipmentid = %s", p[0])
+                            c.execute("DELETE FROM items WHERE itemid = %s", p[0])
+
                     if not s.weapon.weaponid:
                         try:
                             c.execute("SELECT equipmentid FROM equipment ORDER BY equipmentid DESC")
@@ -162,6 +170,13 @@ def update_players(stats: [RPGPlayer]):
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, weaponid, TYPE_WEAPON, s.weapon.name))
                 if s.armor != rpga.defaultarmor:
+                    # delete armors that arent in the RPGPlayers slot
+                    c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", s.userid, TYPE_ARMOR)
+                    old_armor = c.fetchall()
+                    for p in old_armor:
+                        if p[0] != s.armor.armorid:
+                            c.execute("DELETE FROM equipment WHERE equipmentid = %s", p[0])
+                            c.execute("DELETE FROM items WHERE itemid = %s", p[0])
                     if not s.armor.armorid:
                         try:
                             c.execute("SELECT equipmentid FROM equipment ORDER BY equipmentid DESC")
@@ -175,9 +190,16 @@ def update_players(stats: [RPGPlayer]):
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, armorid, TYPE_ARMOR, s.armor.name))
                 if s.pets:
-                    print(s.pets)
+                    # delte pets that arent in the RPGPlayers petslist
+                    c.execute("SELECT itemid FROM items WHERE playerid = %s AND type > 1", s.userid)
+                    old_pets = c.fetchall()
+                    for p in old_pets:
+                        if p[0] not in s.pets:
+                            c.execute("DELETE FROM characters WHERE characterid = %s", p[0])
+                            c.execute("DELETE FROM items WHERE itemid = %s", p[0])
+
+                    # Add or update RPGPlayers pets to the database
                     for p in s.pets:
-                        print(p, p.petid)
                         if not p.petid:
                             c.execute(
                                 "SELECT characterid FROM characters WHERE characterid < 1000000000 ORDER BY characterid DESC")
@@ -195,8 +217,6 @@ def update_players(stats: [RPGPlayer]):
                             c.execute(
                                 "UPDATE characters SET exp=%s, health=%s, maxhealth=%s, damage=%s, weaponskill=%s, critical=%s WHERE characterid=%s",
                                 (p.exp, p.health, p.maxhealth, p.damage, p.weaponskill, p.critical, p.petid))
-                        # TODO Add pet nicknames
-                        # TODO Remove pets without reference
 
                 conn.commit()
     except pymysql.err.InternalError as e:

@@ -544,9 +544,10 @@ class RPGGame:
         topoffset = 18
         next = 23
 
-        if len(data.name) < 12:
-            data.name += " 's informations"
-        draw.text((nameoffset, topoffset), data.name + ":", color, font=font)
+        name = data.name
+        if len(name) < 12:
+            name += " 's informations"
+        draw.text((nameoffset, topoffset), name + ":", color, font=font)
         draw.text((nameoffset, topoffset + next), str(data.role), color, font=font)
         if data.levelups > 0:
             stats = "Level up available!"
