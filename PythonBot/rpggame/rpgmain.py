@@ -42,6 +42,8 @@ class RPGGame:
 
     async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [rpgchar.RPGCharacter],
                              p2: [RPGMonster], short=False, thumbnail=None):
+
+        # Gather report header information
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         if thumbnail:
             embed.set_thumbnail(url=thumbnail)
@@ -58,28 +60,36 @@ class RPGGame:
         embed.add_field(name=battle_name, value=title, inline=False)
         battle_report = ""
         i = 0
+
+        # Save healthvalues in case of mockbattle
         h1 = []
         h2 = []
         for i in range(len(p1)):
             h1.append(p1[i].health)
         for i in range(len(p2)):
             h2.append(p2[i].health)
-        turns = BATTLE_TURNS.get(battle_name)
-        if not turns:
-            turns = STANDARD_BATTLE_TURNS
-        while (i < turns) and (sum([x.health for x in p1]) > 0) and (
-                sum([x.health for x in p2]) > 0):
+
+        # Fight starts
+        # Fight stops when either party (not including pets) runs out of health
+        turns = BATTLE_TURNS.get(battle_name, STANDARD_BATTLE_TURNS)
+        while (i < turns) and (sum([x.health for x in p1]) > 0) and (sum([x.health for x in p2]) > 0):
             attackers = list(p1)
+
+            # Pets are added to allow them to attack
             for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
                 attackers += p.pets
             for attacker in attackers:
                 if attacker.health > 0:
+
+                    # Choose attackers target
                     defs = [x for x in p2 if x.health > 0]
                     if len(defs) <= 0:
                         break
                     defender = random.choice(defs)
                     ws = random.randint(0, max(attacker.get_weaponskill(),
                                                attacker.get_critical()) + defender.get_weaponskill())
+
+                    # Determine whether the attacker hits and for how much damage
                     if ws < attacker.get_weaponskill():
                         if ws < attacker.get_critical():
                             damage = int(math.floor((2.5 + (0.03 * max(0,
@@ -94,10 +104,9 @@ class RPGGame:
                                     defender.get_element())))
                             battle_report += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name,
                                                                                           damage)
-                        if battle_name == "Mockbattle":
-                            defender.add_health(-1 * damage, death=False)
-                        else:
-                            defender.add_health(-1 * damage)
+                        defender.add_health(-1 * damage, death=not (battle_name == "Mockbattle"))
+
+            # Switch attackers and defenders roles
             p3 = p1
             p1 = p2
             p2 = p3
@@ -125,16 +134,21 @@ class RPGGame:
                             value="The battle lasted long, both parties are exhausted.\nThey agree on a draw this time",
                             inline=False)
             self.add_health_rep(embed, (p1 + p2))
+
+        # Switch teams to original positions
         if i % 2 == 1:
             p3 = p1
             p1 = p2
             p2 = p3
+
+        # Restore health to saved values
         if battle_name == "Mockbattle":
             for i in range(len(p1)):
                 p1[i].health = h1[i]
             for i in range(len(p2)):
                 p2[i].health = h2[i]
 
+        # Send report in appropriate channel
         try:
             await self.bot.send_message(channel, embed=embed)
         except discord.errors.HTTPException:
@@ -145,6 +159,9 @@ class RPGGame:
                 await self.bot.send_message(channel, "Unable to post battlereport ~~plsdontkillme~~")
                 print(title)
                 print(battle_report)
+
+        # Return who won
+        # Winning means having dealt a higher percentage of damage
         if sum([(x.health / x.get_max_health()) for x in p1]) > sum([(x.health / x.get_max_health()) for x in p2]):
             return 1
         return 2
@@ -158,14 +175,17 @@ class RPGGame:
                 if not channel:
                     print("No channel for {}".format(serverid))
                     return
+
+                # Determine bossbattle difficulty
                 lvl = max([x.get_bosstier() for x in party])
                 bosses = []
                 while (3 * len(bosses)) < len(party):
                     (name, elem, pic) = random.choice(rpgc.bosses)
                     bosses.append(RPGMonster(name=name, health=int(47 * lvl * lvl), damage=int(lvl * lvl),
                                              ws=int(lvl * lvl * 0.5), element=elem))
+
                 winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
-                print('w', winner, 'p', party)
+
                 if winner == 1:
                     # Reward the winners with exp, money and a bosstier
                     for p in party:
@@ -191,12 +211,15 @@ class RPGGame:
         self.boss_parties = {}
 
     async def adventure_encounter(self, player: RPGPlayer, channel: discord.Channel):
+        # Choose monster and determine battle difficulty
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
             RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 75))),
                        damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp ** 0.6)))),
                        element=elem)], short=False, thumbnail=pic)
+
+        # Reward victory
         if winner == 1:
             player.add_exp(100 * player.get_level())
 
@@ -340,6 +363,7 @@ class RPGGame:
             return
         if data.busydescription in [rpgchar.ADVENTURE, rpgchar.WANDERING]:
             return
+        # Reward player based on rpg level with money
         i = round(pow((data.get_level()) + 1, 1 / 3)  # levelbonus
                   * max(0, min(50, (len(message.content) - 3) / 2)))  # Textbonus
         if data.busydescription in [rpgchar.TRAINING, rpgchar.BOSSRAID]:
@@ -499,6 +523,8 @@ class RPGGame:
     @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
     async def info(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
+
+        # Get requested player data
         if len(ctx.message.mentions) > 0:
             data = self.get_player_data(ctx.message.mentions[0].id, name=ctx.message.mentions[0].display_name)
         else:
@@ -508,6 +534,8 @@ class RPGGame:
                 "{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
+
+        # Requested info is of weapon
         if len(args) > 0:
             if args[0] in ['w', 'weapon']:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
@@ -523,6 +551,8 @@ class RPGGame:
                     embed.add_field(name="Critical", value=data.weapon.critical, inline=False)
                 await self.bot.send_message(ctx.message.channel, embed=embed)
                 return
+
+            # Requested info is of armor
             if args[0] in ['a', 'armor']:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
                 embed.set_author(name="{}'s armor".format(data.name), icon_url=ctx.message.author.avatar_url)
@@ -537,6 +567,9 @@ class RPGGame:
                     embed.add_field(name="Extra money", value="{}%".format(data.armor.money), inline=False)
                 await self.bot.send_message(ctx.message.channel, embed=embed)
                 return
+
+        # Requested info is of player
+        # Load image and set basic params
         try:
             im = Image.open("rpggame/{}.png".format(data.role.lower()))
         except:
@@ -557,6 +590,7 @@ class RPGGame:
         topoffset = 18
         next = 23
 
+        # Gather and add information to the picture
         name = data.name
         if len(name) < 12:
             name += " 's informations"
@@ -602,6 +636,8 @@ class RPGGame:
         draw.text((statoffset, topoffset + 7 * next), "{}".format(data.get_weaponskill()), color, font=font)
         draw.text((nameoffset, topoffset + 8 * next), "Critical:", color, font=font)
         draw.text((statoffset, topoffset + 8 * next), "{}".format(data.get_critical()), color, font=font)
+        draw.text((nameoffset, topoffset + 9 * next), "Pets:", color, font=font)
+        draw.text((statoffset, topoffset + 9 * next), "{}".format(len(data.pets)), color, font=font)
 
         imname = 'temp/{}.png'.format(ctx.message.author.id)
         im.save(imname)
@@ -1002,6 +1038,9 @@ class RPGGame:
             return
 
         # List pets subcommand
+        if len(data.pets) <= 0:
+            await self.bot.say('You do not have any cuties at the moment, try defeating a boss and maybe it will leave you a reward!')
+            return
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.set_author(name='{}\'s pets:'.format(u.display_name), url=u.avatar_url)
         for i in range(len(data.pets)):
