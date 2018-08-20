@@ -20,7 +20,7 @@ class RPGPet(rpgc.RPGCharacter):
 
     @staticmethod
     def get_level_by_exp(exp: int):
-        return math.floor(math.sqrt(exp) / 15) + 1
+        return int(math.sqrt(exp) / 15) + 1
 
     def get_level(self):
         return RPGPet.get_level_by_exp(self.exp)
