@@ -1,8 +1,8 @@
-from rpggame import rpgcharacter as rpgc
+from rpggame.rpgcharacter import RPGCharacter
 import math
 
 
-class RPGPet(rpgc.RPGCharacter):
+class RPGPet(RPGCharacter):
     def __init__(self, petid=None, name='Kittycat', health=1, maxhealth=1, damage=1, weaponskill=1, critical=0, exp=0):
         self.petid = petid
         self.exp = exp

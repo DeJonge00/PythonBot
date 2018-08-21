@@ -49,6 +49,3 @@ def generateArmor(cost: int):
         money += int(points / 30)
         maxhealth -= int(points)
     return RPGArmor(name=name, cost=cost, element=i, maxhealth=maxhealth, healthregen=healthregen, money=money)
-
-
-defaultarmor = RPGArmor()

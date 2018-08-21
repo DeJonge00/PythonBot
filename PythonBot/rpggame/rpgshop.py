@@ -207,13 +207,13 @@ class RPGShop:
             a = math.ceil(rpgchar.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if player.busydescription != rpgchar.NONE:
+        if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not player.set_busy(rpgchar.TRAINING, math.ceil(a * training.cost), c.id):
+        if not player.set_busy(rpgchar.BUSY_DESC_TRAINING, math.ceil(a * training.cost), c.id):
             await self.bot.say(
                 "You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime / training.cost),
                                                                 math.floor(rpgchar.maxtrainingtime / training.cost)))

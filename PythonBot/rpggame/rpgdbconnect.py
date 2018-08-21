@@ -1,16 +1,16 @@
-from discord.ext.commands.errors import CommandInvokeError
 import pymysql
 from rpggame import rpgweapon as rpgw, rpgarmor as rpga
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
 from rpggame.rpgpet import RPGPet
 from secret import secrets
+from discord import Client
 
 
 # Channels
 def set_rpg_channel(server_id: int, channel_id: str):
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword,
-                           database="RPGDB", charset="utf8", use_unicode=True)
+                           database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID=%s", server_id)
     t = c.fetchone()
@@ -25,7 +25,7 @@ def set_rpg_channel(server_id: int, channel_id: str):
 def get_rpg_channel(server_id: str):
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword,
-                           database="RPGDB", charset="utf8", use_unicode=True)
+                           database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT channelID FROM rpgchannel WHERE serverID={}".format(server_id))
     t = c.fetchone()
@@ -38,18 +38,20 @@ def get_rpg_channel(server_id: str):
 
 
 # Rpg
-def get_busy_players():
+def get_busy_players(bot: Client):
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword,
                            database="rpg", charset="utf8", use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT playerid FROM busy WHERE time>0")
     t = c.fetchall()
+    t = [x[0] for x in t]
     conn.commit()
     conn.close()
     players = {}
+    names = {x.id: x.name for x in bot.get_all_members() if x.id in t}
     for p in t:
-        players[str(p[0])] = get_single_player(p[0])
+        players[str(p)] = get_single_player(p, names.get(p, p))
     return players
 
 
@@ -58,7 +60,7 @@ TYPE_ARMOR = 1
 TYPE_PET = 2
 
 
-def get_single_player(player_id: str):
+def get_single_player(player_id: str, username: str):
     player = None
 
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
@@ -70,7 +72,7 @@ def get_single_player(player_id: str):
         _, exp, health, maxhealth, damage, weaponskill, critical = c.fetchone()
         c.execute("SELECT * FROM players WHERE playerid=%s", (player_id,))
         _, money, role, levelups, bosstier = c.fetchone()
-        player = RPGPlayer(userid=player_id, pets=[], username=str(player_id), role=role, health=health,
+        player = RPGPlayer(userid=player_id, pets=[], username=username, role=role, health=health,
                            maxhealth=maxhealth, damage=damage,
                            ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money,
                            bosstier=bosstier)
@@ -83,20 +85,20 @@ def get_single_player(player_id: str):
 
         # Get players items
         c.execute("SELECT * FROM items WHERE playerid=%s", (player_id,))
-        for _, itemid, type, name in c.fetchall():
-            if type in [TYPE_WEAPON, TYPE_ARMOR]:
-                c.execute("SELECT * from equipment WHERE equipmentid=%s", (itemid,))
-                if type == TYPE_WEAPON:
+        for _, item_id, item_type, name in c.fetchall():
+            if item_type in [TYPE_WEAPON, TYPE_ARMOR]:
+                c.execute("SELECT * from equipment WHERE equipmentid=%s", (item_id,))
+                if item_type == TYPE_WEAPON:
                     weaponid, cost, element, dam, ws, cr = c.fetchone()
                     player.weapon = rpgw.RPGWeapon(weaponid=weaponid, name=name, cost=cost, element=element, damage=dam,
                                                    weaponskill=ws,
                                                    critical=cr)
-                if type == TYPE_ARMOR:
+                if item_type == TYPE_ARMOR:
                     armorid, cost, element, mh, hr, bonusmoney = c.fetchone()
                     player.armor = rpga.RPGArmor(armorid=armorid, name=name, cost=cost, element=element, maxhealth=mh,
                                                  healthregen=hr, money=bonusmoney)
-            if type == TYPE_PET:
-                c.execute("SELECT * FROM characters WHERE characterid=%s", (itemid,))
+            if item_type == TYPE_PET:
+                c.execute("SELECT * FROM characters WHERE characterid=%s", (item_id,))
                 petid, petexp, hp, mh, dam, ws, cr = c.fetchone()
                 player.add_pet(
                     RPGPet(petid=petid, name=name, exp=petexp, health=hp, maxhealth=mh, damage=dam, weaponskill=ws,
@@ -142,7 +144,7 @@ def update_players(stats: [RPGPlayer]):
                         "UPDATE busy SET description = %s, time = %s, channel = %s, kingtime = %s WHERE playerid = %s",
                         (s.busydescription, s.busytime, s.busychannel, s.kingtimer, s.userid))
 
-                if s.weapon != rpgw.defaultweapon:
+                if s.weapon != rpgw.RPGWeapon():
                     # delete weapons that arent in the RPGPlayers slot
                     c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", (s.userid, TYPE_WEAPON))
                     old_weapons = c.fetchall()
@@ -163,7 +165,7 @@ def update_players(stats: [RPGPlayer]):
                              s.weapon.critical))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, weaponid, TYPE_WEAPON, s.weapon.name))
-                if s.armor != rpga.defaultarmor:
+                if s.armor != rpga.RPGArmor():
                     # delete armors that arent in the RPGPlayers slot
                     c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", (s.userid, TYPE_ARMOR))
                     old_armor = c.fetchall()
@@ -290,7 +292,7 @@ def isKing(user_id):
 
 
 # Pats
-def incrementPats(patter_id: str, pattee_id: str):
+def increment_pats(patter_id: str, pattee_id: str):
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword,
                            database="PATS", charset="utf8", use_unicode=True)

@@ -60,7 +60,8 @@ qa = [
             "About a 4% chance of that...",
             "Not. Even. Close.",
             "Do not question the unquestionable",
-            "All day, every day. Just don't involve me..."
+            "All day, every day. Just don't involve me...",
+            'Only if you vote for me at https://discordbots.org/bot/244410964693221377 <3'
         ]
 
 response = [
@@ -124,7 +125,8 @@ response = [
             "True, in more ways than one",
             "*Gimme some rope, I'm coming loose*",
             "You should go outside sometime",
-            "Omegalul"
+            "Omegalul",
+            "I'll like you a bot more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:"
         ]
 
 # random responses
@@ -167,7 +169,8 @@ ded = [
             "Just like your love life :smile:",
             "You look like you want to do my homework?",
             "Let's talk about your mom then!",
-            "Fun fact #318: People die when they are killed"
+            "Fun fact #318: People die when they are killed",
+            "You should go vote for me at https://discordbots.org/bot/244410964693221377 if you are bored :smile:"
         ]
 
 purr = [
@@ -399,4 +402,35 @@ sad_gifs = [
     'https://media.giphy.com/media/jqXH5VeTYNeTu/giphy.gif',
     'https://78.media.tumblr.com/5566467b394ddab7899fe5fa3057212b/tumblr_o2o9mvfIGK1s5rcozo1_500.gif',
     'http://gifimage.net/wp-content/uploads/2017/08/lucky-star-gif-20.gif'
+]
+
+otters = [
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/LutraCanadensis_fullres.jpg/220px-LutraCanadensis_fullres.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/15/Sea_otter_cropped.jpg',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/longform-original-29416-1412278143-10.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/enhanced-30467-1412278420-14.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-4724-1412278552-7.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-10028-1412279140-3.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-10028-1412279140-3.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'http://www.thatcutesite.com/uploads/2010/07/baby_otters.jpg',
+    'https://lazypenguins.com/wp-content/uploads/2015/12/Otter-Family-2.jpg',
+    'https://i.huffpost.com/gen/2247528/thumbs/o-SHEDD-2-900.jpg',
+    'https://i.huffpost.com/gen/2247528/thumbs/o-SHEDD-2-900.jpg',
+    'https://i.huffpost.com/gen/2247584/thumbs/o-SHEDD-7-900.jpg',
+    'https://i.huffpost.com/gen/2247578/thumbs/o-SHEDD-6-900.jpg',
+    'http://emmecon.com/wp-content/uploads/2018/06/fresh-otter-meme-otterly-adorable-otters-pinterest.jpg',
+    'https://3.bp.blogspot.com/-XYNj9fJ5DpY/T1ZfyjIUcHI/AAAAAAAAEFM/sV0i9yrgPJg/s1600/cute-baby-otter-pictures-001.jpg',
+    'https://4.bp.blogspot.com/-KLqTnW6E8ZU/T1ZfxkwxwzI/AAAAAAAAEEc/Xcrq1XF7qoU/s1600/cute-baby-otter-pictures-002.jpg',
+    'https://4.bp.blogspot.com/-KLqTnW6E8ZU/T1ZfxkwxwzI/AAAAAAAAEEc/Xcrq1XF7qoU/s1600/cute-baby-otter-pictures-002.jpg',
+    'https://4.bp.blogspot.com/-zvnmH60vDOg/T1Zfx5j4dHI/AAAAAAAAEEw/5Y5lkUZqWT8/s1600/cute-baby-otter-pictures-004.jpg',
+    'https://4.bp.blogspot.com/-zvnmH60vDOg/T1Zfx5j4dHI/AAAAAAAAEEw/5Y5lkUZqWT8/s1600/cute-baby-otter-pictures-004.jpg',
+    'http://cuteotters.com/uploads/Cute_Otters_256.jpg',
+    'https://images-ext-2.discordapp.net/external/A0ckJM_F-wwJMBkB9yTcAx33k58JcvFhxtb0JV2963o/https/s-media-cache-ak0.pinimg.com/originals/95/f2/80/95f280be7cc0a225ae075ca8d01858d9.jpg?width=981&height=657',
+    'https://78.media.tumblr.com/bdf2f75e46169e9c3b9037313cb54c89/tumblr_pco6b5VLk81vims6ho1_1280.jpg',
+    'https://78.media.tumblr.com/d3de3bed895a65db53f6c5b0bef0a40c/tumblr_pct2clza6O1vims6ho1_1280.jpg',
+    'https://78.media.tumblr.com/854afc01e95e30627dd7fa1a7c608a79/tumblr_pct2czv48w1vims6ho1_1280.jpg',
+    'https://78.media.tumblr.com/8efd3159c045a4b0e24f23a38bcc5d6f/tumblr_pdchy4UP491vims6ho1_540.jpg'
+    'https://i.ytimg.com/vi/7Nz0dLHMHOo/maxresdefault.jpg',
+    'https://static.boredpanda.com/blog/wp-content/uploads/2015/11/benedict-cumberbatch-otter-lookalike-doppelganger-3.png',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbRHm_uRzWah2JAJcn5iqCnkx7c6vg9275agP6CEG8TuoSjxLn'
 ]

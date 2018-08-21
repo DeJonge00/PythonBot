@@ -3,11 +3,11 @@ import math
 from rpggame import rpgconstants as rpgc
 
 # Busydescription status
-NONE = 0
-ADVENTURE = 1
-TRAINING = 2
-BOSSRAID = 3
-WANDERING = 4
+BUSY_DESC_NONE = 0
+BUSY_DESC_ADVENTURE = 1
+BUSY_DESC_TRAINING = 2
+BUSY_DESC_BOSSRAID = 3
+BUSY_DESC_WANDERING = 4
 
 # Min and max busy time
 minadvtime = 5
@@ -18,10 +18,10 @@ minwandertime = 30
 maxwandertime = 360
 
 # Player starting stats
-HEALTH = 100
-ARMOR = 0
-DAMAGE = 10
-WEAPONSKILL = 1
+DEFAULT_HEALTH = 100
+DEFAULT_ARMOR = 0
+DEFAULT_DAMAGE = 10
+DEFAULT_WEAPONSKILL = 1
 
 
 class RPGCharacter:
@@ -76,9 +76,3 @@ class RPGCharacter:
 
     def __str__(self, **kwargs):
         return "{} ({}/{})".format(self.name, self.health, self.maxhealth)
-
-
-
-
-
-

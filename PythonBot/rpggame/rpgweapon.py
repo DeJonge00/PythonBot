@@ -47,6 +47,3 @@ def generate_weapon(cost: int):
     else:
         critical += math.floor(points / 7)
     return RPGWeapon(name=name, cost=cost, element=i, damage=damage, weaponskill=weaponskill, critical=critical)
-
-
-defaultweapon = RPGWeapon()

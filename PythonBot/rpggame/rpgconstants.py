@@ -1,4 +1,4 @@
-from rpggame import rpgshopitem as rpgsi
+from rpggame.rpgshopitem import RPGShopItem
 
 element_none = 1
 element_lightning = 2
@@ -18,15 +18,15 @@ elementnames = {
 }
 
 shopitems = {
-    "health": rpgsi.RPGShopItem("health", 100, {"health": ("+", 25)}),
-    "maxhealth": rpgsi.RPGShopItem("maxhealth", 500, {"maxhealth": ("+", 10)}),
-    "damage": rpgsi.RPGShopItem("damage", 250, {"damage": ("+", 1)}),
-    "critical": rpgsi.RPGShopItem("critical", 4000, {"critical": ("+", 1)})
+    "health": RPGShopItem("health", 100, {"health": ("+", 25)}),
+    "maxhealth": RPGShopItem("maxhealth", 500, {"maxhealth": ("+", 10)}),
+    "damage": RPGShopItem("damage", 250, {"damage": ("+", 1)}),
+    "critical": RPGShopItem("critical", 4000, {"critical": ("+", 1)})
 }
 
 trainingitems = {
-    "maxhealth": rpgsi.RPGShopItem("maxhealth", 0.25, {"maxhealth": ("+", 1)}),
-    "weaponskill": rpgsi.RPGShopItem("weaponskill", 10, {"weaponskill": ("+", 1)})
+    "maxhealth": RPGShopItem("maxhealth", 0.25, {"maxhealth": ("+", 1)}),
+    "weaponskill": RPGShopItem("weaponskill", 10, {"weaponskill": ("+", 1)})
 }
 
 weapons = [

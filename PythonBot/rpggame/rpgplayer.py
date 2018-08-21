@@ -1,16 +1,19 @@
-from rpggame import rpgcharacter as rpgc, rpgarmor as rpga, rpgweapon as rpgw, rpgshopitem as rpgsi
-from rpggame.rpgconstants import element_none
+from rpggame import rpgcharacter
+from rpggame.rpgarmor import RPGArmor
+from rpggame.rpgweapon import RPGWeapon
+from rpggame.rpgshopitem import RPGShopItem
+from rpggame import rpgconstants as rpgc
 from rpggame.rpgpet import RPGPet
 import math
 
 DEFAULT_ROLE = 'Undead'
 
 
-class RPGPlayer(rpgc.RPGCharacter):
+class RPGPlayer(rpgcharacter.RPGCharacter):
     def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE,
-                 weapon=rpgw.defaultweapon, armor=rpga.defaultarmor, pets=[], health=rpgc.HEALTH,
-                 maxhealth=rpgc.HEALTH, damage=rpgc.DAMAGE,
-                 ws=rpgc.WEAPONSKILL, critical=0, bosstier=1, kingtimer=0, element=element_none):
+                 weapon=RPGWeapon(), armor=RPGArmor(), pets=[], health=rpgcharacter.DEFAULT_HEALTH,
+                 maxhealth=rpgcharacter.DEFAULT_HEALTH, damage=rpgcharacter.DEFAULT_DAMAGE,
+                 ws=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0, bosstier=1, kingtimer=0, element=rpgc.element_none):
         self.userid = userid
         self.role = role
         self.exp = exp
@@ -21,7 +24,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.pets = pets
         self.busytime = 0
         self.busychannel = 0
-        self.busydescription = rpgc.NONE
+        self.busydescription = rpgcharacter.BUSY_DESC_NONE
         self.bosstier = bosstier
         self.kingtimer = kingtimer
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
@@ -42,9 +45,9 @@ class RPGPlayer(rpgc.RPGCharacter):
         lvl = self.get_level()
         self.add_money(n)
         self.exp += n
-        self.levelups += min(0, self.get_level() - lvl)
+        self.levelups += max(0, self.get_level() - lvl)
 
-    def add_health(self, n: int, death=True, element=element_none):
+    def add_health(self, n: int, death=True, element=rpgc.element_none):
         super().add_health(n)
         if death:
             self.resolve_death()
@@ -65,23 +68,23 @@ class RPGPlayer(rpgc.RPGCharacter):
         return self.maxhealth + self.armor.maxhealth
 
     def get_element(self):
-        return self.armor.element if self.armor.element else element_none
+        return self.armor.element if self.armor.element else rpgc.element_none
 
-    def buy_item(self, item: rpgsi.RPGShopItem, amount=1):
+    def buy_item(self, item: RPGShopItem, amount=1):
         if not self.subtract_money(amount * item.cost):
             return False
         self.health = min(self.get_max_health(),
-                          rpgc.RPGCharacter.adjust_stats(self.health, "health", item, amount=amount))
-        self.set_max_health(rpgc.RPGCharacter.adjust_stats(self.maxhealth, "maxhealth", item, amount=amount))
-        self.damage = rpgc.RPGCharacter.adjust_stats(self.damage, "damage", item, amount=amount)
-        self.critical = rpgc.RPGCharacter.adjust_stats(self.critical, "critical", item, amount=amount)
+                          rpgcharacter.RPGCharacter.adjust_stats(self.health, "health", item, amount=amount))
+        self.set_max_health(rpgcharacter.RPGCharacter.adjust_stats(self.maxhealth, "maxhealth", item, amount=amount))
+        self.damage = rpgcharacter.RPGCharacter.adjust_stats(self.damage, "damage", item, amount=amount)
+        self.critical = rpgcharacter.RPGCharacter.adjust_stats(self.critical, "critical", item, amount=amount)
         return True
 
-    def buy_training(self, item: rpgsi.RPGShopItem, amount=1):
-        self.set_max_health(rpgc.RPGCharacter.adjust_stats(self.maxhealth, "maxhealth", item, amount=amount))
-        self.weaponskill = rpgc.RPGCharacter.adjust_stats(self.weaponskill, "weaponskill", item, amount=amount)
+    def buy_training(self, item: RPGShopItem, amount=1):
+        self.set_max_health(rpgcharacter.RPGCharacter.adjust_stats(self.maxhealth, "maxhealth", item, amount=amount))
+        self.weaponskill = rpgcharacter.RPGCharacter.adjust_stats(self.weaponskill, "weaponskill", item, amount=amount)
 
-    def buy_armor(self, item: rpga.RPGArmor):
+    def buy_armor(self, item: RPGArmor):
         if not self.subtract_money(item.cost):
             return False
         self.money += int(math.floor(self.armor.cost * 0.25))
@@ -89,7 +92,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         self.add_health(0)
         return True
 
-    def buy_weapon(self, item: rpgw.RPGWeapon):
+    def buy_weapon(self, item: RPGWeapon):
         if not self.subtract_money(item.cost):
             return False
         self.money += int(math.floor(self.weapon.cost * 0.25))
@@ -108,11 +111,11 @@ class RPGPlayer(rpgc.RPGCharacter):
     def set_busy(self, action: int, time: int, channel: int):
         if self.busytime > 0:
             return False
-        if action == rpgc.ADVENTURE and not (rpgc.minadvtime <= time <= rpgc.maxadvtime):
+        if action == rpgcharacter.BUSY_DESC_ADVENTURE and not (rpgcharacter.minadvtime <= time <= rpgcharacter.maxadvtime):
             return False
-        if action == rpgc.TRAINING and not (rpgc.mintrainingtime <= time <= rpgc.maxtrainingtime):
+        if action == rpgcharacter.BUSY_DESC_TRAINING and not (rpgcharacter.mintrainingtime <= time <= rpgcharacter.maxtrainingtime):
             return False
-        if action == rpgc.WANDERING and not (rpgc.minwandertime <= time <= rpgc.maxwandertime):
+        if action == rpgcharacter.BUSY_DESC_WANDERING and not (rpgcharacter.minwandertime <= time <= rpgcharacter.maxwandertime):
             return False
 
         self.busytime = time
@@ -123,16 +126,16 @@ class RPGPlayer(rpgc.RPGCharacter):
     def reset_busy(self):
         self.busytime = 0
         self.busychannel = 0
-        self.busydescription = rpgc.NONE
+        self.busydescription = rpgcharacter.BUSY_DESC_NONE
 
     def set_max_health(self, n: int):
         r = self.health / self.get_max_health()
         self.maxhealth = n
         self.health = int(math.ceil(r * self.get_max_health()))
 
-    def get_damage(self, element=element_none):
+    def get_damage(self, element=rpgc.element_none):
         n = super().get_damage(element=element)
-        n = rpgc.RPGCharacter.elemental_effect(n, self.weapon.element, element)
+        n = rpgcharacter.RPGCharacter.elemental_effect(n, self.weapon.element, element)
         return int(n + self.weapon.damage)
 
     def get_weaponskill(self):
@@ -144,7 +147,7 @@ class RPGPlayer(rpgc.RPGCharacter):
         return int(n + self.weapon.critical)
 
     def do_auto_health_regen(self):
-        if self.busydescription == rpgc.NONE:
+        if self.busydescription == rpgcharacter.BUSY_DESC_NONE:
             percentage = 0.02
         else:
             percentage = 0.05

@@ -36,6 +36,7 @@ class Basics:
             self.bot.sadness = {}
             self.bot.lewd = {}
             self.bot.plsno = {}
+            self.bot.otter = {}
         self.patTimes = {}
 
     # {prefix}60
@@ -433,6 +434,19 @@ class Basics:
     #     embed.set_footer(text='see weeb.sh for more')
     #     await self.bot.send_message(ctx.message.channel, embed=embed)
 
+    # {prefix}otter
+    @commands.command(pass_context=1, help="OTTERSSSSS!")
+    async def otter(self, ctx, *args):
+        await removeMessage.delete_message(self.bot, ctx)
+        if TIMER:
+            t = self.bot.otter.get(ctx.message.channel.id)
+            if t is not None:
+                if (datetime.datetime.utcnow() - t).seconds < 60:
+                    return
+            await self.bot.send_typing(ctx.message.channel)
+            self.bot.otter[ctx.message.channel.id] = datetime.datetime.utcnow()
+        await send_random.embeddedGif(self.bot, ctx.message.channel, 'OTTER!!', ctx.message.author.avatar_url, constants.otters)
+
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
     async def pat(self, ctx, *args):
@@ -450,7 +464,7 @@ class Basics:
             return
         self.patTimes[ctx.message.author.id] = time
 
-        n = dbcon.incrementPats(ctx.message.author.id, ctx.message.mentions[0].id)
+        n = dbcon.increment_pats(ctx.message.author.id, ctx.message.mentions[0].id)
         s = '' if n == 1 else 's'
         m = "{} has pat {} {} time{} now".format(ctx.message.author.mention, ctx.message.mentions[0].mention, n, s)
         if n % 100 == 0:
@@ -459,7 +473,7 @@ class Basics:
             m += "\nWow, that is going somewhere!"
         elif n % 10 == 0:
             m += "\nSugoi!"
-        await self.bot.say(m);
+        await self.bot.say(m)
 
     # {prefix}plsno
     @commands.command(pass_context=1, help="Nonononononono!")
