@@ -126,7 +126,7 @@ response = [
             "*Gimme some rope, I'm coming loose*",
             "You should go outside sometime",
             "Omegalul",
-            "I'll like you a bot more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:"
+            "I'll like you a bit more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:"
         ]
 
 # random responses

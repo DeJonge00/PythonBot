@@ -125,7 +125,7 @@ def update_players(stats: [RPGPlayer]):
                     c.execute(
                         "UPDATE characters SET exp = %s, health = %s , maxhealth = %s, damage = %s, weaponskill = %s, critical = %s WHERE characterid = %s",
                         (s.exp, s.health, s.maxhealth, s.damage, s.weaponskill, s.critical, s.userid))
-
+                conn.commit()
                 if c.execute("SELECT playerid FROM players WHERE playerid = %s", s.userid) == 0:
                     c.execute(
                         "INSERT INTO players (playerid, money, role, levelups, bosstier) VALUES (%s, %s, %s, %s, %s)",
@@ -134,7 +134,7 @@ def update_players(stats: [RPGPlayer]):
                     c.execute(
                         "UPDATE players SET money = %s, role = %s, levelups = %s, bosstier = %s WHERE playerid = %s",
                         (s.money, s.role, s.levelups, s.bosstier, s.userid))
-
+                conn.commit()
                 if c.execute("SELECT playerid FROM busy WHERE playerid = %s", s.userid) == 0:
                     c.execute(
                         "INSERT INTO busy (playerid, description, time, channel, kingtime) VALUES (%s, %s, %s, %s, %s)",
@@ -143,7 +143,7 @@ def update_players(stats: [RPGPlayer]):
                     c.execute(
                         "UPDATE busy SET description = %s, time = %s, channel = %s, kingtime = %s WHERE playerid = %s",
                         (s.busydescription, s.busytime, s.busychannel, s.kingtimer, s.userid))
-
+                conn.commit()
                 if s.weapon != rpgw.RPGWeapon():
                     # delete weapons that arent in the RPGPlayers slot
                     c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", (s.userid, TYPE_WEAPON))
@@ -165,6 +165,7 @@ def update_players(stats: [RPGPlayer]):
                              s.weapon.critical))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, weaponid, TYPE_WEAPON, s.weapon.name))
+                    conn.commit()
                 if s.armor != rpga.RPGArmor():
                     # delete armors that arent in the RPGPlayers slot
                     c.execute("SELECT itemid FROM items WHERE playerid = %s AND type = %s", (s.userid, TYPE_ARMOR))
@@ -181,10 +182,11 @@ def update_players(stats: [RPGPlayer]):
                             armorid = 1
                         c.execute(
                             "INSERT INTO equipment (equipmentid, cost, element, bonus1, bonus2, bonus3) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (s.armor.armorid, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen,
+                            (armorid, s.armor.cost, s.armor.element, s.armor.maxhealth, s.armor.healthregen,
                              s.armor.money))
                         c.execute("INSERT INTO items (playerid, itemid, type, name) VALUES (%s, %s, %s, %s)",
                                   (s.userid, armorid, TYPE_ARMOR, s.armor.name))
+                    conn.commit()
                 if s.pets:
                     # delte pets that arent in the RPGPlayers petslist
                     c.execute("SELECT itemid FROM items WHERE playerid = %s AND type > 1", (s.userid,))

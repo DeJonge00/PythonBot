@@ -1,5 +1,5 @@
 from rpggame.rpgcharacter import RPGCharacter
-from rpggame.rpgplayer import element_none
+from rpggame.rpgconstants import element_none
 
 
 class RPGMonster(RPGCharacter):

@@ -304,6 +304,18 @@ class Basics:
         await send_random.string(self.bot, ctx.message.channel, constants.hug,
                                  [ctx.message.author.mention, " ".join(args)])
 
+    # {prefix}hype
+    @commands.command(pass_context=1, help="Hype everyone with random emoji!")
+    async def hype(self, ctx):
+        await removeMessage.delete_message(self.bot, ctx)
+        if ctx.message.channel.is_private:
+            await self.bot.say('I can only send emoji in servers')
+            return
+        m = ''
+        for _ in range(10):
+            m += str(random.choice(ctx.message.server.emojis)) + ' '
+        await self.bot.say(m)
+
     # {prefix}kick
     @commands.command(pass_context=1, help="Fake kick someone")
     async def kick(self, ctx, *args):
