@@ -32,6 +32,7 @@
 |heresy      	|`heresy`                                               |Send images worthy of the emperor (warhammer 40k)
 |happy          |`happy`                                                |Send a happy gif
 |hug         	|`hug` `{user}`                                         |Give `{user}` a hug
+|hype           |`hype`                                                 |Make hype by sending 10 random emoji from the current server
 |kick        	|`kick` `{user}`                                        |Fake kick someone
 |kill        	|`kill` `{user}`                                        |Wish someone a happy death (is a bit explicit)
 |lenny       	|`lenny` `{message}`                                    |Send `{message}` ( ͡° ͜ʖ ͡°)
@@ -39,6 +40,7 @@
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
 |nonazi      	|`nonazi`                                               |Try to persuade Lizzy with anti-nazi-propaganda!
 |nyan           |`nyan`                                                 |Send an anime happy catgirl gif
+|otter          |`otter`                                                |Send a cute otter picture
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |plsno          |`plsno`                                                |Send a gif that expresses 'pls no'
 |pp          	|`pp,avatar,picture` `{user}`                           |Show `{user}`'s profile pic, a bit larger
@@ -112,20 +114,22 @@
 |battle         |`rpg,b&d,bnd` `b,battle` `{user}`                      |Battle another player of the game
 |info           |`rpg,b&d,bnd` `i,info` `{user}`                        |View a user's battlestats
 |               |`rpg,b&d,bnd` `i,info` `weapon,w,armor,a` `{user}`     |View a user's weapon/armor stats
-|party          |`rpg,b&d,bnd` `p,party`                                  |Show the current party that will challenge the boss at the hour mark
-|join           |`rpg,b&d,bnd` `j,join`                                   |Join the upcoming bossfight
+|party          |`rpg,b&d,bnd` `p,party`                                |Show the current party that will challenge the boss at the hour mark
+|join           |`rpg,b&d,bnd` `j,join`                                 |Join the upcoming bossfight
 |king           |`rpg,b&d,bnd` `k,king`                                 |Show who is the server's current king
 |               |`rpg,b&d,bnd` `k,king` `c,b,challenge,battle`          |Challenge the king (level 10 required)
-|levelup        |`rpg,b&d,bnd` `levelup,lvlup,lvl`                                |Claim your levelup rewards
+|levelup        |`rpg,b&d,bnd` `levelup,lvlup,lvl`                      |Claim your levelup rewards
 |top            |`rpg,b&d,bnd` `top` `exp,money,bosstier`               |Show the top players of the game
-|train          |`t,train` `ws,weapon,weaponskill`                  |Train your weaponskill
-|               |`t,train` `h,hp,health,maxhealth`                  |Train your maximum healthpool
-|shop           |`s,shop` `armor`                                  |Show shop armor inventory
-|               |`s,shop` `armor` `{itemnumber}`                   |Buy armor number `{itemnumber}`
-|               |`s,shop` `item`                                   |Show shop item inventory
-|               |`s,shop` `item` `{itemnumber}`                    |Buy item number `{itemnumber}`
-|               |`s,shop` `weapon`                                 |Show shop weapon inventory
-|               |`s,shop` `weapon` `{itemnumber}`                  |Buy weapon number `{itemnumber}`
+|pet            |`rpg,b&d,bnd` `pet,pets`                               |Show the pets you own
+|               |`rpg,b&d,bnd` `pet,pets` `r,release,remove` `{pet number}` |Release a pet to make room for a different one
+|train          |`t,train` `ws,weapon,weaponskill`                      |Train your weaponskill
+|               |`t,train` `h,hp,health,maxhealth`                      |Train your maximum healthpool
+|shop           |`s,shop` `armor`                                       |Show shop armor inventory
+|               |`s,shop` `armor` `{itemnumber}`                        |Buy armor number `{itemnumber}`
+|               |`s,shop` `item`                                        |Show shop item inventory
+|               |`s,shop` `item` `{itemnumber}`                         |Buy item number `{itemnumber}`
+|               |`s,shop` `weapon`                                      |Show shop weapon inventory
+|               |`s,shop` `weapon` `{itemnumber}`                       |Buy weapon number `{itemnumber}`
 
 ### Developer's note:
 Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)

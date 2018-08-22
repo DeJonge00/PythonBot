@@ -1,13 +1,20 @@
-import asyncio, discord, log, comm.hangmaninstance, random, removeMessage, constants, string
+import comm.hangmaninstance
+from comm.hangmaninstance import MAXFAULTS
+import constants
+import discord
+import random
+import removeMessage
+import string
 from discord.ext import commands
-from discord.ext.commands import Bot
+from secret.secrets import prefix
 
 RIGHT = 0
 WRONG = 1
 GAMEOVER = 2
 WIN = 3
 
-EMBEDCOLOR=0x007a01
+EMBEDCOLOR = 0x007a01
+
 
 # Normal commands
 class Hangman:
@@ -22,59 +29,68 @@ class Hangman:
         await removeMessage.delete_message(self.bot, ctx)
         game = self.games.get(ctx.message.server.id)
 
-        if len(args) <=0:
-            if game == None:
-                return await self.bot.say("Create a new game by using the command >hangman <create> {custom | sentence}")
+        if len(args) <= 0:
+            if not game:
+                return await self.bot.say(
+                    "Create a new game by using the command {}hangman <create> [custom | sentence]".format(prefix))
             else:
                 return await self.bot.say("Guess a letter or the sentence by using >hangman <guess>!")
-                
-        if game == None:
+
+        if not game:
             # New game
             if args[0].lower() == "create":
                 if len(args) >= 2:
                     if args[1] == "custom":
-                        await self.bot.send_message(ctx.message.author, "Hi there!\nWhat would you like the sentence for the hangman game to be?")
-                        m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, check=self.isPrivateCheck)
-                        if m == None:
-                            await self.bot.say("Senpai hasn't responded in a while, I guess we will stop playing then...")
+                        await self.bot.send_message(ctx.message.author,
+                                                    "Hi there!\nWhat would you like the sentence for the hangman game to be?")
+                        m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author,
+                                                            check=Hangman.is_private_check)
+                        if not m:
+                            await self.bot.say(
+                                "Senpai hasn't responded in a while, I guess we will stop playing then...")
                             return
                         word = m.content
                     else:
                         word = " ".join(args[1:])
                 else:
-                    r = random.randint(0,len(constants.hangmanwords)-1)
+                    r = random.randint(0, len(constants.hangmanwords) - 1)
                     word = constants.hangmanwords[r]
                 g = comm.hangmaninstance.HangmanInstance(word)
                 self.games[ctx.message.server.id] = g
                 return await self.show(ctx.message.channel, g, "New game initialized")
             return await self.bot.say("There is no game running in this server b-b-baka")
         # Guess sentence
-        if " ".join(args).lower().translate(str.maketrans('', '', string.punctuation)) == game.word.lower().translate(str.maketrans('', '', string.punctuation)):
+        if " ".join(args).lower().translate(str.maketrans('', '', string.punctuation)) == game.word.lower().translate(
+                str.maketrans('', '', string.punctuation)):
             self.games.pop(ctx.message.server.id)
             await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
             return
         if len(args[0]) > 1:
             game.faults += 1
+            if game.faults >= MAXFAULTS:
+                self.games.pop(ctx.message.server.id)
             await self.show(ctx.message.channel, game, "Sorry, the word was not \"" + " ".join(args) + "\"...")
             return
         # Guess letter
         result = game.guess(args[0])
         if result == WIN:
-            self.games.remove(game)
+            self.games.pop(ctx.message.server.id)
             await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
             return
         if result == RIGHT:
-            await self.show(ctx.message.channel, game, "You guessed right, the letter \"" + " ".join(args) + "\" is in the sentence")
+            await self.show(ctx.message.channel, game,
+                            "You guessed right, the letter \"" + " ".join(args) + "\" is in the sentence")
             return
         if result == WRONG:
-            await self.show(ctx.message.channel, game, "Sorry, the letter \"" + " ".join(args) + "\" is not in the sentence")
+            await self.show(ctx.message.channel, game,
+                            "Sorry, the letter \"" + " ".join(args) + "\" is not in the sentence")
             return
         if result == GAMEOVER:
             self.games.pop(ctx.message.server.id)
             await self.show(ctx.message.channel, game)
             return
 
-    async def show(self, channel : discord.Channel, game : comm.hangmaninstance.HangmanInstance, message="", win=False):
+    async def show(self, channel: discord.Channel, game: comm.hangmaninstance.HangmanInstance, message="", win=False):
         embed = discord.Embed(colour=EMBEDCOLOR)
         if win:
             embed.add_field(name="Congratulations on winning", value=message, inline=False)
@@ -87,19 +103,19 @@ class Hangman:
                 embed.add_field(name="The sentence", value=game.word)
             else:
                 embed.add_field(name="Message", value=message, inline=False)
-                if game.faults==1:
+                if game.faults == 1:
                     embed.set_thumbnail(url="http://i.imgur.com/nwXZ5Ef.png")
-                if game.faults==2:
+                if game.faults == 2:
                     embed.set_thumbnail(url="http://i.imgur.com/izSXiI6.png")
-                if game.faults==3:
+                if game.faults == 3:
                     embed.set_thumbnail(url="http://i.imgur.com/D1BsiYo.png")
-                if game.faults==4:
+                if game.faults == 4:
                     embed.set_thumbnail(url="http://i.imgur.com/sqdAuTl.png")
-                if game.faults==5:
+                if game.faults == 5:
                     embed.set_thumbnail(url="http://i.imgur.com/ZHXq151.png")
-        
+
                 embed.add_field(name="Guessed so far", value=str(game), inline=False)
-                if len(game.wrongguesses)>0:
+                if len(game.wrongguesses) > 0:
                     s = ""
                     for i in game.wrongguesses:
                         s += i + " "
@@ -112,9 +128,10 @@ class Hangman:
             except discord.Forbidden:
                 print(m.server.name + " | No permission to delete messages")
         if game.faults >= 6:
-            self.prev.pop(channel.server.id)
+            self.prev[channel.server.id] = None
         else:
             self.prev[channel.server.id] = m
 
-    def isPrivateCheck(self, msg):
+    @staticmethod
+    def is_private_check(msg):
         return msg.channel.is_private

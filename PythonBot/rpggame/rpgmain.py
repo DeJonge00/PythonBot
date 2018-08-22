@@ -200,7 +200,7 @@ class RPGGame:
                         petwinner = random.choice(party)
                         petname = 'Pet ' + bosses[0].name
                         pet = RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
-                                                    weaponskill=petwinner.get_bosstier())
+                                     weaponskill=petwinner.get_bosstier())
                         print(petwinner, petname, pet)
                         if pet and petwinner.add_pet(pet):
                             await self.bot.send_message(channel,
@@ -272,7 +272,8 @@ class RPGGame:
                     player_ids = list(self.players.keys())
                     for i in player_ids:
                         player = self.players.get(i)
-                        if (player.busydescription == rpgchar.BUSY_DESC_NONE) & (player.health >= player.get_max_health()):
+                        if (player.busydescription == rpgchar.BUSY_DESC_NONE) & (
+                                player.health >= player.get_max_health()):
                             self.players.pop(i)
                 print("Players saved")
 
@@ -448,18 +449,19 @@ class RPGGame:
         await self.bot.send_message(ctx.message.author, embed=embed)
 
     # RPG intro/help
-    @commands.group(pass_context=1, aliases=["b&d", "bnd"], help="Get send an overview of the rpg game's commands")
+    @commands.group(pass_context=1, aliases=["Rpg", "b&d", "B&d", "bnd", "Bnd"],
+                    help="Get send an overview of the rpg game's commands")
     async def rpg(self, ctx):
         if ctx.invoked_subcommand is None and ctx.message.content == '{}rpg'.format(prefix):
             await self.send_help_message(ctx)
 
     # {prefix}rpg adventure #
-    @rpg.command(pass_context=1, help="RPG game help message!")
+    @rpg.command(pass_context=1, help="RPG game help message!", aliases=["Help"])
     async def help(self, ctx):
         await self.send_help_message(ctx)
 
     # {prefix}rpg adventure #
-    @rpg.command(pass_context=1, aliases=["a"], help="Go on an adventure!")
+    @rpg.command(pass_context=1, aliases=["Adventure", "a", "A"], help="Go on an adventure!")
     async def adventure(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -496,7 +498,7 @@ class RPGGame:
             "{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # {prefix}rpg battle <user>
-    @rpg.command(pass_context=1, aliases=["b"], help="Battle a fellow discord ally to a deadly fight!")
+    @rpg.command(pass_context=1, aliases=["Battle", "b", "B"], help="Battle a fellow discord ally to a deadly fight!")
     async def battle(self, ctx):
         await removeMessage.delete_message(self.bot, ctx)
         attacker = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -523,7 +525,7 @@ class RPGGame:
                                   thumbnail=ctx.message.author.avatar_url)
 
     # {prefix}rpg info [weapon|w|armor|a] <user>
-    @rpg.command(pass_context=1, aliases=['i', 'stats', 'status'], help="Show the character's status information!")
+    @rpg.command(pass_context=1, aliases=["Info", "I", 'i', 'stats', "Stats", 'status', "Status"], help="Show the character's status information!")
     async def info(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
 
@@ -629,7 +631,8 @@ class RPGGame:
         draw.text((nameoffset, topoffset + 3 * following), "Status:", color, font=font)
         draw.text((statoffset, topoffset + 3 * following), stats, color, font=font)
         draw.text((nameoffset, topoffset + 4 * following), "Money:", color, font=font)
-        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpgshop.moneysign, data.money), color, font=font)
+        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpgshop.moneysign, data.money), color,
+                  font=font)
         draw.text((nameoffset, topoffset + 5 * following), "Health:", color, font=font)
         draw.text((statoffset, topoffset + 5 * following), "{}/{}".format(data.health, data.get_max_health()), color,
                   font=font)
@@ -648,7 +651,7 @@ class RPGGame:
         os.remove(imname)
 
     # {prefix}rpg join
-    @rpg.command(pass_context=1, aliases=["j"], help="Join a raid to kill a boss!")
+    @rpg.command(pass_context=1, aliases=["Join", "J", "j"], help="Join a raid to kill a boss!")
     async def join(self, ctx):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -676,7 +679,7 @@ class RPGGame:
                 ctx.message.author.mention, len(party)))
 
     # {prefix}rpg king
-    @rpg.command(pass_context=1, aliases=["k"], help="The great king's game!")
+    @rpg.command(pass_context=1, aliases=["King", "k", "K"], help="The great king's game!")
     async def king(self, ctx, *args):
         kingname = "OMEGA dank L0rD on the ServEr to get all the loli traps"
         await removeMessage.delete_message(self.bot, ctx)
@@ -751,7 +754,7 @@ class RPGGame:
         return True
 
     # {prefix}rpg levelup
-    @rpg.command(pass_context=1, aliases=["lvlup", "lvl"], help="Join a raid to kill a boss!")
+    @rpg.command(pass_context=1, aliases=["Levelup","lvlup", "Lvlup", "lvl", "Lvl"], help="Join a raid to kill a boss!")
     async def levelup(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -786,7 +789,7 @@ class RPGGame:
                 return
 
     # {prefix}rpg party
-    @rpg.command(pass_context=1, aliases=["p"], help="All players gathered to kill the boss")
+    @rpg.command(pass_context=1, aliases=["Party", "p", "P"], help="All players gathered to kill the boss")
     async def party(self, ctx):
         await removeMessage.delete_message(self.bot, ctx)
         if ctx.message.channel.is_private:
@@ -813,7 +816,7 @@ class RPGGame:
         await self.bot.say(embed=embed)
 
     # {prefix}rpg role
-    @rpg.command(pass_context=1, aliases=["r", "class", "c"], help="Switch your role on the battlefield")
+    @rpg.command(pass_context=1, aliases=["Role", "r", "R", "class", "Class", "c", "C"], help="Switch your role on the battlefield")
     async def role(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -846,7 +849,7 @@ class RPGGame:
         return "exp"
 
     # {prefix}rpg top <exp|money|bosstier> <amount>
-    @rpg.command(pass_context=1, aliases=['t'], help="Show the people with the most experience!")
+    @rpg.command(pass_context=1, aliases=["Top", "T", 't'], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         if len(args) > 0:
@@ -905,7 +908,7 @@ class RPGGame:
         await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}rpg wander #
-    @rpg.command(pass_context=1, aliases=["w"], help="Wander in the beautiful country")
+    @rpg.command(pass_context=1, aliases=["Wander", "w", "W"], help="Wander in the beautiful country")
     async def wander(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -1017,7 +1020,7 @@ class RPGGame:
         data.pets = []
         await self.bot.say('Slaughtering pets complete')
 
-    @rpg.command(pass_context=1, aliases=['pet'])
+    @rpg.command(pass_context=1, aliases=["Pets", "Pet", 'pet'])
     async def pets(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx, istyping=False)
 
@@ -1051,7 +1054,8 @@ class RPGGame:
 
         # List pets subcommand
         if len(data.pets) <= 0:
-            await self.bot.say('You do not have any cuties at the moment, try defeating a boss and maybe it will leave you a reward!')
+            await self.bot.say(
+                'You do not have any cuties at the moment, try defeating a boss and maybe it will leave you a reward!')
             return
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.set_author(name='{}\'s pets:'.format(u.display_name), url=u.avatar_url)
