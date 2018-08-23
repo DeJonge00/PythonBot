@@ -354,8 +354,7 @@ class RPGGame:
     def get_player_data(self, userid: str, name=None) -> RPGPlayer:
         p = self.players.get(userid)
         if not p:
-            name = {x.id: x.name for x in self.bot.get_all_members() if x.id == userid}
-            p = dbcon.get_single_player(userid, name.get(userid, userid))
+            p = dbcon.get_single_player(self.bot, userid)
             self.players[userid] = p
         if name:
             p.name = name

@@ -261,8 +261,8 @@ def init_bot():
         await log.error(member.server.name + " | User " + member.name + " banned", filename=member.server.name, serverid=member.server.id)
 
     @bot.event
-    async def on_member_unban(member: discord.Member):
-        await log.error("User " + member.name + " unbanned", filename=member.server.name, serverid=member.server.id)
+    async def on_member_unban(server: discord.Server, user: discord.User):
+        await log.error("User " + user.name + " unbanned", filename=server.name, serverid=server.id)
 
     @bot.event
     async def on_server_join(server: discord.Server):

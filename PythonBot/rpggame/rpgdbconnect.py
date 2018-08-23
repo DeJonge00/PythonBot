@@ -1,3 +1,4 @@
+import discord
 import pymysql
 from rpggame import rpgweapon as rpgw, rpgarmor as rpga
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
@@ -49,9 +50,8 @@ def get_busy_players(bot: Client):
     conn.commit()
     conn.close()
     players = {}
-    names = {x.id: x.name for x in bot.get_all_members() if x.id in t}
     for p in t:
-        players[str(p)] = get_single_player(p, names.get(p, p))
+        players[str(p)] = get_single_player(bot, p)
     return players
 
 
@@ -60,8 +60,9 @@ TYPE_ARMOR = 1
 TYPE_PET = 2
 
 
-def get_single_player(player_id: str, username: str):
+def get_single_player(bot: discord.Client, player_id: str):
     player = None
+    username = {str(x.id): x.name for x in bot.get_all_members() if str(x.id) == (player_id)}.get(str(player_id), player_id)
 
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword, database="rpg", charset="utf8", use_unicode=True)

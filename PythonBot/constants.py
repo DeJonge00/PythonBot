@@ -456,5 +456,6 @@ otters = [
     'https://78.media.tumblr.com/8efd3159c045a4b0e24f23a38bcc5d6f/tumblr_pdchy4UP491vims6ho1_540.jpg'
     'https://i.ytimg.com/vi/7Nz0dLHMHOo/maxresdefault.jpg',
     'https://static.boredpanda.com/blog/wp-content/uploads/2015/11/benedict-cumberbatch-otter-lookalike-doppelganger-3.png',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbRHm_uRzWah2JAJcn5iqCnkx7c6vg9275agP6CEG8TuoSjxLn'
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbRHm_uRzWah2JAJcn5iqCnkx7c6vg9275agP6CEG8TuoSjxLn',
+    'https://i.redd.it/71wfgbtwukh11.jpg'
 ]

@@ -107,8 +107,8 @@
 
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
-|rpg            |`rpg,b&d,bnd`                                          |Show the info for the RPG game
-|role           |`rpg,b&d,bnd` `r,role` `rolename`                        |Assign yourself a role (required to start the game)
+|rpg            |`rpg,b&d,bnd` `help`                                   |Show the info for the RPG game
+|role           |`rpg,b&d,bnd` `r,role` `rolename`                      |Assign yourself a role (required to start the game)
 |adventure      |`rpg,b&d,bnd` `a,adventure` `{time}`                   |Go on an adventure to slay monsters
 |wander         |`rpg,b&d,bnd` `w,wander` `{time}`                      |Go wandering, its a less costly adventuring
 |battle         |`rpg,b&d,bnd` `b,battle` `{user}`                      |Battle another player of the game
