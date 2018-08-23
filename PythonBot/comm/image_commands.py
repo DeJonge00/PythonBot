@@ -1,21 +1,25 @@
-import asyncio, discord, requests, os, os.path
-from discord.ext import commands
-from discord.ext.commands import Bot
-from PIL import Image, ImageDraw, ImageFont
+from datetime import datetime
 from io import BytesIO
-from os import listdir
-from PIL.GifImagePlugin import getheader, getdata
-import removeMessage
+
+import constants
+import discord
+import requests
+import send_random
+from PIL import Image
+from discord.ext import commands
+
+TIMER = True
 
 
 # Normal commands
 class Images:
     def __init__(self, my_bot):
         self.bot = my_bot
+        self.image_timers = {}
 
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
-    async def pp(self, ctx, *args):
+    async def pp(self, ctx):
         await removeMessage.delete_message(self.bot, ctx)
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
@@ -25,82 +29,99 @@ class Images:
         embed.set_author(name=str(user.name))
         embed.set_image(url=user.avatar_url)
         return await self.bot.send_message(ctx.message.channel, embed=embed)
-    
-    # {prefix}meme <meme> <toptext>|<bottomtext>
-    @commands.command(pass_context=1, hidden=True, help="Make a meme out of the arguments")
-    async def meme(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if (len(args) >= 1) & (args[0] == "list"):
-            return await self.bot.send_message(ctx.message.channel, "Memelist: onedoesnotsimply")
-        if len(args) < 2:
-            return await self.bot.send_message(ctx.message.channel, "Meme to dank to make (usage: >meme <meme> <top-text>|<bottom-text>)")
-        
-        # Get meme picture and standard text
-        meme = args[0].lower()
-        if meme in ["one"]:
-            img = Image.open("memes/OneDoesNotSimply.jpg")
-            toptext = "One does not simply"
-        else:
-            if meme in ["victory baby", "baby"]:
-                img = Image.open("memes/VBaby.png")
-                toptext = ""
-            else:
-                if meme in ["brian", "badluckbrian"]:
-                    img = Image.open("memes/Brian.jpg")
-                    toptext = ""
-                else:
-                    return await self.bot.send_message(ctx.message.channel, "Memelist: onedoesnotsimply")
 
-        # Get custom text
-        text = " ".join(args[1:len(args)])
-        if "|" in text:
-            bottomtext = text.split("|")[1]
-            toptext = text.split("|")[0]
-        else:
-            bottomtext = text
+    async def send_picture_template_command(self, message: discord.Message, channel: discord.Channel, command: str,
+                                            pic_links: list = None, pic_folder: str = None):
+        if not await self.bot.pre_command(message=message, command=command):
+            return
+        if TIMER:
+            if not self.image_timers.get(command):
+                self.image_timers[command] = {}
+            if (datetime.utcnow() - self.image_timers.get(command).get(channel.id,
+                                                                       datetime.fromtimestamp(0))).seconds < 60:
+                return
+            await self.bot.send_typing(channel)
+            self.image_timers[command][channel.id] = datetime.utcnow()
+        if pic_links:
+            await send_random.embedded_pic(self.bot, channel, command, self.bot.user.avatar_url, pic_links)
+        elif pic_folder:
+            await send_random.file(self.bot, channel, pic_folder)
 
-        # Add text to image
-        draw = ImageDraw.Draw(img)
-        font = ImageFont.truetype("impact.ttf", 35)
-        #w, h = draw.textsize(bottomtext)
-        #st = (int)( (img.width/2) - (1.4*w))
-        #w, h = draw.textsize(bottomtext)
-        #sb = (int)( (img.width/2) - (1.4*w))
-        draw.text((10, 10),toptext,(255,255,255),font=font)
-        draw.text((190, 190),bottomtext,(255,255,255),font=font)
+    # {prefix}60
+    @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
+    async def fps(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'fps', pic_folder='60')
 
-        # Save and send image
-        name = 'memes/sample-out.jpg'
-        img.save(name)
-        await self.bot.send_file(ctx.message.channel, name)
-        os.remove(name)
+    # {prefix}biribiri
+    @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
+    async def biribiri(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'biribiri', pic_folder='biribiri')
 
-    # {prefix}spin <user>
-    @commands.command(pass_context=1, hidden=True, help="You spin your head right round, right round. Like a record baby!")
-    async def spin(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if len(ctx.message.mentions) <= 0:
-            user = ctx.message.author
-        else:
-            user = ctx.message.mentions[0]
-        #name = "temp/" + user.id + ".png"
-        #self.save_img(user.avatar_url, name)
-        l = []
-        image = Image.open(user.avatar_url)
-        c = (image.width/6, image.height/6, 5*(image.width/6), 5*(image.height/6))
-        l.append(image.crop(c))
-        for i in range(37):
-            l.append(image.rotate(i*10).crop(c))
-        name = "temp/" + user.id + ".gif"
-        l[0].save(name, save_all=1, append_images=l[1:37], loop=10, duration=1)
-        await self.bot.send_file(ctx.message.channel, name)
-        os.remove(name)
+    # {prefix}cat
+    @commands.command(pass_context=1, help="CATS!")
+    async def cat(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cat', pic_folder='cat')
+
+    # {prefix}cuddle
+    @commands.command(pass_context=1, help="Cuddles everywhere!")
+    async def cuddle(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cuddle', pic_folder='cuddle')
+
+    # {prefix}ded
+    @commands.command(pass_context=1, help="Ded chat reminder!")
+    async def ded(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'ded', pic_folder='ded')
+
+    # {prefix}heresy
+    @commands.command(pass_context=1, help="Fight the heresy!")
+    async def heresy(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'heresy', pic_folder='heresy')
+
+    # {prefix}happy
+    @commands.command(pass_context=1, help="Awwww yeaaahhh!")
+    async def happy(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'happy', pic_links=constants.happy_gifs)
+
+    # {prefix}lewd
+    @commands.command(pass_context=1, help="LLEEEEEEEEWWDD!!!")
+    async def lewd(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'lewd', pic_links=constants.lewd_gifs)
+
+    # {prefix}nonazi
+    @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")
+    async def nonazi(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'nonazi', pic_folder='nonazi')
+
+    # {prefix}nyan
+    @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
+    async def nyan(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'nyan', pic_links=constants.nyan_gifs)
+
+    # {prefix}otter
+    @commands.command(pass_context=1, help="OTTERSSSSS!")
+    async def otter(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'otter',
+                                                 pic_links=constants.otters)
+
+    # {prefix}plsno
+    @commands.command(pass_context=1, help="Nonononononono!", aliases=['nopls'])
+    async def plsno(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'plsno',
+                                                 pic_links=constants.plsno_gifs)
+
+    # {prefix}sadness
+    @commands.command(pass_context=1, help="Cri!")
+    async def sadness(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'sadness',
+                                                 pic_links=constants.sad_gifs)
+
+
 
     # Download, resize and save file
     def save_img(self, url, name):
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
         if img.height > 200:
-            f = 200/img.height
-            img = img.resize((int(img.height*f),int(img.width*f)))
+            f = 200 / img.height
+            img = img.resize((int(img.height * f), int(img.width * f)))
         img.save(name)

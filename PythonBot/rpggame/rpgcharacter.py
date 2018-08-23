@@ -33,6 +33,9 @@ class RPGCharacter:
         self.weaponskill = weaponskill
         self.critical = critical
 
+    def get_level(self):
+        return 1
+
     @staticmethod
     def adjust_stats(n, stat, item, amount=1):
         if item:

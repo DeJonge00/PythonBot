@@ -4,7 +4,6 @@ import datetime
 import discord
 import random
 import re
-import removeMessage
 import requests
 import send_random
 import wikipedia
@@ -39,36 +38,12 @@ class Basics:
             self.bot.otter = {}
         self.patTimes = {}
 
-    # {prefix}60
-    @commands.command(pass_context=1, help="Help get cancer out of this world!", aliases=["60"])
-    async def fps(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.fps.get(ctx.message.channel.id)
-            if t is not None:
-                if (datetime.datetime.utcnow() - t).seconds < 60:
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.fps[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "60")
-
-    # {prefix}biribiri
-    @commands.command(pass_context=1, help="Waifu == laifu!", aliases=["biri"])
-    async def biribiri(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.biri.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.biri[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "biribiri")
 
     # {prefix}botstats
     @commands.command(pass_context=1, help="Biri's botstats!", aliases=['botinfo'])
-    async def botstats(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+    async def botstats(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='botstats'):
+            return
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         embed.add_field(name='Profile', value=str(self.bot.user.mention))
@@ -87,7 +62,8 @@ class Basics:
     # {prefix}cast <user>
     @commands.command(pass_context=1, help="Cast a spell!")
     async def cast(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='cast'):
+            return
         if len(args) <= 0:
             return await self.bot.send_message(ctx.message.channel, "{}, you cannot cast without a target...".format(
                 ctx.message.author.name))
@@ -99,28 +75,20 @@ class Basics:
                                                                                     random.randint(0, len(
                                                                                         constants.spellresult) - 1)]))
 
-    # {prefix}cat
-    @commands.command(pass_context=1, help="CATS!")
-    async def cat(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.cat.get(ctx.message.channel.id)
-            if t and (datetime.datetime.utcnow() - t).seconds < 60:
-                return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.cat[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "cat")
+
 
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='compliment'):
+            return
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
 
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='countdown'):
+            return
         if not ctx.message.channel.is_private:
             await self.bot.say('This can only be used in private for spam reasons')
             return
@@ -151,36 +119,9 @@ class Basics:
         await asyncio.sleep(n)
         await self.bot.say("{}, you gotta do stuff NOW!!!".format(ctx.message.author.mention))
 
-    # {prefix}cuddle
-    @commands.command(pass_context=1, help="Cuddles everywhere!")
-    async def cuddle(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.cuddle.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.cuddle[ctx.message.channel.id] = datetime.datetime.utcnow()
-        folder = "cuddle"
-        m = await self.bot.send_file(ctx.message.channel,
-                                     send_random.homedir + folder + "/" + random.choice(listdir(folder)))
-        if len(ctx.message.mentions) > 0:
-            await self.bot.edit_message(m, new_content="Lots of cuddles for {} :heart:".format(
-                ctx.message.mentions[0].mention))
 
-    # {prefix}ded
-    @commands.command(pass_context=1, help="Ded chat reminder!")
-    async def ded(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.ded.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.ded[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "ded")
+
+
 
     # {prefix}delete
     @commands.command(pass_context=1, help="Delete your message automatically in a bit!", aliases=["del", "d"])
@@ -266,31 +207,9 @@ class Basics:
         await removeMessage.delete_message(self.bot, ctx)
         await send_random.string(self.bot, ctx.message.channel, constants.faces)
 
-    # {prefix}heresy
-    @commands.command(pass_context=1, help="Fight the heresy!")
-    async def heresy(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.heresy.get(ctx.message.channel.id)
-            if t and (datetime.datetime.utcnow() - t).seconds < 60:
-                return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.heresy[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "heresy")
 
-    # {prefix}happy
-    @commands.command(pass_context=1, help="Awwww yeaaahhh!")
-    async def happy(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.happy.get(ctx.message.channel.id)
-            if t:
-                if (datetime.datetime.utcnow() - t).seconds < 60:
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.happy[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Happinesssss', ctx.message.author.avatar_url,
-                                      constants.happy_gifs)
+
+
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
@@ -357,19 +276,7 @@ class Basics:
         await removeMessage.delete_message(self.bot, ctx)
         await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
-    # {prefix}lewd
-    @commands.command(pass_context=1, help="LLEEEEEEEEWWDD!!!")
-    async def lewd(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.lewd.get(ctx.message.channel.id)
-            if not t is None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.lewd[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Leeeeeewwwdd!', ctx.message.author.avatar_url,
-                                      constants.lewd_gifs)
+
 
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
@@ -401,32 +308,9 @@ class Basics:
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
-    # {prefix}nonazi
-    @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")
-    async def nonazi(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.nonazi.get(ctx.message.channel.id)
-            if t != None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.nonazi[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.file(self.bot, ctx.message.channel, "nonazi")
 
-    # {prefix}nyan
-    @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
-    async def nyan(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.nyan.get(ctx.message.channel.id)
-            if not t is None:
-                if (datetime.datetime.utcnow() - t).seconds < (60):
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.nyan[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Nyan', ctx.message.author.avatar_url,
-                                      constants.nyan_gifs)
+
+
 
     # # {prefix}nyanya
     # @commands.command(pass_context=1, help="Nyanyanyanyanyanyanyanyanya!")
@@ -446,18 +330,6 @@ class Basics:
     #     embed.set_footer(text='see weeb.sh for more')
     #     await self.bot.send_message(ctx.message.channel, embed=embed)
 
-    # {prefix}otter
-    @commands.command(pass_context=1, help="OTTERSSSSS!")
-    async def otter(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.otter.get(ctx.message.channel.id)
-            if t is not None:
-                if (datetime.datetime.utcnow() - t).seconds < 60:
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.otter[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'OTTER!!', ctx.message.author.avatar_url, constants.otters)
 
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
@@ -487,18 +359,7 @@ class Basics:
             m += "\nSugoi!"
         await self.bot.say(m)
 
-    # {prefix}plsno
-    @commands.command(pass_context=1, help="Nonononononono!")
-    async def plsno(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.plsno.get(ctx.message.channel.id)
-            if t and (datetime.datetime.utcnow() - t).seconds < 60:
-                return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.plsno[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Pls no', ctx.message.author.avatar_url,
-                                      constants.plsno_gifs)
+
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Purr like you never purred before!")
@@ -549,19 +410,7 @@ class Basics:
             await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
             return
 
-    # {prefix}sadness
-    @commands.command(pass_context=1, help="Cri!")
-    async def sadness(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
-        if TIMER:
-            t = self.bot.sadness.get(ctx.message.channel.id)
-            if not t is None:
-                if (datetime.datetime.utcnow() - t).seconds < 60:
-                    return
-            await self.bot.send_typing(ctx.message.channel)
-            self.bot.sadness[ctx.message.channel.id] = datetime.datetime.utcnow()
-        await send_random.embeddedGif(self.bot, ctx.message.channel, 'Sadnessss', ctx.message.author.avatar_url,
-                                      constants.sad_gifs)
+
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!")

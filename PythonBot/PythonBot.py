@@ -49,12 +49,55 @@ def initCogs(bot):
 class PythonBot(Bot):
     def __init__(self, music=True, rpggame=True):
         self.praise = datetime.datetime.utcnow()
+
         self.spamlist = []
         self.spongelist = []
+        self.dont_delete_commands_servers = []
+        self.commands_banned_in_servers = {}
+        self.commans_counters = {}
+
         self.MUSIC = music
         self.RPGGAME = rpggame
         super(PythonBot, self).__init__(command_prefix=secrets.prefix, pm_help=1,
                                         formatter=customHelpFormatter.customHelpFormatter())
+
+    @staticmethod
+    def prep_str_for_print(s: str):
+        return s.encode("ascii", "replace").decode("ascii")
+
+    async def delete_command_message(self, message):
+        try:
+            if not message.channel.is_private:
+                await self.delete_message(message)
+        except discord.Forbidden:
+            print("{} | {} | {} | member {}, no perms to delete message: {}".format(
+                datetime.datetime.utcnow().strftime("%H:%M:%S"), PythonBot.prep_str_for_print(message.server.name),
+                PythonBot.prep_str_for_print(message.channel.name),
+                PythonBot.prep_str_for_print(message.author.name),
+                PythonBot.prep_str_for_print(message.content)))
+        except discord.ext.commands.errors.CommandInvokeError:
+            pass
+
+    def command_allowed_in_server(self, command_name: str, serverid: str):
+        banned_commands = self.commands_banned_in_servers.get(serverid)
+        if not banned_commands:
+            # TODO Get banned commands from database
+            return True
+        return command_name not in banned_commands
+
+    def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True):
+        if is_typing:
+            self.send_typing(message.channel)
+        if delete_message and message.server.id not in self.dont_delete_commands_servers:
+            self.delete_command_message(message)
+        if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
+            return False
+        if self.commans_counters.get(command):
+            self.commans_counters[command] += 1
+        else:
+            self.commans_counters[command] = 1
+        return True
+
 
     async def timeLoop(self):
         await self.wait_until_ready()
@@ -258,7 +301,8 @@ def init_bot():
 
     @bot.event
     async def on_member_ban(member: discord.Member):
-        await log.error(member.server.name + " | User " + member.name + " banned", filename=member.server.name, serverid=member.server.id)
+        await log.error(member.server.name + " | User " + member.name + " banned", filename=member.server.name,
+                        serverid=member.server.id)
 
     @bot.event
     async def on_member_unban(server: discord.Server, user: discord.User):

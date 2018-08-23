@@ -14,7 +14,7 @@ async def file(my_bot, channel, folder):
     return await my_bot.send_file(channel, homedir + folder + "/" + l[randint(0, len(l) - 1)])
 
 
-async def embeddedGif(my_bot, c, n, p, l):
+async def embedded_pic(my_bot, c, n, p, l):
     embed = discord.Embed(colour=EMBED_COLOR)
     embed.set_author(name=n, icon_url=p)
     embed.set_image(url=choice(l))

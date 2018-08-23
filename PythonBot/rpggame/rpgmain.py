@@ -3,6 +3,7 @@ import datetime
 import discord
 import logging
 import math
+import numpy
 import os
 import os.path
 import random
@@ -78,6 +79,7 @@ class RPGGame:
             # Pets are added to allow them to attack
             for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
                 attackers += p.pets
+            attacker: rpgchar.RPGCharacter
             for attacker in attackers:
                 if attacker.health > 0:
 
@@ -86,15 +88,14 @@ class RPGGame:
                     if len(defs) <= 0:
                         break
                     defender = random.choice(defs)
-                    ws = random.randint(0, max(attacker.get_weaponskill(),
-                                               attacker.get_critical()) + defender.get_weaponskill())
+                    ws = random.randint(0, attacker.get_weaponskill() + defender.get_weaponskill())
 
                     # Determine whether the attacker hits and for how much damage
                     if ws < attacker.get_weaponskill():
-                        if ws < attacker.get_critical():
-                            damage = int(math.floor((2.5 + (0.03 * max(0,
-                                                                       attacker.get_critical() - attacker.get_weaponskill()))) * attacker.get_damage(
-                                defender.get_element())))
+                        if ws < min(int(attacker.get_weaponskill() / 3), attacker.get_critical()):
+                            damage = int((1 + (numpy.log(
+                                max(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3))) + 1) / pow(
+                                attacker.get_level(), 0.2)) * attacker.get_damage(defender.get_element()))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
                                                                                                    damage)
@@ -524,7 +525,8 @@ class RPGGame:
                                   thumbnail=ctx.message.author.avatar_url)
 
     # {prefix}rpg info [weapon|w|armor|a] <user>
-    @rpg.command(pass_context=1, aliases=["Info", "I", 'i', 'stats', "Stats", 'status', "Status"], help="Show the character's status information!")
+    @rpg.command(pass_context=1, aliases=["Info", "I", 'i', 'stats', "Stats", 'status', "Status"],
+                 help="Show the character's status information!")
     async def info(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
 
@@ -753,7 +755,8 @@ class RPGGame:
         return True
 
     # {prefix}rpg levelup
-    @rpg.command(pass_context=1, aliases=["Levelup","lvlup", "Lvlup", "lvl", "Lvl"], help="Join a raid to kill a boss!")
+    @rpg.command(pass_context=1, aliases=["Levelup", "lvlup", "Lvlup", "lvl", "Lvl"],
+                 help="Join a raid to kill a boss!")
     async def levelup(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -815,7 +818,8 @@ class RPGGame:
         await self.bot.say(embed=embed)
 
     # {prefix}rpg role
-    @rpg.command(pass_context=1, aliases=["Role", "r", "R", "class", "Class", "c", "C"], help="Switch your role on the battlefield")
+    @rpg.command(pass_context=1, aliases=["Role", "r", "R", "class", "Class", "c", "C"],
+                 help="Switch your role on the battlefield")
     async def role(self, ctx, *args):
         await removeMessage.delete_message(self.bot, ctx)
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
