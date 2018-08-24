@@ -28,7 +28,7 @@ class Minesweeper:
             await self.quit(ctx.message.channel)
             return
         if (not self.running):
-            if not args[0] == "new":
+            if not args[0] in ["new", "create"]:
                 await self.bot.send_message(ctx.message.channel,
                                             "There is no game running right now. Try: >minesweeper new")
                 return
@@ -172,7 +172,7 @@ class Minesweeper:
         """
         image_name = "./temp/ms{}.png".format(channel.id)
         self.image.save(image_name)
-        await self.bot.send_file(channel, "./minesweeper/state.png")
+        await self.bot.send_file(channel, image_name)
         remove(image_name)
 
     async def quit(self, channel):

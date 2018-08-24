@@ -679,6 +679,9 @@ class RPGGame:
         if data in party:
             await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
             return
+        if len(party) <= 0 and not dbcon.get_rpg_channel(ctx.message.server.id):
+            await self.bot.say('Be sure to set the channel for bossfights with "{}rpg setchannel, '
+                               'or you will not be able to see the results!'.format(prefix))
         party.append(data)
         data.set_busy(rpgchar.BUSY_DESC_BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say(
@@ -889,7 +892,7 @@ class RPGGame:
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="RPG top players", value="Page " + str(n + 1), inline=False)
         dbcon.update_players(self.players.values())
-        player_list = dbcon.get_top_players(group, (n + 1) * users_per_page)
+        player_list = dbcon.get_top_players(self.bot, group, (n + 1) * users_per_page)
         if len(player_list) < (users_per_page * n):
             await self.bot.say("There are only {} pages...".format(math.ceil(len(player_list) / users_per_page)))
             return
@@ -900,17 +903,8 @@ class RPGGame:
         result = ""
 
         players = player_list[top_start:top_end]
-        player_names = {}
-        for p_id, p_name in [(x.id, self.bot.str_cmd(str(x))) for x in self.bot.get_all_members() if
-                             x.id in [y for (y, _) in players]]:
-            player_names[p_id] = p_name
 
-        for (player_id, player_score) in players:
-            top_start += 1
-            try:
-                name = player_names[player_id]
-            except KeyError:
-                name = 'id' + str(player_id)
+        for (name, player_score) in players:
             if group == "money":
                 result += "Rank {}:\n\t**{}**, {}{}\n".format(top_start, name, rpgshop.moneysign, player_score)
             elif group == "bosstier":

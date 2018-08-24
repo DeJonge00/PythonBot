@@ -63,7 +63,7 @@ this second will prompt you to choose an option if multiple are found.
 
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
-|hangman     	|`hm, hangman` `create` `{custom,sentence}`             |New hangman game
+|hangman     	|`hm, hangman` `create,new` `{custom,sentence}`         |Create a new hangman game
 |               |`hm, hangman` `{guess}`                                |Guess a letter/sentence in the current hangman game
 
 ### Minesweeper
@@ -71,7 +71,7 @@ this second will prompt you to choose an option if multiple are found.
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
 |minesweeper  	|`minesweeper,ms`                                       |Minesweeper game
-|               |`minesweeper,ms` `new` `{height}` `{width}` `{mines}`  |Create a new minesweeper board
+|               |`minesweeper,ms` `create,new` `{height}` `{width}` `{mines}`  |Create a new minesweeper board
 |               |`minesweeper,ms` `{x}` `{y}`                           |Guess a non-mine at coordinates (x,y)
 |               |`minesweeper,ms` `quit`                                |Forfeit the current game
 

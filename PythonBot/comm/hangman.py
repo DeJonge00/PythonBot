@@ -22,7 +22,7 @@ class Hangman:
         self.games = {}
         self.prev = {}
 
-    # {prefix}hangman <create> {custom | sentence} | <guess>
+    # {prefix}hangman <create,new> {custom | sentence} | <guess>
     @commands.command(pass_context=1, help="Hangman game", aliases=["hm"])
     async def hangman(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='hangman'):
@@ -40,7 +40,7 @@ class Hangman:
 
         if not game:
             # New game
-            if args[0].lower() == "create":
+            if args[0].lower() in ["create", "new"]:
                 if len(args) >= 2:
                     if args[1] == "custom":
                         await self.bot.send_message(ctx.message.author,
@@ -50,6 +50,9 @@ class Hangman:
                         if not m:
                             await self.bot.say(
                                 "Senpai hasn't responded in a while, I guess we will stop playing then...")
+                            return
+                        if m.content.startswith('create') or m.content.startswith('new'):
+                            await self.bot.say('Sorry, the word cannot begin with create or new for technical reasons...')
                             return
                         word = m.content
                     else:

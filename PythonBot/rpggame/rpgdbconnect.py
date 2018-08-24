@@ -62,7 +62,7 @@ TYPE_PET = 2
 
 def get_single_player(bot: discord.Client, player_id: str):
     player = None
-    username = {str(x.id): x.name for x in bot.get_all_members() if str(x.id) == (player_id)}.get(str(player_id), player_id)
+    username = {str(x.id): x.name for x in bot.get_all_members() if str(x.id) == str(player_id)}.get(str(player_id), player_id)
 
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword, database="rpg", charset="utf8", use_unicode=True)
@@ -226,7 +226,7 @@ def update_players(stats: [RPGPlayer]):
         conn.close()
 
 
-def get_top_players(group: str, amount: int):
+def get_top_players(bot: discord.Client, group: str, amount: int):
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword,
                            database="rpg", charset="utf8", use_unicode=True)
@@ -235,14 +235,21 @@ def get_top_players(group: str, amount: int):
         if group in ['money', 'bosstier']:
             c.execute("SELECT playerid, {0} FROM items ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         elif group in ['exp', 'damage', 'weaponskill', 'critical']:
-            c.execute("SELECT characterid, {0} FROM characters ORDER BY {0} DESC LIMIT {1}".format(group, amount))
+            c.execute("SELECT characterid, {0} FROM characters WHERE characterid > 1000000 ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         else:
             return None
         a = c.fetchall()
+        result = []
+        for i in range(len(a)):
+            try:
+                result.append((get_single_player(bot, a[i][0]).name, a[i][1]))
+            except:
+                result.append(('id' + str(a[i][0]), a[i][1]))
+
     finally:
         conn.commit()
         conn.close()
-    return a
+    return result
 
 
 #
