@@ -66,7 +66,7 @@ class Basics:
             target = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
         except ValueError:
             return
-        return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [target.mention])
+        await self.bot.say(random.choice(constants.compliments).format(u=[target.mention]))
 
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
@@ -194,7 +194,7 @@ class Basics:
     async def face(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='face'):
             return
-        await send_random.string(self.bot, ctx.message.channel, constants.faces)
+        await self.bot.say(random.choice(constants.faces))
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give hugs!")
@@ -206,12 +206,10 @@ class Basics:
         except ValueError:
             return
         if target == ctx.message.author:
-            await self.bot.send_message(ctx.message.channel,
-                                        ctx.message.author.mention + "Trying to give yourself a hug? Haha, so lonely...")
+            await self.bot.say(ctx.message.author.mention + "Trying to give yourself a hug? Haha, so lonely...")
             return
 
-        await send_random.string(self.bot, ctx.message.channel, constants.hug,
-                                 [ctx.message.author.mention, target.mention])
+        await self.bot.say(random.choice(constants.hug).format(u=[ctx.message.author.mention, target.mention]))
 
     # {prefix}hype
     @commands.command(pass_context=1, help="Hype everyone with random emoji!")
@@ -239,7 +237,7 @@ class Basics:
 
         if ctx.message.author == target:
             m = "You could just leave yourself if you want to go :thinking:"
-            await self.bot.send_message(ctx.message.channel, m)
+            await self.bot.say(m)
             return
 
         await self.bot.on_member_message(target, "on_member_remove", 'left')
@@ -256,10 +254,10 @@ class Basics:
             return
 
         if ctx.message.author == target:
-            await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
+            await self.bot.say("Suicide is not the answer, 42 is")
             return
 
-        await send_random.string(self.bot, ctx.message.channel, constants.kill, [" ".join(args)])
+        await self.bot.say(random.choice(constants.kill).format(u=[" ".join(args)]))
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Give someone a little kiss!")
@@ -275,15 +273,14 @@ class Basics:
             await self.bot.say("{0} Trying to kiss yourself? Let me do that for you...\n*kisses {0}*".format(
                 ctx.message.author.mention))
             return
-        await send_random.string(self.bot, ctx.message.channel, constants.kisses,
-                                 [ctx.message.author.mention, target.mention])
+        await self.bot.say(random.choice(constants.kisses).format(u=[ctx.message.author.mention, target.mention]))
 
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
     async def lenny(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='lenny'):
             return
-        await self.bot.send_message(ctx.message.channel, " ".join(args) + " ( ͡° ͜ʖ ͡°)")
+        await self.bot.say(" ".join(args) + " ( ͡° ͜ʖ ͡°)")
 
     # {prefix}lottery <minutes> <description>
     @commands.command(pass_context=1, help="Set up a lottery!")
@@ -374,8 +371,7 @@ class Basics:
             errors = {'no_mention': ctx.message.author.mention + " You cant pat air lmao"}
             user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=errors)
             if user != ctx.message.author and not authorhasperms:
-                await self.bot.send_message(ctx.message.channel,
-                                            "You do not have the permissions to give other people roles")
+                await self.bot.say("You do not have the permissions to give other people roles")
                 return
         except ValueError:
             user = ctx.message.author
@@ -390,20 +386,20 @@ class Basics:
                 role = r
                 break
         if not role:
-            await self.bot.send_message(ctx.message.channel, "Role {} not found".format(role))
+            await self.bot.say("Role {} not found".format(role))
             return
 
         try:
             if role in user.roles:
                 await self.bot.remove_roles(user, role)
-                await self.bot.send_message(ctx.message.channel, "Role {} succesfully removed".format(role.name))
+                await self.bot.say("Role {} succesfully removed".format(role.name))
                 return
             else:
                 await self.bot.add_roles(user, role)
-                await self.bot.send_message(ctx.message.channel, "Role {} succesfully added".format(role.name))
+                await self.bot.say("Role {} succesfully added".format(role.name))
                 return
         except discord.Forbidden:
-            await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
+            await self.bot.say("I dont have the perms for that sadly...")
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!")
@@ -449,7 +445,7 @@ class Basics:
             return
         q = " ".join(args)
         if not q:
-            await self.bot.send_message(ctx.message.channel, "...")
+            await self.bot.say("...")
             return
         embed = discord.Embed(colour=0x0000FF)
         try:
@@ -457,7 +453,7 @@ class Basics:
             r = requests.get('http://api.urbandictionary.com/v0/define', params=params).json().get('list')
             if len(r) <= 0:
                 embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
-                await self.bot.send_message(ctx.message.channel, embed=embed)
+                await self.bot.say(embed=embed)
             r = r[0]
             embed.add_field(name="Urban Dictionary Query", value=r.get('word'))
             definition = r.get('definition')
@@ -472,11 +468,11 @@ class Basics:
                     embed.add_field(name="Example", value=example)
             embed.add_field(name="👍", value=r.get('thumbs_up'))
             embed.add_field(name="👎", value=r.get('thumbs_down'))
-            await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.say(embed=embed)
             return
         except KeyError:
             embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
-            await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.say(embed=embed)
 
     # {prefix}userinfo <user>
     @commands.command(pass_context=1, help="Get a user's information!", aliases=["user", "info"])
@@ -512,7 +508,7 @@ class Basics:
         for r in range(1, len(user.roles)):
             m += "\n" + user.roles[r].name
         embed.add_field(name="Roles", value=m)
-        await self.bot.send_message(ctx.message.channel, embed=embed)
+        await self.bot.say(embed=embed)
 
     # {prefix}wikipedia <query>
     @commands.command(pass_context=1, help="Search the wiki!", aliases=["wiki"])
@@ -521,12 +517,15 @@ class Basics:
             return
         q = " ".join(args)
         if q == "":
-            return await self.bot.send_message(ctx.message.channel, "...")
+            await self.bot.say("...")
+            return
         embed = discord.Embed(colour=0x00FF00)
         try:
             s = wikipedia.summary(q, sentences=2)
             embed.add_field(name="Query: " + q, value=s)
-            return await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.say(embed=embed)
+            return
         except Exception as e:
             embed.add_field(name="Query: " + q, value="There are too much answers to give you the correct one...")
-            return await self.bot.send_message(ctx.message.channel, embed=embed)
+            await self.bot.say(embed=embed)
+            return

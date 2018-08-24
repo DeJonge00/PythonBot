@@ -6,26 +6,30 @@ from secret.secrets import prefix
 
 NicknameAutoChange = False
 
+
 def cl(x):
     return x.lower() if random.randint(0, 1) <= 0 else x.capitalize()
 
 
-async def new(bot, message):
+async def new(bot, message: discord.Message):
     if message.server.id in constants.s_to_ringels_whitelist and message.author.id == constants.DOGEid and "s" in message.content:
         await bot.send_message(message.channel, "*" + message.content.replace("s", "ß"))
         return
-    if message.server.id not in constants.sponge_capitalization_blacklist and (message.author.id in bot.spongelist) and (random.randint(0, 4) <= 0) and (len(message.content) > 5):
+    if message.server.id not in constants.sponge_capitalization_blacklist and (
+            message.author.id in bot.spongelist) and (random.randint(0, 4) <= 0) and (len(message.content) > 5):
         await bot.send_message(message.channel, ''.join([cl(x) for x in message.content.lower()]))
         return
-    if message.server.id not in constants.praise_the_sun_blacklist and message.content == "\\o/" and (datetime.datetime.utcnow() - bot.praise).seconds > (2*60):
+    if message.server.id not in constants.praise_the_sun_blacklist and message.content == "\\o/" and (
+            datetime.datetime.utcnow() - bot.praise).seconds > (2 * 60):
         perms = message.channel.permissions_for(message.server.get_member(str(bot.user.id)))
-        if not (perms.manage_messages & perms.attach_files):
+        if not (perms.manage_messages and perms.attach_files):
             return
         await bot.delete_message(message)
         await send_random.file(bot, message.channel, "sun")
         bot.praise = datetime.datetime.utcnow()
         return
-    if (message.server.id not in constants.ayy_lmao_blacklist or message.author.id == constants.NYAid) and (message.content.lower() == "ayy"):
+    if (message.server.id not in constants.ayy_lmao_blacklist or message.author.id == constants.NYAid) and (
+            message.content.lower() == "ayy"):
         await bot.send_message(message.channel, "lmao")
         return
     if message.author.id in [constants.NYAid, constants.TRISTANid] and message.content.lower() == "qyy":
@@ -45,25 +49,25 @@ async def new(bot, message):
                 return
             m = ml.pop()
         if (message.timestamp - m.timestamp).seconds > 60:
-            await send_random.string(bot, message.channel, constants.ded)
+            await bot.send_message(message.channel, random.choice(constants.ded))
     if message.server.id not in constants.table_unflip_blacklist and message.content == "(╯°□°）╯︵ ┻━┻":
         await bot.send_message(message.channel, "┬─┬﻿ ノ( ゜-゜ノ)")
     if NicknameAutoChange:
-        if not ((message.author.id == constants.NYAid) | (message.author.id == constants.LOLIid) | (message.author.id == constants.WIZZid)):
-            if message.author.permissions_in(message.channel).change_nickname:
-                if (len(message.content.split(" ")) > 2) & (message.server.name.lower() == "9chat"):
-                    if (message.content.split(" ")[0] == "i") & (message.content.split(" ")[1] == "am"):
-                        try: 
-                            await bot.change_nickname(message.author, message.content.partition(' ')[2].partition(' ')[2])
-                        except Exception:
-                            pass
-                if (len(message.content.split(" ")) > 1) & (message.server.name.lower() == "9chat"):
-                    if (message.content.lower().split(" ")[0] == "im") | (message.content.split(" ")[0] == "i'm"):
-                        try: 
-                            await bot.change_nickname(message.author, message.content.partition(' ')[2])
-                            print("Changed nickname")
-                        except Exception:
-                            pass
+        if message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid] and message.author.permissions_in(
+                message.channel).change_nickname:
+            if (len(message.content.split(" ")) > 2) and (message.server.name.lower() == "9chat"):
+                if (message.content.split(" ")[0] == "i") and (message.content.split(" ")[1] == "am"):
+                    try:
+                        await bot.change_nickname(message.author, message.content.partition(' ')[2].partition(' ')[2])
+                    except Exception:
+                        pass
+            if (len(message.content.split(" ")) > 1) and (message.server.name.lower() == "9chat"):
+                if (message.content.lower().split(" ")[0] == "im") | (message.content.split(" ")[0] == "i'm"):
+                    try:
+                        await bot.change_nickname(message.author, message.content.partition(' ')[2])
+                        print("Changed nickname")
+                    except Exception:
+                        pass
     if message.author.id in [constants.TRISTANid, constants.CHURROid] and "pls" in message.content.lower().split(" "):
         await bot.add_reaction(message, ":pepederp:302888052508852226")
     if message.author.id in bot.spamlist:
@@ -86,16 +90,18 @@ async def new(bot, message):
             await bot.add_reaction(message, "\u2764")
     if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and \
             (bot.user in message.mentions or
-             (len(set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(set(['biri', 'biribiri']))) > 0)):
+             (len(set(
+                 message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
+                 set(['biri', 'biribiri']))) > 0)):
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \
                 any(word in message.content.lower() for word in ['heart', 'pls', 'love']):
             await bot.send_message(message.channel, ":heart:")
             return
-        if message.content[len(message.content)-1] == "?":
-            await send_random.string(bot, message.channel, constants.qa)
+        if message.content[len(message.content) - 1] == "?":
+            await bot.send_message(message.channel, random.choice(constants.qa))
             return
         else:
-            await send_random.string(bot, message.channel, constants.response)
+            await bot.send_message(message.channel, random.choice(constants.response))
             return
 
 
