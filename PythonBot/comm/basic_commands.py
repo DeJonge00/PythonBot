@@ -49,6 +49,7 @@ class Basics:
 
         if len(args) <= 0:
             await self.bot.say("{}, you cannot cast without a target...".format(ctx.message.author.name))
+            return
 
         target = ' '.join(args)
         caster = ctx.message.author.name

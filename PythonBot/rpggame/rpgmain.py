@@ -264,6 +264,23 @@ class RPGGame:
         try:
             if time.minute % 5 == 0:
                 print(time)
+
+            if time.minute == 55:
+                # Bossraids
+                for p in self.boss_parties:
+                    channel = self.bot.get_channel(dbcon.get_rpg_channel(str(p)))
+                    if not channel:
+                        print("No channel for {}".format(p))
+                        return
+                    await self.bot.send_message(channel, "A party of {} is going to fight the boss in 5 minutes!!\n"
+                                                         "Join fast if you want to participate".format(
+                        len(self.boss_parties.get(p))))
+
+            if time.minute == 0:
+                await self.boss_battle()
+                self.bot.rpgshop.weapons = {}
+                self.bot.rpgshop.armors = {}
+
             # Saving stats to db
             if time.minute % 15 == 0:
                 p = self.players.values()
@@ -272,22 +289,10 @@ class RPGGame:
                     player_ids = list(self.players.keys())
                     for i in player_ids:
                         player = self.players.get(i)
-                        if (player.busydescription == rpgchar.BUSY_DESC_NONE) & (
+                        if (player.busydescription == rpgchar.BUSY_DESC_NONE) and (
                                 player.health >= player.get_max_health()):
                             self.players.pop(i)
-                print("Players saved")
-
-            if time.minute == 55:
-                # Bossraids
-                for p in self.boss_parties:
-                    await self.bot.send_message(self.bot.get_channel(dbcon.get_rpg_channel(str(p))),
-                                                "A party of {} is going to fight the boss in 5 minutes!!\nJoin fast if you want to participate".format(
-                                                    len(self.boss_parties.get(p))))
-
-            if time.minute == 0:
-                await self.boss_battle()
-                self.bot.rpgshop.weapons = {}
-                self.bot.rpgshop.armors = {}
+                    print("Players saved")
         except Exception as e:
             print(e)
             self.logger.exception(e)
@@ -295,8 +300,6 @@ class RPGGame:
         # Player is doing rpg stuff
         for u in list(self.players.values()):
             try:
-                if u.health < u.get_max_health():
-                    u.do_auto_health_regen()
                 if u.busydescription is not rpgchar.BUSY_DESC_NONE:
                     if not (u.busydescription in [rpgchar.BUSY_DESC_BOSSRAID]):
                         u.busytime -= 1
@@ -340,6 +343,8 @@ class RPGGame:
                             u.reset_busy()
                     except discord.errors.NotFound:
                         u.reset_busy()
+                if u.health < u.get_max_health():
+                    u.do_auto_health_regen()
             except Exception as e:
                 print(e)
                 self.logger.exception(e)
