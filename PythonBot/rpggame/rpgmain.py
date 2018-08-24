@@ -94,7 +94,7 @@ class RPGGame:
                         if ws < min(int(attacker.get_weaponskill() / 3), attacker.get_critical()):
                             damage = int((2 + (numpy.log(
                                 max(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3))) + 1) / pow(
-                                2* attacker.get_level(), 0.3)) * attacker.get_damage(defender.get_element()))
+                                2 * attacker.get_level(), 0.3)) * attacker.get_damage(defender.get_element()))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
                                                                                                    damage)
@@ -502,7 +502,7 @@ class RPGGame:
 
     # {prefix}rpg battle <user>
     @rpg.command(pass_context=1, aliases=["Battle", "b", "B"], help="Battle a fellow discord ally to a deadly fight!")
-    async def battle(self, ctx):
+    async def battle(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='rpg battle'):
             return
         attacker = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
@@ -511,20 +511,18 @@ class RPGGame:
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
-        if len(ctx.message.mentions) < 1:
-            await self.bot.say("You need to tag someone to battle with!")
+        try:
+            errors = {'no_mention': "You need to tag someone to battle with!"}
+            defender = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True,
+                                                              errors=errors)
+        except ValueError:
             return
-        if ctx.message.mentions[0] == ctx.message.author:
+
+        if defender == ctx.message.author:
             await self.bot.say("Suicide is never the answer :angry:")
             return
 
-        # if attacker.busydescription != rpgchar.NONE:
-        #    await self.bot.say("You are already doing something else at the moment...")
-        #    return
-        defender = self.get_player_data(ctx.message.mentions[0].id, name=ctx.message.mentions[0].display_name)
-        # if defender.busydescription != rpgchar.NONE:
-        #    await self.bot.say("Your opponent is unfindable at the moment.\nYou should catch him off guard when he is resting.")
-        #    return
+        defender = self.get_player_data(defender.id, name=defender.display_name)
         await self.resolve_battle("Mockbattle", ctx.message.channel, [attacker], [defender],
                                   thumbnail=ctx.message.author.avatar_url)
 
@@ -535,11 +533,12 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg info'):
             return
 
-        # Get requested player data
-        if len(ctx.message.mentions) > 0:
-            data = self.get_player_data(ctx.message.mentions[0].id, name=ctx.message.mentions[0].display_name)
-        else:
-            data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        try:
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True, errors=errors)
+        except ValueError:
+            user = ctx.message.author
+
+        data = self.get_player_data(user.id, name=user.display_name)
         if data.role == DEFAULT_ROLE:
             await self.bot.say(
                 "{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(
@@ -904,13 +903,14 @@ class RPGGame:
 
         players = player_list[top_start:top_end]
 
-        for (name, player_score) in players:
+        for i in range(len(players)):
+            name, player_score = players[i]
             if group == "money":
-                result += "Rank {}:\n\t**{}**, {}{}\n".format(top_start, name, rpgshop.moneysign, player_score)
+                result += "Rank {}:\n\t**{}**, {}{}\n".format(i + 1, name, rpgshop.moneysign, player_score)
             elif group == "bosstier":
-                result += "Rank {}:\n\t**{}**, tier {}\n".format(top_start, name, player_score)
+                result += "Rank {}:\n\t**{}**, tier {}\n".format(i + 1, name, player_score)
             else:
-                result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(top_start, name, player_score,
+                result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i + 1, name, player_score,
                                                                     RPGPlayer.get_level_by_exp(player_score))
         embed.add_field(name="Ranks and names", value=result)
         await self.bot.send_message(ctx.message.channel, embed=embed)
