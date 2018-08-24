@@ -18,20 +18,20 @@ class Minesweeper:
     # {prefix}minesweeper
     @commands.command(pass_context=1, help="Minesweeper game", aliases=["ms"])
     async def minesweeper(self, ctx, *args):
-        try:
-            await self.bot.delete_message(ctx.message)
-        except discord.Forbidden:
-            print(ctx.message.server + " | No permission to delete messages")
-
+        if not await self.bot.pre_command(message=ctx.message, command='minesweeper'):
+            return
         if len(args) <= 0:
-            return await self.bot.send_message(ctx.message.channel,
-                                               "Specify 'new' {height} {width} {mines} | <x> <y> | 'quit'")
+            await self.bot.send_message(ctx.message.channel,
+                                        "Specify 'new' {height} {width} {mines} | <x> <y> | 'quit'")
+            return
         if args[0] == "quit":
-            return await self.quit(ctx.message.channel)
+            await self.quit(ctx.message.channel)
+            return
         if (not self.running):
             if not args[0] == "new":
-                return await self.bot.send_message(ctx.message.channel,
-                                                   "There is no game running right now. Try: >minesweeper new")
+                await self.bot.send_message(ctx.message.channel,
+                                            "There is no game running right now. Try: >minesweeper new")
+                return
             if len(args) >= 4:
                 try:
                     self.height = int(args[1])
@@ -174,8 +174,6 @@ class Minesweeper:
         self.image.save(image_name)
         await self.bot.send_file(channel, "./minesweeper/state.png")
         remove(image_name)
-
-
 
     async def quit(self, channel):
         self.running = False

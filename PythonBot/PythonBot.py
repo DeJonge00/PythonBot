@@ -85,11 +85,14 @@ class PythonBot(Bot):
             return True
         return command_name not in banned_commands
 
-    def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True):
+    async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True, can_be_private=True):
         if is_typing:
-            self.send_typing(message.channel)
+            await self.send_typing(message.channel)
         if delete_message and message.server.id not in self.dont_delete_commands_servers:
-            self.delete_command_message(message)
+            await self.delete_command_message(message)
+        if not can_be_private:
+            await self.send_message(message.channel, 'This command cannot be used in private channels')
+            return False
         if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
             return False
         if self.commans_counters.get(command):

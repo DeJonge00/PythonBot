@@ -26,15 +26,18 @@ class Hangman:
     # {prefix}hangman <create> {custom | sentence} | <guess>
     @commands.command(pass_context=1, help="Hangman game", aliases=["hm"])
     async def hangman(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='hangman'):
+            return
         game = self.games.get(ctx.message.server.id)
 
         if len(args) <= 0:
             if not game:
-                return await self.bot.say(
+                await self.bot.say(
                     "Create a new game by using the command {}hangman <create> [custom | sentence]".format(prefix))
+                return
             else:
-                return await self.bot.say("Guess a letter or the sentence by using >hangman <guess>!")
+                await self.bot.say("Guess a letter or the sentence by using >hangman <guess>!")
+                return
 
         if not game:
             # New game

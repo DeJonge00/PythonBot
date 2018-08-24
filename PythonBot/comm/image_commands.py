@@ -20,7 +20,8 @@ class Images:
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
     async def pp(self, ctx):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='pp'):
+            return
         if len(ctx.message.mentions) <= 0:
             user = ctx.message.author
         else:
