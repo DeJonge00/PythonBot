@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import asyncio
+import re
+
 import discord
 
 from discord.ext.commands import Bot
@@ -22,28 +24,31 @@ REMOVE_LEAVE_MESSAGE = False
 
 def initCogs(bot):
     # Add commands
-    import comm.basic_commands
-    bot.add_cog(comm.basic_commands.Basics(bot))
-    import comm.minesweeper
-    bot.add_cog(comm.minesweeper.Minesweeper(bot))
-    import comm.hangman
-    bot.add_cog(comm.hangman.Hangman(bot))
-    import comm.image_commands
-    bot.add_cog(comm.image_commands.Images(bot))
+    from comm.basic_commands import Basics
+    bot.add_cog(Basics(bot))
+    from comm.minesweeper import Minesweeper
+    bot.add_cog(Minesweeper(bot))
+    from comm.hangman import Hangman
+    bot.add_cog(Hangman(bot))
+    from comm.image_commands import Images
+    bot.add_cog(Images(bot))
     if bot.MUSIC:
-        import musicPlayer
-        bot.musicplayer = musicPlayer.MusicPlayer(bot)
+        from musicPlayer import MusicPlayer
+        bot.musicplayer = MusicPlayer(bot)
         bot.add_cog(bot.musicplayer)
     if bot.RPGGAME:
-        import rpggame.rpgmain, rpggame.rpgshop
-        bot.rpggame = rpggame.rpgmain.RPGGame(bot)
-        bot.rpgshop = rpggame.rpgshop.RPGShop(bot)
+        from rpggame.rpgmain import RPGGame
+        from rpggame.rpgshop import RPGShop
+        bot.rpggame = RPGGame(bot)
+        bot.rpgshop = RPGShop(bot)
         bot.add_cog(bot.rpggame)
         bot.add_cog(bot.rpgshop)
-    import comm.mod_commands
-    bot.add_cog(comm.mod_commands.Mod(bot))
-    import comm.misc_commands
-    bot.add_cog(comm.misc_commands.Misc(bot))
+    from comm.mod_commands import Mod
+    bot.add_cog(Mod(bot))
+    from comm.config_commands import Config
+    bot.add_cog(Config(bot))
+    from comm.misc_commands import Misc
+    bot.add_cog(Misc(bot))
 
 
 class PythonBot(Bot):
@@ -90,18 +95,17 @@ class PythonBot(Bot):
         if is_typing:
             await self.send_typing(message.channel)
 
-        if delete_message and message.server.id not in self.dont_delete_commands_servers:
-            await self.delete_command_message(message)
-
-        if cannot_be_private and message.channel.is_private:
-            await self.send_message(message.channel, 'This command cannot be used in private channels')
-            return False
-
-        if must_be_private and not message.channel.is_private:
-            await self.send_message(message.channel, 'This command has to be used in a private conversation')
-
-        if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
-            return False
+        if message.channel.is_private:
+            if cannot_be_private:
+                await self.send_message(message.channel, 'This command cannot be used in private channels')
+                return False
+        else:
+            if must_be_private:
+                await self.send_message(message.channel, 'This command has to be used in a private conversation')
+            if delete_message and message.server.id not in self.dont_delete_commands_servers:
+                await self.delete_command_message(message)
+            if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
+                return False
 
         if self.commands_counters.get(command):
             self.commands_counters[command] += 1
@@ -109,12 +113,21 @@ class PythonBot(Bot):
             self.commands_counters[command] = 1
         return True
 
+    @staticmethod
+    def prep_str(s):
+        new_s = ''
+        for l in s:
+            if re.match('[a-zA-Z0-9]', l):
+                new_s += l
+        return new_s
+
     # errors = {
     #   'no_mention': No user was mentioned in the message,
     #   'no_user': No user was found with the given name,
     #   'no_reaction': The user did not react to the choice within a minute
     # }
-    async def get_member_from_message(self, message: discord.Message, args: list, in_text=False, errors: dict={}) -> discord.Member:
+    async def get_member_from_message(self, message: discord.Message, args: list, in_text=False,
+                                      errors: dict = {}) -> discord.Member:
         if len(message.mentions) > 0:
             return message.mentions[0]
 
@@ -126,13 +139,14 @@ class PythonBot(Bot):
             await self.send_message(message.channel, error)
             raise ValueError
 
-        name = PythonBot.prep_str_for_print(' '.join(args)).lower()
-        users = [x for x in message.server.members if PythonBot.prep_str_for_print(x).lower().startswith(name)]
-        users.sort(key=lambda s: len(s))
+        name = PythonBot.prep_str(' '.join(args)).lower()
+        users = [x for x in message.server.members if PythonBot.prep_str(x.name).lower().startswith(name) or
+                 PythonBot.prep_str(x.display_name).lower().startswith(name)]
+        users.sort(key=lambda s: len(s.name))
 
         if len(users) <= 0:
             error = errors.get('no_users') if errors.get('no_users') else 'I could not find a user with that name'
-            await self.bot.say(error)
+            await self.say(error)
             raise ValueError
         if len(users) == 1:
             return users[0]
@@ -142,20 +156,26 @@ class PythonBot(Bot):
         u: discord.Member
         for x in range(min(len(users), 10)):
             m += '\n{}) {}'.format(x + 1, users[x].name)
-        await self.bot.say(m)
-        m = await self.bot.wait_for_message(timeout=60, author=message.author,
-                                            channel=message.channel)
-        if not m:
+        m = await self.say(m)
+        r = await self.wait_for_message(timeout=60, author=message.author,
+                                        channel=message.channel)
+
+        if message.server.id not in self.dont_delete_commands_servers:
+            await self.delete_message(m)
+            if r:
+                await self.delete_message(r)
+
+        if not r:
             error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
-            await self.bot.say(error)
+            await self.say(error)
             raise ValueError
         try:
-            m: discord.Message
-            num = int(m.content) - 1
+            r: discord.Message
+            num = int(r.content) - 1
             if not (0 <= num < min(10, len(users))):
                 raise ValueError
         except ValueError:
-            await self.bot.say('That was not a valid number')
+            await self.say('That was not a valid number')
             raise
         return users[num]
 
@@ -183,9 +203,26 @@ class PythonBot(Bot):
         if self.MUSIC:
             await self.musicplayer.quit()
 
-    @staticmethod
-    def str_cmd(s: str):
-        return s.encode("ascii", "replace").decode("ascii")
+    async def on_member_message(self, member, func_name, text):
+        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name,
+                        serverid=member.server.id)
+        response = dbconnect.get_message(func_name, member.server.id)
+        if not response:
+            return
+        channel, mes = response
+        embed = discord.Embed(colour=0xFF0000)
+        embed.add_field(name="User {}!".format(bot.str_cmd(text)), value=mes.format(member.mention))
+        channel = self.get_channel(channel)
+        if not channel:
+            print('CHANNEL NOT FOUND')
+            return
+        m = await self.send_message(channel, embed=embed)
+        if REMOVE_JOIN_MESSAGE:
+            await asyncio.sleep(30)
+            try:
+                await self.delete_message(m)
+            except discord.Forbidden:
+                print(member.server + " | No permission to delete messages")
 
 
 def init_bot():
@@ -240,38 +277,17 @@ def init_bot():
     async def on_message_delete(message):
         await message_handler.deleted(message)
 
-    async def on_member_message(member, func_name, text):
-        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name,
-                        serverid=member.server.id)
-        response = dbconnect.get_message(func_name, member.server.id)
-        if not response:
-            return
-        channel, mes = response
-        embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User {}!".format(bot.str_cmd(text)), value=mes.format(member.mention))
-        channel = bot.get_channel(channel)
-        if not channel:
-            print('CHANNEL NOT FOUND')
-            return
-        m = await bot.send_message(channel, embed=embed)
-        if REMOVE_JOIN_MESSAGE:
-            await asyncio.sleep(30)
-            try:
-                await bot.delete_message(m)
-            except discord.Forbidden:
-                print(member.server + " | No permission to delete messages")
-
     @bot.event
     async def on_member_join(member: discord.Member):
         if member.bot:
             return
-        await on_member_message(member, "on_member_join", 'joined')
+        await bot.on_member_message(member, "on_member_join", 'joined')
 
     @bot.event
     async def on_member_remove(member: discord.Member):
         if member.bot:
             return
-        await on_member_message(member, "on_member_remove", 'left')
+        await bot.on_member_message(member, "on_member_remove", 'left')
 
     # @bot.event
     # async def on_voice_state_update(before, after):

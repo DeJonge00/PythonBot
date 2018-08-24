@@ -39,7 +39,7 @@ class Images:
             if not self.image_timers.get(command):
                 self.image_timers[command] = {}
             if (datetime.utcnow() - self.image_timers.get(command).get(channel.id,
-                                                                       datetime.fromtimestamp(0))).seconds < 60:
+                                                                       datetime.utcfromtimestamp(0))).seconds < 60:
                 return
             await self.bot.send_typing(channel)
             self.image_timers[command][channel.id] = datetime.utcnow()

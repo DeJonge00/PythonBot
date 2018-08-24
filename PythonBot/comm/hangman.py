@@ -3,7 +3,6 @@ from comm.hangmaninstance import MAXFAULTS
 import constants
 import discord
 import random
-import removeMessage
 import string
 from discord.ext import commands
 from secret.secrets import prefix
