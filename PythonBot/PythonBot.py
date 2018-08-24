@@ -54,7 +54,7 @@ class PythonBot(Bot):
         self.spongelist = []
         self.dont_delete_commands_servers = []
         self.commands_banned_in_servers = {}
-        self.commans_counters = {}
+        self.commands_counters = {}
 
         self.MUSIC = music
         self.RPGGAME = rpggame
@@ -85,22 +85,79 @@ class PythonBot(Bot):
             return True
         return command_name not in banned_commands
 
-    async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True, can_be_private=True):
+    async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
+                          cannot_be_private=False, must_be_private=False):
         if is_typing:
             await self.send_typing(message.channel)
+
         if delete_message and message.server.id not in self.dont_delete_commands_servers:
             await self.delete_command_message(message)
-        if not can_be_private:
+
+        if cannot_be_private and message.channel.is_private:
             await self.send_message(message.channel, 'This command cannot be used in private channels')
             return False
+
+        if must_be_private and not message.channel.is_private:
+            await self.send_message(message.channel, 'This command has to be used in a private conversation')
+
         if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
             return False
-        if self.commans_counters.get(command):
-            self.commans_counters[command] += 1
+
+        if self.commands_counters.get(command):
+            self.commands_counters[command] += 1
         else:
-            self.commans_counters[command] = 1
+            self.commands_counters[command] = 1
         return True
 
+    # errors = {
+    #   'no_mention': No user was mentioned in the message,
+    #   'no_user': No user was found with the given name,
+    #   'no_reaction': The user did not react to the choice within a minute
+    # }
+    async def get_member_from_message(self, message: discord.Message, args: list, in_text=False, errors: dict={}) -> discord.Member:
+        if len(message.mentions) > 0:
+            return message.mentions[0]
+
+        if len(args) <= 0:
+            return message.author
+
+        if not in_text:
+            error = errors.get('no_mention') if errors.get('no_mention') else 'Please mention a user'
+            await self.send_message(message.channel, error)
+            raise ValueError
+
+        name = PythonBot.prep_str_for_print(' '.join(args)).lower()
+        users = [x for x in message.server.members if PythonBot.prep_str_for_print(x).lower().startswith(name)]
+        users.sort(key=lambda s: len(s))
+
+        if len(users) <= 0:
+            error = errors.get('no_users') if errors.get('no_users') else 'I could not find a user with that name'
+            await self.bot.say(error)
+            raise ValueError
+        if len(users) == 1:
+            return users[0]
+
+        # Multiple users found, ask user which one he meant
+        m = 'Which user did you mean?'
+        u: discord.Member
+        for x in range(min(len(users), 10)):
+            m += '\n{}) {}'.format(x + 1, users[x].name)
+        await self.bot.say(m)
+        m = await self.bot.wait_for_message(timeout=60, author=message.author,
+                                            channel=message.channel)
+        if not m:
+            error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
+            await self.bot.say(error)
+            raise ValueError
+        try:
+            m: discord.Message
+            num = int(m.content) - 1
+            if not (0 <= num < min(10, len(users))):
+                raise ValueError
+        except ValueError:
+            await self.bot.say('That was not a valid number')
+            raise
+        return users[num]
 
     async def timeLoop(self):
         await self.wait_until_ready()
@@ -119,6 +176,8 @@ class PythonBot(Bot):
 
     async def quit(self):
         self.running = False
+        for key in self.commands_counters.keys():
+            print('Command "{}" was used {} times'.format(key, self.commands_counters.get(key)))
         if self.RPGGAME:
             self.rpggame.quit()
         if self.MUSIC:

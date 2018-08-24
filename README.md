@@ -1,6 +1,8 @@
 # Discord Python Bot "Biribiri"
 #### Syntax
-`words`: literally the word(s) in the brackets (choices separated by a `,`), `{words}`: variable string, describing any word(s) you need
+`words`: literally the word(s) in the brackets (choices separated by a `,`)\
+`{words}`: variable string, describing any word(s) you need\
+`{user}`: Mentioning the user, unles stated otherwise in the description
 
 ### Reactions to messages
 
@@ -15,41 +17,46 @@
 
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
-|fps         	|`fps,60`                                               |Send a high-fps gif
-|biribiri    	|`biribiri,biri`                                        |Send pics of the only best girl
 |botstats       |`botstats`                                             |Show stats of the bot in an embed
 |cast        	|`cast` `{user}`                                        |Cast a spell targeted at `{user}`
-|cat         	|`cat`                                                  |Pictures of my cats
 |compliment  	|`compliment` `{user}`                                  |Give `{user}` a compliment
 |countdown      |`countdown` `{seconds}`                                |Ping on times until the seconds run out (dms only for spam reasons)
-|cuddle      	|`cuddle` `{user}`                                      |Give a user a cuddle
-|ded         	|`ded`                                                  |Ded chat reminder (image)
 |delete      	|`del,delete,d` `{seconds}` `{normal message}`          |Make biri delete your message after `{seconds}` seconds
 |echo        	|`echo` `{text}`                                        |Biri repeats `{text}`
 |emoji       	|`emoji` `{emoji}`                                      |Send a big version of `{emoji}`
 |emojify     	|`emojify` `{text}`                                     |Transform `{text}` to regional indicators
 |face        	|`face`                                                 |Send a random ascii face
-|heresy      	|`heresy`                                               |Send images worthy of the emperor (warhammer 40k)
-|happy          |`happy`                                                |Send a happy gif
 |hug         	|`hug` `{user}`                                         |Give `{user}` a hug
 |hype           |`hype`                                                 |Make hype by sending 10 random emoji from the current server
 |kick        	|`kick` `{user}`                                        |Fake kick someone
 |kill        	|`kill` `{user}`                                        |Wish someone a happy death (is a bit explicit)
 |lenny       	|`lenny` `{message}`                                    |Send `{message}` ( ͡° ͜ʖ ͡°)
-|lewd           |`lewd`                                                 |Send anti-lewd gif
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
-|nonazi      	|`nonazi`                                               |Try to persuade Lizzy with anti-nazi-propaganda!
-|nyan           |`nyan`                                                 |Send an anime happy catgirl gif
-|otter          |`otter`                                                |Send a cute otter picture
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
-|plsno          |`plsno`                                                |Send a gif that expresses 'pls no'
-|pp          	|`pp,avatar,picture` `{user}`                           |Show `{user}`'s profile pic, a bit larger
 |role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
-|sadness        |`sadness`                                              |Send a sad gif
 |serverinfo  	|`serverinfo`                                           |Get the server's information
 |urban       	|`urban,us,urbandictionary` `{query}`                   |Search urbandictionary for `{query}`
 |userinfo    	|`userinfo,user,info` `{user}`                          |Get `{user}`'s information
 |wikipedia   	|`wikipedia,wiki` `{query}`                             |Search wikipedia for `{query}`
+
+### Image commands
+
+|Name			|Command, aliases and usage					            |Description
+|---			|---										            |---
+|fps         	|`fps,60`                                               |Send a high-fps gif
+|biribiri    	|`biribiri,biri`                                        |Send pics of the only best girl
+|cat         	|`cat`                                                  |Pictures of my cats
+|cuddle      	|`cuddle`                                               |Send a cuddly gif
+|ded         	|`ded`                                                  |Ded chat reminder (image)
+|heresy      	|`heresy`                                               |Send images worthy of the emperor (warhammer 40k)
+|happy          |`happy`                                                |Send a happy gif
+|lewd           |`lewd`                                                 |Send anti-lewd gif
+|nonazi      	|`nonazi`                                               |Try to persuade Lizzy with anti-nazi-propaganda!
+|nyan           |`nyan`                                                 |Send an anime happy catgirl gif
+|otter          |`otter`                                                |Send a cute otter picture
+|plsno          |`plsno`                                                |Send a gif that expresses 'pls no'
+|pp          	|`pp,avatar,picture` `{user}`                           |Show `{user}`'s profile pic, a bit larger
+|sadness        |`sadness`                                              |Send a sad gif
 
 ### Hangman
 

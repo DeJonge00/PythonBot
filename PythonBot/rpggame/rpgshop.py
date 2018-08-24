@@ -4,7 +4,6 @@ import constants
 from secret.secrets import prefix
 import discord
 import math
-import removeMessage
 from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 
 moneysign = "¥"
@@ -17,30 +16,36 @@ class RPGShop:
         self.weapons = {}
         self.armors = {}
 
+    async def send_shop_help_message(self):
+        embed = discord.Embed(colour=SHOP_EMBED_COLOR)
+        embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
+        embed.add_field(name="Items",
+                        value="Type '{}shop item' for a list of available items".format(prefix),
+                        inline=False)
+        embed.add_field(name="Weapons",
+                        value="Type '{}shop weapon' for a list of available weapons".format(prefix),
+                        inline=False)
+        embed.add_field(name="Armor",
+                        value="Type '{}shop armor' for the armor sold in this shop".format(prefix),
+                        inline=False)
+        embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(prefix),
+                        inline=False)
+        await self.bot.say(embed=embed)
+
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
-    async def shop(self, ctx):
-        if ctx.invoked_subcommand is None:
-            await removeMessage.delete_message(self.bot, ctx)
-            embed = discord.Embed(colour=SHOP_EMBED_COLOR)
-            embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="Items",
-                            value="Type '{}shop item' for a list of available items".format(prefix),
-                            inline=False)
-            embed.add_field(name="Weapons",
-                            value="Type '{}shop weapon' for a list of available weapons".format(prefix),
-                            inline=False)
-            embed.add_field(name="Armor",
-                            value="Type '{}shop armor' for the armor sold in this shop".format(prefix),
-                            inline=False)
-            embed.add_field(name="Restock", value="Weapons and armors refresh every hour".format(prefix),
-                            inline=False)
-            await self.bot.say(embed=embed)
+    async def shop(self, ctx, *args):
+        if ctx.invoked_subcommand is None and (len(args) <= 0 or args[0] == 'help'):
+            if not await self.bot.pre_command(message=ctx.message, command='shop help'):
+                return
+            await self.send_shop_help_message()
+
 
     # {prefix}shop armor
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
     async def armor(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='shop armor'):
+            return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -82,7 +87,8 @@ class RPGShop:
     # {prefix}shop item
     @shop.command(pass_context=1, aliases=["i", "buy", "items"], help="Special knowledge on enemy weakpoints")
     async def item(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='shop item'):
+            return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -140,7 +146,8 @@ class RPGShop:
     # {prefix}shop weapon
     @shop.command(pass_context=1, aliases=["w", "weapons"], help="Buy a shiny new weapon!")
     async def weapon(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='shop weapon'):
+            return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -182,7 +189,8 @@ class RPGShop:
     # {prefix}train
     @commands.command(pass_context=1, aliases=["training"], help="Train your skills!")
     async def train(self, ctx, *args):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='train'):
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Available Training", icon_url=ctx.message.author.avatar_url)

@@ -49,32 +49,31 @@ class Basics:
     async def cast(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='cast'):
             return
+
         if len(args) <= 0:
-            return await self.bot.send_message(ctx.message.channel, "{}, you cannot cast without a target...".format(
-                ctx.message.author.name))
-        return await self.bot.send_message(ctx.message.channel,
-                                           "{} casted **{}** on {}.\n{}".format(ctx.message.author.name,
-                                                                                constants.spell[random.randint(0, len(
-                                                                                    constants.spell) - 1)],
-                                                                                " ".join(args), constants.spellresult[
-                                                                                    random.randint(0, len(
-                                                                                        constants.spellresult) - 1)]))
+            await self.bot.say("{}, you cannot cast without a target...".format(ctx.message.author.name))
+
+        target = ' '.join(args)
+        caster = ctx.message.author.name
+        spell = random.choice(constants.spell)
+        result = random.choice(constants.spellresult)
+
+        await self.bot.say("{} casted **{}** on {}.\n{}".format(caster, spell, target, result))
 
     # {prefix}compliment <user>
     @commands.command(pass_context=1, help="Give someone a compliment")
     async def compliment(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='compliment'):
             return
+
         return await send_random.string(self.bot, ctx.message.channel, constants.compliments, [" ".join(args)])
 
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='countdown'):
+        if not await self.bot.pre_command(message=ctx.message, command='countdown', must_be_private=True):
             return
-        if not ctx.message.channel.is_private:
-            await self.bot.say('This can only be used in private for spam reasons')
-            return
+
         try:
             n = int(args[0])
         except ValueError:
@@ -86,6 +85,7 @@ class Basics:
         if n < 1:
             await self.bot.say("Lol r00d")
             return
+
         timers = [3600, 1800, 600, 300, 120, 60, 30, 15, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
         if n > timers[0]:
             await asyncio.sleep(n - timers[0])
@@ -125,15 +125,18 @@ class Basics:
     async def echo(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='echo'):
             return
+
         if len(args) > 0:
-            return await self.bot.send_message(ctx.message.channel, " ".join(args))
+            await self.bot.send_message(ctx.message.channel, " ".join(args))
+            return
+
         if len(ctx.message.attachments) > 0:
             embed = discord.Embed(colour=0x000000)
             embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
             embed.set_image(url=ctx.message.attachments[0].get('url'))
             await self.bot.send_message(ctx.message.channel, embed=embed)
             return
-        return await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
+        await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
 
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")
@@ -198,13 +201,15 @@ class Basics:
     async def hug(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='hug'):
             return
-        if (ctx.message.content == "") or (ctx.message.content.lower() == ctx.message.author.name.lower()) or (
-                ctx.message.author in ctx.message.mentions):
+        try:
+            target = self.bot.get_member_from_message(ctx.message, args, in_text=True)
+        except ValueError:
             await self.bot.send_message(ctx.message.channel,
                                         ctx.message.author.mention + "Trying to give yourself a hug? Haha, so lonely...")
             return
+
         await send_random.string(self.bot, ctx.message.channel, constants.hug,
-                                 [ctx.message.author.mention, " ".join(args)])
+                                 [ctx.message.author.mention, target.mention])
 
     # {prefix}hype
     @commands.command(pass_context=1, help="Hype everyone with random emoji!")
@@ -224,25 +229,34 @@ class Basics:
     async def kick(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='kick', delete_message=False):
             return
-        if len(ctx.message.mentions) > 0:
-            await self.bot.send_typing(ctx.message.channel)
-            if ctx.message.author == ctx.message.mentions[0]:
-                await self.bot.send_message(ctx.message.channel,
-                                            "You could just leave yourself if you want to go :thinking:")
-                return
-            embed = discord.Embed(colour=0xFF0000)
-            embed.add_field(name="User left",
-                            value="\"" + ctx.message.mentions[0].name + "\" just left. Byebye, you will not be missed!")
-            m = await self.bot.say(embed=embed)
+
+        try:
+            target = self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
+        except ValueError:
+            return
+
+        if ctx.message.author == target:
+            m = "You could just leave yourself if you want to go :thinking:"
+            await self.bot.send_message(ctx.message.channel, m)
+            return
+
+        await self.bot.on_member_message(target, "on_member_remove", 'left')
 
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death! (is a bit explicit)")
     async def kill(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='kill'):
             return
-        if ((ctx.message.content == "") | (ctx.message.content.lower() == ctx.message.author.name.lower()) | (
-                ctx.message.author in ctx.message.mentions)):
-            return await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
+
+        try:
+            target = self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
+        except ValueError:
+            return
+
+        if ctx.message.author == target:
+            await self.bot.send_message(ctx.message.channel, "Suicide is not the answer, 42 is")
+            return
+
         await send_random.string(self.bot, ctx.message.channel, constants.kill, [" ".join(args)])
 
     # {prefix}hug <person>
@@ -250,13 +264,17 @@ class Basics:
     async def kiss(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='kiss'):
             return
-        if (ctx.message.content == "") or (ctx.message.content.lower() == ctx.message.author.name.lower()) or (
-                ctx.message.author in ctx.message.mentions):
-            await self.bot.say("{} Trying to kiss yourself? Let me do that for you...\n*kisses {}*".format(
-                ctx.message.author.mention, ctx.message.author.mention))
+        try:
+            target = self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
+        except ValueError:
+            return
+
+        if ctx.message.author == target:
+            await self.bot.say("{0} Trying to kiss yourself? Let me do that for you...\n*kisses {0}*".format(
+                ctx.message.author.mention))
             return
         await send_random.string(self.bot, ctx.message.channel, constants.kisses,
-                                 [ctx.message.author.mention, " ".join(args)])
+                                 [ctx.message.author.mention, target.mention])
 
     # {prefix}lenny <words>
     @commands.command(pass_context=1, help="( ͡° ͜ʖ ͡°)!")
@@ -301,9 +319,14 @@ class Basics:
     async def pat(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='pat'):
             return
-        if len(ctx.message.mentions) <= 0:
-            return await self.bot.say(ctx.message.author.mention + " You cant pat air lmao")
-        if ctx.message.mentions[0].id == ctx.message.author.id:
+
+        try:
+            errors = {'no_mention': ctx.message.author.mention + " You cant pat air lmao"}
+            target = self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True, errors=errors)
+        except ValueError:
+            return
+
+        if ctx.message.author == target:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
 
         time = datetime.datetime.utcnow()
@@ -344,17 +367,21 @@ class Basics:
             rolename = args[0].lower()
         authorhasperms = ctx.message.channel.permissions_for(ctx.message.author).manage_roles or (
                 ctx.message.server.owner.id == ctx.message.author.id)
-        if len(ctx.message.mentions) <= 0:
-            user = ctx.message.author
-        else:
-            if not authorhasperms:
+
+        try:
+            errors = {'no_mention': ctx.message.author.mention + " You cant pat air lmao"}
+            user = self.bot.get_member_from_message(message=ctx.message, args=args, errors=errors)
+            if user != ctx.message.author and not authorhasperms:
                 await self.bot.send_message(ctx.message.channel,
                                             "You do not have the permissions to give other people roles")
                 return
-            user = ctx.message.mentions[0]
+        except ValueError:
+            user = ctx.message.author
+
         if not (authorhasperms or rolename in ['nsfw', 'muted']):
             await self.bot.say("You lack the permissions for that")
             return
+
         role = None
         for r in ctx.message.server.roles:
             if r.name.lower().replace(' ', '') == rolename:
@@ -363,6 +390,7 @@ class Basics:
         if not role:
             await self.bot.send_message(ctx.message.channel, "Role {} not found".format(role))
             return
+
         try:
             if role in ctx.message.author.roles:
                 await self.bot.remove_roles(user, role)
@@ -374,12 +402,11 @@ class Basics:
                 return
         except discord.Forbidden:
             await self.bot.send_message(ctx.message.channel, "I dont have the perms for that sadly...")
-            return
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!")
     async def serverinfo(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='serverinfo', can_be_private=False):
+        if not await self.bot.pre_command(message=ctx.message, command='serverinfo', cannot_be_private=True):
             return
         server = None
         if (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]) and len(args) > 0:
@@ -398,9 +425,9 @@ class Basics:
         embed.add_field(name="Region", value=server.region)
         embed.add_field(name="Members", value=server.member_count)
         embed.add_field(name="Owner", value='{} ({})'.format(server.owner.display_name, server.owner))
-        embed.add_field(name="Custom Emoji", value=len(server.emojis))
-        embed.add_field(name="Roles", value=len(server.roles))
-        embed.add_field(name="Channels", value=len(server.channels))
+        embed.add_field(name="Custom Emoji", value=str(len(server.emojis)))
+        embed.add_field(name="Roles", value=str(len(server.roles)))
+        embed.add_field(name="Channels", value=str(len(server.channels)))
         if ctx.message.author.id in [constants.NYAid, constants.KAPPAid]:
             for c in server.channels:
                 print(self.bot.str_cmd(c.name))
@@ -453,41 +480,8 @@ class Basics:
     async def userinfo(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='userinfo'):
             return
-        if len(ctx.message.mentions) <= 0:
-            if len(args) <= 0:
-                user = ctx.message.author
-            else:
-                name = PythonBot.prep_str_for_print(' '.join(args)).lower()
-                users = [x for x in self.bot.get_all_members() if
-                         name.startswith(PythonBot.prep_str_for_print(x).lower())]
-                users.sort(key=lambda s: len(s))
-                if len(users) <= 0:
-                    await self.bot.say('I could not find a user with that name')
-                    return
-                if len(users) == 1:
-                    user = users[0]
-                else:
-                    m = 'Which user did you mean?'
-                    u: discord.Member
-                    for x in range(min(len(users), 10)):
-                        m += '\n{}) {}'.format(x + 1, users[x].name)
-                    await self.bot.say(m)
-                    m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author,
-                                                        channel=ctx.message.channel)
-                    if not m:
-                        await self.bot.say('Or not...')
-                        return
-                    try:
-                        m: discord.Message
-                        num = int(m.content) - 1
-                        if not (0 <= num < min(10, len(users))):
-                            raise ValueError
-                    except ValueError:
-                        await self.bot.say('That was not a valid number')
-                        return
-                    user = users[num]
-        else:
-            user = ctx.message.mentions[0]
+
+        user = self.bot.get_member_from_message(ctx.message, args, in_text=True)
 
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=str(user.name), icon_url=user.avatar_url)

@@ -17,7 +17,7 @@ from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpg
 from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
 from rpggame.rpgpet import RPGPet
-from secret.secrets import prefix
+from secret.secrets import prefix, font_path
 
 RPG_EMBED_COLOR = 0x710075
 STANDARD_BATTLE_TURNS = 30
@@ -594,7 +594,7 @@ class RPGGame:
         im.paste(pp, (235, 5))
 
         draw = ImageDraw.Draw(im)
-        font = ImageFont.truetype("/home/nya/ringbearer/RINGM___.TTF", 12)
+        font = ImageFont.truetype(font_path, 12)
         color = (255, 255, 255)
         nameoffset = 18
         statoffset = nameoffset + 98
