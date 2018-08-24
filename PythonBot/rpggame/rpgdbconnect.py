@@ -62,7 +62,7 @@ TYPE_PET = 2
 
 def get_single_player(bot: discord.Client, player_id: str):
     player = None
-    username = {str(x.id): x.name for x in bot.get_all_members() if str(x.id) == str(player_id)}.get(str(player_id), player_id)
+    username = {str(x.id): str(x.name) for x in bot.get_all_members() if str(x.id) == str(player_id)}.get(str(player_id), str(player_id))
 
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword, database="rpg", charset="utf8", use_unicode=True)

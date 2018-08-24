@@ -1,6 +1,4 @@
 from discord.ext import commands
-
-import constants
 from secret.secrets import prefix
 import discord
 import math
@@ -16,9 +14,9 @@ class RPGShop:
         self.weapons = {}
         self.armors = {}
 
-    async def send_shop_help_message(self):
+    async def send_shop_help_message(self, url: str):
         embed = discord.Embed(colour=SHOP_EMBED_COLOR)
-        embed.set_author(name="Shop commands", icon_url=ctx.message.author.avatar_url)
+        embed.set_author(name="Shop commands", icon_url=url)
         embed.add_field(name="Items",
                         value="Type '{}shop item' for a list of available items".format(prefix),
                         inline=False)
@@ -34,12 +32,11 @@ class RPGShop:
 
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
-    async def shop(self, ctx, *args):
-        if ctx.invoked_subcommand is None and (len(args) <= 0 or args[0] == 'help'):
+    async def shop(self, ctx):
+        if ctx.invoked_subcommand is None and (ctx.message.content == '{}shop help'.format(prefix)):
             if not await self.bot.pre_command(message=ctx.message, command='shop help'):
                 return
-            await self.send_shop_help_message()
-
+            await self.send_shop_help_message(ctx.message.author.avatar_url)
 
     # {prefix}shop armor
     @shop.command(pass_context=1, aliases=["a", "armour"], help="Buy a shiny new suit of armor!")
@@ -118,7 +115,7 @@ class RPGShop:
             await self.bot.say("You're already full HP")
             return
         item = rpgc.shopitems.get(item)
-        if item == None:
+        if not item:
             await self.bot.say("Thats not an item sold here")
             return
         try:
@@ -204,7 +201,7 @@ class RPGShop:
         elif training in ['hp', 'h', 'health']:
             training = "maxhealth"
         training = rpgc.trainingitems.get(training)
-        if training == None:
+        if not training:
             await self.bot.say("Thats not an available training")
             return
         try:

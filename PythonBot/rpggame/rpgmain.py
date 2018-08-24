@@ -3,7 +3,6 @@ import datetime
 import discord
 import logging
 import math
-import numpy
 import os
 import os.path
 import random
@@ -78,7 +77,6 @@ class RPGGame:
             # Pets are added to allow them to attack
             for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
                 attackers += p.pets
-            attacker: rpgchar.RPGCharacter
             for attacker in attackers:
                 if attacker.health > 0:
 
@@ -92,8 +90,8 @@ class RPGGame:
                     # Determine whether the attacker hits and for how much damage
                     if ws < attacker.get_weaponskill():
                         if ws < min(int(attacker.get_weaponskill() / 3), attacker.get_critical()):
-                            damage = int((2 + (numpy.log(
-                                max(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3))) + 1) / pow(
+                            damage = int((2 + (math.log(
+                                min(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3)) + 1)) / pow(
                                 2 * attacker.get_level(), 0.3)) * attacker.get_damage(defender.get_element()))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
@@ -539,7 +537,7 @@ class RPGGame:
             return
 
         try:
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True, errors=errors)
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
         except ValueError:
             user = ctx.message.author
 

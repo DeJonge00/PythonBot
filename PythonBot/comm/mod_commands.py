@@ -76,7 +76,7 @@ class Mod:
             msg = await self.bot.wait_for_message(timeout=180, channel=channel)
             if not msg:
                 return
-            print('Response to farecho ({}, {}, {}): {}'.format(msg.author.encode("ascii", "replace").decode("ascii"),
+            print('Response to farecho ({}, {}, {}): {}'.format(msg.author.name.encode("ascii", "replace").decode("ascii"),
                                                                 server_name.encode("ascii", "replace").decode("ascii"),
                                                                 channel_name.encode("ascii", "replace").decode("ascii"),
                                                                 msg.content.encode("ascii", "replace").decode("ascii")))

@@ -3,7 +3,9 @@
 `words`: literally the word(s) in the brackets (choices separated by a `,`)\
 `{words}`: variable string, describing any word(s) you need\
 `{user}`: Mentioning the user, or giving a name in text (using only characters in a-z, A-Z or 0-9)
-this second will prompt you to choose an option if multiple are found.
+this second will prompt you to choose an option if multiple are found.\
+\
+The response message `Hahaha, no.` indicates that you lack the permissions to use the command.
 
 ### Reactions to messages
 

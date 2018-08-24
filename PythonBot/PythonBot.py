@@ -153,7 +153,6 @@ class PythonBot(Bot):
 
         # Multiple users found, ask user which one he meant
         m = 'Which user did you mean?'
-        u: discord.Member
         for x in range(min(len(users), 10)):
             m += '\n{}) {}'.format(x + 1, users[x].name)
         m = await self.say(m)
@@ -170,7 +169,6 @@ class PythonBot(Bot):
             await self.say(error)
             raise ValueError
         try:
-            r: discord.Message
             num = int(r.content) - 1
             if not (0 <= num < min(10, len(users))):
                 raise ValueError
