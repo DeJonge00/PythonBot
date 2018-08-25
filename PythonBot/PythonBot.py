@@ -102,8 +102,6 @@ class PythonBot(Bot):
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False):
         await log.message(message, 'Command "{}" used'.format(command))
-        if is_typing:
-            await self.send_typing(message.channel)
 
         if message.channel.is_private:
             if cannot_be_private:
@@ -120,6 +118,8 @@ class PythonBot(Bot):
             if delete_message and message.server.id not in self.dont_delete_commands_servers:
                 await self.delete_command_message(message)
 
+        if is_typing:
+            await self.send_typing(message.channel)
         if self.commands_counters.get(command):
             self.commands_counters[command] += 1
         else:

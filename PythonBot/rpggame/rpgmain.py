@@ -67,10 +67,10 @@ class RPGGame:
 
         # Min and max damage
         max_char, _, max_dam, _ = max(report_actions, key=lambda item: item[2])
-        stats = '**{}** did the most damage, namely {}'.format(max_char.name, max_dam)
+        stats = '**{}** did the most damage ({})'.format(max_char.name, max_dam)
         min_char, _, min_dam, _ = min(report_actions, key=lambda item: item[2])
         if min_dam != max_dam:
-            stats += '\n**{}** did the least damage, namely {}'.format(min_char.name, min_dam)
+            stats += '\n**{}** did the least damage({})'.format(min_char.name, min_dam)
 
         battle.append(text)
         return battle, stats
