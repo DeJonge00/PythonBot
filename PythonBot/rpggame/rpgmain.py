@@ -587,11 +587,10 @@ class RPGGame:
             return
 
         try:
-            if len(args) > 0:
-                if args[0] in ['w', 'weapon', 'a', 'armor']:
-                    a = args[1:]
-                else:
-                    a = args
+            if len(args) > 0 and args[0] in ['w', 'weapon', 'a', 'armor']:
+                a = args[1:]
+            else:
+                a = args
             user = await self.bot.get_member_from_message(message=ctx.message, args=a, errors=None, in_text=True)
         except ValueError:
             user = ctx.message.author
