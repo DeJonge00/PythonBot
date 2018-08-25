@@ -1,11 +1,14 @@
 # Discord Python Bot "Biribiri"
-#### Syntax
+#### Notes
 `words`: literally the word(s) in the brackets (choices separated by a `,`)\
 `{words}`: variable string, describing any word(s) you need\
 `{user}`: Mentioning the user, or giving a name in text (using only characters in a-z, A-Z or 0-9)
 this second will prompt you to choose an option if multiple are found.\
 \
-The response message `Hahaha, no.` indicates that you lack the permissions to use the command.
+The response message `Hahaha, no.` indicates that you lack the permissions to use the command.\
+\
+Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` or message `Nya#2698` to contact me)
+
 
 ### Reactions to messages
 
@@ -98,7 +101,7 @@ The response message `Hahaha, no.` indicates that you lack the permissions to us
 |Name			        |Command, aliases and usage					            |Description
 |---			        |---										            |---
 |toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default
-|(WIP) togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. All commands are enabled by default
+|togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. All commands are enabled by default
 
 
 ### MusicPlayer
@@ -147,8 +150,5 @@ The response message `Hahaha, no.` indicates that you lack the permissions to us
 |               |`s,shop` `item` `{itemnumber}`                         |Buy item number `{itemnumber}`
 |               |`s,shop` `weapon`                                      |Show shop weapon inventory
 |               |`s,shop` `weapon` `{itemnumber}`                       |Buy weapon number `{itemnumber}`
-
-### Developer's note:
-Biribiri is still in development, comments and improvements are welcome (`{prefix}helpserver` to contact me)
 
 [![Discord Bots](https://discordbots.org/api/widget/244410964693221377.svg)](https://discordbots.org/bot/244410964693221377)

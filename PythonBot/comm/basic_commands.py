@@ -70,7 +70,7 @@ class Basics:
         await self.bot.say(random.choice(constants.compliments).format(u=[target.mention]))
 
     # {prefix}countdown time
-    @commands.command(pass_context=1, help="Tag yourself a whole bunch until the timer runs out (dm only)")
+    @commands.command(pass_context=1, help="Get tagged a bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='countdown', must_be_private=True):
             return

@@ -9,7 +9,7 @@ class Config:
         self.patTimes = {}
 
     # {prefix}botstats
-    @commands.command(pass_context=1, help="Toggle whether commands will be deleted in the current server",
+    @commands.command(pass_context=1, help="Toggle whether commands will be deleted here",
                       aliases=['tdc'])
     async def toggledeletecommands(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='toggledeletecommands'):

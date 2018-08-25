@@ -23,7 +23,7 @@ def set_message(func_name: str, serverid: str, channelid: str, message: str):
 
 
 def get_message(func_name: str, serverid: int):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "member_update")
     c = conn.cursor()
     c.execute("SELECT channelID, message FROM {} WHERE serverID=%s".format(func_name), (serverid))
     t = c.fetchone()
