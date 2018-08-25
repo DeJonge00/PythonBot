@@ -70,7 +70,7 @@ class RPGGame:
         stats = '**{}** did the most damage ({})'.format(max_char.name, max_dam)
         min_char, _, min_dam, _ = min(report_actions, key=lambda item: item[2])
         if min_dam != max_dam:
-            stats += '\n**{}** did the least damage({})'.format(min_char.name, min_dam)
+            stats += '\n**{}** did the least damage ({})'.format(min_char.name, min_dam)
 
         battle.append(text)
         return battle, stats
@@ -182,15 +182,18 @@ class RPGGame:
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
             text_length = 0
 
+
+        if healthrep:
+            embed.add_field(name="Health report", value=healthrep)
+            text_length += len(healthrep)
+            if text_length > 900:
+                await self.bot.send_message(channel, embed=embed)
+                embed = discord.Embed(colour=RPG_EMBED_COLOR)
+
         embed.add_field(name="Result", value=result)
-        text_length += len(result)
 
-        if text_length > 900:
-            await self.bot.send_message(channel, embed=embed)
-            embed = discord.Embed(colour=RPG_EMBED_COLOR)
-
-        embed.add_field(name="Health report", value=healthrep)
         await self.bot.send_message(channel, embed=embed)
+
 
         # Switch teams to original positions
         if i % 2 == 1:
@@ -586,8 +589,10 @@ class RPGGame:
         try:
             if len(args) > 0:
                 if args[0] in ['w', 'weapon', 'a', 'armor']:
-                    args = args[1:]
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=None, in_text=True)
+                    a = args[1:]
+                else:
+                    a = args
+            user = await self.bot.get_member_from_message(message=ctx.message, args=a, errors=None, in_text=True)
         except ValueError:
             user = ctx.message.author
 
