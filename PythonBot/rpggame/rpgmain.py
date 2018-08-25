@@ -91,7 +91,7 @@ class RPGGame:
                     if ws < attacker.get_weaponskill():
                         if ws < min(int(attacker.get_weaponskill() / 3), attacker.get_critical()):
                             damage = int((2 + (math.log(
-                                min(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3)) + 1)) / pow(
+                                max(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3)) + 1)) / pow(
                                 2 * attacker.get_level(), 0.3)) * attacker.get_damage(defender.get_element()))
                             battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
                                                                                                    defender.name,
@@ -537,7 +537,7 @@ class RPGGame:
             return
 
         try:
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True)
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=None)
         except ValueError:
             user = ctx.message.author
 

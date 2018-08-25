@@ -14,7 +14,7 @@ class Config:
         if not await self.bot.pre_command(message=ctx.message, command='botstats'):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not ((ctx.message.author.id == constants.NYAid) or (perms.administrator)):
+        if not ((ctx.message.author.id == constants.NYAid) or (perms.manage_messages)):
             await self.bot.say("Hahahaha, no")
             return
 

@@ -92,6 +92,7 @@ class PythonBot(Bot):
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False):
+        log.message(message, 'Command "{}" used'.format(command))
         if is_typing:
             await self.send_typing(message.channel)
 
@@ -102,6 +103,7 @@ class PythonBot(Bot):
         else:
             if must_be_private:
                 await self.send_message(message.channel, 'This command has to be used in a private conversation')
+                return False
             if delete_message and message.server.id not in self.dont_delete_commands_servers:
                 await self.delete_command_message(message)
             if not self.command_allowed_in_server(command_name=command, serverid=message.server.id):
@@ -135,8 +137,9 @@ class PythonBot(Bot):
             return message.author
 
         if not in_text:
-            error = errors.get('no_mention') if errors.get('no_mention') else 'Please mention a user'
-            await self.send_message(message.channel, error)
+            if errors:
+                error = errors.get('no_mention') if errors.get('no_mention') else 'Please mention a user'
+                await self.send_message(message.channel, error)
             raise ValueError
 
         name = PythonBot.prep_str(' '.join(args)).lower()
@@ -145,8 +148,9 @@ class PythonBot(Bot):
         users.sort(key=lambda s: len(s.name))
 
         if len(users) <= 0:
-            error = errors.get('no_users') if errors.get('no_users') else 'I could not find a user with that name'
-            await self.say(error)
+            if errors:
+                error = errors.get('no_users') if errors.get('no_users') else 'I could not find a user with that name'
+                await self.say(error)
             raise ValueError
         if len(users) == 1:
             return users[0]
@@ -165,8 +169,9 @@ class PythonBot(Bot):
                 await self.delete_message(r)
 
         if not r:
-            error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
-            await self.say(error)
+            if errors:
+                error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
+                await self.say(error)
             raise ValueError
         try:
             num = int(r.content) - 1
