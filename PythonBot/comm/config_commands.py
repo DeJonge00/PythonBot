@@ -12,7 +12,7 @@ class Config:
     @commands.command(pass_context=1, help="Toggle whether commands will be deleted here",
                       aliases=['tdc'])
     async def toggledeletecommands(self, ctx):
-        if not await self.bot.pre_command(message=ctx.message, command='toggledeletecommands'):
+        if not await self.bot.pre_command(message=ctx.message, command='toggledeletecommands', cannot_be_private=True):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not ((ctx.message.author.id == constants.NYAid) or (perms.manage_messages)):
@@ -28,7 +28,7 @@ class Config:
 
     @commands.command(pass_context=1, help="Toggle whether a specific commands can be used here", aliases=['tc'])
     async def togglecommand(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='togglecommand'):
+        if not await self.bot.pre_command(message=ctx.message, command='togglecommand', cannot_be_private=True):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if not (ctx.message.author.id == constants.NYAid or perms.manage_channels or perms.administrator):
