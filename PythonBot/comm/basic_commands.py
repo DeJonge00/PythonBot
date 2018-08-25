@@ -405,7 +405,7 @@ class Basics:
             await self.bot.say("I dont have the perms for that sadly...")
 
     # {prefix}serverinfo
-    @commands.command(pass_context=1, help="Get the server's information!")
+    @commands.command(pass_context=1, help="Get the server's information!", aliases=['serverstats'])
     async def serverinfo(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='serverinfo', cannot_be_private=True):
             return

@@ -55,3 +55,31 @@ def set_do_not_delete_commands(serverids: [str]):
         c.execute("INSERT INTO do_not_delete_commands VALUES (%s)", (id,))
     conn.commit()
     conn.close()
+
+
+# Banned commands table
+def get_banned_commands(type: str) -> dict:
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
+    c = conn.cursor()
+    c.execute("SELECT {0}id, command FROM {0}_banned_commands".format(type))
+    t = c.fetchall()
+    conn.commit()
+    conn.close()
+    if not t:
+        return {}
+
+    result = {}
+    for identifier, command in t:
+        result.setdefault(identifier, []).append(command)
+    return result
+
+
+def set_banned_commands(type: str, commands: {str: [str]}):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
+    c = conn.cursor()
+    c.execute("TRUNCATE TABLE {0}_banned_commands".format(type))
+    for identifier in commands.keys():
+        for command in commands.get(identifier):
+            c.execute("INSERT INTO {0}_banned_commands VALUES (%s, %s)".format(type), (identifier, command))
+    conn.commit()
+    conn.close()

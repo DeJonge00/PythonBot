@@ -20,7 +20,7 @@ The response message `Hahaha, no.` indicates that you lack the permissions to us
 
 |Name			|Command, aliases and usage					            |Description
 |---			|---										            |---
-|botstats       |`botstats`                                             |Show stats of the bot in an embed
+|botstats       |`botstats,botinfo`                                     |Show stats of the bot in an embed
 |cast        	|`cast` `{user}`                                        |Cast a spell targeted at `{user}`
 |compliment  	|`compliment` `{user}`                                  |Give `{user}` a compliment
 |countdown      |`countdown` `{seconds}`                                |Ping on times until the seconds run out (dms only for spam reasons)
@@ -37,7 +37,7 @@ The response message `Hahaha, no.` indicates that you lack the permissions to us
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
-|serverinfo  	|`serverinfo`                                           |Get the server's information
+|serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
 |urban       	|`urban,us,urbandictionary` `{query}`                   |Search urbandictionary for `{query}`
 |userinfo    	|`userinfo,user,info` `{user}`                          |Get `{user}`'s information
 |wikipedia   	|`wikipedia,wiki` `{query}`                             |Search wikipedia for `{query}`
@@ -93,6 +93,13 @@ The response message `Hahaha, no.` indicates that you lack the permissions to us
 |nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person
 |banish      	|`banish` `{user}`                                      |Ban `{user}`
 |purge       	|`purge` `{amount}` `{user}`                            |Remove `{user}`'s messages (all if user is not given) from the past `{amount}` messages
+
+### Config
+|Name			        |Command, aliases and usage					            |Description
+|---			        |---										            |---
+|toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default
+|(WIP) togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. All commands are enabled by default
+
 
 ### MusicPlayer
 

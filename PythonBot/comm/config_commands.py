@@ -38,14 +38,17 @@ class Config:
             await self.bot.say('Please give me either "server" or "channel" followed by the name of the command')
             return
 
-        comm = self.bot.commands
-        for name in args[1:]:
-            comm = comm.get(name, {})
-
-        if not comm:
+        # Find if comand exists and convert possible aliases
+        comm = self.bot
+        try:
+            for name in args[1:]:
+                comm = comm.commands.get(name)
+        except AttributeError:
             await self.bot.say('I do not recognize that command name. Maybe you used an alias?')
             return
+        name = comm.name
 
+        # Lookup spot in the bot commands_banned_in dictionary
         if not self.bot.commands_banned_in.get(args[0]):
             self.bot.commands_banned_in[args[0]] = {}
         cs = self.bot.commands_banned_in.get(args[0])
@@ -53,7 +56,11 @@ class Config:
         if not cs.get(identifier):
             cs[identifier] = []
         cs = cs.get(identifier)
-        name = ' '.join(args[1:])
+
+        # Add or remove command
+        if name == 'togglecommand':
+            await self.bot.say('Wow... just wow')
+            return
         if name in cs:
             cs.remove(name)
             await self.bot.say('Command "{}" is now unbanned from this {}'.format(name, args[0]))

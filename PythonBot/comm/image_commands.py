@@ -19,13 +19,13 @@ class Images:
 
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
-    async def pp(self, ctx):
+    async def pp(self, ctx, args):
         if not await self.bot.pre_command(message=ctx.message, command='pp'):
             return
-        if len(ctx.message.mentions) <= 0:
+        try:
+            user = await self.bot.get_member_from_message(ctx.message, args, in_text=True, errors=None)
+        except ValueError:
             user = ctx.message.author
-        else:
-            user = ctx.message.mentions[0]
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=str(user.name))
         embed.set_image(url=user.avatar_url)
