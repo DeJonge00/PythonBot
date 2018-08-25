@@ -139,6 +139,8 @@ class Basics:
             return
         await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
 
+    # TODO Simple embed command
+
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")
     async def emoji(self, ctx, *args):

@@ -90,17 +90,14 @@ class PythonBot(Bot):
         except discord.ext.commands.errors.CommandInvokeError:
             pass
 
-    def command_allowed_in(self, type: str, command_name: str, id: str):
-        banned_commands = self.commands_banned_in.get(type).get(id)
-        if not banned_commands:
-            return True
-        return command_name not in banned_commands
+    def command_allowed_in(self, type: str, command_name: str, identifier: str):
+        return command_name not in self.commands_banned_in.get(type, {}).get(identifier, [])
 
     def command_allowed_in_server(self, command_name: str, serverid: str):
-        self.command_allowed_in('server', command_name, serverid)
+        return self.command_allowed_in('server', command_name, serverid)
 
     def command_allowed_in_channel(self, command_name: str, channelid: str):
-        self.command_allowed_in('channel', command_name, channelid)
+        return self.command_allowed_in('channel', command_name, channelid)
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False):
@@ -116,10 +113,12 @@ class PythonBot(Bot):
             if must_be_private:
                 await self.send_message(message.channel, 'This command has to be used in a private conversation')
                 return False
+            if not self.command_allowed_in_server(command, message.server.id):
+                return False
+            if not self.command_allowed_in_channel(command, message.channel.id):
+                return False
             if delete_message and message.server.id not in self.dont_delete_commands_servers:
                 await self.delete_command_message(message)
-            if not self.command_allowed_in_server(command_name=command, id=message.server.id):
-                return False
 
         if self.commands_counters.get(command):
             self.commands_counters[command] += 1
