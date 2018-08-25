@@ -92,7 +92,7 @@ class PythonBot(Bot):
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False):
-        log.message(message, 'Command "{}" used'.format(command))
+        await log.message(message, 'Command "{}" used'.format(command))
         if is_typing:
             await self.send_typing(message.channel)
 
@@ -201,6 +201,7 @@ class PythonBot(Bot):
         self.running = False
         for key in self.commands_counters.keys():
             print('Command "{}" was used {} times'.format(key, self.commands_counters.get(key)))
+        dbconnect.set_do_not_delete_commands(self.dont_delete_commands_servers)
         if self.RPGGAME:
             self.rpggame.quit()
         if self.MUSIC:
@@ -214,7 +215,7 @@ class PythonBot(Bot):
             return
         channel, mes = response
         embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User {}!".format(bot.str_cmd(text)), value=mes.format(member.mention))
+        embed.add_field(name="User {}!".format(self.prep_str_for_print(text)), value=mes.format(member.mention))
         channel = self.get_channel(channel)
         if not channel:
             print('CHANNEL NOT FOUND')
@@ -232,6 +233,7 @@ def init_bot():
     bot = PythonBot()
     logging.basicConfig()
     initCogs(bot)
+    bot.dont_delete_commands_servers = dbconnect.get_do_not_delete_commands()
     bot.loop.create_task(bot.timeLoop())
 
     @bot.event
@@ -264,21 +266,20 @@ def init_bot():
         try:
             await bot.process_commands(message)
         except discord.errors.Forbidden:
-            bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
-        # Pics
-        if len(message.attachments) > 0:
-            await message_handler.new_pic(bot, message)
+            await log.message(message, 'Forbidden Exception')
+            pass
+            await bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
         # Send message to rpggame for exp
         if bot.RPGGAME:
             await bot.rpggame.handle(message)
 
-    @bot.event
-    async def on_message_edit(before, after):
-        await message_handler.edit(before)
-
-    @bot.event
-    async def on_message_delete(message):
-        await message_handler.deleted(message)
+    # @bot.event
+    # async def on_message_edit(before, after):
+    #     await message_handler.edit(before)
+    #
+    # @bot.event
+    # async def on_message_delete(message):
+    #     await message_handler.deleted(message)
 
     @bot.event
     async def on_member_join(member: discord.Member):
@@ -335,40 +336,6 @@ def init_bot():
             changed = True
         if changed:
             await log.error(m, filename=before.server.name, serverid=before.server.id)
-
-    @bot.event
-    async def on_server_update(before, after):
-        m = "server " + before.name + " updated: "
-        if before.name != after.name:
-            m += " name from: " + before.name + " to: " + after.name
-        for r in before.roles:
-            if not r in after.roles:
-                m += " -role: " + r.name
-        for r in after.roles:
-            if not r in before.roles:
-                m += " +role: " + r.name
-        if before.region != after.region:
-            m += " region from: " + str(before.region) + " to: " + str(after.region)
-        if not m == "server " + before.name + " updated: ":
-            await log.error(m, filename=before.name, serverid=before.id)
-
-    @bot.event
-    async def on_server_role_update(before, after):
-        m = "Role " + before.name + " updated: "
-        if before.name != after.name:
-            m += " name from: " + before.name + " to: " + after.name
-        for r in before.permissions:
-            if not r in after.permissions:
-                x, y = r
-                if y:
-                    m += " -permission: " + x
-        for r in after.permissions:
-            if not r in before.permissions:
-                x, y = r
-                if y:
-                    m += " +permission: " + x
-        if not m == "role " + before.name + " updated: ":
-            await log.error(m, filename=before.name, serverid=before.server.id)
 
     @bot.event
     async def on_reaction_add(reaction, user):

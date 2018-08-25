@@ -4,13 +4,15 @@ from secret import secrets
 
 # Welcome
 def set_message(func_name: str, serverid: str, channelid: str, message: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "member_update", charset="utf8", use_unicode=True)
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "member_update", charset="utf8",
+                           use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT serverID FROM {} WHERE serverID=%s".format(func_name), (serverid))
     t = c.fetchone()
     if t:
         if message:
-            c.execute("UPDATE {} SET channelID=%s, message=%s WHERE serverID=%s".format(func_name), (channelid, message, serverid))
+            c.execute("UPDATE {} SET channelID=%s, message=%s WHERE serverID=%s".format(func_name),
+                      (channelid, message, serverid))
         else:
             c.execute("DELETE FROM {} WHERE serverID=%s".format(func_name), (serverid))
     else:
@@ -20,8 +22,8 @@ def set_message(func_name: str, serverid: str, channelid: str, message: str):
     conn.close()
 
 
-def get_message(func_name: str, serverid : int):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "member_update")
+def get_message(func_name: str, serverid: int):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
     c = conn.cursor()
     c.execute("SELECT channelID, message FROM {} WHERE serverID=%s".format(func_name), (serverid))
     t = c.fetchone()
@@ -30,3 +32,26 @@ def get_message(func_name: str, serverid : int):
     if t:
         return t
     return None
+
+
+# Do not delete commands table
+def get_do_not_delete_commands():
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
+    c = conn.cursor()
+    c.execute("SELECT serverid FROM do_not_delete_commands")
+    t = c.fetchall()
+    conn.commit()
+    conn.close()
+    if not t:
+        return []
+    return [str(x[0]) for x in t]
+
+
+def set_do_not_delete_commands(serverids: [str]):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "commands")
+    c = conn.cursor()
+    c.execute("TRUNCATE TABLE do_not_delete_commands")
+    for id in serverids:
+        c.execute("INSERT INTO do_not_delete_commands VALUES (%s)", (id,))
+    conn.commit()
+    conn.close()

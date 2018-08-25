@@ -15,6 +15,7 @@ from discord.ext import commands
 from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc
 from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
+from rpggame.rpgcharacter import RPGCharacter
 from rpggame.rpgpet import RPGPet
 from secret.secrets import prefix, font_path
 
@@ -32,14 +33,48 @@ class RPGGame:
         self.game_init()
 
     @staticmethod
-    def add_health_rep(embed: discord.Embed, players: [rpgchar.RPGCharacter]):
+    def add_health_rep(embed: discord.Embed, players: [RPGCharacter]):
         health_report = ""
         for m in players:
             health_report += m.name + " ({})\n".format(m.health)
         if len(health_report) > 0:
             embed.add_field(name="Health report", value=health_report, inline=False)
 
-    async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [rpgchar.RPGCharacter],
+    @staticmethod
+    def construct_battle_report(title_length: int, report_actions: [(RPGCharacter, RPGCharacter, int, bool)]) -> list:
+        result = []
+        text = ''
+        for i in range(len(report_actions)):
+            attacker, defender, damage, crit = report_actions[i]
+            consecutive_attacks = 1
+            consecutive_crits = 1 if crit else 0
+
+            # Group consecutive hits for space
+            while i < len(report_actions) and report_actions[i][0].name == attacker.name and report_actions[i][1].name == defender.name:
+                damage += report_actions[i][2]
+                consecutive_attacks += 1
+                if report_actions[i][3]:
+                    consecutive_crits += 1
+                i += 1
+
+            text += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name, damage)
+
+            if consecutive_attacks > 1:
+                text += ' with {} hits'.format(consecutive_attacks)
+            if consecutive_crits == 1:
+                text += ', a critical!'
+            if consecutive_crits > 1:
+                text += ', {} criticals!'.format(consecutive_crits)
+
+            # Split up message because of discords character limit
+            if len(text) > (900 if len(result) > 0 else 900 - title_length):
+                result.append(text)
+                text = ''
+        result.append(text)
+
+        return result
+
+    async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [RPGCharacter],
                              p2: [RPGMonster], short=False, thumbnail=None):
 
         # Gather report header information
@@ -57,7 +92,7 @@ class RPGGame:
         else:
             title += "A party of {}".format(len(p2))
         embed.add_field(name=battle_name, value=title, inline=False)
-        battle_report = ""
+        battle_report = []
         i = 0
 
         # Save healthvalues in case of mockbattle
@@ -75,7 +110,7 @@ class RPGGame:
             attackers = list(p1)
 
             # Pets are added to allow them to attack
-            for p in [x for x in p1 if isinstance(x, RPGPlayer)]:
+            for p in [x for x in p1 if isinstance(x, RPGPlayer) and x.health > 0]:
                 attackers += p.pets
             for attacker in attackers:
                 if attacker.health > 0:
@@ -93,15 +128,14 @@ class RPGGame:
                             damage = int((2 + (math.log(
                                 max(0, attacker.get_critical() - int(attacker.get_weaponskill() / 3)) + 1)) / pow(
                                 2 * attacker.get_level(), 0.3)) * attacker.get_damage(defender.get_element()))
-                            battle_report += "\nCritical hit! **{}** hit **{}** for **{}**".format(attacker.name,
-                                                                                                   defender.name,
-                                                                                                   damage)
+                            battle_report.append((attacker, defender, damage, True,))
+
                         else:
                             damage = int(math.floor(
                                 math.sqrt(random.randint(100, 400) / 100) * attacker.get_damage(
                                     defender.get_element())))
-                            battle_report += "\n**{}** attacked **{}** for **{}**".format(attacker.name, defender.name,
-                                                                                          damage)
+                            battle_report.append((attacker, defender, damage, False,))
+
                         defender.add_health(-1 * damage, death=not (battle_name == "Mockbattle"))
 
             # Switch attackers and defenders roles
@@ -109,12 +143,15 @@ class RPGGame:
             p1 = p2
             p2 = p3
             i += 1
-        if len(battle_report) > 1000:
-            print(battle_report)
-            short = True
-        if not short:
-            if len(battle_report) > 0:
-                embed.add_field(name="Battle report", value=battle_report, inline=False)
+
+        battle_report_text = self.construct_battle_report(len(title), battle_report)
+
+        for i in range(len(battle_report_text) - 1):
+            embed.add_field(name="Battle report", value=battle_report_text[i], inline=False)
+            await self.bot.send_message(channel, embed=embed)
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+
+        embed.add_field(name="Battle report", value=battle_report_text[-1], inline=False)
         if sum([x.health for x in p1]) <= 0:
             if (len(p1) == 1) and (len(p2) == 1):
                 embed.add_field(name="Result",
@@ -150,13 +187,9 @@ class RPGGame:
         try:
             await self.bot.send_message(channel, embed=embed)
         except discord.errors.HTTPException:
-            try:
-                await self.bot.send_message(channel, title)
-                await self.bot.send_message(channel, battle_report)
-            except discord.errors.HTTPException:
-                await self.bot.send_message(channel, "Unable to post battlereport ~~plsdontkillme~~")
-                print(title)
-                print(battle_report)
+            await self.bot.send_message(channel, "Unable to post battlereport ~~plsdontkillme~~")
+            print(title)
+            print(battle_report)
 
         # Return who won
         # Winning means having dealt a higher percentage of damage
@@ -537,7 +570,10 @@ class RPGGame:
             return
 
         try:
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=None)
+            if len(args) > 0:
+                if args[0] in ['w', 'weapon', 'a', 'armor']:
+                    args = args[1:]
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=None, in_text=True)
         except ValueError:
             user = ctx.message.author
 
@@ -785,14 +821,16 @@ class RPGGame:
 
         if len(args) <= 0:
             while data.levelups > 0:
-                await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+2 ws\n3)\t+30 damage")
-                m = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
-                if not m:
+                m = await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+2 ws\n3)\t+30 damage")
+                r = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
+                await self.bot.delete_command_message(m)
+                if not r:
                     return
                 try:
-                    num = int(m.content)
+                    num = int(r.content)
                     if await self.add_levelup(data, ctx.message.channel, num):
                         data.levelups -= 1
+                    await self.bot.delete_command_message(r)
                 except ValueError:
                     return
         else:
