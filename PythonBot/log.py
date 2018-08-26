@@ -35,7 +35,7 @@ async def message(mess: discord.Message, action: str, number=0):
         channelname = mess.channel.name
     file = open("logs/" + str_cmd(servername.replace('/', '')) + ".txt", "a+")
     if action == "pic":
-        text = "{} | {} | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(servername), str_cmd(channelname), str_cmd(mess.author.name), number)
+        text = "{} | {} | {} | {} posted a pic: {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(servername), str_cmd(channelname), str_cmd(str(mess.author)), number)
     else:
         cont = mess.content
         if not mess.channel.is_private:
@@ -45,7 +45,7 @@ async def message(mess: discord.Message, action: str, number=0):
                     cont = cont.replace(user.mention, "@" + user.name)
                 except AttributeError:
                     pass
-        text = "{} | {} | {} | {} | {} : {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(servername), str_cmd(channelname), str_cmd(mess.author.name), action, str_cmd(cont))
+        text = "{} | {} | {} | {} | {} : {}".format(mess.timestamp.strftime("%H:%M:%S"), str_cmd(servername), str_cmd(channelname), str_cmd(str(mess.author)), action, str_cmd(cont))
     file.write(text + "\n")
     print(text)
     file.close()
