@@ -242,8 +242,11 @@ class Basics:
             m = "You could just leave yourself if you want to go :thinking:"
             await self.bot.say(m)
             return
-
-        await self.bot.on_member_message(target, "on_member_remove", 'left')
+        if not await self.bot.on_member_message(target, "on_member_remove", 'left'):
+            embed = discord.Embed(colour=0xFF0000)
+            embed.add_field(name="User left",
+                            value="\"" + target.display_name + "\" just left. Byebye, you will not be missed!")
+            await self.bot.say(embed=embed)
 
     # {prefix}kill <person>
     @commands.command(pass_context=1, help="Wish someone a happy death! (is a bit explicit)")

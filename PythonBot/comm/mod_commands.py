@@ -183,7 +183,7 @@ class Mod:
         if len(" ".join(args)) > 120:
             await self.bot.say("Sorry, this message is too long...")
             return
-        if re.match('.*{.*}.*', " ".join(args)):
+        if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
         dbconnect.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
@@ -204,7 +204,7 @@ class Mod:
         if len(" ".join(args)) > 120:
             await self.bot.say("Sorry, this message is too long...")
             return
-        if re.match('.*{.*}.*', " ".join(args)):
+        if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
         dbconnect.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
