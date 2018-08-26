@@ -91,7 +91,7 @@ class PythonBot(Bot):
             pass
 
     def command_allowed_in(self, type: str, command_name: str, identifier: str):
-        return command_name not in self.commands_banned_in.get(type, {}).get(identifier, [])
+        return command_name == 'togglecommand' or not any(set([command_name, 'all']).intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
 
     def command_allowed_in_server(self, command_name: str, serverid: str):
         return self.command_allowed_in('server', command_name, serverid)
@@ -224,19 +224,19 @@ class PythonBot(Bot):
         if self.MUSIC:
             await self.musicplayer.quit()
 
-    async def on_member_message(self, member, func_name, text):
+    async def on_member_message(self, member, func_name, text) -> bool:
         await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name,
                         serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
         if not response:
-            return
+            return False
         channel, mes = response
         embed = discord.Embed(colour=0xFF0000)
         embed.add_field(name="User {}!".format(self.prep_str_for_print(text)), value=mes.format(member.mention))
         channel = self.get_channel(channel)
         if not channel:
             print('CHANNEL NOT FOUND')
-            return
+            return False
         m = await self.send_message(channel, embed=embed)
         if REMOVE_JOIN_MESSAGE:
             await asyncio.sleep(30)
@@ -244,6 +244,7 @@ class PythonBot(Bot):
                 await self.delete_message(m)
             except discord.Forbidden:
                 print(member.server + " | No permission to delete messages")
+        return True
 
 
 def init_bot():

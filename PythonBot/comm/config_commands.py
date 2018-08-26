@@ -38,15 +38,20 @@ class Config:
             await self.bot.say('Please give me either "server" or "channel" followed by the name of the command')
             return
 
-        # Find if comand exists and convert possible aliases
-        comm = self.bot
-        try:
-            for name in args[1:]:
-                comm = comm.commands.get(name)
-        except AttributeError:
-            await self.bot.say('I do not recognize that command name. Maybe you used an alias?')
-            return
-        name = comm.name
+        # Find if command exists and convert possible aliases
+        if args[1] == 'all':
+            name = 'all'
+            text = 'All commands'
+        else:
+            comm = self.bot
+            try:
+                for name in args[1:]:
+                    comm = comm.commands.get(name)
+            except AttributeError:
+                await self.bot.say('I do not recognize that command name. Maybe you used an alias?')
+                return
+            name = comm.name
+            text = 'Command "{}" is'.format(name)
 
         # Lookup spot in the bot commands_banned_in dictionary
         if not self.bot.commands_banned_in.get(args[0]):
@@ -63,7 +68,7 @@ class Config:
             return
         if name in cs:
             cs.remove(name)
-            await self.bot.say('Command "{}" is now unbanned from this {}'.format(name, args[0]))
+            await self.bot.say('{} now unbanned from this {}'.format(text, args[0]))
         else:
             cs.append(name)
-            await self.bot.say('Command "{}" is now banned from this {}'.format(name, args[0]))
+            await self.bot.say('{} now banned from this {}'.format(text, args[0]))
