@@ -132,10 +132,11 @@ class Hangman:
                 await self.bot.delete_message(self.prev.get(channel.server.id))
             except discord.Forbidden:
                 print(m.server.name + " | No permission to delete messages")
-        if game.faults >= 6:
-            self.prev[channel.server.id] = None
-        else:
-            self.prev[channel.server.id] = m
+        if not channel.is_private:
+            if game.faults >= 6:
+                self.prev[channel.server.id] = None
+            else:
+                self.prev[channel.server.id] = m
 
     @staticmethod
     def is_private_check(msg):

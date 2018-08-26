@@ -17,7 +17,7 @@ class Mod:
         if not await self.bot.pre_command(message=ctx.message, command='banish'):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not ((ctx.message.author.id == constants.NYAid) or (perms.kick_members)):
+        if not ((ctx.message.author.id == constants.NYAid) or perms.kick_members or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         for user in ctx.message.mentions:
@@ -83,7 +83,7 @@ class Mod:
 
     # {prefix}getServerList 
     @commands.command(pass_context=1, hidden=1, help="getServerList")
-    async def getserverlist(self, ctx, *args):
+    async def getserverlist(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='getserverlist'):
             return
         if not (ctx.message.author.id == constants.NYAid):
@@ -97,7 +97,7 @@ class Mod:
 
     # {prefix}newpp <attach new pp>
     @commands.command(pass_context=1, help="Give me a new look")
-    async def newpp(self, ctx, *args):
+    async def newpp(self, ctx):
         if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
             await self.bot.say("Hahahaha, no")
             return
@@ -138,12 +138,12 @@ class Mod:
         perms = ctx.message.channel.permissions_for(ctx.message.author)
         if len(ctx.message.mentions) > 0:
             if len(args) > 1:
-                if not ((ctx.message.author.id == constants.NYAid) | (perms.manage_nicknames)):
+                if not (ctx.message.author.id == constants.NYAid or perms.manage_nicknames or perms.administrator):
                     await self.bot.say("Hahahaha, no")
                     return
                 await self.bot.change_nickname(ctx.message.mentions[0], " ".join(args[1:]))
             else:
-                if not ((ctx.message.author.id == constants.NYAid) | (perms.change_nickname)):
+                if not (ctx.message.author.id == constants.NYAid or perms.change_nickname or perms.administrator):
                     await self.bot.say("Hahahaha, no")
                     return
                 await self.bot.change_nickname(ctx.message.mentions[0], "")
@@ -154,7 +154,7 @@ class Mod:
         if not await self.bot.pre_command(message=ctx.message, command='purge', is_typing=False):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not ((ctx.message.author.id == constants.NYAid) | (perms.manage_messages)):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_messages or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         if len(args) > 0:
@@ -177,7 +177,7 @@ class Mod:
         if not await self.bot.pre_command(message=ctx.message, command='setgoodbye'):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_server or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         if len(" ".join(args)) > 120:
@@ -198,7 +198,7 @@ class Mod:
         if not await self.bot.pre_command(message=ctx.message, command='setwelcome'):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not (ctx.message.author.id == constants.NYAid or perms.manage_server):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_server or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         if len(" ".join(args)) > 120:
@@ -233,7 +233,7 @@ class Mod:
 
     # {prefix}spongespam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the spongespam list")
-    async def spongespam(self, ctx, *args):
+    async def spongespam(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='spongespam'):
             return
         if not (ctx.message.author.id == constants.NYAid):
@@ -266,7 +266,7 @@ class Mod:
 
     # Test command
     @commands.command(pass_context=1, hidden=1, help="test")
-    async def test(self, ctx, *args):
+    async def test(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='test', delete_message=False):
             return
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):

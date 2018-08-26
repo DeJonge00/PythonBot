@@ -15,7 +15,7 @@ class Config:
         if not await self.bot.pre_command(message=ctx.message, command='toggledeletecommands', cannot_be_private=True):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not ((ctx.message.author.id == constants.NYAid) or (perms.manage_messages)):
+        if not ((ctx.message.author.id == constants.NYAid) or perms.manage_channels or perms.manage_messages or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
 
@@ -31,7 +31,7 @@ class Config:
         if not await self.bot.pre_command(message=ctx.message, command='togglecommand', cannot_be_private=True):
             return
         perms = ctx.message.channel.permissions_for(ctx.message.author)
-        if not (ctx.message.author.id == constants.NYAid or perms.manage_channels or perms.administrator):
+        if not (ctx.message.author.id == constants.NYAid or perms.manage_channels or perms.manage_messages or perms.administrator):
             await self.bot.say("Hahahaha, no")
             return
         if len(args) <= 1 or args[0] not in ['server', 'channel']:

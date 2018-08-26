@@ -89,19 +89,19 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 
 ### Mod
 
-|Name			|Command, aliases and usage					            |Description
-|---			|---										            |---
-|setwelcome  	|`setwelome` `{message}`                                |Sets a welcome message
-|setgoodbye  	|`setgoodbye` `{message}`                               |Sets a goodbye message
-|nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person
-|banish      	|`banish` `{user}`                                      |Ban `{user}`
-|purge       	|`purge` `{amount}` `{user}`                            |Remove `{user}`'s messages (all if user is not given) from the past `{amount}` messages
+|Name			|Command, aliases and usage					            |Description                                                                                |Permissions needed
+|---			|---										            |---                                                                                        |---
+|banish      	|`banish` `{user}`                                      |Ban `{user}`                                                                               |kick_members
+|nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person                                                                          |change_nickname, manage_nicknames
+|setwelcome  	|`setwelome` `{message}`                                |Sets a welcome message                                                                     |manage_server
+|setgoodbye  	|`setgoodbye` `{message}`                               |Sets a goodbye message                                                                     |manage_server
+|purge       	|`purge` `{amount}` `{user}`                            |Remove `{user}`'s messages (all if user is not given) from the past `{amount}` messages    |manage_messages
 
 ### Config
-|Name			        |Command, aliases and usage					            |Description
-|---			        |---										            |---
-|toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default
-|togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. All commands are enabled by default
+|Name			        |Command, aliases and usage					            |                                                                                                                                   |Permissions needed
+|---			        |---										            |---                                                                                                                                |---
+|toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default                                                          |manage_channels, manage_messages
+|togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. All commands are enabled by default      |manage_channels, manage_messages
 
 
 ### MusicPlayer
