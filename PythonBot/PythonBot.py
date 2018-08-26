@@ -81,13 +81,7 @@ class PythonBot(Bot):
         try:
             if not message.channel.is_private:
                 await self.delete_message(message)
-        except discord.Forbidden:
-            print("{} | {} | {} | member {}, no perms to delete message: {}".format(
-                datetime.datetime.utcnow().strftime("%H:%M:%S"), PythonBot.prep_str_for_print(message.server.name),
-                PythonBot.prep_str_for_print(message.channel.name),
-                PythonBot.prep_str_for_print(message.author.name),
-                PythonBot.prep_str_for_print(message.content)))
-        except discord.ext.commands.errors.CommandInvokeError:
+        except (discord.Forbidden, discord.ext.commands.errors.CommandInvokeError):
             pass
 
     def command_allowed_in(self, type: str, command_name: str, identifier: str):

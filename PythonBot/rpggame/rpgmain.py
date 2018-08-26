@@ -43,7 +43,7 @@ class RPGGame:
 
     @staticmethod
     def construct_battle_report(title_length: int, report_actions: [(RPGCharacter, RPGCharacter, int, bool)]) -> (
-    list, str):
+            list, str):
         battle = []
         text = ''
 
@@ -151,7 +151,8 @@ class RPGGame:
         # Calculate result of the battle
         if sum([x.health for x in p1]) <= 0:
             if (len(p1) == 1) and (len(p2) == 1):
-                result = "{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name,p2[0].health,p1[0].name)
+                result = "{} ({}) laughs while walking away from {}'s corpse".format(p2[0].name, p2[0].health,
+                                                                                     p1[0].name)
                 healthrep = None
             else:
                 result = "{}'s party completely slaughtered {}'s party".format(p2[0].name, p1[0].name)
@@ -182,7 +183,6 @@ class RPGGame:
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
             text_length = 0
 
-
         if healthrep:
             embed.add_field(name="Health report", value=healthrep)
             text_length += len(healthrep)
@@ -193,7 +193,6 @@ class RPGGame:
         embed.add_field(name="Result", value=result)
 
         await self.bot.send_message(channel, embed=embed)
-
 
         # Switch teams to original positions
         if i % 2 == 1:
@@ -1151,3 +1150,18 @@ class RPGGame:
                                                                                     pet.get_weaponskill())
             embed.add_field(name=pet.name, value=stats)
         await self.bot.say(embed=embed)
+
+    @rpg.command(pass_context=1, hidden=True, aliases=['resetbusy'])
+    async def clearbusy(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='rpg clearbusy'):
+            return
+        if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
+            await self.bot.say("Hahahaha, no")
+            return
+        try:
+            user = await self.bot.get_member_from_message(ctx.message, args, in_text=True, errors=None)
+        except ValueError:
+            user = ctx.message.author
+        data = self.get_player_data(user.id, name=user.display_name)
+        data.reset_busy()
+        await self.bot.say('Busy status of player"{}" reset'.format(user.display_name))
