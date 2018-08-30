@@ -143,7 +143,7 @@ class PythonBot(Bot):
         if len(message.mentions) > 0:
             return message.mentions[0]
 
-        if len(args) <= 0 or message.channel.is_private:
+        if len(args) <= 0 or (message.channel.is_private and not from_all_members):
             return message.author
 
         if not in_text:
@@ -253,7 +253,6 @@ def init_bot():
     bot.dont_delete_commands_servers = dbconnect.get_do_not_delete_commands()
     bot.commands_banned_in['server'] = dbconnect.get_banned_commands('server')
     bot.commands_banned_in['channel'] = dbconnect.get_banned_commands('channel')
-    # TODO Get banned commands from database
     bot.loop.create_task(bot.timeLoop())
 
     @bot.event

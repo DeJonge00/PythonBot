@@ -1,6 +1,6 @@
 import asyncio
 import constants
-import datetime
+from datetime import datetime
 import discord
 import random
 import re
@@ -139,7 +139,21 @@ class Basics:
             return
         await self.bot.send_message(ctx.message.channel, ctx.message.author.mention + " b-b-baka!")
 
-    # TODO Simple embed command
+    # {prefix}embed <words>
+    @commands.command(pass_context=1, help="I'll embed that message for you!")
+    async def embed(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='embed'):
+            return
+        embed = discord.Embed(colour=0x911414)
+        embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
+        if len(args) > 0:
+            embed.add_field(name='Message', value=' '.join(args))
+        if len(ctx.message.attachments) > 0:
+            embed.set_image(url=ctx.message.attachments[0].get('url'))
+        try:
+            await self.bot.send_message(ctx.message.channel, embed=embed)
+        except (discord.Forbidden, discord.HTTPException):
+            await self.bot.say('You may want to check the content of the embed...')
 
     # {prefix}emoji <emoji>
     @commands.command(pass_context=1, help="Make big emojis")
@@ -334,7 +348,7 @@ class Basics:
         if ctx.message.author == target:
             return await self.bot.say(ctx.message.author.mention + " One does not simply pat ones own head")
 
-        time = datetime.datetime.utcnow()
+        time = datetime.utcnow()
         t = self.patTimes.get(ctx.message.author.id)
 
         if t and (time - t).total_seconds() < 60:
@@ -352,6 +366,29 @@ class Basics:
         elif n % 10 == 0:
             m += "\nSugoi!"
         await self.bot.say(m)
+
+    # {prefix}ping
+    @commands.command(pass_context=1, help="Give someone a compliment")
+    async def ping(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='ping'):
+            return
+        r = random.randint(0,100)
+        if r < 20:
+            result = '*Miss* You win!'
+        elif r < 40:
+            result = '*Pong* You lose...'
+        else:
+            result = '*Pong*'
+        t = datetime.utcnow()
+        m: discord.Message
+        m = await self.bot.say(':ping_pong: ' + result)
+        t = (m.timestamp - t)
+        time = ''
+        if t.seconds > 0:
+            time += ' {}s'.format(t.seconds)
+        if t.microseconds > 0:
+            time += ' {}μs'.format(t.microseconds)
+        await self.bot.edit_message(m, new_content=':ping_pong: {}\nMy ping is `{}`'.format(result, time.lstrip(' ')))
 
     # {prefix}hug <person>
     @commands.command(pass_context=1, help="Purr like you never purred before!")

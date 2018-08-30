@@ -27,7 +27,7 @@ class Mod:
     # {prefix}dm <user>|<message>
     @commands.command(pass_context=1, hidden=True)
     async def dm(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='farecho', is_typing=False):
+        if not await self.bot.pre_command(message=ctx.message, command='dm', is_typing=False):
             return
         if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
             await self.bot.say("Hahahaha, no")
@@ -42,6 +42,7 @@ class Mod:
         except ValueError:
             return
         await self.bot.send_message(user, message)
+        await self.bot.say('Message send to "{}"'.format(str(user)))
 
     # {prefix}emojispam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the emojispam list")

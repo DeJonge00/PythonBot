@@ -29,6 +29,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |countdown      |`countdown` `{seconds}`                                |Ping on times until the seconds run out (dms only for spam reasons)
 |delete      	|`del,delete,d` `{seconds}` `{normal message}`          |Make biri delete your message after `{seconds}` seconds
 |echo        	|`echo` `{text}`                                        |Biri repeats `{text}`
+|embed          |`embed` `{text or single attachment}`                  
 |emoji       	|`emoji` `{emoji}`                                      |Send a big version of `{emoji}`
 |emojify     	|`emojify` `{text}`                                     |Transform `{text}` to regional indicators
 |face        	|`face`                                                 |Send a random ascii face

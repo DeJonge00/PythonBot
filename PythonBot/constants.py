@@ -252,7 +252,8 @@ hangmanwords = [
     "Tell me, what's in the box?",
     "The first rule of fight club: you don't talk about fight club",
     "It is all connected",
-    "But everything changed when the firenation attacked"
+    "But everything changed when the firenation attacked",
+    "All those moments will be lost in time, like tears in rain."
 ]
 
 hug = [
@@ -373,7 +374,8 @@ nyan_gifs = [
     'https://media.giphy.com/media/K5EX3z11qpMfC/giphy.gif',
     'https://78.media.tumblr.com/38b02b09730c95775f579b5a0b35319e/tumblr_ogn060Fu2r1vztiw8o1_400.gif',
     'https://78.media.tumblr.com/5b96155c7221911a5b29b0b2cc6e9ba3/tumblr_o1xktlVpr81s5rcozo1_500.gif',
-    'https://78.media.tumblr.com/f1e74179eb27765ef7c5e08536e150e7/tumblr_nli7wyrwXz1t2yvn6o1_500.gif'
+    'https://78.media.tumblr.com/f1e74179eb27765ef7c5e08536e150e7/tumblr_nli7wyrwXz1t2yvn6o1_500.gif',
+    'https://g.redditmedia.com/ifqUar76e3MkwUo_OcfYNLcMWDbaDEI02uGI40mvrcw.gif?fm=mp4&mp4-fragmented=false&s=ac60f643b3bbe357831fa49a9edb4470'
 
 ]
 
@@ -385,7 +387,9 @@ happy_gifs = [
     'https://78.media.tumblr.com/191164793bcb85080ad77e759d2225b5/tumblr_o3xiwlHO331v57tj1o1_500.gif',
     'https://78.media.tumblr.com/a69cb6f512fbb6a0058a47b39ad1c7eb/tumblr_o21fnl2XoV1v57tj1o1_500.gif',
     'https://i.imgur.com/FfhDGkV.gifv',
-    'https://orig00.deviantart.net/e2ab/f/2017/107/1/5/miyuki_dancing_thing_by_mrsneakyphotoshop-db67cbs.gif'
+    'https://orig00.deviantart.net/e2ab/f/2017/107/1/5/miyuki_dancing_thing_by_mrsneakyphotoshop-db67cbs.gif',
+    'https://media1.giphy.com/media/7oUdj7cAkXVfi/giphy.gif',
+    'https://media1.giphy.com/media/CNUb51EbTxuRG/giphy.gif'
 ]
 
 lewd_gifs = [
@@ -403,7 +407,8 @@ lewd_gifs = [
     'https://78.media.tumblr.com/50376c27d54a9133e660d7364d105d53/tumblr_obgbppAwCT1ufkuk3o1_500.gif',
     'https://78.media.tumblr.com/006bcd9fd7d1815a761024bd485ad61d/tumblr_o272y3X2Qw1v57tj1o1_500.gif',
     'https://78.media.tumblr.com/e12abbabebc5afb749000a21342b0dd0/tumblr_o1sp466LcO1v57tj1o1_540.gif',
-    'https://i.gifer.com/Qctm.gif'
+    'https://i.gifer.com/Qctm.gif',
+    'https://media.giphy.com/media/11q1yAnZSEjNOU/giphy.gif'
 ]
 
 plsno_gifs = [
@@ -425,7 +430,12 @@ sad_gifs = [
     'https://media.giphy.com/media/AcC4iokjdkmk0/giphy.gif',
     'https://media.giphy.com/media/jqXH5VeTYNeTu/giphy.gif',
     'https://78.media.tumblr.com/5566467b394ddab7899fe5fa3057212b/tumblr_o2o9mvfIGK1s5rcozo1_500.gif',
-    'http://gifimage.net/wp-content/uploads/2017/08/lucky-star-gif-20.gif'
+    'http://gifimage.net/wp-content/uploads/2017/08/lucky-star-gif-20.gif',
+    'https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif',
+    'https://media1.giphy.com/media/Y4z9olnoVl5QI/giphy.gif',
+    'https://media.giphy.com/media/UYSAu81IYBw4M/giphy.gif',
+    'https://media.giphy.com/media/kagNnBcY3ucPS/giphy.gif',
+    'https://media1.giphy.com/media/13AsVQz5fUV916/giphy.gif'
 ]
 
 otters = [

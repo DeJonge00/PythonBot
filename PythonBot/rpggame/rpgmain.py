@@ -77,7 +77,7 @@ class RPGGame:
         return battle, stats
 
     async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [RPGCharacter],
-                             p2: [RPGMonster], short=False, thumbnail=None):
+                             p2: [RPGMonster], thumbnail=None):
 
         # Gather report header information
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
@@ -272,6 +272,8 @@ class RPGGame:
         # Reward victory
         if winner == 1:
             player.add_exp(100 * player.get_level())
+            for p in player.pets:
+                p.add_exp(10 * p.get_level())
 
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
