@@ -920,6 +920,8 @@ class RPGGame:
             return 'weaponskill'
         if s in ['d', 'dam', 'damage']:
             return 'damage'
+        if s in ['hp', 'health', 'mh', 'mhp', 'maxhealth']:
+            return 'maxhealth'
         return "exp"
 
     # {prefix}rpg top <exp|money|bosstier> <amount>
@@ -968,6 +970,8 @@ class RPGGame:
                 result += "Rank {}:\n\t**{}**, {}{}\n".format(i + 1, name, rpgshop.moneysign, player_score)
             elif group == "bosstier":
                 result += "Rank {}:\n\t**{}**, tier {}\n".format(i + 1, name, player_score)
+            elif group in ["critical", "weaponskill", "damage", "maxhealth"]:
+                result += "Rank {}:\n\t**{}**, {}\n".format(i + 1, name, player_score)
             else:
                 result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i + 1, name, player_score,
                                                                     RPGPlayer.get_level_by_exp(player_score))

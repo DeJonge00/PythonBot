@@ -233,11 +233,9 @@ def get_top_players(bot: discord.Client, group: str, amount: int):
     c = conn.cursor()
     try:
         if group in ['money', 'bosstier']:
-            c.execute("SELECT playerid, {0} FROM items ORDER BY {0} DESC LIMIT {1}".format(group, amount))
-        elif group in ['exp', 'damage', 'weaponskill', 'critical']:
-            c.execute("SELECT characterid, {0} FROM characters WHERE characterid > 1000000 ORDER BY {0} DESC LIMIT {1}".format(group, amount))
+            c.execute("SELECT playerid, {0} FROM players ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         else:
-            return None
+            c.execute("SELECT characterid, {0} FROM characters WHERE characterid > 1000000 ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         a = c.fetchall()
         result = []
         for i in range(len(a)):

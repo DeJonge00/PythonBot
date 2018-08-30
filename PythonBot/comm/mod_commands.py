@@ -24,6 +24,25 @@ class Mod:
         for user in ctx.message.mentions:
             await self.bot.kick(user)
 
+    # {prefix}dm <user>|<message>
+    @commands.command(pass_context=1, hidden=True)
+    async def dm(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='farecho', is_typing=False):
+            return
+        if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
+            await self.bot.say("Hahahaha, no")
+            return
+        try:
+            username, message = ' '.join(args).split('|')
+        except ValueError:
+            await self.bot.say('Not the right arguments, sweety')
+            return
+        try:
+            user = await self.bot.get_member_from_message(ctx.message, args=username.split(' '), in_text=True, from_all_members=True)
+        except ValueError:
+            return
+        await self.bot.send_message(user, message)
+
     # {prefix}emojispam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the emojispam list")
     async def emojispam(self, ctx):

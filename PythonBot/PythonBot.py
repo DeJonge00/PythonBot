@@ -139,7 +139,7 @@ class PythonBot(Bot):
     #   'no_reaction': The user did not react to the choice within a minute
     # }
     async def get_member_from_message(self, message: discord.Message, args: list, in_text=False,
-                                      errors: dict = {}) -> discord.Member:
+                                      errors: dict = {}, from_all_members=False) -> discord.Member:
         if len(message.mentions) > 0:
             return message.mentions[0]
 
@@ -153,8 +153,12 @@ class PythonBot(Bot):
             raise ValueError
 
         name = PythonBot.prep_str(' '.join(args)).lower()
-        users = [x for x in message.server.members if PythonBot.prep_str(x.name).lower().startswith(name) or
-                 PythonBot.prep_str(x.display_name).lower().startswith(name)]
+        if from_all_members:
+            users = [x for x in self.get_all_members() if PythonBot.prep_str(x.name).lower().startswith(name) or
+                     PythonBot.prep_str(x.display_name).lower().startswith(name)]
+        else:
+            users = [x for x in message.server.members if PythonBot.prep_str(x.name).lower().startswith(name) or
+                     PythonBot.prep_str(x.display_name).lower().startswith(name)]
         users.sort(key=lambda s: len(s.name))
 
         if len(users) <= 0:
@@ -168,7 +172,7 @@ class PythonBot(Bot):
         # Multiple users found, ask user which one he meant
         m = 'Which user did you mean?'
         for x in range(min(len(users), 10)):
-            m += '\n{}) {}'.format(x + 1, users[x].name)
+            m += '\n{}) {}'.format(x + 1, str(users[x]))
         m = await self.say(m)
         r = await self.wait_for_message(timeout=60, author=message.author,
                                         channel=message.channel)
