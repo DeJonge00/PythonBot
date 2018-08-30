@@ -106,6 +106,7 @@ class MusicPlayer:
     def __init__(self, my_bot):
         self.bot = my_bot
         self.voice_states = {}
+        print('MusicPlayer started')
 
     async def music_loop(self, time: datetime):
         for s in self.voice_states.values():
@@ -218,8 +219,8 @@ class MusicPlayer:
             await self.bot.edit_message(message, embed=embed)
 
     @commands.group(pass_context=1, aliases=["m"], help="'{}help music' for full options".format(prefix))
-    async def music(self, ctx, *args):
-        if ctx.invoked_subcommand is None and (len(args) == 0 or args[0] == 'help'):
+    async def music(self, ctx):
+        if ctx.invoked_subcommand is None and ctx.message.content in ['{}music'.format(prefix), '{}m'.format(prefix), '{}music help'.format(prefix), '{}m help'.format(prefix)]:
             if not await self.bot.pre_command(message=ctx.message, command='music help'):
                 return
             embed = discord.Embed(colour=embedColor)
@@ -244,7 +245,8 @@ class MusicPlayer:
 
     @music.command(pass_context=1, aliases=["c"], help="Show information about the song currently playing")
     async def current(self, ctx):
-        await removeMessage.delete_message(self.bot, ctx)
+        if not await self.bot.pre_command(message=ctx.message, command='music current'):
+            return
         state = self.get_voice_state(ctx.message.server)
         if not state.current:
             await self.bot.say("I am not performing at the moment")

@@ -1,11 +1,8 @@
 from datetime import datetime
-from io import BytesIO
 
 import constants
 import discord
-import requests
 import send_random
-from PIL import Image
 from discord.ext import commands
 
 TIMER = True
@@ -16,14 +13,15 @@ class Images:
     def __init__(self, my_bot):
         self.bot = my_bot
         self.image_timers = {}
+        print('Images started')
 
     # {prefix}pp <user>
     @commands.command(pass_context=1, aliases=['avatar', 'picture'], help="Show a profile pic, in max 200x200")
-    async def pp(self, ctx, args):
+    async def pp(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='pp'):
             return
         try:
-            user = await self.bot.get_member_from_message(ctx.message, args, in_text=True, errors=None)
+            user = await self.bot.get_member_from_message(ctx.message, args=args, in_text=True, errors=None)
         except ValueError:
             user = ctx.message.author
         embed = discord.Embed(colour=0x000000)
@@ -115,14 +113,3 @@ class Images:
     async def sadness(self, ctx):
         await self.send_picture_template_command(ctx.message, ctx.message.channel, 'sadness',
                                                  pic_links=constants.sad_gifs)
-
-
-
-    # Download, resize and save file
-    def save_img(self, url, name):
-        response = requests.get(url)
-        img = Image.open(BytesIO(response.content))
-        if img.height > 200:
-            f = 200 / img.height
-            img = img.resize((int(img.height * f), int(img.width * f)))
-        img.save(name)

@@ -4,6 +4,7 @@ from discord.ext import commands
 class Misc:
     def __init__(self, my_bot):
         self.bot = my_bot
+        print('Misc started')
 
     @commands.command(pass_context=1, help="Invite me to your own server")
     async def inviteme(self, ctx):

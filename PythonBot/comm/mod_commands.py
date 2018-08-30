@@ -10,6 +10,7 @@ from datetime import datetime
 class Mod:
     def __init__(self, my_bot):
         self.bot = my_bot
+        print('Mod started')
 
     # {prefix}banish <@person>
     @commands.command(pass_context=1, help="BANHAMMER")

@@ -13,6 +13,7 @@ class RPGShop:
         self.bot = bot
         self.weapons = {}
         self.armors = {}
+        print('RPGShop started')
 
     async def send_shop_help_message(self, url: str):
         embed = discord.Embed(colour=SHOP_EMBED_COLOR)

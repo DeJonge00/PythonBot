@@ -31,6 +31,7 @@ class RPGGame:
         self.boss_parties = {}
         self.players = {}
         self.game_init()
+        print('RPGGame started')
 
     @staticmethod
     def add_health_rep(players: [RPGCharacter]):

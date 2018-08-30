@@ -1,7 +1,10 @@
-import constants, discord, datetime, log, requests, random, send_random, string, urllib, comm.image_commands, os.path
-from discord.ext.commands import Bot
-from PIL import Image
-from io import BytesIO
+import constants
+import datetime
+import discord
+import log
+import random
+import send_random
+import string
 from secret.secrets import prefix
 
 NicknameAutoChange = False

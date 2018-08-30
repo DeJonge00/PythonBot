@@ -1,8 +1,8 @@
-import discord, log
-from discord.ext import commands
-from random import randint
-from PIL import Image
 from os import remove
+from random import randint
+
+from PIL import Image
+from discord.ext import commands
 
 MINE = 10
 UNGUESSED = -1
@@ -14,6 +14,7 @@ class Minesweeper:
         self.bot = my_bot
         self.running = False
         self.hasboard = False
+        print('Minesweeper started')
 
     # {prefix}minesweeper
     @commands.command(pass_context=1, help="Minesweeper game", aliases=["ms"])

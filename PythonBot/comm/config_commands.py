@@ -7,6 +7,7 @@ class Config:
     def __init__(self, my_bot: discord.Client):
         self.bot = my_bot
         self.patTimes = {}
+        print('Config started')
 
     # {prefix}botstats
     @commands.command(pass_context=1, help="Toggle whether commands will be deleted here",

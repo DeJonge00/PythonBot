@@ -5,7 +5,6 @@ import discord
 import random
 import re
 import requests
-import send_random
 import wikipedia
 from discord.ext import commands
 
@@ -20,6 +19,7 @@ class Basics:
     def __init__(self, my_bot):
         self.bot = my_bot
         self.patTimes = {}
+        print('Basics started')
 
     # {prefix}botstats
     @commands.command(pass_context=1, help="Biri's botstats!", aliases=['botinfo'])

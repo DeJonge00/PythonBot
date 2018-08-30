@@ -21,6 +21,7 @@ class Hangman:
         self.bot = my_bot
         self.games = {}
         self.prev = {}
+        print('Hangman started')
 
     # {prefix}hangman <create,new> {custom | sentence} | <guess>
     @commands.command(pass_context=1, help="Hangman game", aliases=["hm"])

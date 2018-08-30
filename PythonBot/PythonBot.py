@@ -85,7 +85,8 @@ class PythonBot(Bot):
             pass
 
     def command_allowed_in(self, type: str, command_name: str, identifier: str):
-        return command_name == 'togglecommand' or not any(set([command_name, 'all']).intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
+        return command_name == 'togglecommand' or not any(
+            set([command_name, 'all']).intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
 
     def command_allowed_in_server(self, command_name: str, serverid: str):
         return self.command_allowed_in('server', command_name, serverid)
@@ -142,7 +143,7 @@ class PythonBot(Bot):
         if len(message.mentions) > 0:
             return message.mentions[0]
 
-        if len(args) <= 0:
+        if len(args) <= 0 or message.channel.is_private:
             return message.author
 
         if not in_text:
