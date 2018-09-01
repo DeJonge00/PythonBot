@@ -279,7 +279,7 @@ class RPGGame:
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
         (name, stat, amount) = secrets_list[random.randint(0, len(secrets_list) - 1)]
-        amount *= min(1, int(math.sqrt(player.get_level())))
+        amount *= max(1, int(math.sqrt(player.get_level())))
         if stat.lower() == "health":
             player.add_health(amount)
         elif stat.lower() == "weaponskill":
@@ -358,10 +358,9 @@ class RPGGame:
                     try:
                         if not c:
                             c = await self.bot.get_user_info(str(u.busychannel))
-                        if u.busydescription == rpgchar.BUSY_DESC_ADVENTURE:
-                            if random.randint(0, 4) <= 0:
-                                await self.adventure_encounter(u, c)
-                        if (u.busydescription in [rpgchar.BUSY_DESC_ADVENTURE, rpgchar.BUSY_DESC_WANDERING]) and (
+                        if u.busydescription == rpgchar.BUSY_DESC_ADVENTURE and random.randint(0, 4) <= 0:
+                            await self.adventure_encounter(u, c)
+                        elif (u.busydescription in [rpgchar.BUSY_DESC_ADVENTURE, rpgchar.BUSY_DESC_WANDERING]) and (
                                 random.randint(0, 14) <= 0):
                             await self.adventure_secret(u, c)
                         if u.busytime <= 0:
@@ -373,6 +372,9 @@ class RPGGame:
                                 action_type = action_name = "training"
                             elif u.busydescription == rpgchar.BUSY_DESC_WANDERING:
                                 action_type = action_name = "wandering"
+                            elif u.busydescription == rpgchar.BUSY_DESC_WORKING:
+                                action_type = "work"
+                                action_name = "working"
                             else:
                                 action_type = action_name = "Unknown"
                             if u.health > 0:
@@ -420,8 +422,6 @@ class RPGGame:
         data = self.get_player_data(message.author.id, name=message.author.display_name)
         if data.role not in rpgc.names.get("role"):
             return
-        if data.busydescription in [rpgchar.BUSY_DESC_ADVENTURE, rpgchar.BUSY_DESC_WANDERING]:
-            return
         # Reward player based on rpg level with money
         i = round(pow((data.get_level()) + 1, 1 / 3)  # levelbonus
                   * max(0, min(80, int((len(message.content) - 3) / 1.5))))  # Textbonus
@@ -439,17 +439,52 @@ class RPGGame:
         await self.bot.say(
             "Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(
                 prefix))
+
+        # Intro/setup help
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
+        embed.set_author(name="RPG Help: Basics", icon_url=self.bot.user.avatar_url)
         embed.add_field(name="Introduction",
-                        value="Welcome adventurer, this game grants you the opportunity to slay monsters and rule a realm. You can train yourself and buy upgrades at the shop, and when you are done with adventuring, you can even challenge a boss every hour with a group of friends.",
+                        value="Welcome adventurer, this game grants you the opportunity to slay monsters and rule a realm. "
+                              "You can train yourself and buy upgrades at the shop, and when you are done with adventuring, "
+                              "you can even challenge a boss every hour with a group of friends.",
                         inline=False)
         embed.add_field(name="Basics",
-                        value="Talking gains you extra money\nIf it sounds like a logical alias, it probably is\nYour health regenerates every minute\nThe weaponsmith refills his inventory every hour\nA boss can be fought at the hour mark",
+                        value="Talking gains you extra money\n"
+                              "If it sounds like a logical alias, it probably is\n"
+                              "Your health regenerates every minute\n"
+                              "The weaponsmith refills his inventory every hour\n"
+                              "A boss can be fought at the hour mark",
                         inline=False)
         embed.add_field(name="{}rpg [role|r|class|c]".format(prefix),
                         value="Switch your role on the battlefield (A role is needed to play the game)",
                         inline=False)
+        embed.add_field(name="{}rpg [setchannel]".format(prefix),
+                        value="This sets the channel for bossbattle results (It only needs to be done once per server by an admin)",
+                        inline=False)
+        await self.bot.send_message(ctx.message.author, embed=embed)
+
+        # RPG infos
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.set_author(name="RPG Help: Status Information", icon_url=self.bot.user.avatar_url)
+        embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(prefix),
+                        value="Show your or another user's game statistics", inline=False)
+        embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(prefix),
+                        value="Show your or another user's weapon statistics", inline=False)
+        embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(prefix),
+                        value="Choose a reward when you leveled up", inline=False)
+        embed.add_field(name="{}rpg king".format(prefix), value="Show the current King of the server",
+                        inline=False)
+        embed.add_field(name="{}rpg king [c|b|challenge|battle]".format(prefix),
+                        value="Challenge the current King and try to take his spot (level 10+)", inline=False)
+        embed.add_field(name="{}rpg [party|p]".format(prefix),
+                        value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
+        embed.add_field(name="{}rpg [top|t] <exp|money|bosstier> <page>".format(prefix),
+                        value="Show the best players of the game", inline=False)
+        await self.bot.send_message(ctx.message.author, embed=embed)
+
+        # RPG what can you actually do help
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.set_author(name="RPG Help: Things to do", icon_url=self.bot.user.avatar_url)
         embed.add_field(name="{}rpg [adventure|a] <minutes>".format(prefix),
                         value="Go on an adventure, find monsters to slay to gain exp", inline=False)
         embed.add_field(name="{}rpg [wander|w] <minutes>".format(prefix),
@@ -457,26 +492,13 @@ class RPGGame:
         embed.add_field(name="{}rpg [battle|b] <user>".format(prefix),
                         value="Battle another user for the lolz, no exp will be gained and no health will be lost",
                         inline=False)
-        embed.add_field(name="{}rpg [info|i|stats|status] <user>".format(prefix),
-                        value="Show your or another user's game statistics", inline=False)
-        embed.add_field(name="{}rpg [info|i|stats|status] [weapon|w|armor|a] <user>".format(prefix),
-                        value="Show your or another user's weapon statistics", inline=False)
         embed.add_field(name="{}rpg [join|j]".format(prefix),
                         value="Join the hourly boss raid (warning, don't try this alone)", inline=False)
-        embed.add_field(name="{}rpg [party|p]".format(prefix),
-                        value="Show the brave souls that will be attacking the boss at the hour mark", inline=False)
         await self.bot.send_message(ctx.message.author, embed=embed)
 
+        # Shop/training/work
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="{}rpg [top|t] <exp|money|bosstier> <page>".format(prefix),
-                        value="Show the best players of the game", inline=False)
-        embed.add_field(name="{}rpg [levelup|lvl|lvlup]".format(prefix),
-                        value="Choose a reward when you leveled up", inline=False)
-        embed.set_author(name="RPG Help", icon_url=ctx.message.author.avatar_url)
-        embed.add_field(name="{}rpg king".format(prefix), value="Show the current King of the server",
-                        inline=False)
-        embed.add_field(name="{}rpg king [c|b|challenge|battle]".format(prefix),
-                        value="Challenge the current King and try to take his spot (level 10+)", inline=False)
+        embed.set_author(name="RPG Help: Improve your character", icon_url=self.bot.user.avatar_url)
         embed.add_field(name="{}shop".format(prefix), value="Show the rpg shop inventory", inline=False)
         embed.add_field(name="{}shop [item|i|buy] <item> <amount>".format(prefix),
                         value="Buy <amount> of <item> from the shop", inline=False)
@@ -490,18 +512,19 @@ class RPGGame:
                         value="Train yourself for <amount> points of the chosen <stat>", inline=False)
         embed.add_field(name="{}work <amount>".format(prefix),
                         value="Work an interesting job for some money, for <amount> minutes", inline=False)
-        embed.set_footer(
-            text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(
-                prefix))
         await self.bot.send_message(ctx.message.author, embed=embed)
 
         # Pets help
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.set_author(name="RPG Help: Pets", icon_url=self.bot.user.avatar_url)
         embed.add_field(name="{}rpg [pet,pets] <user>".format(prefix),
                         value="Show the pets owned by you or another user", inline=False)
         embed.add_field(name="{}rpg [pet,pets] [release,remove,r] <pet name>".format(prefix),
                         value="Release all pets with the name <pet name>, be warned, they will be gone forever!",
                         inline=False)
+        embed.set_footer(
+            text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(
+                prefix))
         await self.bot.send_message(ctx.message.author, embed=embed)
 
     # RPG intro/help
@@ -905,7 +928,9 @@ class RPGGame:
             await self.bot.say("{}, the currently available roles are: {}".format(ctx.message.author.mention,
                                                                                   ", ".join(rpgc.names.get("role"))))
             return
-        role = " ".join(args)
+        role = " ".join(args).lower()
+        role = role[0].upper() + role[1:]
+
         if role == data.role:
             await self.bot.say("{}, that is already your current role...".format(ctx.message.author.mention))
             return
