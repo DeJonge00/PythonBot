@@ -116,6 +116,8 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             return False
         if action == rpgcharacter.BUSY_DESC_WANDERING and not (rpgcharacter.minwandertime <= time <= rpgcharacter.maxwandertime):
             return False
+        if action == rpgcharacter.BUSY_DESC_WORKING and not (rpgcharacter.minworkingtime <= time <= rpgcharacter.maxworkingtime):
+            return False
 
         self.busytime = time
         self.busychannel = channel
