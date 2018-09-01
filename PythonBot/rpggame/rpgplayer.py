@@ -43,7 +43,6 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         if self.health <= 0:
             return
         lvl = self.get_level()
-        self.add_money(n)
         self.exp += n
         self.levelups += max(0, self.get_level() - lvl)
 

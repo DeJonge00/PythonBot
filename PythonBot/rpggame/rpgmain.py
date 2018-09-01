@@ -272,6 +272,7 @@ class RPGGame:
         # Reward victory
         if winner == 1:
             player.add_exp(100 * player.get_level())
+            player.add_money(50 * player.get_level())
             for p in player.pets:
                 p.add_exp(10 * p.get_level())
 
@@ -423,7 +424,7 @@ class RPGGame:
             return
         # Reward player based on rpg level with money
         i = round(pow((data.get_level()) + 1, 1 / 3)  # levelbonus
-                  * max(0, min(50, int((len(message.content) - 3) / 2))))  # Textbonus
+                  * max(0, min(80, int((len(message.content) - 3) / 1.5))))  # Textbonus
         if data.busydescription in [rpgchar.BUSY_DESC_TRAINING, rpgchar.BUSY_DESC_BOSSRAID]:
             i *= 0.5
         data.add_money(int(i))
@@ -487,6 +488,8 @@ class RPGGame:
                         inline=False)
         embed.add_field(name="{}train <stat> <amount>".format(prefix),
                         value="Train yourself for <amount> points of the chosen <stat>", inline=False)
+        embed.add_field(name="{}work <amount>".format(prefix),
+                        value="Work an interesting job for some money, for <amount> minutes", inline=False)
         embed.set_footer(
             text="Suggestions? Feel free to message me or join my server (see {}help for details)".format(
                 prefix))
@@ -690,6 +693,8 @@ class RPGGame:
             stats = "Waiting for the bossbattle"
         elif data.busydescription == rpgchar.BUSY_DESC_WANDERING:
             stats = "Wandering for {}m".format(data.busytime)
+        elif data.busydescription == rpgchar.BUSY_DESC_WORKING:
+            stats = "Working for {}m".format(data.busytime)
         else:
             stats = "Alive"
         draw.text((nameoffset, topoffset + 3 * following), "Status:", color, font=font)

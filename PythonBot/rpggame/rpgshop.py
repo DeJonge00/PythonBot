@@ -1,6 +1,7 @@
 from discord.ext import commands
 from secret.secrets import prefix
 import discord
+import random
 import math
 from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 
@@ -207,9 +208,7 @@ class RPGShop:
             return
         try:
             a = int(args[1])
-        except ValueError:
-            a = math.ceil(rpgchar.mintrainingtime / training.cost)
-        except IndexError:
+        except (ValueError, IndexError):
             a = math.ceil(rpgchar.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
@@ -228,3 +227,38 @@ class RPGShop:
         await self.bot.say(
             "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
                                                                      int(math.ceil(a * training.cost))))
+
+    # {prefix}train
+    @commands.command(pass_context=1, aliases=["Work"], help="Work for some spending money!")
+    async def work(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='work'):
+            return
+        try:
+            time = int(args[0])
+        except (ValueError, IndexError):
+            time = rpgchar.mintrainingtime
+
+        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.busydescription != rpgchar.BUSY_DESC_NONE:
+            await self.bot.say("Please make sure you finish your other shit first")
+            return
+        c = ctx.message.channel
+        if c.is_private:
+            c = ctx.message.author
+
+        # Set busy time
+        if not player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id):
+            await self.bot.say(
+                "You can work between {} and {} minutes".format(rpgchar.minworkingtime, rpgchar.maxworkingtime))
+            return
+
+        player.add_money(time * pow((player.get_level()) + 1, 1 / 3) * 120)
+        work = random.choice([
+            'cleaning the stables',
+            'sharpening the noble\'s weapon',
+            'assisting the smith',
+            'scaring crows',
+            'a lewdly clothed maid',
+            'collecting herbs'
+        ])
+        await self.bot.say("{}, you are now {} for {} minutes".format(ctx.message.author.mention, work, time))
