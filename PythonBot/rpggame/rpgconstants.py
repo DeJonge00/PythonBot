@@ -261,6 +261,8 @@ bosses = [
      "https://vignette.wikia.nocookie.net/warhammerfb/images/2/2d/Warhammer_Ogre_Bruiser.png/revision/latest?cb=20170111040334"),
     ("Barbarian Chieftain", element_none,
      "https://s-media-cache-ak0.pinimg.com/originals/49/76/90/497690027055ec7531ab471f99d57426.jpg"),
+    ("Kittycat", element_none,
+     "https://78.media.tumblr.com/6c1510df7ab453cba61e892788d816e7/tumblr_inline_nzzow7CQuc1t77pl6_540.jpg"),
 
     ("Lord of Change", element_air, "https://spikeybits.com/wp-content/uploads/2014/11/fateweaver.jpg"),
     ("Valkia the Bloody", element_air,

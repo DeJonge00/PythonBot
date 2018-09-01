@@ -329,7 +329,7 @@ def init_bot():
     @bot.event
     async def on_member_update(before, after):
         changed = False
-        m = before.server.name + " | member " + before.name + " updated: "
+        m = before.server.name + " | Member " + str(before) + " updated: "
         if before.name != after.name:
             m += " name from: " + before.name + " to: " + after.name
             changed = True
@@ -351,7 +351,7 @@ def init_bot():
                 m += " +role: " + r.name
                 changed = True
         if before.avatar != after.avatar:
-            m += " avatar changed"
+            m += " +avatar changed"
             changed = True
         if changed:
             await log.error(m, filename=before.server.name, serverid=before.server.id)
@@ -368,22 +368,22 @@ def init_bot():
 
     @bot.event
     async def on_member_ban(member: discord.Member):
-        await log.error(member.server.name + " | User " + member.name + " banned", filename=member.server.name,
+        await log.error(member.server.name + " | User " + str(member) + " banned", filename=member.server.name,
                         serverid=member.server.id)
 
     @bot.event
     async def on_member_unban(server: discord.Server, user: discord.User):
-        await log.error("User " + user.name + " unbanned", filename=server.name, serverid=server.id)
+        await log.error("User " + str(user) + " unbanned", filename=server.name, serverid=server.id)
 
     @bot.event
     async def on_server_join(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "I joined a new server named {}, senpai!".format(server.name))
+        await bot.send_message(user, "I joined a new server named '{}', senpai!".format(server.name))
 
     @bot.event
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "A new server named {} just removed me from service :sadness:".format(server.name))
+        await bot.send_message(user, "A new server named '{}' just removed me from service :(".format(server.name))
 
     return bot
 

@@ -241,7 +241,10 @@ class MusicPlayer:
                             value="Empty the queue and skip the current song, then leave the voice channel",
                             inline=False)
             embed.add_field(name="volume", value="Change the volume of the songs", inline=False)
-            await self.bot.say(embed=embed)
+            try:
+                await self.bot.say(embed=embed)
+            except discord.Forbidden:
+                await self.bot.say('I don\'t have the permissions to help you...')
 
     @music.command(pass_context=1, aliases=["c"], help="Show information about the song currently playing")
     async def current(self, ctx):
