@@ -10,10 +10,10 @@ DEFAULT_ROLE = 'Undead'
 
 
 class RPGPlayer(rpgcharacter.RPGCharacter):
-    def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE,
-                 weapon=RPGWeapon(), armor=RPGArmor(), pets=[], health=rpgcharacter.DEFAULT_HEALTH,
-                 maxhealth=rpgcharacter.DEFAULT_HEALTH, damage=rpgcharacter.DEFAULT_DAMAGE,
-                 ws=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0, bosstier=1, kingtimer=0, element=rpgc.element_none):
+    def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
+                 armor=RPGArmor(), pets=[], health=rpgcharacter.DEFAULT_HEALTH, maxhealth=rpgcharacter.DEFAULT_HEALTH,
+                 damage=rpgcharacter.DEFAULT_DAMAGE, ws=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0, bosstier=1,
+                 kingtimer=0, element=rpgc.element_none, extratime=0):
         self.userid = userid
         self.role = role
         self.exp = exp
@@ -27,6 +27,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         self.busydescription = rpgcharacter.BUSY_DESC_NONE
         self.bosstier = bosstier
         self.kingtimer = kingtimer
+        self.extratime = extratime
         super(RPGPlayer, self).__init__(username, health, maxhealth, damage, ws, critical, element=element)
 
     @staticmethod
@@ -108,21 +109,9 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         self.bosstier += 1
 
     def set_busy(self, action: int, time: int, channel: int):
-        if self.busytime > 0:
-            return False
-        if action == rpgcharacter.BUSY_DESC_ADVENTURE and not (rpgcharacter.minadvtime <= time <= rpgcharacter.maxadvtime):
-            return False
-        if action == rpgcharacter.BUSY_DESC_TRAINING and not (rpgcharacter.mintrainingtime <= time <= rpgcharacter.maxtrainingtime):
-            return False
-        if action == rpgcharacter.BUSY_DESC_WANDERING and not (rpgcharacter.minwandertime <= time <= rpgcharacter.maxwandertime):
-            return False
-        if action == rpgcharacter.BUSY_DESC_WORKING and not (rpgcharacter.minworkingtime <= time <= rpgcharacter.maxworkingtime):
-            return False
-
         self.busytime = time
         self.busychannel = channel
         self.busydescription = action
-        return True
 
     def reset_busy(self):
         self.busytime = 0

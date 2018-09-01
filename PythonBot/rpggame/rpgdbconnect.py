@@ -72,11 +72,11 @@ def get_single_player(bot: discord.Client, player_id: str):
         c.execute("SELECT * FROM characters WHERE characterid=%s", (player_id,))
         _, exp, health, maxhealth, damage, weaponskill, critical = c.fetchone()
         c.execute("SELECT * FROM players WHERE playerid=%s", (player_id,))
-        _, money, role, levelups, bosstier = c.fetchone()
+        _, money, role, levelups, bosstier, extratime = c.fetchone()
         player = RPGPlayer(userid=player_id, pets=[], username=username, role=role, health=health,
                            maxhealth=maxhealth, damage=damage,
                            ws=weaponskill, critical=critical, exp=exp, levelups=levelups, money=money,
-                           bosstier=bosstier)
+                           bosstier=bosstier, extratime=extratime)
 
         # Get players current action
         c.execute("SELECT * FROM busy WHERE playerid=%s", (player_id,))
@@ -129,12 +129,12 @@ def update_players(stats: [RPGPlayer]):
                 conn.commit()
                 if c.execute("SELECT playerid FROM players WHERE playerid = %s", s.userid) == 0:
                     c.execute(
-                        "INSERT INTO players (playerid, money, role, levelups, bosstier) VALUES (%s, %s, %s, %s, %s)",
-                        (s.userid, s.money, s.role, s.levelups, s.bosstier))
+                        "INSERT INTO players (playerid, money, role, levelups, bosstier, extratime) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (s.userid, s.money, s.role, s.levelups, s.bosstier, s.extratime))
                 else:
                     c.execute(
-                        "UPDATE players SET money = %s, role = %s, levelups = %s, bosstier = %s WHERE playerid = %s",
-                        (s.money, s.role, s.levelups, s.bosstier, s.userid))
+                        "UPDATE players SET money = %s, role = %s, levelups = %s, bosstier = %s, extratime = %s WHERE playerid = %s",
+                        (s.money, s.role, s.levelups, s.bosstier, s.extratime, s.userid))
                 conn.commit()
                 if c.execute("SELECT playerid FROM busy WHERE playerid = %s", s.userid) == 0:
                     c.execute(

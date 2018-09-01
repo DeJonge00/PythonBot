@@ -218,11 +218,14 @@ class RPGShop:
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not player.set_busy(rpgchar.BUSY_DESC_TRAINING, math.ceil(a * training.cost), c.id):
+        time = math.ceil(a * training.cost)
+        if not (rpgchar.mintrainingtime <= time <= int(rpgchar.maxtrainingtime + (0.5 * player.extratime))):
             await self.bot.say(
                 "You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime / training.cost),
-                                                                math.floor(rpgchar.maxtrainingtime / training.cost)))
+                                                                math.floor(int(rpgchar.maxtrainingtime + (
+                                                                            0.5 * player.extratime)) / training.cost)))
             return
+        player.set_busy(rpgchar.BUSY_DESC_TRAINING, time, c.id)
         player.buy_training(training, amount=a)
         await self.bot.say(
             "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
@@ -247,11 +250,12 @@ class RPGShop:
             c = ctx.message.author
 
         # Set busy time
-        if not player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id):
-            await self.bot.say(
-                "You can work between {} and {} minutes".format(rpgchar.minworkingtime, rpgchar.maxworkingtime))
+        if not (rpgchar.minworkingtime <= time <= (rpgchar.maxworkingtime + player.extratime)):
+            await self.bot.say("You can work between {} and {} minutes".format(rpgchar.minworkingtime, (
+                        rpgchar.maxworkingtime + player.extratime)))
             return
 
+        player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id)
         player.add_money(time * pow((player.get_level()) + 1, 1 / 3) * 120)
         work = random.choice([
             'cleaning the stables',

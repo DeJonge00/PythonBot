@@ -267,7 +267,7 @@ class RPGGame:
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
             RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 75))),
                        damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp ** 0.6)))),
-                       element=elem)], short=False, thumbnail=pic)
+                       element=elem)], thumbnail=pic)
 
         # Reward victory
         if winner == 1:
@@ -568,16 +568,13 @@ class RPGGame:
         if n < rpgchar.minadvtime:
             await self.bot.say("You came back before you even went out, 0 exp earned")
             return
-        if n > rpgchar.maxadvtime:
-            await self.bot.say("You do not have the stamina to go on that long of an adventure")
+        if n > (rpgchar.maxadvtime + data.extratime):
+            await self.bot.say("You can only go on an adventure for {} minutes".format(rpgchar.maxadvtime + data.extratime))
             return
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not data.set_busy(rpgchar.BUSY_DESC_ADVENTURE, n, c.id):
-            await self.bot.say(
-                "{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
-            return
+        data.set_busy(rpgchar.BUSY_DESC_ADVENTURE, n, c.id)
         await self.bot.say(
             "{}, you are now adventuring for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
@@ -734,8 +731,10 @@ class RPGGame:
         draw.text((statoffset, topoffset + 7 * following), "{}".format(data.get_weaponskill()), color, font=font)
         draw.text((nameoffset, topoffset + 8 * following), "Critical:", color, font=font)
         draw.text((statoffset, topoffset + 8 * following), "{}".format(data.get_critical()), color, font=font)
-        draw.text((nameoffset, topoffset + 9 * following), "Pets:", color, font=font)
-        draw.text((statoffset, topoffset + 9 * following), "{}".format(len(data.pets)), color, font=font)
+        draw.text((nameoffset, topoffset + 9 * following), "Time extention:", color, font=font)
+        draw.text((statoffset, topoffset + 9 * following), "{}".format(data.extratime), color, font=font)
+        draw.text((nameoffset, topoffset + 10 * following), "Pets:", color, font=font)
+        draw.text((statoffset, topoffset + 10 * following), "{}".format(len(data.pets)), color, font=font)
 
         imname = 'temp/{}.png'.format(ctx.message.author.id)
         im.save(imname)
@@ -840,8 +839,8 @@ class RPGGame:
             data.set_max_health(data.maxhealth + 80)
             await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth))
         elif reward == 2:
-            data.weaponskill += 2
-            await self.bot.send_message(channel, "Your base weaponskill is now {}".format(data.weaponskill))
+            data.extratime += 1
+            await self.bot.send_message(channel, "You can now do things {} minutes longer".format(data.extratime))
         elif reward == 3:
             data.damage += 30
             await self.bot.send_message(channel, "Your base damage is now {}".format(data.damage))
@@ -869,7 +868,7 @@ class RPGGame:
 
         if len(args) <= 0:
             while data.levelups > 0:
-                m = await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+2 ws\n3)\t+30 damage")
+                m = await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+1 minute busytime\n3)\t+30 damage")
                 r = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
                 await self.bot.delete_command_message(m)
                 if not r:
@@ -1032,17 +1031,14 @@ class RPGGame:
         if data.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("You are already doing other things")
             return
-        if not (rpgchar.minwandertime <= n <= rpgchar.maxwandertime):
+        if not (rpgchar.minwandertime <= n <= (rpgchar.maxwandertime + (2 * data.extratime))):
             await self.bot.say(
-                "You can wander between {} and {} minutes".format(rpgchar.minwandertime, rpgchar.maxwandertime))
+                "You can wander between {} and {} minutes".format(rpgchar.minwandertime, rpgchar.maxwandertime + (2 * data.extratime)))
             return
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
-        if not data.set_busy(rpgchar.BUSY_DESC_WANDERING, n, c.id):
-            await self.bot.say(
-                "{}, something went terribly wrong while trying to get busy...".format(ctx.message.author.mention))
-            return
+        data.set_busy(rpgchar.BUSY_DESC_WANDERING, n, c.id)
         await self.bot.say("{}, you are now wandering for {} minutes, good luck!".format(ctx.message.author.mention, n))
 
     # DB commands            
