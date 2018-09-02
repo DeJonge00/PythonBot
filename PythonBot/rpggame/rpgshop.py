@@ -223,7 +223,7 @@ class RPGShop:
             await self.bot.say(
                 "You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime / training.cost),
                                                                 math.floor(int(rpgchar.maxtrainingtime + (
-                                                                            0.5 * player.extratime)) / training.cost)))
+                                                                        0.5 * player.extratime)) / training.cost)))
             return
         player.set_busy(rpgchar.BUSY_DESC_TRAINING, time, c.id)
         player.buy_training(training, amount=a)
@@ -252,7 +252,7 @@ class RPGShop:
         # Set busy time
         if not (rpgchar.minworkingtime <= time <= (rpgchar.maxworkingtime + player.extratime)):
             await self.bot.say("You can work between {} and {} minutes".format(rpgchar.minworkingtime, (
-                        rpgchar.maxworkingtime + player.extratime)))
+                    rpgchar.maxworkingtime + player.extratime)))
             return
 
         player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id)

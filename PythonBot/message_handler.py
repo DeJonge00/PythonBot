@@ -15,15 +15,20 @@ def cl(x):
 
 
 async def new(bot, message: discord.Message):
-    if message.server.id in constants.s_to_ringels_whitelist and message.author.id == constants.DOGEid and "s" in message.content and await bot.pre_command(message=message, command='s_to_ringel_s', delete_message=False):
+    if message.server.id in constants.s_to_ringels_whitelist and message.author.id == constants.DOGEid and "s" in message.content and await bot.pre_command(
+            message=message, command='s_to_ringel_s', delete_message=False):
         await bot.send_message(message.channel, "*" + message.content.replace("s", "ß"))
         return
     if message.server.id not in constants.sponge_capitalization_blacklist and (
-            message.author.id in bot.spongelist) and (random.randint(0, 4) <= 0) and (len(message.content) > 5) and await bot.pre_command(message=message, command='spongelist', delete_message=False):
+            message.author.id in bot.spongelist) and (random.randint(0, 4) <= 0) and (
+            len(message.content) > 5) and await bot.pre_command(message=message, command='spongelist',
+                                                                delete_message=False):
         await bot.send_message(message.channel, ''.join([cl(x) for x in message.content.lower()]))
         return
     if message.server.id not in constants.praise_the_sun_blacklist and message.content == "\\o/" and (
-            datetime.datetime.utcnow() - bot.praise).seconds > (2 * 60) and await bot.pre_command(message=message, command='\\o/', delete_message=False):
+            datetime.datetime.utcnow() - bot.praise).seconds > (2 * 60) and await bot.pre_command(message=message,
+                                                                                                  command='\\o/',
+                                                                                                  delete_message=False):
         perms = message.channel.permissions_for(message.server.get_member(str(bot.user.id)))
         if not (perms.manage_messages and perms.attach_files):
             return
@@ -32,19 +37,25 @@ async def new(bot, message: discord.Message):
         bot.praise = datetime.datetime.utcnow()
         return
     if (message.server.id not in constants.ayy_lmao_blacklist or message.author.id == constants.NYAid) and (
-            message.content.lower() == "ayy") and await bot.pre_command(message=message, command='ayy', delete_message=False):
+            message.content.lower() == "ayy") and await bot.pre_command(message=message, command='ayy',
+                                                                        delete_message=False):
         await bot.send_message(message.channel, "lmao")
         return
-    if message.author.id in [constants.NYAid, constants.TRISTANid] and message.content.lower() == "qyy" and await bot.pre_command(message=message, command='qyy', delete_message=False):
+    if message.author.id in [constants.NYAid,
+                             constants.TRISTANid] and message.content.lower() == "qyy" and await bot.pre_command(
+            message=message, command='qyy', delete_message=False):
         await bot.send_message(message.channel, "kmao")
         return
-    if message.content.lower() == "lmao" and message.author.id == constants.NYAid and await bot.pre_command(message=message, command='lmao', delete_message=False):
+    if message.content.lower() == "lmao" and message.author.id == constants.NYAid and await bot.pre_command(
+            message=message, command='lmao', delete_message=False):
         await bot.send_message(message.channel, "ayy")
         return
-    if message.server.id not in constants.lenny_blacklist and "lenny" in message.content.split(" ") and await bot.pre_command(message=message, command='response_lenny', delete_message=False):
+    if message.server.id not in constants.lenny_blacklist and "lenny" in message.content.split(
+            " ") and await bot.pre_command(message=message, command='response_lenny', delete_message=False):
         await bot.send_message(message.channel, "( ͡° ͜ʖ ͡°)")
         return
-    if message.server.id not in constants.ded_blacklist and "ded" == message.content and await bot.pre_command(message=message, command='response_ded', delete_message=False):
+    if message.server.id not in constants.ded_blacklist and "ded" == message.content and await bot.pre_command(
+            message=message, command='response_ded', delete_message=False):
         ml = list(bot.messages)
         m = ml.pop()
         while (m == message) or (m.channel != message.channel):
@@ -53,11 +64,14 @@ async def new(bot, message: discord.Message):
             m = ml.pop()
         if (message.timestamp - m.timestamp).seconds > 60:
             await bot.send_message(message.channel, random.choice(constants.ded))
-    if message.server.id not in constants.table_unflip_blacklist and message.content == "(╯°□°）╯︵ ┻━┻" and await bot.pre_command(message=message, command='tableflip', delete_message=False):
+    if message.server.id not in constants.table_unflip_blacklist and message.content == "(╯°□°）╯︵ ┻━┻" and await bot.pre_command(
+            message=message, command='tableflip', delete_message=False):
         await bot.send_message(message.channel, "┬─┬﻿ ノ( ゜-゜ノ)")
     if NicknameAutoChange:
         if message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid] and message.author.permissions_in(
-                message.channel).change_nickname and await bot.pre_command(message=message, command='nickname_auto_change', delete_message=False):
+                message.channel).change_nickname and await bot.pre_command(message=message,
+                                                                           command='nickname_auto_change',
+                                                                           delete_message=False):
             if (len(message.content.split(" ")) > 2) and (message.server.name.lower() == "9chat"):
                 if (message.content.split(" ")[0] == "i") and (message.content.split(" ")[1] == "am"):
                     try:
@@ -91,11 +105,11 @@ async def new(bot, message: discord.Message):
             await bot.add_reaction(message, ":hand:348350777661587466")
         else:
             await bot.add_reaction(message, "\u2764")
-    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and \
-            (bot.user in message.mentions or
-             (len(set(
-                 message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
-                 set(['biri', 'biribiri']))) > 0)) and await bot.pre_command(message=message, command='talk', delete_message=False):
+    if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and (
+            bot.user in message.mentions or (len(
+            set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
+                    set(['biri', 'biribiri']))) > 0)) and await bot.pre_command(message=message, command='talk',
+                                                                                delete_message=False):
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \
                 any(word in message.content.lower() for word in ['heart', 'pls', 'love']):
             await bot.send_message(message.channel, ":heart:")

@@ -28,7 +28,8 @@ class Hangman:
     async def hangman(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='hangman'):
             return
-        game = self.games.get(ctx.message.server.id)
+        gameinfo = ('user', ctx.message.author.id) if ctx.message.channel.is_private else ('server', ctx.message.server.id)
+        game = self.games.get(gameinfo)
 
         if len(args) <= 0:
             if not game:
@@ -62,25 +63,25 @@ class Hangman:
                     r = random.randint(0, len(constants.hangmanwords) - 1)
                     word = constants.hangmanwords[r]
                 g = comm.hangmaninstance.HangmanInstance(word)
-                self.games[ctx.message.server.id] = g
+                self.games[gameinfo] = g
                 return await self.show(ctx.message.channel, g, "New game initialized")
             return await self.bot.say("There is no game running in this server b-b-baka")
         # Guess sentence
         if " ".join(args).lower().translate(str.maketrans('', '', string.punctuation)) == game.word.lower().translate(
                 str.maketrans('', '', string.punctuation)):
-            self.games.pop(ctx.message.server.id)
+            self.games.pop(gameinfo)
             await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
             return
         if len(args[0]) > 1:
             game.faults += 1
             if game.faults >= MAXFAULTS:
-                self.games.pop(ctx.message.server.id)
+                self.games.pop(gameinfo)
             await self.show(ctx.message.channel, game, "Sorry, the word was not \"" + " ".join(args) + "\"...")
             return
         # Guess letter
         result = game.guess(args[0])
         if result == WIN:
-            self.games.pop(ctx.message.server.id)
+            self.games.pop(gameinfo)
             await self.show(ctx.message.channel, game, message=ctx.message.author.name, win=True)
             return
         if result == RIGHT:
@@ -92,7 +93,7 @@ class Hangman:
                             "Sorry, the letter \"" + " ".join(args) + "\" is not in the sentence")
             return
         if result == GAMEOVER:
-            self.games.pop(ctx.message.server.id)
+            self.games.pop(gameinfo)
             await self.show(ctx.message.channel, game)
             return
 
@@ -128,16 +129,16 @@ class Hangman:
                     embed.add_field(name="Letters guessed wrong", value=s)
                 embed.add_field(name="Faults", value=str(game.faults) + "/6")
         m = await self.bot.send_message(channel, embed=embed)
-        if channel.server.id in self.prev.keys():
+        if channel.id in self.prev.keys():
             try:
-                await self.bot.delete_message(self.prev.get(channel.server.id))
+                await self.bot.delete_message(self.prev.get(channel.id))
             except discord.Forbidden:
                 print(m.server.name + " | No permission to delete messages")
         if not channel.is_private:
             if game.faults >= 6:
-                self.prev[channel.server.id] = None
+                self.prev[channel.id] = None
             else:
-                self.prev[channel.server.id] = m
+                self.prev[channel.id] = m
 
     @staticmethod
     def is_private_check(msg):

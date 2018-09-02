@@ -170,7 +170,8 @@ ded = [
     "You look like you want to do my homework?",
     "Let's talk about your mom then!",
     "Fun fact #318: People die when they are killed",
-    "You should go vote for me at https://discordbots.org/bot/244410964693221377 if you are bored :smile:"
+    "You should go vote for me at https://discordbots.org/bot/244410964693221377 if you are bored :smile:",
+    "What if I told you that you could start a conversation right now!"
 ]
 
 purr = [
@@ -253,7 +254,11 @@ hangmanwords = [
     "The first rule of fight club: you don't talk about fight club",
     "It is all connected",
     "But everything changed when the firenation attacked",
-    "All those moments will be lost in time, like tears in rain."
+    "All those moments will be lost in time, like tears in rain.",
+    "Paint me like one of your french girls",
+    "I am the king of the world",
+    "We were born to make history",
+    "I rate it a perfect five out of seven"
 ]
 
 hug = [
