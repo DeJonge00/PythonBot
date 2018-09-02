@@ -178,6 +178,8 @@ monsters = [
      "https://i.pinimg.com/736x/41/32/b7/4132b7423da75a1d5f9bed5d467072d2--kill-la-kill-anime-art.jpg"),
     ("Storm Elemental", element_lightning,
      "https://i.pinimg.com/736x/87/c7/8e/87c78eb9801fb248f91844881259e0ac--guild-wars--medieval-fantasy.jpg"),
+    ("Enraged God", element_lightning,
+     "https://myanimelist.cdn-dena.com/s/common/uploaded_files/1447535700-090b256b01362465f295aa3f8aca6080.jpeg"),
 
     ("A Birdperson", element_air,
      "https://vignette.wikia.nocookie.net/rickandmorty/images/9/9d/BirdpersonTransparent.png/revision/latest?cb=20161223222905"),
@@ -206,6 +208,8 @@ monsters = [
     ("Mutated Monster Monkey", element_dark,
      "https://orig00.deviantart.net/07df/f/2013/119/d/5/rainy_devil_cosplay___bakemonogatari_by_kohimebashiri-d63k393.jpg"),
     ("Skaven Assassin in Training", element_dark, "https://us.v-cdn.net/5022456/uploads/editor/tr/lllm5fvwginz.jpg"),
+    ("Horrifying Swamp Monster", element_dark, "http://batrock.net/animeimages/mushi05-01.JPG"),
+    ('Shirt and Scarf Combo', element_dark, "https://foregroundnoises.files.wordpress.com/2013/12/kill091.jpg"),
 
     ("Awoken Spirit", element_holy,
      "https://vignette.wikia.nocookie.net/warhammerfb/images/4/41/WAR_CA_00806_07.jpg/revision/latest/scale-to-width-down/251?cb=20171119134426"),
@@ -223,6 +227,7 @@ monsters = [
      "https://vignette.wikia.nocookie.net/warhammerfb/images/2/2d/Warhammer_Human_Nagash.jpg/revision/latest?cb=20170422040305"),
     ("Wandering Angel", element_holy,
      "https://i.pinimg.com/736x/42/92/59/429259b04d9825ec546cda7ae11095f4--fantasy-art-angels-fallen-angels.jpg"),
+    ('Mischievous Angel', element_holy, "https://i.pinimg.com/originals/b3/f1/78/b3f178548031613133515cb9028d7257.jpg"),
 
     ("Lava Crocodile", element_fire,
      "https://vignette.wikia.nocookie.net/creaturequest/images/4/4f/246_LavaCrocodile.png/revision/latest?cb=20170316003052"),
@@ -267,6 +272,8 @@ bosses = [
     ("Lord of Change", element_air, "https://spikeybits.com/wp-content/uploads/2014/11/fateweaver.jpg"),
     ("Valkia the Bloody", element_air,
      "https://s-media-cache-ak0.pinimg.com/originals/33/ac/2a/33ac2abb16e80727180259f8b05beb61.jpg"),
+    ("Bloodthirsty Mosquito", element_air,
+     "http://www.nma-fallout.com/data/photos/l/4/4582-1360416482-d0c43bc4f9ecaee2a7afa572444d9ad0.jpg"),
 
     ("Biribiri Herself", element_lightning, "https://i.imgur.com/2AhCKgV.png"),
     ("Dragon Ogre Shaggoth", element_lightning,
