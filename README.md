@@ -14,10 +14,12 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 
 |Message                                |Reaction
 |---                                    |---
-|`\o/`                                  |Praise the sun!
-|`ded` (After a period of no messages)  |Cry about a ded chat
-|`(╯°□°）╯︵ ┻━┻`                        | `┬─┬ ノ( ゜-゜ノ)`
-|Mentions, `biri` or `biribiri`         |I will talk to your lonely self
+|`\o/`                                  |Praise the sun! (can be disabled by using `togglecommand server \\o/` or `togglecommand channel \\o/`)
+|`ded` (After a period of no messages)  |Cry about a ded chat (can be disabled by using `togglecommand server response_ded` or `togglecommand channel response_ded`)
+|`(╯°□°）╯︵ ┻━┻`                        | `┬─┬ ノ( ゜-゜ノ)` (can be disabled by using `togglecommand server tableflip` or `togglecommand channel tableflip`)
+|`ayy`                                  |`lmao` (can be disabled by using `togglecommand server ayy` or `togglecommand channel ayy`)
+|`lenny`                                |`( ͡° ͜ʖ ͡°)` (can be disabled by using `togglecommand server response_lenny` or `togglecommand channel response_lenny`)
+|Mentions, `biri` or `biribiri`         |I will talk to your lonely self (can be disabled by using `togglecommand server talk` or `togglecommand channel talk`)
 
 ### Basic commands
 

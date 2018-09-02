@@ -86,7 +86,7 @@ class PythonBot(Bot):
 
     def command_allowed_in(self, type: str, command_name: str, identifier: str):
         return command_name == 'togglecommand' or not any(
-            set([command_name, 'all']).intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
+            {command_name, 'all'}.intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
 
     def command_allowed_in_server(self, command_name: str, serverid: str):
         return self.command_allowed_in('server', command_name, serverid)

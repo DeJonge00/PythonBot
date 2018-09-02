@@ -241,7 +241,7 @@ class RPGGame:
                         p.add_exp(reward)
                         p.add_bosstier()
                         for pet in p.pets:
-                            pet.add_exp(reward)
+                            pet.add_exp(0.1*reward)
 
                     # Chance to reward a player with a new pet
                     if random.randint(0, 100) < 35:
@@ -271,10 +271,11 @@ class RPGGame:
 
         # Reward victory
         if winner == 1:
-            player.add_exp(100 * player.get_level())
-            player.add_money(50 * player.get_level())
+            lvl = math.pow(player.get_level(), 0.95)
+            player.add_exp(int(110 * lvl))
+            player.add_money(int(30 * lvl))
             for p in player.pets:
-                p.add_exp(10 * p.get_level())
+                p.add_exp(10 * lvl)
 
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
@@ -423,7 +424,7 @@ class RPGGame:
         if data.role not in rpgc.names.get("role"):
             return
         # Reward player based on rpg level with money
-        i = round(pow((data.get_level()) + 1, 1 / 3)  # levelbonus
+        i = round(pow((data.get_level()) + 1, 1 / 2)  # levelbonus
                   * max(0, min(80, int((len(message.content) - 3) / 1.5))))  # Textbonus
         if data.busydescription in [rpgchar.BUSY_DESC_TRAINING, rpgchar.BUSY_DESC_BOSSRAID]:
             i *= 0.5

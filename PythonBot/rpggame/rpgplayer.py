@@ -11,7 +11,7 @@ DEFAULT_ROLE = 'Undead'
 
 class RPGPlayer(rpgcharacter.RPGCharacter):
     def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
-                 armor=RPGArmor(), pets=[], health=rpgcharacter.DEFAULT_HEALTH, maxhealth=rpgcharacter.DEFAULT_HEALTH,
+                 armor=RPGArmor(), pets: [RPGPet]=[], health=rpgcharacter.DEFAULT_HEALTH, maxhealth=rpgcharacter.DEFAULT_HEALTH,
                  damage=rpgcharacter.DEFAULT_DAMAGE, ws=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0, bosstier=1,
                  kingtimer=0, element=rpgc.element_none, extratime=0):
         self.userid = userid

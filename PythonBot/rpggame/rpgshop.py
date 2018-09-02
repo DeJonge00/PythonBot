@@ -256,7 +256,7 @@ class RPGShop:
             return
 
         player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id)
-        player.add_money(time * pow((player.get_level()) + 1, 1 / 3) * 120)
+        player.add_money(time * pow((player.get_level()) + 1, 1 / 2) * 120)
         work = random.choice([
             'cleaning the stables',
             'sharpening the noble\'s weapon',
