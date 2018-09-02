@@ -258,7 +258,8 @@ hangmanwords = [
     "Paint me like one of your french girls",
     "I am the king of the world",
     "We were born to make history",
-    "I rate it a perfect five out of seven"
+    "I rate it a perfect five out of seven",
+    "And they lived happily ever after"
 ]
 
 hug = [

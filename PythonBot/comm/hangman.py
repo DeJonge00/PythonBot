@@ -28,7 +28,7 @@ class Hangman:
     async def hangman(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='hangman'):
             return
-        gameinfo = ('user', ctx.message.author.id) if ctx.message.channel.is_private else ('server', ctx.message.server.id)
+        gameinfo = ('user', ctx.message.author.id) if ctx.message.channel.is_private else ('channel', ctx.message.channel.id)
         game = self.games.get(gameinfo)
 
         if len(args) <= 0:
@@ -123,10 +123,7 @@ class Hangman:
 
                 embed.add_field(name="Guessed so far", value=str(game), inline=False)
                 if len(game.wrongguesses) > 0:
-                    s = ""
-                    for i in game.wrongguesses:
-                        s += i + " "
-                    embed.add_field(name="Letters guessed wrong", value=s)
+                    embed.add_field(name="Letters guessed wrong", value=" ".join(game.wrongguesses))
                 embed.add_field(name="Faults", value=str(game.faults) + "/6")
         m = await self.bot.send_message(channel, embed=embed)
         if channel.id in self.prev.keys():

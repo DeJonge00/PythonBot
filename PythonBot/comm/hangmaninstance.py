@@ -8,9 +8,10 @@ GAMEOVER = 2
 WIN = 3
 MAXFAULTS = 6
 
+
 # Normal commands
 class HangmanInstance:
-    def __init__(self, word : str):
+    def __init__(self, word: str):
         self.word = word
         self.faults = 0
         self.guesses = []
@@ -40,7 +41,7 @@ class HangmanInstance:
                 if x.lower() in self.guesses:
                     s += str(x)
                 else:
-                    s += "-"
+                    s += "\_"
             else:
                 s += str(x)
         return s
