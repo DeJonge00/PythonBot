@@ -241,7 +241,7 @@ class RPGGame:
                         p.add_exp(reward)
                         p.add_bosstier()
                         for pet in p.pets:
-                            pet.add_exp(0.1*reward)
+                            pet.add_exp(0.1 * reward)
 
                     # Chance to reward a player with a new pet
                     if random.randint(0, 100) < 35:
@@ -280,16 +280,21 @@ class RPGGame:
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
         (name, stat, amount) = secrets_list[random.randint(0, len(secrets_list) - 1)]
-        amount *= max(1, int(math.sqrt(player.get_level())))
+
         if stat.lower() == "health":
             player.add_health(amount)
+            amount *= max(1, int(player.get_level() / 4))
         elif stat.lower() == "weaponskill":
+            amount *= max(1, int(math.pow(player.get_level(), 0.25)))
             player.weaponskill += amount
         elif stat.lower() == "money":
+            amount *= max(1, int(math.sqrt(player.get_level())))
             player.money += amount
         elif stat.lower() == "exp":
+            amount *= max(1, int(math.sqrt(player.get_level() / 2)))
             player.exp += amount
         elif stat.lower() == "damage":
+            amount *= max(1, int(math.pow(player.get_level(), 0.4)))
             player.damage += amount
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Adventure secret found", value="{}, {}\n{} +{}".format(player.name, name, stat, amount))
@@ -570,7 +575,8 @@ class RPGGame:
             await self.bot.say("You came back before you even went out, 0 exp earned")
             return
         if n > (rpgchar.maxadvtime + data.extratime):
-            await self.bot.say("You can only go on an adventure for {} minutes".format(rpgchar.maxadvtime + data.extratime))
+            await self.bot.say(
+                "You can only go on an adventure for {} minutes".format(rpgchar.maxadvtime + data.extratime))
             return
         c = ctx.message.channel
         if c.is_private:
@@ -1034,7 +1040,8 @@ class RPGGame:
             return
         if not (rpgchar.minwandertime <= n <= (rpgchar.maxwandertime + (2 * data.extratime))):
             await self.bot.say(
-                "You can wander between {} and {} minutes".format(rpgchar.minwandertime, rpgchar.maxwandertime + (2 * data.extratime)))
+                "You can wander between {} and {} minutes".format(rpgchar.minwandertime,
+                                                                  rpgchar.maxwandertime + (2 * data.extratime)))
             return
         c = ctx.message.channel
         if c.is_private:

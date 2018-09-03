@@ -380,7 +380,6 @@ class Basics:
         else:
             result = '*Pong*'
         t = datetime.utcnow()
-        m: discord.Message
         m = await self.bot.say(':ping_pong: ' + result)
         t = (m.timestamp - t)
         time = ''
@@ -403,7 +402,7 @@ class Basics:
         if not await self.bot.pre_command(message=ctx.message, command='role'):
             return
         if len(args) <= 0:
-            await self.bot.say("Usage: {}role <rolename without spaces> [\{user\}]".format(prefix))
+            await self.bot.say("Usage: {}role <rolename without spaces> [user]".format(prefix))
             return
         else:
             rolename = args[0].lower()

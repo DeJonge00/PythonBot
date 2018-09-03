@@ -303,7 +303,6 @@ bosses = [
     ("Mammoth", element_ice, "https://i.ytimg.com/vi/ilr_CRV9MQ4/maxresdefault.jpg"),
     ("Yeti", element_ice, "https://img00.deviantart.net/b76e/i/2006/316/5/a/yeti_by_andreauderzo.jpg")
 ]
-
 adventureSecrets = [
     ("you saw something shiny when you followed a bird", "Money", 100),
     ("a strange creature you saved gave you his thanks", "Money", 100),
@@ -312,9 +311,17 @@ adventureSecrets = [
     ("you found a treasure chest", "Money", 200),
     ("you found a naked guy in a cave and stole his ring", "Money", 200),
     ("you sold some junk at a salesman near the road", "Money", 250),
+    ("you freed a wealthy nobleman from his bindings", "Money", 100),
+    ("someone thought you were a jester and gave you something out of pity", "Money", 50),
+    ("you turned some old iron into gold", "Money", 200),
+    ("you sold some spoils of war", "Money", 90),
+    ("you earned some money by delivering a bounty", "Money", 180),
+    ("you got a reward for destroying a demon", "Money", 220),
+    ("you earned a medal, but sold it immediately", "Money", 140),
 
     ("an old lady shared a meal with you", "Health", 100),
     ("you got lost and rested at a small lake", "Health", 200),
+    ("a nice old lady gave you a red apple", "Health", 150),
 
     ("you found a nest of little griffins and made the wise decision to run", "Exp", 100),
     ("you sparred with an old friend", "Exp", 100),
@@ -322,10 +329,22 @@ adventureSecrets = [
     ("you got through the scary part of nearby woods", "Exp", 150),
     ("you talked to some strange travellers", "Exp", 200),
     ("you saw big creatures fighting in the distance and learned some moves", "Exp", 250),
+    ("your mom read you an interesting bed-time-story", "Exp", 50),
+    ("you slaughtered and ate some ferocious white rabbits", "Exp", 100),
+    ("you assisted a fat mom by capturing her cat", "Exp", 120),
+    ("you watched some wise people play an intense game of chess", "Exp", 180),
+    ("you entertained the village orphans", "Exp", 160),
 
     ("you fell off the road and climbed back up", "Weaponskill", 1),
+    ("you learned some new combat skills in a barfight", "Weaponskill", 2),
 
     ("a blacksmith in a small village tought you some tricks", "Damage", 2),
+    ("you found a spell that could increase your weapon's effectiveness", "Damage", 1),
 
-    ("you got distracted by nature", "A good feeling", 1)
+    ("you got distracted by nature", "A good feeling", 1),
+    ("a fluffy little creature gave you a hug", "A good feeling", 1)
 ]
+
+
+
+
