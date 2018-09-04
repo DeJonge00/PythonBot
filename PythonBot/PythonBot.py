@@ -89,10 +89,14 @@ class PythonBot(Bot):
             {command_name, 'all'}.intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
 
     def command_allowed_in_server(self, command_name: str, serverid: str):
-        return self.command_allowed_in('server', command_name, serverid)
+        split = command_name.split(' ')
+        return self.command_allowed_in('server', command_name, serverid) and (
+                len(split) <= 1 or self.command_allowed_in('server', split[0], serverid))
 
     def command_allowed_in_channel(self, command_name: str, channelid: str):
-        return self.command_allowed_in('channel', command_name, channelid)
+        split = command_name.split(' ')
+        return self.command_allowed_in('channel', command_name, channelid) and (
+                len(split) <= 1 or self.command_allowed_in('channel', split[0], channelid))
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False):
@@ -268,7 +272,7 @@ def init_bot():
 
     # Handle incoming events
     @bot.event
-    async def on_message(message):
+    async def on_message(message: discord.Message):
         if message.author.bot:
             return
         if message.channel.is_private:
@@ -289,7 +293,8 @@ def init_bot():
             pass
             await bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
         # Send message to rpggame for exp
-        if bot.RPGGAME:
+        if bot.RPGGAME and not (
+                len(message.content) >= 2 or message.content[0].isalpha() or message.content[1].isalpha()):
             await bot.rpggame.handle(message)
 
     # @bot.event
