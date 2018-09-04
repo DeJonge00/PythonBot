@@ -69,6 +69,26 @@ class Basics:
             return
         await self.bot.say(random.choice(constants.compliments).format(u=[target.mention]))
 
+    # {prefix}cookie
+    @commands.command(pass_context=1, help="Collectively click the cookie!")
+    async def cookie(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='cookie'):
+            return
+
+        n = dbcon.increment_pats('cookie', 'all')
+        s = '' if n == 1 else 's'
+        m = "has now been clicked {} time{} in total".format(n, s)
+        if n % 100 == 0:
+            embed = discord.Embed(colour=0x000000)
+            url = "http://nobacks.com/wp-content/uploads/2014/11/Golden-Star-3-500x500.png"
+            m = 'The cookie {}!!!'.format(m)
+            embed.add_field(name=ctx.message.author.display_name + " has clicked the cookie", value=m)
+            url = 'https://res.cloudinary.com/lmn/image/upload/e_sharpen:100/f_auto,fl_lossy,q_auto/v1/gameskinny/deea3dc3c4bebf48c8d61d0490b24768.png'
+            embed.set_thumbnail(url=url)
+            await self.bot.send_message(ctx.message.channel, embed=embed)
+        else:
+            await self.bot.say("{} Has clicked the cookie. It {}".format(ctx.message.author.display_name, m))
+
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Get tagged a bunch until the timer runs out (dm only)")
     async def countdown(self, ctx, *args):
@@ -372,7 +392,7 @@ class Basics:
     async def ping(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='ping'):
             return
-        r = random.randint(0,100)
+        r = random.randint(0, 100)
         if r < 20:
             result = '*Miss* You win!'
         elif r < 40:
