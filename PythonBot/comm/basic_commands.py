@@ -430,8 +430,7 @@ class Basics:
                 ctx.message.server.owner.id == ctx.message.author.id)
 
         try:
-            errors = {'no_mention': ctx.message.author.mention + " You cant pat air lmao"}
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args, errors=errors)
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args)
             if user != ctx.message.author and not authorhasperms:
                 await self.bot.say("You do not have the permissions to give other people roles")
                 return

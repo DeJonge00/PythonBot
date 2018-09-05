@@ -20,8 +20,8 @@ from rpggame.rpgpet import RPGPet
 from secret.secrets import prefix, font_path
 
 RPG_EMBED_COLOR = 0x710075
-STANDARD_BATTLE_TURNS = 30
-BATTLE_TURNS = {"Bossbattle": 99}
+STANDARD_BATTLE_TURNS = 50
+BATTLE_TURNS = {"Bossbattle": 200}
 
 
 class RPGGame:
@@ -229,8 +229,8 @@ class RPGGame:
                 bosses = []
                 while (3 * len(bosses)) < len(party):
                     (name, elem, pic) = random.choice(rpgc.bosses)
-                    bosses.append(RPGMonster(name=name, health=int(47 * lvl * lvl), damage=int(lvl * lvl),
-                                             ws=int(lvl * lvl * 0.5), element=elem))
+                    bosses.append(RPGMonster(name=name, health=int(52 * lvl * lvl), damage=int(lvl * lvl * 1.1),
+                                             ws=int(lvl * lvl * 0.6), element=elem))
 
                 winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
 
@@ -241,7 +241,7 @@ class RPGGame:
                         p.add_exp(reward)
                         p.add_bosstier()
                         for pet in p.pets:
-                            pet.add_exp(0.1 * reward)
+                            pet.add_exp(0.13 * reward if p.role == rpgc.names.get('role')[2][0] else 0.1 * reward)
 
                     # Chance to reward a player with a new pet
                     if random.randint(0, 100) < 35:
@@ -249,7 +249,6 @@ class RPGGame:
                         petname = 'Pet ' + bosses[0].name
                         pet = RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
                                      weaponskill=petwinner.get_bosstier())
-                        print(petwinner, petname, pet)
                         if pet and petwinner.add_pet(pet):
                             await self.bot.send_message(channel,
                                                         '{} found a baby {}, a new pet!'.format(petwinner.name,
@@ -271,11 +270,11 @@ class RPGGame:
 
         # Reward victory
         if winner == 1:
-            lvl = math.pow(player.get_level(), 0.95)
+            lvl = math.pow(player.get_level(), 0.94)
             player.add_exp(int(110 * lvl))
-            player.add_money(int(30 * lvl))
+            player.add_money(int(25 * lvl))
             for p in player.pets:
-                p.add_exp(10 * lvl)
+                p.add_exp(13 * lvl if p.role == rpgc.names.get('role')[2][0] else 10 * lvl)
 
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets
@@ -426,7 +425,7 @@ class RPGGame:
 
     async def handle(self, message: discord.Message):
         data = self.get_player_data(message.author.id, name=message.author.display_name)
-        if data.role not in rpgc.names.get("role"):
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             return
         # Reward player based on rpg level with money
         i = round(pow((data.get_level()) + 1, 1 / 2)  # levelbonus
@@ -555,7 +554,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg adventure'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -628,7 +627,7 @@ class RPGGame:
             user = ctx.message.author
 
         data = self.get_player_data(user.id, name=user.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -754,7 +753,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg join'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -863,7 +862,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg levelup'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -904,7 +903,7 @@ class RPGGame:
             await self.bot.say("This command cannot work in a private channel")
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
@@ -931,8 +930,15 @@ class RPGGame:
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if len(args) <= 0:
-            await self.bot.say("{}, the currently available roles are: {}".format(ctx.message.author.mention,
-                                                                                  ", ".join(rpgc.names.get("role"))))
+            embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.set_author(name="You can be anything you want, as long as it is one of these:", icon_url=ctx.message.author.avatar_url)
+            for name, desc in rpgc.names.get("role"):
+                embed.add_field(name=name, value=desc, inline=False)
+            embed.set_footer(text="Be aware! You choose you occupation for life!")
+            await self.bot.say(embed=embed)
+            return
+        if data.role in [x[0] for x in rpgc.names.get("role")[:-1]] and ctx.message.author.id != constants.NYAid:
+            await self.bot.say('You cannot change your role once chosen')
             return
         role = " ".join(args).lower()
         role = role[0].upper() + role[1:]
@@ -940,7 +946,7 @@ class RPGGame:
         if role == data.role:
             await self.bot.say("{}, that is already your current role...".format(ctx.message.author.mention))
             return
-        if role in rpgc.names.get("role"):
+        if role in [x[0] for x in rpgc.names.get("role")]:
             data.role = role
             await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
             return
@@ -1022,7 +1028,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg wander'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role == DEFAULT_ROLE:
+        if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))

@@ -11,7 +11,8 @@ DEFAULT_ROLE = 'Undead'
 
 class RPGPlayer(rpgcharacter.RPGCharacter):
     def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
-                 armor=RPGArmor(), pets: [RPGPet]=[], health=rpgcharacter.DEFAULT_HEALTH, maxhealth=rpgcharacter.DEFAULT_HEALTH,
+                 armor=RPGArmor(), pets: [RPGPet] = [], health=rpgcharacter.DEFAULT_HEALTH,
+                 maxhealth=rpgcharacter.DEFAULT_HEALTH,
                  damage=rpgcharacter.DEFAULT_DAMAGE, ws=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0, bosstier=1,
                  kingtimer=0, element=rpgc.element_none, extratime=0):
         self.userid = userid
@@ -35,7 +36,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         return math.floor(math.sqrt(exp) / 25) + 1
 
     def resolve_death(self):
-        if self.health <= 0:
+        if self.health <= 0 and self.role != rpgc.names.get('role')[-1][0]:
             self.exp = max(0, self.exp - 100 * self.get_level())
             self.money = int(math.floor(self.money * 0.5))
             self.busytime = 0
@@ -53,10 +54,13 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             self.resolve_death()
 
     def add_money(self, n: int):
+        if self.role == rpgc.names.get('role')[-1][0]:
+            return True
         if n < 0:
             return False
         n = (1 + (self.armor.money / 100)) * n
         self.money = int(self.money + n)
+        return True
 
     def subtract_money(self, n: int):
         if n < 0 or self.money - n < 0:
@@ -65,7 +69,14 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         return True
 
     def get_max_health(self):
-        return self.maxhealth + self.armor.maxhealth
+        if self.role == rpgc.names.get('role')[-1][0]:
+            return rpgcharacter.DEFAULT_HEALTH
+        n = self.maxhealth + self.armor.maxhealth
+        if self.role == rpgc.names.get('role')[1][0]:
+            n *= 0.85
+        if self.role == rpgc.names.get('role')[3][0]:
+            n *= 1.2
+        return n
 
     def get_element(self):
         return self.armor.element if self.armor.element else rpgc.element_none
@@ -126,9 +137,13 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
     def get_damage(self, element=rpgc.element_none):
         n = super().get_damage(element=element)
         n = rpgcharacter.RPGCharacter.elemental_effect(n, self.weapon.element, element)
+        if self.role == rpgc.names.get('role')[1][0]:  # role == Sorcerer
+            n *= 1.3
         return int(n + self.weapon.damage)
 
     def get_weaponskill(self):
+        if self.role == rpgc.names.get('role')[-1][0]:
+            return 1
         n = super().get_weaponskill()
         return int(n + self.weapon.weaponskill)
 
@@ -138,9 +153,9 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
 
     def do_auto_health_regen(self):
         if self.busydescription == rpgcharacter.BUSY_DESC_NONE:
-            percentage = 0.02
+            percentage = 0.025 if self.role == rpgc.names.get('role')[4][0] else 0.01
         else:
-            percentage = 0.05
+            percentage = 0.035 if self.role == rpgc.names.get('role')[4][0] else 0.06
         self.add_health((self.get_max_health() * percentage) + self.armor.healthregen)
 
     def add_pet(self, pet: RPGPet):

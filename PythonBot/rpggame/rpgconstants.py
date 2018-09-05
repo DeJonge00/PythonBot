@@ -116,10 +116,18 @@ suffixes = [
 
 names = {
     "role": [
-        "Assassin",
-        "Sorcerer",
-        "Barbarian",
-        "Knight"
+        # >work: money *= 1.15
+        ("Peasant", "A humble peasant works hard and earns even more"),
+        # .get_damage(): damage *= 1.3, .get_max_health(): maxhealth *= 0.85
+        ("Sorcerer", "A mighty sorcerer cannot take hits very well, but excels in powerful offensive magical attacks"),
+        # Pet exp *= 1.3
+        ("Hunter", "An adventurous hunter loves and is loved by pets"),
+        # .get_max_health() hmaxhealth *= 1.2
+        ("Samurai", "A battle-hardened samurai can withstand a great deal of damage done by any man or beast"),
+        # do-auto_health_regen 0.025 -> 0.01, 0.035 -> 0.06
+        ("Priest", "A holy priest is skilled in using healing and protection magic"),
+        # No death penalty, max health == DEFAULT_HEALTH, weaponskill == 1, money *= 0
+        ("Kitten", "A kitten cannot fight, cannot work, cannot train, but.. Wow! It is so adorable!")
     ]
 }
 

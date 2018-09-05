@@ -46,6 +46,11 @@ class RPGShop:
         if not await self.bot.pre_command(message=ctx.message, command='shop armor'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say(
+                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
+                    ctx.message.author.mention))
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
@@ -89,6 +94,11 @@ class RPGShop:
         if not await self.bot.pre_command(message=ctx.message, command='shop item'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say(
+                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
+                    ctx.message.author.mention))
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
@@ -148,6 +158,11 @@ class RPGShop:
         if not await self.bot.pre_command(message=ctx.message, command='shop weapon'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say(
+                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
+                    ctx.message.author.mention))
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
@@ -212,6 +227,11 @@ class RPGShop:
             a = math.ceil(rpgchar.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say(
+                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
+                    ctx.message.author.mention))
+            return
         if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
@@ -242,6 +262,11 @@ class RPGShop:
             time = rpgchar.mintrainingtime
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        if player.role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say(
+                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
+                    ctx.message.author.mention))
+            return
         if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
@@ -256,7 +281,10 @@ class RPGShop:
             return
 
         player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id)
-        player.add_money(time * pow((player.get_level()) + 1, 1 / 2) * 120)
+        money = time * pow((player.get_level()) + 1, 1 / 2) * 120
+        if player.role == rpgc.names.get('role')[0][0]:  # role == Peasant
+            money *= 1.15
+        player.add_money()
         work = random.choice([
             'cleaning the stables',
             'sharpening the noble\'s weapon',

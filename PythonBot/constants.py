@@ -61,7 +61,8 @@ qa = [
     "Not. Even. Close.",
     "Do not question the unquestionable",
     "All day, every day. Just don't involve me...",
-    'Only if you vote for me at https://discordbots.org/bot/244410964693221377 <3'
+    'Only if you vote for me at https://discordbots.org/bot/244410964693221377 <3',
+    "With blackjack and hookers?"
 ]
 
 response = [
@@ -126,7 +127,10 @@ response = [
     "*Gimme some rope, I'm coming loose*",
     "You should go outside sometime",
     "Omegalul",
-    "I'll like you a bit more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:"
+    "I'll like you a bit more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:",
+    "Bite my shiny metal ass",
+    "Would you kindly shut your noisehole?",
+    "Everybody is a jerk. That is my philosophy..."
 ]
 
 # random responses
