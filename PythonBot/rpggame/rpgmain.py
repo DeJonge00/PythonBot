@@ -265,7 +265,7 @@ class RPGGame:
         lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
             RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 75))),
-                       damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.07 * (player.exp ** 0.6)))),
+                       damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.085 * (player.exp ** 0.62)))),
                        element=elem)], thumbnail=pic)
 
         # Reward victory
