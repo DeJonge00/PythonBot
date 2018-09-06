@@ -1,5 +1,7 @@
 # Discord Python Bot "Biribiri"
 #### Notes
+The default prefix for Biribiri is the character `>`\
+\
 `words`: literally the word(s) in the brackets (choices separated by a `,`)\
 `{words}`: variable string, describing any word(s) you need\
 `{user}`: Mentioning the user, or giving a name in text (using only characters in a-z, A-Z or 0-9)

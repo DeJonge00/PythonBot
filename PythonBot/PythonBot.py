@@ -228,7 +228,7 @@ class PythonBot(Bot):
             await self.musicplayer.quit()
 
     async def on_member_message(self, member, func_name, text) -> bool:
-        await log.error(member.server.name + " | Member " + member.name + " just " + text, filename=member.server.name,
+        await log.error(member.server.name + " | Member " + str(member) + " just " + text, filename=member.server.name,
                         serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
         if not response:

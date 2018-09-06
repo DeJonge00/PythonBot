@@ -42,7 +42,8 @@ class RPGGameActivities:
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
-        if ctx.invoked_subcommand is None and (ctx.message.content == '{}shop help'.format(prefix)):
+        if ctx.invoked_subcommand is None and (
+                ctx.message.content in ['{}shop help'.format(prefix), '{}shop'.format(prefix)]):
             if not await self.bot.pre_command(message=ctx.message, command='shop help'):
                 return
             await self.send_shop_help_message(ctx.message.author.avatar_url)

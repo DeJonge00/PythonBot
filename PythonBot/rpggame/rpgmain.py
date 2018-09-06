@@ -330,7 +330,7 @@ class RPGGame:
 
             if time.minute == 55:
                 # Boss raids
-                for p in self.boss_parties:
+                for p in [x for x in self.boss_parties if len(x) > 0]:
                     channel = self.bot.get_channel(dbcon.get_rpg_channel(str(p)))
                     if not channel:
                         print("No channel for {}".format(p))
