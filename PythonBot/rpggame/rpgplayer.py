@@ -54,8 +54,6 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             self.resolve_death()
 
     def add_money(self, n: int):
-        if self.role == rpgc.names.get('role')[-1][0]:
-            return True
         if n < 0:
             return False
         n = (1 + (self.armor.money / 100)) * n
@@ -139,6 +137,8 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         n = rpgcharacter.RPGCharacter.elemental_effect(n, self.weapon.element, element)
         if self.role == rpgc.names.get('role')[1][0]:  # role == Sorcerer
             n *= 1.3
+        if self.role == rpgc.names.get("role")[-1][0]:  # role == Kitten
+            n *= 3
         return int(n + self.weapon.damage)
 
     def get_weaponskill(self):

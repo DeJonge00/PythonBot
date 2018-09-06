@@ -5,16 +5,16 @@ import random
 import math
 from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 
-moneysign = "¥"
+money_sign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
 
 
-class RPGShop:
+class RPGGameActivities:
     def __init__(self, bot):
         self.bot = bot
         self.weapons = {}
         self.armors = {}
-        print('RPGShop started')
+        print('RPGGameActivities started')
 
     async def send_shop_help_message(self, url: str):
         embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -51,10 +51,13 @@ class RPGShop:
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
+        if player.role == rpgc.names.get("role")[-1][0]:
+            await self.bot.say("{}, A cat cannot possibly wear human armor...".format(ctx.message.author.mention))
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Armory", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
+            embed.add_field(name="Your money", value="{}{}".format(money_sign, player.money))
             start = max(0, player.get_level() - 5)
             for i in range(start, start + 10):
                 a = self.armors.get(i)
@@ -83,9 +86,9 @@ class RPGShop:
         if not player.buy_armor(armor):
             await self.bot.say("You do not have the money to buy the {}".format(armor.name))
             return
-        t = "You have acquired the {} for {}{}".format(armor.name, moneysign, armor.cost)
+        t = "You have acquired the {} for {}{}".format(armor.name, money_sign, armor.cost)
         if pa.cost > 3:
-            t += "\nYou sold your old armor for {}{}".format(moneysign, int(math.floor(0.25 * pa.cost)))
+            t += "\nYou sold your old armor for {}{}".format(money_sign, int(math.floor(0.25 * pa.cost)))
         await self.bot.say(t)
 
     # {prefix}shop item
@@ -102,9 +105,9 @@ class RPGShop:
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
+            embed.add_field(name="Your money", value="{}{}".format(money_sign, player.money))
             for i in sorted(rpgc.shopitems.values(), key=lambda x: x.cost):
-                t = "Costs: {}{}".format(moneysign, i.cost)
+                t = "Costs: {}{}".format(money_sign, i.cost)
                 t += "\nYou can afford {} of this item".format(math.floor(player.money / i.cost))
                 for e in i.benefit:
                     x = i.benefit.get(e)
@@ -119,10 +122,11 @@ class RPGShop:
             item = "maxhealth"
         elif item in ["d", "dam", 'dmg']:
             item = "damage"
-        elif item in ["a", "armour", "armorplates", "armor"]:
-            item = "plates"
         elif item in ["c", "crit"]:
             item = "critical"
+        if item in ['maxhealth', 'health'] and player.role == rpgc.names.get("role")[-1][0]:
+            await self.bot.say("{}, this stuff does not work on animals...".format(ctx.message.author.mention))
+            return
         if item == "health" and player.health == player.maxhealth:
             await self.bot.say("You're already full HP")
             return
@@ -147,7 +151,7 @@ class RPGShop:
             return
         if player.buy_item(item, amount=a):
             await self.bot.say(
-                "{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, moneysign, a * item.cost))
+                "{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, money_sign, a * item.cost))
         else:
             await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(
                 ctx.message.author.mention, a, item.name, math.floor(player.money / item.cost)))
@@ -163,10 +167,13 @@ class RPGShop:
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
             return
+        if player.role == rpgc.names.get("role")[-1][0]:
+            await self.bot.say("{}, how would you even use a weapon as a cat?".format(ctx.message.author.mention))
+            return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop Weapons", icon_url=ctx.message.author.avatar_url)
-            embed.add_field(name="Your money", value="{}{}".format(moneysign, player.money))
+            embed.add_field(name="Your money", value="{}{}".format(money_sign, player.money))
             start = max(0, player.get_level() - 5)
             for i in range(start, start + 10):
                 w = self.weapons.get(i)
@@ -195,9 +202,9 @@ class RPGShop:
         if not player.buy_weapon(weapon):
             await self.bot.say("You do not have the money to buy the {}".format(weapon.name))
             return
-        t = "You have acquired the {} for {}{}".format(weapon.name, moneysign, weapon.cost)
+        t = "You have acquired the {} for {}{}".format(weapon.name, money_sign, weapon.cost)
         if pw.cost > 3:
-            t += "\nYou sold your old weapon for {}{}".format(moneysign, int(math.floor(0.25 * pw.cost)))
+            t += "\nYou sold your old weapon for {}{}".format(money_sign, int(math.floor(0.25 * pw.cost)))
         await self.bot.say(t)
 
     # {prefix}train
@@ -231,6 +238,9 @@ class RPGShop:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
+            return
+        if player.role == rpgc.names.get("role")[-1][0] and training.name == 'maxhealth':
+            await self.bot.say("{}, awww. So cute. A cat trying to fight a dummy".format(ctx.message.author.mention))
             return
         if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
@@ -266,6 +276,9 @@ class RPGShop:
             await self.bot.say(
                 "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
                     ctx.message.author.mention))
+            return
+        if player.role == rpgc.names.get("role")[-1][0]:
+            await self.bot.say("{}, I'm sorry, but we need someone with more... height...".format(ctx.message.author.mention))
             return
         if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")

@@ -38,9 +38,9 @@ def initCogs(bot):
         bot.add_cog(bot.musicplayer)
     if bot.RPGGAME:
         from rpggame.rpgmain import RPGGame
-        from rpggame.rpgshop import RPGShop
+        from rpggame.rpggameactivities import RPGGameActivities
         bot.rpggame = RPGGame(bot)
-        bot.rpgshop = RPGShop(bot)
+        bot.rpgshop = RPGGameActivities(bot)
         bot.add_cog(bot.rpggame)
         bot.add_cog(bot.rpgshop)
     from comm.mod_commands import Mod

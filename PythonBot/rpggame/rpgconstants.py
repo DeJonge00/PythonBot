@@ -126,7 +126,7 @@ names = {
         ("Samurai", "A battle-hardened samurai can withstand a great deal of damage done by any man or beast"),
         # do-auto_health_regen 0.025 -> 0.01, 0.035 -> 0.06
         ("Priest", "A holy priest is skilled in using healing and protection magic"),
-        # No death penalty, max health == DEFAULT_HEALTH, weaponskill == 1, money *= 0
+        # No death penalty, max health == DEFAULT_HEALTH
         ("Kitten", "A kitten cannot fight, cannot work, cannot train, but.. Wow! It is so adorable!")
     ]
 }

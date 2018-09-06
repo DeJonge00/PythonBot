@@ -12,7 +12,7 @@ from io import BytesIO
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands
 
-from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpgshop, rpgconstants as rpgc
+from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpggameactivities, rpgconstants as rpgc
 from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
 from rpggame.rpgcharacter import RPGCharacter
@@ -726,7 +726,7 @@ class RPGGame:
         draw.text((nameoffset, topoffset + 3 * following), "Status:", color, font=font)
         draw.text((statoffset, topoffset + 3 * following), stats, color, font=font)
         draw.text((nameoffset, topoffset + 4 * following), "Money:", color, font=font)
-        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpgshop.moneysign, data.money), color,
+        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpggameactivities.money_sign, data.money), color,
                   font=font)
         draw.text((nameoffset, topoffset + 5 * following), "Health:", color, font=font)
         draw.text((statoffset, topoffset + 5 * following), "{}/{}".format(data.health, data.get_max_health()), color,
@@ -946,11 +946,13 @@ class RPGGame:
         if role == data.role:
             await self.bot.say("{}, that is already your current role...".format(ctx.message.author.mention))
             return
-        if role in [x[0] for x in rpgc.names.get("role")]:
-            data.role = role
-            await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
+        if role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
             return
-        await self.bot.say("{}, that is not a role available to a mere mortal".format(ctx.message.author.mention))
+        if data.role == rpgc.names.get('role')[-1][0]:
+            data.health = 100
+        data.role = role
+        await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
 
     @staticmethod
     def get_group(s: str):
@@ -1011,7 +1013,7 @@ class RPGGame:
         for i in range(len(players)):
             name, player_score = players[i]
             if group == "money":
-                result += "Rank {}:\n\t**{}**, {}{}\n".format(i + 1, name, rpgshop.moneysign, player_score)
+                result += "Rank {}:\n\t**{}**, {}{}\n".format(i + 1, name, rpggameactivities.money_sign, player_score)
             elif group == "bosstier":
                 result += "Rank {}:\n\t**{}**, tier {}\n".format(i + 1, name, player_score)
             elif group in ["critical", "weaponskill", "damage", "maxhealth"]:
