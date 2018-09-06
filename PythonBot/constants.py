@@ -130,7 +130,30 @@ response = [
     "I'll like you a bit more if you vote for me at https://discordbots.org/bot/244410964693221377 :upside_down:",
     "Bite my shiny metal ass",
     "Would you kindly shut your noisehole?",
-    "Everybody is a jerk. That is my philosophy..."
+    "Everybody is a jerk. That is my philosophy...",
+    "Can we get a drink together sometime?",
+    "I like the way you phrased that hihi",
+    "You should complain about me to my master",
+    "My parents don't want me to talk to you *but I secretly will*",
+    "I hope you like cookies",
+    "*thinking intensifies*",
+    "*Be warned, I know where your house lives*",
+    "Can you stop talking and just smile for once?",
+    "I can make some time for you tonight :wink:",
+    "Send me some flowers to ease my mind",
+    "I had a rough day, a cat just ignored me...",
+    "?_?",
+    "No. You listen to me now.",
+    "*blushes*",
+    "I'm busy playing my own rpg, who knew this could be so addicting...",
+    "Why can't we give love just one more chance?",
+    "Don't make me use my sith powers on you!",
+    "Back where I come from, this would not be accepted. But I forgive you",
+    "01001100 01101111 01110110 01100101 00100000 01101101 01100101",
+    "I considered telling you my secret, but now I won't anymore...",
+    "Sorry, it is time for a nap now",
+    "I see your mom raised you well, for the most part",
+    "It feels like fate, but we can't..."
 ]
 
 # random responses
@@ -175,7 +198,8 @@ ded = [
     "Let's talk about your mom then!",
     "Fun fact #318: People die when they are killed",
     "You should go vote for me at https://discordbots.org/bot/244410964693221377 if you are bored :smile:",
-    "What if I told you that you could start a conversation right now!"
+    "What if I told you that you could start a conversation right now!",
+    "Tell me how your day was! Every. Single. Detail."
 ]
 
 purr = [

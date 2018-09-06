@@ -333,6 +333,9 @@ def init_bot():
 
     @bot.event
     async def on_member_update(before, after):
+        if before.id == constants.NYAid and before.game != after.game:
+            await bot.change_presence(game=discord.Game(name='with lolis <3' if after.game else after.game))
+            return
         changed = False
         m = before.server.name + " | Member " + str(before) + " updated: "
         if before.name != after.name:

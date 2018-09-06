@@ -270,7 +270,7 @@ class RPGGame:
 
         # Reward victory
         if winner == 1:
-            lvl = math.pow(player.get_level(), 0.94)
+            lvl = math.pow(player.get_level(), 0.9)
             player.add_exp(int(110 * lvl))
             player.add_money(int(25 * lvl))
             for p in player.pets:

@@ -28,10 +28,11 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |botstats       |`botstats,botinfo`                                     |Show stats of the bot in an embed
 |cast        	|`cast` `{user}`                                        |Cast a spell targeted at `{user}`
 |compliment  	|`compliment` `{user}`                                  |Give `{user}` a compliment
+|cookie         |`cookie`                                               |Click the cookie, let's see how far we come. For teh greater good!
 |countdown      |`countdown` `{seconds}`                                |Ping on times until the seconds run out (dms only for spam reasons)
 |delete      	|`del,delete,d` `{seconds}` `{normal message}`          |Make biri delete your message after `{seconds}` seconds
 |echo        	|`echo` `{text}`                                        |Biri repeats `{text}`
-|embed          |`embed` `{text or single attachment}`                  
+|embed          |`embed` `{text or single attachment}`                  |Send an embed of {text} or an {attachment}
 |emoji       	|`emoji` `{emoji}`                                      |Send a big version of `{emoji}`
 |emojify     	|`emojify` `{text}`                                     |Transform `{text}` to regional indicators
 |face        	|`face`                                                 |Send a random ascii face
@@ -153,5 +154,6 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |               |`s,shop` `item` `{itemnumber}`                         |Buy item number `{itemnumber}`
 |               |`s,shop` `weapon`                                      |Show shop weapon inventory
 |               |`s,shop` `weapon` `{itemnumber}`                       |Buy weapon number `{itemnumber}`
+|work           |`work`                                                 |Work for some money to spend in the shop
 
 [![Discord Bots](https://discordbots.org/api/widget/244410964693221377.svg)](https://discordbots.org/bot/244410964693221377)
