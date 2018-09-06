@@ -81,8 +81,10 @@ class Basics:
         if n % 100 == 0:
             embed = discord.Embed(colour=0x000000)
             m = 'The cookie {}!!!'.format(m)
-            embed.add_field(name="Cookie clicker: " + ctx.message.author.display_name + " has clicked the cookie", value=m)
-            url = 'https://res.cloudinary.com/lmn/image/upload/e_sharpen:100/f_auto,fl_lossy,q_auto/v1/gameskinny/deea3dc3c4bebf48c8d61d0490b24768.png'
+            embed.add_field(name="Cookie clicker: " + ctx.message.author.display_name + " has clicked the cookie",
+                            value=m)
+            url = 'https://res.cloudinary.com/lmn/image/upload/e_sharpen:100/f_auto,fl_lossy,q_auto/v1/gameskinny/' \
+                  'deea3dc3c4bebf48c8d61d0490b24768.png'
             embed.set_thumbnail(url=url)
             await self.bot.send_message(ctx.message.channel, embed=embed)
         else:
@@ -227,7 +229,7 @@ class Basics:
 
     # {prefix}face
     @commands.command(pass_context=1, help="Make a random face!")
-    async def face(self, ctx, *args):
+    async def face(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='face'):
             return
         await self.bot.say(random.choice(constants.faces))
@@ -388,7 +390,7 @@ class Basics:
 
     # {prefix}ping
     @commands.command(pass_context=1, help="Give someone a compliment")
-    async def ping(self, ctx, *args):
+    async def ping(self, ctx):
         if not await self.bot.pre_command(message=ctx.message, command='ping'):
             return
         r = random.randint(0, 100)
@@ -538,7 +540,7 @@ class Basics:
     # {prefix}userinfo <user>
     @commands.command(pass_context=1, help="Get a user's information!", aliases=["user", "info"])
     async def userinfo(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='userinfo'):
+        if not await self.bot.pre_command(message=ctx.message, command='userinfo', cannot_be_private=True):
             return
 
         user = await self.bot.get_member_from_message(ctx.message, args, in_text=True)
@@ -586,7 +588,7 @@ class Basics:
             embed.add_field(name="Query: " + q, value=s)
             await self.bot.say(embed=embed)
             return
-        except Exception as e:
+        except Exception:
             embed.add_field(name="Query: " + q, value="There are too much answers to give you the correct one...")
             await self.bot.say(embed=embed)
             return

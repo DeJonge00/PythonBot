@@ -107,7 +107,7 @@ class RPGGameActivities:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
             embed.set_author(name="Shop inventory", icon_url=ctx.message.author.avatar_url)
             embed.add_field(name="Your money", value="{}{}".format(money_sign, player.money))
-            for i in sorted(rpgc.shopitems.values(), key=lambda x: x.cost):
+            for i in sorted(rpgc.shopitems.values(), key=lambda l: l.cost):
                 t = "Costs: {}{}".format(money_sign, i.cost)
                 t += "\nYou can afford {} of this item".format(math.floor(player.money / i.cost))
                 for e in i.benefit:
@@ -270,7 +270,8 @@ class RPGGameActivities:
         if not await self.check_role(player.role):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
-            await self.bot.say("{}, I'm sorry, but we need someone with more... height...".format(ctx.message.author.mention))
+            await self.bot.say(
+                "{}, I'm sorry, but we need someone with more... height...".format(ctx.message.author.mention))
             return
         if player.busydescription != rpgchar.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")

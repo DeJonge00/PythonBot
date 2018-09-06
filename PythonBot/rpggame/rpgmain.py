@@ -1,22 +1,22 @@
-import constants
 import datetime
-import discord
 import logging
-import math
 import os
 import os.path
 import random
-import requests
 from io import BytesIO
 
+import discord
+import math
+import requests
 from PIL import Image, ImageFont, ImageDraw
 from discord.ext import commands
 
+import constants
 from rpggame import rpgcharacter as rpgchar, rpgdbconnect as dbcon, rpggameactivities, rpgconstants as rpgc
-from rpggame.rpgmonster import RPGMonster
-from rpggame.rpgplayer import RPGPlayer, DEFAULT_ROLE
 from rpggame.rpgcharacter import RPGCharacter
+from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgpet import RPGPet
+from rpggame.rpgplayer import RPGPlayer
 from secret.secrets import prefix, font_path
 
 RPG_EMBED_COLOR = 0x710075
@@ -321,7 +321,7 @@ class RPGGame:
         self.players = dbcon.get_busy_players(self.bot)
         self.boss_parties = self.get_boss_parties()
         logging.basicConfig(level=logging.DEBUG)
-        print("RPG Gameloop started!")
+        print("RPGGame loop started!")
 
     async def game_tick(self, time):
         try:
@@ -329,7 +329,7 @@ class RPGGame:
                 print(time)
 
             if time.minute == 55:
-                # Bossraids
+                # Boss raids
                 for p in self.boss_parties:
                     channel = self.bot.get_channel(dbcon.get_rpg_channel(str(p)))
                     if not channel:
@@ -395,8 +395,9 @@ class RPGGame:
                             else:
                                 embed.add_field(name="You Died".format(action_type),
                                                 value="You were killed on one of your adventures".format(action_name))
-                                embed.set_thumbnail(
-                                    url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGAa--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1466191557/production/designs/549487_1.jpg")
+                                embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGA"
+                                                        "a--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v146"
+                                                        "6191557/production/designs/549487_1.jpg")
                             c = await self.bot.get_user_info(str(u.userid))
                             if c:
                                 try:
@@ -455,10 +456,10 @@ class RPGGame:
         # Intro/setup help
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.set_author(name="RPG Help: Basics", icon_url=self.bot.user.avatar_url)
-        embed.add_field(name="Introduction",
-                        value="Welcome adventurer, this game grants you the opportunity to slay monsters and rule a realm. "
-                              "You can train yourself and buy upgrades at the shop, and when you are done with adventuring, "
-                              "you can even challenge a boss every hour with a group of friends.",
+        embed.add_field(name="Introduction", value="Welcome adventurer, this game grants you the opportunity to slay "
+                                                   "monsters and rule a realm. You can train yourself and buy upgrades "
+                                                   "at the shop, and when you are done with adventuring, you can even "
+                                                   "challenge a boss every hour with a group of friends.",
                         inline=False)
         embed.add_field(name="Basics",
                         value="Talking gains you extra money\n"
@@ -471,8 +472,8 @@ class RPGGame:
                         value="Switch your role on the battlefield (A role is needed to play the game)",
                         inline=False)
         embed.add_field(name="{}rpg [setchannel]".format(prefix),
-                        value="This sets the channel for bossbattle results (It only needs to be done once per server by an admin)",
-                        inline=False)
+                        value="This sets the channel for bossbattle results "
+                              "(It only needs to be done once per server by an admin)", inline=False)
         await self.bot.send_message(ctx.message.author, embed=embed)
 
         # RPG infos
@@ -629,9 +630,8 @@ class RPGGame:
 
         data = self.get_player_data(user.id, name=user.display_name)
         if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, that player is still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+            await self.bot.say("{}, that player is still Undead. Please select a class with "
+                               "'{}rpg role' in order to start to play!".format(ctx.message.author.mention, prefix))
             return
 
         # Requested info is of weapon
@@ -727,7 +727,8 @@ class RPGGame:
         draw.text((nameoffset, topoffset + 3 * following), "Status:", color, font=font)
         draw.text((statoffset, topoffset + 3 * following), stats, color, font=font)
         draw.text((nameoffset, topoffset + 4 * following), "Money:", color, font=font)
-        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpggameactivities.money_sign, data.money), color,
+        draw.text((statoffset, topoffset + 4 * following), "{}{}".format(rpggameactivities.money_sign, data.money),
+                  color,
                   font=font)
         draw.text((nameoffset, topoffset + 5 * following), "Health:", color, font=font)
         draw.text((statoffset, topoffset + 5 * following), "{}/{}".format(data.health, data.get_max_health()), color,
@@ -892,13 +893,8 @@ class RPGGame:
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["Party", "p", "P"], help="All players gathered to kill the boss")
     async def party(self, ctx):
-        if not await self.bot.pre_command(message=ctx.message, command='rpg party'):
+        if not await self.bot.pre_command(message=ctx.message, command='rpg party', cannot_be_private=True):
             return
-        if ctx.message.channel.is_private:
-            await self.bot.say("This command cannot work in a private channel")
-            return
-        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-
         party = self.get_party(ctx.message.server.id)
         if len(party) <= 0:
             await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")
@@ -922,7 +918,8 @@ class RPGGame:
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if len(args) <= 0:
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
-            embed.set_author(name="You can be anything you want, as long as it is one of these:", icon_url=ctx.message.author.avatar_url)
+            embed.set_author(name="You can be anything you want, as long as it is one of these:",
+                             icon_url=ctx.message.author.avatar_url)
             for name, desc in rpgc.names.get("role"):
                 embed.add_field(name=name, value=desc, inline=False)
             embed.set_footer(text="Be aware! You choose you occupation for life!")

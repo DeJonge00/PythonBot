@@ -315,7 +315,8 @@ hug = [
 kill = [
     "{u[0]}, Imma stab you so much, even the first plague of Egypt will be nothing in comparison",
     "{u[0]}, Imma torture you so hard, even the devil won't want you after",
-    "{u[0]}, Imma cut off your arms and legs and burn you in lava. Then I'll make you into a robot that can only pass butter",
+    "{u[0]}, Imma cut off your arms and legs and burn you in lava. Then I'll make you into a robot that can only "
+    "pass butter",
     "{u[0]}, Imma leave you in a musquito-cage, covered in syrup, untill you've been sucked dry",
     "{u[0]}, Imma tickle you in 'places' untill you kill yourself",
     "{u[0]}, Imma let an alien hatch in you, and when it bursts out, I'll funnel it into your mouth",
@@ -409,7 +410,8 @@ nyan_gifs = [
     'https://78.media.tumblr.com/38b02b09730c95775f579b5a0b35319e/tumblr_ogn060Fu2r1vztiw8o1_400.gif',
     'https://78.media.tumblr.com/5b96155c7221911a5b29b0b2cc6e9ba3/tumblr_o1xktlVpr81s5rcozo1_500.gif',
     'https://78.media.tumblr.com/f1e74179eb27765ef7c5e08536e150e7/tumblr_nli7wyrwXz1t2yvn6o1_500.gif',
-    'https://g.redditmedia.com/ifqUar76e3MkwUo_OcfYNLcMWDbaDEI02uGI40mvrcw.gif?fm=mp4&mp4-fragmented=false&s=ac60f643b3bbe357831fa49a9edb4470'
+    'https://g.redditmedia.com/ifqUar76e3MkwUo_OcfYNLcMWDbaDEI02uGI40mvrcw.gif?fm=mp4&mp4-fragmented='
+    'false&s=ac60f643b3bbe357831fa49a9edb4470'
 
 ]
 
@@ -473,13 +475,17 @@ sad_gifs = [
 ]
 
 otters = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/LutraCanadensis_fullres.jpg/220px-LutraCanadensis_fullres.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/LutraCanadensis_fullres.jpg/220px-LutraCanadensis_fullr'
+    'es.jpg',
     'https://upload.wikimedia.org/wikipedia/commons/1/15/Sea_otter_cropped.jpg',
-    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/longform-original-29416-1412278143-10.jpg?downsize=715:*&output-format=auto&output-quality=auto',
-    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/enhanced-30467-1412278420-14.jpg?downsize=715:*&output-format=auto&output-quality=auto',
-    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-4724-1412278552-7.jpg?downsize=715:*&output-format=auto&output-quality=auto',
-    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-10028-1412279140-3.jpg?downsize=715:*&output-format=auto&output-quality=auto',
-    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-10028-1412279140-3.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/longform-original-29416-1412278143-'
+    '10.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr02/enhanced-30467-1412278420-14.jpg?do'
+    'wnsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-4724-1412278552-7'
+    '.jpg?downsize=715:*&output-format=auto&output-quality=auto',
+    'https://img.buzzfeed.com/buzzfeed-static/static/2014-10/2/15/enhanced/webdr10/longform-original-10028-1412279140-'
+    '3.jpg?downsize=715:*&output-format=auto&output-quality=auto',
     'http://www.thatcutesite.com/uploads/2010/07/baby_otters.jpg',
     'https://lazypenguins.com/wp-content/uploads/2015/12/Otter-Family-2.jpg',
     'https://i.huffpost.com/gen/2247528/thumbs/o-SHEDD-2-900.jpg',
@@ -493,13 +499,15 @@ otters = [
     'https://4.bp.blogspot.com/-zvnmH60vDOg/T1Zfx5j4dHI/AAAAAAAAEEw/5Y5lkUZqWT8/s1600/cute-baby-otter-pictures-004.jpg',
     'https://4.bp.blogspot.com/-zvnmH60vDOg/T1Zfx5j4dHI/AAAAAAAAEEw/5Y5lkUZqWT8/s1600/cute-baby-otter-pictures-004.jpg',
     'http://cuteotters.com/uploads/Cute_Otters_256.jpg',
-    'https://images-ext-2.discordapp.net/external/A0ckJM_F-wwJMBkB9yTcAx33k58JcvFhxtb0JV2963o/https/s-media-cache-ak0.pinimg.com/originals/95/f2/80/95f280be7cc0a225ae075ca8d01858d9.jpg?width=981&height=657',
+    'https://images-ext-2.discordapp.net/external/A0ckJM_F-wwJMBkB9yTcAx33k58JcvFhxtb0JV2963o/https/s-media-cache-ak0.'
+    'pinimg.com/originals/95/f2/80/95f280be7cc0a225ae075ca8d01858d9.jpg?width=981&height=657',
     'https://78.media.tumblr.com/bdf2f75e46169e9c3b9037313cb54c89/tumblr_pco6b5VLk81vims6ho1_1280.jpg',
     'https://78.media.tumblr.com/d3de3bed895a65db53f6c5b0bef0a40c/tumblr_pct2clza6O1vims6ho1_1280.jpg',
     'https://78.media.tumblr.com/854afc01e95e30627dd7fa1a7c608a79/tumblr_pct2czv48w1vims6ho1_1280.jpg',
     'https://78.media.tumblr.com/8efd3159c045a4b0e24f23a38bcc5d6f/tumblr_pdchy4UP491vims6ho1_540.jpg'
     'https://i.ytimg.com/vi/7Nz0dLHMHOo/maxresdefault.jpg',
-    'https://static.boredpanda.com/blog/wp-content/uploads/2015/11/benedict-cumberbatch-otter-lookalike-doppelganger-3.png',
+    'https://static.boredpanda.com/blog/wp-content/uploads/2015/11/benedict-cumberbatch-otter-lookalike-doppelganger-'
+    '3.png',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbRHm_uRzWah2JAJcn5iqCnkx7c6vg9275agP6CEG8TuoSjxLn',
     'https://i.redd.it/71wfgbtwukh11.jpg'
 ]
