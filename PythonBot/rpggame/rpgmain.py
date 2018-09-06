@@ -33,6 +33,13 @@ class RPGGame:
         self.game_init()
         print('RPGGame started')
 
+    async def check_role(self, role: str) -> bool:
+        if role not in [x[0] for x in rpgc.names.get("role")]:
+            await self.bot.say("You are still Undead. "
+                               "Please select a class with '{}rpg role' in order to start to play!".format(prefix))
+            return False
+        return True
+
     @staticmethod
     def add_health_rep(players: [RPGCharacter]):
         health_report = ""
@@ -554,10 +561,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg adventure'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+        if not await self.check_role(data.role):
             return
         if len(args) > 0:
             try:
@@ -590,10 +594,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg battle'):
             return
         attacker = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if attacker.role == DEFAULT_ROLE:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+        if not await self.check_role(attacker.role):
             return
         try:
             errors = {'no_mention': "You need to tag someone to battle with!"}
@@ -753,10 +754,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg join'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+        if not await self.check_role(data.role):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.BUSY_DESC_NONE:
@@ -862,10 +860,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg levelup'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+        if not await self.check_role(data.role):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.levelups <= 0:
@@ -903,11 +898,7 @@ class RPGGame:
             await self.bot.say("This command cannot work in a private channel")
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
-            return
+
         party = self.get_party(ctx.message.server.id)
         if len(party) <= 0:
             await self.bot.say("There is no planned boss raid, but you are welcome to start a party!")
@@ -1030,10 +1021,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg wander'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say(
-                "{}, You are still Undead. Please select a class with '>rpg role' in order to start to play!".format(
-                    ctx.message.author.mention))
+        if not await self.check_role(data.role):
             return
         if len(args) > 0:
             try:
