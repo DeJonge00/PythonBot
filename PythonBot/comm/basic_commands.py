@@ -80,14 +80,13 @@ class Basics:
         m = "has now been clicked {} time{} in total".format(n, s)
         if n % 100 == 0:
             embed = discord.Embed(colour=0x000000)
-            url = "http://nobacks.com/wp-content/uploads/2014/11/Golden-Star-3-500x500.png"
             m = 'The cookie {}!!!'.format(m)
-            embed.add_field(name=ctx.message.author.display_name + " has clicked the cookie", value=m)
+            embed.add_field(name="Cookie clicker: " + ctx.message.author.display_name + " has clicked the cookie", value=m)
             url = 'https://res.cloudinary.com/lmn/image/upload/e_sharpen:100/f_auto,fl_lossy,q_auto/v1/gameskinny/deea3dc3c4bebf48c8d61d0490b24768.png'
             embed.set_thumbnail(url=url)
             await self.bot.send_message(ctx.message.channel, embed=embed)
         else:
-            await self.bot.say("{} Has clicked the cookie. It {}".format(ctx.message.author.display_name, m))
+            await self.bot.say("{} has clicked the cookie. It {}".format(ctx.message.author.display_name, m))
 
     # {prefix}countdown time
     @commands.command(pass_context=1, help="Get tagged a bunch until the timer runs out (dm only)")
@@ -98,7 +97,7 @@ class Basics:
         try:
             n = int(args[0])
         except ValueError:
-            await self.bot.say("Thats not a number uwu")
+            await self.bot.say("That is not a number uwu")
             return
         except IndexError:
             await self.bot.say("I cannot hear you")
@@ -422,7 +421,8 @@ class Basics:
         if not await self.bot.pre_command(message=ctx.message, command='role'):
             return
         if len(args) <= 0:
-            await self.bot.say("Usage: {}role <rolename without spaces> [user]".format(prefix))
+            await self.bot.say("Usage: {0}role <rolename without spaces> [user] "
+                               "(And don't you dare confuse this with {0}rpg role haha".format(prefix))
             return
         else:
             rolename = args[0].lower()
