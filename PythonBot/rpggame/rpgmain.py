@@ -281,7 +281,7 @@ class RPGGame:
             player.add_exp(int(110 * lvl))
             player.add_money(int(25 * lvl))
             for p in player.pets:
-                p.add_exp(13 * lvl if p.role == rpgc.names.get('role')[2][0] else 10 * lvl)
+                p.add_exp(13 * lvl if player.role == rpgc.names.get('role')[2][0] else 10 * lvl)
 
     async def adventure_secret(self, player: RPGPlayer, channel: discord.Channel):
         secrets_list = rpgc.adventureSecrets

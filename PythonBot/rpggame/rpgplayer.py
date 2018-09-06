@@ -74,7 +74,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             n *= 0.85
         if self.role == rpgc.names.get('role')[3][0]:
             n *= 1.2
-        return n
+        return int(n)
 
     def get_element(self):
         return self.armor.element if self.armor.element else rpgc.element_none
