@@ -108,8 +108,8 @@ async def new(bot, message: discord.Message):
     if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and (
             bot.user in message.mentions or (len(
             set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
-                    set(['biri', 'biribiri']))) > 0)) and await bot.pre_command(message=message, command='talk',
-                                                                                delete_message=False):
+                {'biri', 'biribiri'})) > 0)) and await bot.pre_command(message=message, command='talk',
+                                                                       delete_message=False):
         if 'prefix' in message.content:
             await bot.send_message(message.channel, 'My prefix is {}, darling'.format(prefix))
             return
