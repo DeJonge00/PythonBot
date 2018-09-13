@@ -872,14 +872,14 @@ class RPGGame:
             while data.levelups > 0:
                 m = await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+1 minute busytime\n3)\t+30 damage")
                 r = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
-                await self.bot.delete_command_message(m)
+                await self.bot.delete_message(m)
                 if not r:
                     return
                 try:
                     num = int(r.content)
                     if await self.add_levelup(data, ctx.message.channel, num):
                         data.levelups -= 1
-                    await self.bot.delete_command_message(r)
+                    await self.bot.delete_message(r)
                 except ValueError:
                     return
         else:
