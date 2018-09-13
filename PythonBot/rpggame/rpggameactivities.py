@@ -257,7 +257,7 @@ class RPGGameActivities:
             "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
                                                                      int(math.ceil(a * training.cost))))
 
-    # {prefix}train
+    # {prefix}work
     @commands.command(pass_context=1, aliases=["Work"], help="Work for some spending money!")
     async def work(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='work'):
@@ -291,7 +291,7 @@ class RPGGameActivities:
         money = time * pow((player.get_level()) + 1, 1 / 2) * 120
         if player.role == rpgc.names.get('role')[0][0]:  # role == Peasant
             money *= 1.15
-        player.add_money()
+        player.add_money(money)
         work = random.choice([
             'cleaning the stables',
             'sharpening the noble\'s weapon',

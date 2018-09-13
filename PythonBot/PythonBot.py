@@ -77,11 +77,34 @@ class PythonBot(Bot):
     def prep_str_for_print(s: str):
         return s.encode("ascii", "replace").decode("ascii")
 
-    async def delete_command_message(self, message):
+    async def delete_message(self, message):
+        if not message.channel.is_private:
+            try:
+                await super().delete_message(message)
+            except discord.Forbidden:
+                m = '{} | {} | No permissions to delete message \'{}\''
+                m = m.format(message.server.name, message.channel.name, message.content)
+                await log.error(m, filename=message.server.name)
+
+    async def send_message(self, destination, content=None, *, tts=False, embed=None):
         try:
-            if not message.channel.is_private:
-                await self.delete_message(message)
-        except (discord.Forbidden, discord.ext.commands.errors.CommandInvokeError):
+            await super().send_message(destination, content=content, tts=tts, embed=embed)
+        except discord.Forbidden:
+            if embed:
+                m = 'Sorry, it seems I cannot send embedded messages in this channel...'
+                await self.send_message(destination, content=m)
+            else:
+                m = '{} | {} | No permissions to send message \'{}\''
+                if isinstance(destination, discord.Channel):
+                    m = m.format(destination.server.name, destination.name, content)
+                else:
+                    m = m.format('direct message', destination.name, content)
+                await log.error(m, filename=str(destination))
+
+    async def send_typing(self, destination):
+        try:
+            super().send_typing(destination=destination)
+        except discord.Forbidden:
             pass
 
     def command_allowed_in(self, type: str, command_name: str, identifier: str):
@@ -118,7 +141,7 @@ class PythonBot(Bot):
                 await log.message(message, 'Command "{}" used, but is channelbanned'.format(command))
                 return False
             if delete_message and message.server.id not in self.dont_delete_commands_servers:
-                await self.delete_command_message(message)
+                await self.delete_message(message)
 
         await log.message(message, 'Command "{}" used'.format(command))
         if is_typing:

@@ -287,7 +287,8 @@ hangmanwords = [
     "I am the king of the world",
     "We were born to make history",
     "I rate it a perfect five out of seven",
-    "And they lived happily ever after"
+    "And they lived happily ever after",
+    "All work and no play makes Jack a dull boy"
 ]
 
 hug = [
