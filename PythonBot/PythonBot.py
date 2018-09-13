@@ -80,7 +80,7 @@ class PythonBot(Bot):
     async def delete_message(self, message):
         if not message.channel.is_private:
             try:
-                await super().delete_message(message)
+                return await super().delete_message(message)
             except discord.Forbidden:
                 m = '{} | {} | No permissions to delete message \'{}\''
                 m = m.format(message.server.name, message.channel.name, message.content)
@@ -88,7 +88,7 @@ class PythonBot(Bot):
 
     async def send_message(self, destination, content=None, *, tts=False, embed=None):
         try:
-            await super().send_message(destination, content=content, tts=tts, embed=embed)
+            return await super().send_message(destination, content=content, tts=tts, embed=embed)
         except discord.Forbidden:
             if embed:
                 m = 'Sorry, it seems I cannot send embedded messages in this channel...'
@@ -103,7 +103,7 @@ class PythonBot(Bot):
 
     async def send_file(self, destination, fp, *, filename=None, content=None, tts=False):
         try:
-            await super().send_file(destination, fp, filename=filename, content=content, tts=tts)
+            return await super().send_file(destination, fp, filename=filename, content=content, tts=tts)
         except discord.Forbidden:
             m = 'Sorry, it seems I cannot send files in this channel...'
             await self.send_message(destination, content=m)

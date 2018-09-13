@@ -105,6 +105,10 @@ async def new(bot, message: discord.Message):
             await bot.add_reaction(message, ":hand:348350777661587466")
         else:
             await bot.add_reaction(message, "\u2764")
+
+    if not (len(message.content) < 2 or (message.content[0].isalpha() and message.content[1].isalpha())):
+        return
+
     if message.server.id not in constants.bot_talk_blacklist and not message.content[0] == prefix and (
             bot.user in message.mentions or (len(
             set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
