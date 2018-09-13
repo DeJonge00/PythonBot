@@ -127,7 +127,7 @@ class Basics:
     # {prefix}delete
     @commands.command(pass_context=1, help="Delete your message automatically in a bit!", aliases=["del", "d"])
     async def delete(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='botstats', is_typing=False,
+        if not await self.bot.pre_command(message=ctx.message, command='delete', is_typing=False,
                                           delete_message=False):
             return
         if len(args) > 0:

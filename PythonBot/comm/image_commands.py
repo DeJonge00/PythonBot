@@ -39,9 +39,7 @@ class Images:
                 self.image_timers[command] = {}
             if (datetime.utcnow() - self.image_timers.get(command).get(channel.id,
                                                                        datetime.utcfromtimestamp(0))).seconds < 60:
-                m = await self.bot.send_message(channel, 'Not so fast!')
-                await asyncio.sleep(2)
-                await self.bot.delete_message(m)
+                await self.bot.send_message(channel, 'Not so fast!')
                 return
             await self.bot.send_typing(channel)
             self.image_timers[command][channel.id] = datetime.utcnow()

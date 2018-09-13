@@ -101,6 +101,13 @@ class PythonBot(Bot):
                     m = m.format('direct message', destination.name, content)
                 await log.error(m, filename=str(destination))
 
+    async def send_file(self, destination, fp, *, filename=None, content=None, tts=False):
+        try:
+            await super().send_file(destination, fp, filename=filename, content=content, tts=tts)
+        except discord.Forbidden:
+            m = 'Sorry, it seems I cannot send files in this channel...'
+            await self.send_message(destination, content=m)
+
     async def send_typing(self, destination):
         try:
             super().send_typing(destination=destination)
