@@ -310,9 +310,6 @@ def init_bot():
             for pic in message.attachments:
                 await log.message(message, "pic", pic["url"])
         else:
-            if (message.server.id == constants.NINECHATid) & (not message.server.get_member(constants.NYAid)):
-                print(
-                    message.server.name + "-" + message.channel.name + " (" + message.user.name + ") " + message.content)
             if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
         # Commands in the message
