@@ -99,6 +99,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |Name			|Command, aliases and usage					            |Description                                                                                |Permissions needed
 |---			|---										            |---                                                                                        |---
 |banish      	|`banish` `{user}`                                      |Ban `{user}`                                                                               |kick_members
+|invite         |`invite` `{max members}`                               |Fetch/Create an invite. Maximum {max members} members, unlimited if not given
 |nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person                                                                          |change_nickname, manage_nicknames
 |setwelcome  	|`setwelome` `{message}`                                |Sets a welcome message                                                                     |manage_server
 |setgoodbye  	|`setgoodbye` `{message}`                               |Sets a goodbye message                                                                     |manage_server
