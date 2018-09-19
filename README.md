@@ -92,6 +92,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			|---										            |---
 |inviteme    	|`inviteme`                                             |Invite me to your own server
 |helpserver  	|`helpserver`                                           |Join my masters discord server if questions need answering
+|vote           |`vote`                                                 |Vote for me! This makes me more popular, which results in more attention from my master...
 
 ### Mod
 
