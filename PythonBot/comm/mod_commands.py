@@ -116,6 +116,42 @@ class Mod:
         # await self.bot.send_message(ctx.message.channel, m)
         print(m)
 
+    @commands.command(pass_context=1, help="Create an invitation for this channel!")
+    async def invite(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='invite'):
+            return
+
+        # Check permissions
+        userperms = ctx.message.channel.permissions_for(ctx.message.author)
+        userperms = userperms.create_instant_invite or userperms.administrator or userperms.manage_server
+        if not userperms:
+            await self.bot.say('You do not have the permissions for that...')
+            return
+
+        bb_member = ctx.message.server.get_member(self.bot.user.id)
+        bb_perms = ctx.message.channel.permissions_for(bb_member).create_instant_invite
+        if not bb_perms:
+            await self.bot.say('I do not have the permissions for that...')
+            return
+
+        # Invite settings
+        if len(args) > 0:
+            try:
+                user_limit = int(args[0])
+            except ValueError:
+                await self.bot.say('That is not a number, silly')
+                return
+        else:
+            user_limit = 0
+
+        # Create and send invite
+        try:
+            inv = await self.bot.create_invite(ctx.message.channel, max_uses=user_limit, unique=False)
+        except discord.HTTPException:
+            await self.bot.say('Something went wrong when asking discord for an invite link')
+            return
+        await self.bot.say("Invite all the weebs!\n" + str(inv))
+
     # {prefix}newpp <attach new pp>
     @commands.command(pass_context=1, help="Give me a new look")
     async def newpp(self, ctx):
