@@ -354,6 +354,24 @@ class Basics:
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
+    # {prefix}osu <osu user>
+    @commands.command(pass_context=1, help="Look up someones osu stats!")
+    async def osu(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='osu'):
+            return
+
+        if len(args) <= 0:
+            await self.bot.say('Please provide a username to look for')
+            return
+        user = ' '.join(args)
+
+        url = 'https://osu.ppy.sh/api/get_user'
+        params = {'k': '',
+                  'u': user,
+                  'm': 0,
+                  'type': 'string'}
+        resp = requests.get(url, params=params)
+
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
     async def pat(self, ctx, *args):
