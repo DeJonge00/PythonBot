@@ -420,7 +420,7 @@ def init_bot():
     @bot.event
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "A new server named '{}' just removed me from service :(".format(server.name))
+        await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
 
     return bot
 
