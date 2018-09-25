@@ -18,3 +18,9 @@ class Misc:
         if not await self.bot.pre_command(message=ctx.message, command='helpserver'):
             return
         await self.bot.say("A link to the past:\nhttps://discord.gg/KBxRd7x")
+
+    @commands.command(pass_context=1, help="Vote for me, this increases my power!")
+    async def vote(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='vote'):
+            return
+        await self.bot.say("Give me some love:\nhttps://discordbots.org/bot/244410964693221377/vote")

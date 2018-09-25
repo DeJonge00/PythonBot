@@ -167,6 +167,33 @@ class PythonBot(Bot):
                 new_s += l
         return new_s
 
+    async def ask_one_from_multiple(self, message: discord.Message, group: list, question='', errors: dict={}):
+        m = question
+        for x in range(min(len(group), 10)):
+            m += '\n{}) {}'.format(x + 1, str(group[x]))
+        m = await self.say(m)
+        r = await self.wait_for_message(timeout=60, author=message.author, channel=message.channel)
+
+        if message.server.id not in self.dont_delete_commands_servers:
+            await self.delete_message(m)
+            if r:
+                await self.delete_message(r)
+
+        if not r:
+            if errors:
+                error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
+                await self.say(error)
+            raise ValueError
+        try:
+            num = int(r.content) - 1
+            if not (0 <= num < min(10, len(group))):
+                raise ValueError
+        except ValueError:
+            await self.say('That was not a valid number')
+            raise
+        return group[num]
+
+
     # errors = {
     #   'no_mention': No user was mentioned in the message,
     #   'no_user': No user was found with the given name,
@@ -203,32 +230,7 @@ class PythonBot(Bot):
         if len(users) == 1:
             return users[0]
 
-        # Multiple users found, ask user which one he meant
-        m = 'Which user did you mean?'
-        for x in range(min(len(users), 10)):
-            m += '\n{}) {}'.format(x + 1, str(users[x]))
-        m = await self.say(m)
-        r = await self.wait_for_message(timeout=60, author=message.author,
-                                        channel=message.channel)
-
-        if message.server.id not in self.dont_delete_commands_servers:
-            await self.delete_message(m)
-            if r:
-                await self.delete_message(r)
-
-        if not r:
-            if errors:
-                error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
-                await self.say(error)
-            raise ValueError
-        try:
-            num = int(r.content) - 1
-            if not (0 <= num < min(10, len(users))):
-                raise ValueError
-        except ValueError:
-            await self.say('That was not a valid number')
-            raise
-        return users[num]
+        return await self.ask_one_from_multiple(message, users, question='Which user did you mean?')
 
     async def timeLoop(self):
         await self.wait_until_ready()
@@ -419,7 +421,7 @@ def init_bot():
     @bot.event
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "A new server named '{}' just removed me from service :(".format(server.name))
+        await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
 
     return bot
 

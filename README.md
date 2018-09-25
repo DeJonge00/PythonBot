@@ -92,12 +92,14 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			|---										            |---
 |inviteme    	|`inviteme`                                             |Invite me to your own server
 |helpserver  	|`helpserver`                                           |Join my masters discord server if questions need answering
+|vote           |`vote`                                                 |Vote for me! This makes me more popular, which results in more attention from my master...
 
 ### Mod
 
 |Name			|Command, aliases and usage					            |Description                                                                                |Permissions needed
 |---			|---										            |---                                                                                        |---
 |banish      	|`banish` `{user}`                                      |Ban `{user}`                                                                               |kick_members
+|invite         |`invite` `{max members}`                               |Fetch/Create an invite. Maximum {max members} members, unlimited if not given
 |nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person                                                                          |change_nickname, manage_nicknames
 |setwelcome  	|`setwelome` `{message}`                                |Sets a welcome message                                                                     |manage_server
 |setgoodbye  	|`setgoodbye` `{message}`                               |Sets a goodbye message                                                                     |manage_server

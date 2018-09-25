@@ -32,9 +32,13 @@ class Basics:
         embed.add_field(name='Name', value=str(self.bot.user))
         embed.add_field(name='Id', value=str(self.bot.user.id))
         embed.add_field(name="Birthdate", value=self.bot.user.created_at.strftime("%D, %H:%M:%S"))
-        embed.add_field(name='Servers', value=str(len(self.bot.servers)))
+        embed.add_field(name='Total Servers', value=str(len(self.bot.servers)))
         embed.add_field(name='Emojis', value=str(len([_ for _ in self.bot.get_all_emojis()])))
-        embed.add_field(name='Fake friends', value=str(len([_ for _ in self.bot.get_all_members()])))
+        embed.add_field(name='Big Servers (100+)',
+                        value=str(len([_ for x in self.bot.servers if x.member_count > 100])))
+        embed.add_field(name='Fake friends', value=str(len(set(x.id for x in self.bot.get_all_members()))))
+        embed.add_field(name='Huge Servers (1000+)',
+                        value=str(len([_ for x in self.bot.servers if x.member_count > 1000])))
         embed.add_field(name='Commands', value=str(len(self.bot.commands)))
         embed.add_field(name='Owner', value='Nya#2698')
         embed.add_field(name='Landlord', value='Kappa#2915')
