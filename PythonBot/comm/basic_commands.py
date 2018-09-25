@@ -281,7 +281,7 @@ class Basics:
             m = "You could just leave yourself if you want to go :thinking:"
             await self.bot.say(m)
             return
-        if not await self.bot.on_member_message(target, "on_member_remove", 'left', log=False):
+        if not await self.bot.on_member_message(target, "on_member_remove", 'left', do_log=False):
             embed = discord.Embed(colour=0xFF0000)
             embed.add_field(name="User left",
                             value="\"" + target.display_name + "\" just left. Byebye, you will not be missed!")

@@ -259,8 +259,8 @@ class PythonBot(Bot):
         if self.MUSIC:
             await self.musicplayer.quit()
 
-    async def on_member_message(self, member, func_name, text, log=True) -> bool:
-        if log:
+    async def on_member_message(self, member, func_name, text, do_log=True) -> bool:
+        if do_log:
             await log.error(member.server.name + " | Member " + str(member.name) + " just " + text,
                             filename=member.server.name, serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
