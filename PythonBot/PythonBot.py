@@ -167,7 +167,7 @@ class PythonBot(Bot):
                 new_s += l
         return new_s
 
-    async def ask_one_from_multiple(self, message: discord.Message, group: list, question='', errors: dict={}):
+    async def ask_one_from_multiple(self, message: discord.Message, group: list, question='', errors: dict = {}):
         m = question
         for x in range(min(len(group), 10)):
             m += '\n{}) {}'.format(x + 1, str(group[x]))
@@ -192,7 +192,6 @@ class PythonBot(Bot):
             await self.say('That was not a valid number')
             raise
         return group[num]
-
 
     # errors = {
     #   'no_mention': No user was mentioned in the message,
@@ -323,7 +322,8 @@ def init_bot():
             pass
             await bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
         # Send message to rpggame for exp
-        if bot.RPGGAME and (len(message.content) < 2 or (message.content[0].isalpha() and message.content[1].isalpha())):
+        if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
+                message.content[0].isalpha() and message.content[1].isalpha())):
             await bot.rpggame.handle(message)
 
     # @bot.event
