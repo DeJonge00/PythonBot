@@ -42,7 +42,7 @@ class Basics:
         embed.add_field(name='Commands', value=str(len(self.bot.commands)))
         embed.add_field(name='Owner', value='Nya#2698')
         embed.add_field(name='Landlord', value='Kappa#2915')
-        embed.set_image(url=self.bot.user.avatar_url)
+        embed.set_thumbnail(url=self.bot.user.avatar_url)
         return await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}cast <user>
