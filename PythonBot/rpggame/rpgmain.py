@@ -856,7 +856,7 @@ class RPGGame:
 
     # {prefix}rpg levelup
     @rpg.command(pass_context=1, aliases=["Levelup", "lvlup", "Lvlup", "lvl", "Lvl"],
-                 help="Join a raid to kill a boss!")
+                 help="Choose the rreward for leveling up!")
     async def levelup(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='rpg levelup'):
             return
@@ -889,6 +889,24 @@ class RPGGame:
             except ValueError:
                 await self.bot.say("Thats not even a number...")
                 return
+
+    # {prefix}rpg leave
+    @rpg.command(pass_context=1, aliases=['Leave', 'Retreat', "retreat"],
+                 help="leave the boss raid squad!")
+    async def leave(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='rpg leave'):
+            return
+        data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
+        if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID and data not in [j for i in self.boss_parties.values() for j in i]:
+            await self.bot.say('You arent even in a bossraid anywhere...')
+            return
+
+        data.reset_busy()
+        for party in self.boss_parties.keys():
+            if data in self.boss_parties.get(party, []):
+                self.boss_parties.get(party, []).remove(data)
+
+        await self.bot.say('You have retreated from the bossbattle, for now...')
 
     # {prefix}rpg party
     @rpg.command(pass_context=1, aliases=["Party", "p", "P"], help="All players gathered to kill the boss")
