@@ -200,7 +200,7 @@ class PythonBot(Bot):
     #   'no_reaction': The user did not react to the choice within a minute
     # }
     async def get_member_from_message(self, message: discord.Message, args: list, in_text=False,
-                                      errors: dict = {}, from_all_members=False) -> discord.Member:
+                                      errors: dict = {'none': ''}, from_all_members=False) -> discord.Member:
         if len(message.mentions) > 0:
             return message.mentions[0]
 
