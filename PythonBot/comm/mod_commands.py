@@ -111,10 +111,56 @@ class Mod:
             await self.bot.say("Hahahaha, no")
             return
         m = ""
-        for i in self.bot.servers:
+        for i in sorted([x for x in self.bot.servers], key=lambda l: len(l.members), reverse=True):
             m += "{}, members={}, owner={}\n".format(i.name, sum([1 for _ in i.members]), i.owner)
         # await self.bot.send_message(ctx.message.channel, m)
         print(m)
+
+    # {prefix}invite <#members> <servername>
+    @commands.command(pass_context=1, help="Create an invitation for this channel!")
+    async def invite(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='invite'):
+            return
+
+        # Check permissions
+        userperms = ctx.message.channel.permissions_for(ctx.message.author)
+        userperms = userperms.create_instant_invite or userperms.administrator or userperms.manage_server
+        if not userperms:
+            await self.bot.say('You do not have the permissions for that...')
+            return
+
+        bb_member = ctx.message.server.get_member(self.bot.user.id)
+        bb_perms = ctx.message.channel.permissions_for(bb_member).create_instant_invite
+        if not bb_perms:
+            await self.bot.say('I do not have the permissions for that...')
+            return
+
+        # Invite settings
+        if len(args) > 0:
+            try:
+                user_limit = int(args[0])
+            except ValueError:
+                await self.bot.say('That is not a number, silly')
+                return
+        else:
+            user_limit = 0
+
+        if len(args) > 1 and ctx.message.author.id == constants.NYAid:
+            servers = [s for s in self.bot.servers if ''.join([x for x in s.name.lower() if x.isalpha()]).startswith(''.join(args[1:]))]
+            if len(servers) <= 0:
+                await self.bot.say('I dunno that one...')
+                return
+            dest = await self.bot.ask_one_from_multiple(ctx.message, servers, question='Which server did you mean?')
+        else:
+            dest = ctx.message.channel
+
+        # Create and send invite
+        try:
+            inv = await self.bot.create_invite(dest, max_uses=user_limit, unique=False)
+        except discord.HTTPException:
+            await self.bot.say('Something went wrong when asking discord for an invite link')
+            return
+        await self.bot.say("Invite all the weebs!\n" + str(inv))
 
     # {prefix}newpp <attach new pp>
     @commands.command(pass_context=1, help="Give me a new look")

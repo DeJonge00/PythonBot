@@ -32,13 +32,17 @@ class Basics:
         embed.add_field(name='Name', value=str(self.bot.user))
         embed.add_field(name='Id', value=str(self.bot.user.id))
         embed.add_field(name="Birthdate", value=self.bot.user.created_at.strftime("%D, %H:%M:%S"))
-        embed.add_field(name='Servers', value=str(len(self.bot.servers)))
+        embed.add_field(name='Total Servers', value=str(len(self.bot.servers)))
         embed.add_field(name='Emojis', value=str(len([_ for _ in self.bot.get_all_emojis()])))
-        embed.add_field(name='Fake friends', value=str(len([_ for _ in self.bot.get_all_members()])))
+        embed.add_field(name='Big Servers (100+)',
+                        value=str(sum([1 for x in self.bot.servers if x.member_count > 100])))
+        embed.add_field(name='Fake friends', value=str(len(set(x.id for x in self.bot.get_all_members()))))
+        embed.add_field(name='Huge Servers (1000+)',
+                        value=str(sum([1 for x in self.bot.servers if x.member_count > 1000])))
         embed.add_field(name='Commands', value=str(len(self.bot.commands)))
         embed.add_field(name='Owner', value='Nya#2698')
         embed.add_field(name='Landlord', value='Kappa#2915')
-        embed.set_image(url=self.bot.user.avatar_url)
+        embed.set_thumbnail(url=self.bot.user.avatar_url)
         return await self.bot.send_message(ctx.message.channel, embed=embed)
 
     # {prefix}cast <user>
@@ -277,7 +281,7 @@ class Basics:
             m = "You could just leave yourself if you want to go :thinking:"
             await self.bot.say(m)
             return
-        if not await self.bot.on_member_message(target, "on_member_remove", 'left'):
+        if not await self.bot.on_member_message(target, "on_member_remove", 'left', do_log=False):
             embed = discord.Embed(colour=0xFF0000)
             embed.add_field(name="User left",
                             value="\"" + target.display_name + "\" just left. Byebye, you will not be missed!")

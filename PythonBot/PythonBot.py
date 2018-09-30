@@ -167,13 +167,39 @@ class PythonBot(Bot):
                 new_s += l
         return new_s
 
+    async def ask_one_from_multiple(self, message: discord.Message, group: list, question='', errors: dict = {}):
+        m = question
+        for x in range(min(len(group), 10)):
+            m += '\n{}) {}'.format(x + 1, str(group[x]))
+        m = await self.say(m)
+        r = await self.wait_for_message(timeout=60, author=message.author, channel=message.channel)
+
+        if message.server.id not in self.dont_delete_commands_servers:
+            await self.delete_message(m)
+            if r:
+                await self.delete_message(r)
+
+        if not r:
+            if errors:
+                error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
+                await self.say(error)
+            raise ValueError
+        try:
+            num = int(r.content) - 1
+            if not (0 <= num < min(10, len(group))):
+                raise ValueError
+        except ValueError:
+            await self.say('That was not a valid number')
+            raise
+        return group[num]
+
     # errors = {
     #   'no_mention': No user was mentioned in the message,
     #   'no_user': No user was found with the given name,
     #   'no_reaction': The user did not react to the choice within a minute
     # }
     async def get_member_from_message(self, message: discord.Message, args: list, in_text=False,
-                                      errors: dict = {}, from_all_members=False) -> discord.Member:
+                                      errors: dict = {'none': ''}, from_all_members=False) -> discord.Member:
         if len(message.mentions) > 0:
             return message.mentions[0]
 
@@ -203,32 +229,7 @@ class PythonBot(Bot):
         if len(users) == 1:
             return users[0]
 
-        # Multiple users found, ask user which one he meant
-        m = 'Which user did you mean?'
-        for x in range(min(len(users), 10)):
-            m += '\n{}) {}'.format(x + 1, str(users[x]))
-        m = await self.say(m)
-        r = await self.wait_for_message(timeout=60, author=message.author,
-                                        channel=message.channel)
-
-        if message.server.id not in self.dont_delete_commands_servers:
-            await self.delete_message(m)
-            if r:
-                await self.delete_message(r)
-
-        if not r:
-            if errors:
-                error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
-                await self.say(error)
-            raise ValueError
-        try:
-            num = int(r.content) - 1
-            if not (0 <= num < min(10, len(users))):
-                raise ValueError
-        except ValueError:
-            await self.say('That was not a valid number')
-            raise
-        return users[num]
+        return await self.ask_one_from_multiple(message, users, question='Which user did you mean?')
 
     async def timeLoop(self):
         await self.wait_until_ready()
@@ -257,9 +258,10 @@ class PythonBot(Bot):
         if self.MUSIC:
             await self.musicplayer.quit()
 
-    async def on_member_message(self, member, func_name, text) -> bool:
-        await log.error(member.server.name + " | Member " + str(member) + " just " + text, filename=member.server.name,
-                        serverid=member.server.id)
+    async def on_member_message(self, member, func_name, text, do_log=True) -> bool:
+        if do_log:
+            await log.error(member.server.name + " | Member " + str(member.name) + " just " + text,
+                            filename=member.server.name, serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
         if not response:
             return False
@@ -320,7 +322,8 @@ def init_bot():
             pass
             await bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
         # Send message to rpggame for exp
-        if bot.RPGGAME and (len(message.content) < 2 or (message.content[0].isalpha() and message.content[1].isalpha())):
+        if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
+                message.content[0].isalpha() and message.content[1].isalpha())):
             await bot.rpggame.handle(message)
 
     # @bot.event
@@ -418,7 +421,7 @@ def init_bot():
     @bot.event
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "A new server named '{}' just removed me from service :(".format(server.name))
+        await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
 
     return bot
 

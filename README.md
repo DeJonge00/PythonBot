@@ -92,12 +92,14 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			|---										            |---
 |inviteme    	|`inviteme`                                             |Invite me to your own server
 |helpserver  	|`helpserver`                                           |Join my masters discord server if questions need answering
+|vote           |`vote`                                                 |Vote for me! This makes me more popular, which results in more attention from my master...
 
 ### Mod
 
 |Name			|Command, aliases and usage					            |Description                                                                                |Permissions needed
 |---			|---										            |---                                                                                        |---
 |banish      	|`banish` `{user}`                                      |Ban `{user}`                                                                               |kick_members
+|invite         |`invite` `{max members}`                               |Fetch/Create an invite. Maximum {max members} members, unlimited if not given
 |nickname    	|`nickname,nn` `{user}` `{new_name}`                    |Nickname a person                                                                          |change_nickname, manage_nicknames
 |setwelcome  	|`setwelome` `{message}`                                |Sets a welcome message                                                                     |manage_server
 |setgoodbye  	|`setgoodbye` `{message}`                               |Sets a goodbye message                                                                     |manage_server
@@ -135,6 +137,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			|---										            |---
 |rpg            |`rpg,b&d,bnd` `help`                                   |Show the info for the RPG game
 |role           |`rpg,b&d,bnd` `r,role` `rolename`                      |Assign yourself a role (required to start the game)
+|setchannel     |'rpg,b&d,bnd` `setchannel`                             |The current channel will be where biri sends bossbattle results
 |adventure      |`rpg,b&d,bnd` `a,adventure` `{time}`                   |Go on an adventure to slay monsters
 |wander         |`rpg,b&d,bnd` `w,wander` `{time}`                      |Go wandering, its a less costly adventuring
 |battle         |`rpg,b&d,bnd` `b,battle` `{user}`                      |Battle another player of the game
