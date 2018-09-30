@@ -9,7 +9,7 @@ import wikipedia
 from discord.ext import commands
 
 from rpggame import rpgdbconnect as dbcon
-from secret.secrets import prefix
+from secret.secrets import prefix, osu_api_key
 
 EMBED_COLOR = 0x008909
 
@@ -370,11 +370,33 @@ class Basics:
         user = ' '.join(args)
 
         url = 'https://osu.ppy.sh/api/get_user'
-        params = {'k': '',
+        params = {'k': osu_api_key,
                   'u': user,
                   'm': 0,
                   'type': 'string'}
-        resp = requests.get(url, params=params)
+        r = requests.get(url, params=params)
+        if r.status_code != 200:
+            await self.bot.say('Uh oh, the osu site did not give me any information for my request')
+            return
+        r = r.json()
+        if len(r) <= 0:
+            await self.bot.say('Ehhm, there is no user with that name...')
+            return
+        r = r[0]
+
+        embed = discord.Embed(colour=0xFF0000)
+        embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
+        # embed.set_thumbnail(url='https://a.ppy.sh/{}?1477662986.png'.format(r.get('user_id')))
+        embed.add_field(name="Username", value=r.get('username'))
+        embed.add_field(name="Playcount", value=r.get('playcount'))
+        embed.add_field(name="Global rank", value='#' + r.get('pp_rank'))
+        embed.add_field(name="Country rank", value='#{} ({})'.format(r.get('pp_country_rank'), r.get('country')))
+        embed.add_field(name="Accuracy", value='{}%'.format(round(float(r.get('accuracy')), 3)))
+        embed.add_field(name="Hours played", value=str(int(int(r.get('total_seconds_played'))/3600)))
+        embed.add_field(name="Total maps with SS", value=r.get('count_rank_ss'))
+        embed.add_field(name="Total maps with S", value=r.get('count_rank_s'))
+
+        await self.bot.say(embed=embed)
 
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
