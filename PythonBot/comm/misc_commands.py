@@ -11,7 +11,7 @@ class Misc:
         if not await self.bot.pre_command(message=ctx.message, command='inviteme'):
             return
         await self.bot.say(
-            "Here is a link to invite me:\nhttps://discordapp.com/api/oauth2/authorize?client_id=244410964693221377&scope=bot&permissions=0")
+            "Here is a link to invite me:\nhttps://discordapp.com/api/oauth2/authorize?client_id=244410964693221377&permissions=472951872&scope=bot")
 
     @commands.command(pass_context=1, help="Join my masters discord server for anything")
     async def helpserver(self, ctx):
