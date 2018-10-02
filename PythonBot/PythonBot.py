@@ -129,7 +129,7 @@ class PythonBot(Bot):
                 len(split) <= 1 or self.command_allowed_in('channel', split[0], channelid))
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
-                          cannot_be_private=False, must_be_private=False):
+                          cannot_be_private=False, must_be_private=False, must_be_nsfw=False):
 
         if message.channel.is_private:
             if cannot_be_private:
@@ -140,6 +140,10 @@ class PythonBot(Bot):
             if must_be_private:
                 await self.send_message(message.channel, 'This command has to be used in a private conversation')
                 await log.message(message, 'Command "{}" used, but must be private'.format(command))
+                return False
+            if must_be_nsfw and not message.channel.name.startswith('nsfw'):
+                await self.bot.send_message(message.channel, 'This command cannot be used outside NSFW channels')
+                await log.message(message, 'Command "{}" used, but must be an NSFW channel'.format(command))
                 return False
             if not self.command_allowed_in_server(command, message.server.id):
                 await log.message(message, 'Command "{}" used, but is serverbanned'.format(command))
