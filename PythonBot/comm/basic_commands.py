@@ -643,16 +643,21 @@ class Basics:
         if not await self.bot.pre_command(message=ctx.message, command='wikipedia'):
             return
         q = " ".join(args)
-        if q == "":
+        if not q:
             await self.bot.say("...")
             return
         embed = discord.Embed(colour=0x00FF00)
+        s = wikipedia.search(q)
+        if len(s) <= 0:
+            await self.bot.say('I cant find anything for that query')
+            return
         try:
-            s = wikipedia.summary(q, sentences=2)
-            embed.add_field(name="Query: " + q, value=s)
-            await self.bot.say(embed=embed)
-            return
-        except Exception:
-            embed.add_field(name="Query: " + q, value="There are too much answers to give you the correct one...")
-            await self.bot.say(embed=embed)
-            return
+            s = await self.bot.ask_one_from_multiple(ctx.message, s, 'Which result would you want to see?')
+        except ValueError:
+            pass
+
+        page = wikipedia.WikipediaPage(s)
+        embed.add_field(name="Title", value=page.title)
+        embed.add_field(name='Content', value=wikipedia.summary(s, sentences=2))
+        embed.add_field(name='Page url', value=page.url)
+        await self.bot.say(embed=embed)
