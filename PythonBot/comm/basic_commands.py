@@ -554,7 +554,7 @@ class Basics:
                 await self.bot.say(embed=embed)
             r = r[0]
             embed.add_field(name="Urban Dictionary Query", value=r.get('word'))
-            definition = r.get('definition')
+            definition = r.get('definition').replace('[', '').replace(']', '')
             if len(definition) > 500:
                 definition = definition[:500] + '...'
             embed.add_field(name="Definition", value=definition, inline=False)

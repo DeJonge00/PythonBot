@@ -45,6 +45,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |lenny       	|`lenny` `{message}`                                    |Send `{message}` ( ͡° ͜ʖ ͡°)
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
+|quote          |`quote`                                                |Fetch a random quote from the internet
 |role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
 |serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
 |urban       	|`urban,us,urbandictionary` `{query}`                   |Search urbandictionary for `{query}`
