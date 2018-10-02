@@ -44,6 +44,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |kill        	|`kill` `{user}`                                        |Wish someone a happy death (is a bit explicit)
 |lenny       	|`lenny` `{message}`                                    |Send `{message}` ( ͡° ͜ʖ ͡°)
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
+|osu            |`osu` `playername`                                     |Search profile data for a popular rhythm game
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
 |serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
