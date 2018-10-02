@@ -44,7 +44,6 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |kill        	|`kill` `{user}`                                        |Wish someone a happy death (is a bit explicit)
 |lenny       	|`lenny` `{message}`                                    |Send `{message}` ( ͡° ͜ʖ ͡°)
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
-|osu            |`osu` `playername`                                     |Search profile data for a popular rhythm game
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
 |serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
@@ -70,6 +69,16 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |plsno          |`plsno`                                                |Send a gif that expresses 'pls no'
 |pp          	|`pp,avatar,picture` `{user}`                           |Show `{user}`'s profile pic, a bit larger
 |sadness        |`sadness`                                              |Send a sad gif
+
+### Lookup commands
+
+|Name			|Command, aliases and usage					            |Description
+|---			|---										            |---
+|anime          |`anime,mal,myanimelist` `title`                        |Search for the MAL entry of the anime `title`
+|manga          |`manga` `title`                                        |Search for the MAL entry of manga `title`
+|movie          |`movie,imdb` `title`                                   |Search for the IMDb entry of movie `title`
+|osu            |`osu` `playername`                                     |Search profile data for a popular rhythm game
+
 
 ### Hangman
 

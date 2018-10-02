@@ -32,6 +32,8 @@ def initCogs(bot):
     bot.add_cog(Hangman(bot))
     from comm.image_commands import Images
     bot.add_cog(Images(bot))
+    from comm.lookup_commands import Lookup
+    bot.add_cog(Lookup(bot))
     if bot.MUSIC:
         from musicPlayer import MusicPlayer
         bot.musicplayer = MusicPlayer(bot)

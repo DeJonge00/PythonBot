@@ -7,9 +7,10 @@ import re
 import requests
 import wikipedia
 from discord.ext import commands
+import hashlib
 
 from rpggame import rpgdbconnect as dbcon
-from secret.secrets import prefix, osu_api_key
+from secret.secrets import prefix
 
 EMBED_COLOR = 0x008909
 
@@ -358,48 +359,18 @@ class Basics:
         embed.add_field(name="Lottery winner", value=mess)
         await self.bot.say(embed=embed)
 
-    # {prefix}osu <osu user>
-    @commands.command(pass_context=1, help="Look up someones osu stats!")
-    async def osu(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='osu'):
+    # {prefix}nice
+    @commands.command(pass_context=1, help="Calculate how nice you are!")
+    async def nice(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='nice'):
             return
+        try:
+            user = await self.bot.get_member_from_message(message=ctx.message, args=args, in_text=True, errors={})
+        except ValueError:
+            user = ctx.message.author
 
-        if len(args) <= 0:
-            await self.bot.say('Please provide a username to look for')
-            return
-        user = ' '.join(args)
-
-        url = 'https://osu.ppy.sh/api/get_user'
-        params = {'k': osu_api_key,
-                  'u': user,
-                  'm': 0,
-                  'type': 'string'}
-        r = requests.get(url, params=params)
-        if r.status_code != 200:
-            await self.bot.say('Uh oh, the osu site did not give me any information for my request')
-            return
-        r = r.json()
-        if len(r) <= 0:
-            await self.bot.say('Ehhm, there is no user with that name...')
-            return
-        r = r[0]
-
-        embed = discord.Embed(colour=0xFF0000)
-        embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        embed.set_thumbnail(url='https://a.ppy.sh/{}?.jpg'.format(r.get('user_id')))
-        embed.add_field(name="Username", value=r.get('username'))
-        embed.add_field(name='Profile link', value='https://osu.ppy.sh/u/'.format(r.get('user_id')))
-        embed.add_field(name="Playcount", value=r.get('playcount'))
-        embed.add_field(name="Total score", value=r.get('total_score'))
-        embed.add_field(name="Ranked score", value=r.get('ranked_score'))
-        embed.add_field(name="Global rank", value='#' + r.get('pp_rank'))
-        embed.add_field(name="Country rank", value='#{} ({})'.format(r.get('pp_country_rank'), r.get('country')))
-        embed.add_field(name="Accuracy", value='{}%'.format(round(float(r.get('accuracy')), 3)))
-        embed.add_field(name="Hours played", value=str(int(int(r.get('total_seconds_played'))/3600)))
-        embed.add_field(name="Total maps with SS", value=r.get('count_rank_ss'))
-        embed.add_field(name="Total maps with S", value=r.get('count_rank_s'))
-
-        await self.bot.say(embed=embed)
+        n = int(hashlib.sha1(user.name.encode()).hexdigest(), 16) % 100
+        await self.bot.say('{}, it has been determined you are {}% nice'.format(user.name, n))
 
     # {prefix}pat <name>
     @commands.command(pass_context=1, help="PAT ALL THE THINGS!")
