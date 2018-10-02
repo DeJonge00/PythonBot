@@ -24,6 +24,8 @@ REMOVE_LEAVE_MESSAGE = False
 
 def initCogs(bot):
     # Add commands
+    from comm.admin_commands import Admin
+    bot.add_cog(Admin(bot))
     from comm.basic_commands import Basics
     bot.add_cog(Basics(bot))
     from comm.minesweeper import Minesweeper
