@@ -464,6 +464,23 @@ class Basics:
             return
         await self.bot.say(random.choice(constants.purr).format(ctx.message.author.mention))
 
+    # {prefix}quote
+    @commands.command(pass_context=1, help="Get a random quote!")
+    async def quote(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='quote'):
+            return
+        params = {'method': 'getQuote', 'format': 'json', 'lang': 'en'}
+        r = requests.get('http://api.forismatic.com/api/1.0/', params=params)
+        while not isinstance(r, dict):
+            if r.status_code != 200:
+                await self.bot.say('Something went wrong on my end...')
+                return
+            r = r.json()
+        m = '`{}`'.format(r.get('quoteText'))
+        if r.get('quoteAuthor'):
+            m += '\n- {}'.format(r.get('quoteAuthor'))
+        await self.bot.say(m)
+
     # {prefix}role <name>
     @commands.command(pass_context=1, help="Add or remove roles!")
     async def role(self, ctx, *args):
