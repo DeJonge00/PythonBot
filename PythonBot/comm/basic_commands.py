@@ -386,9 +386,12 @@ class Basics:
 
         embed = discord.Embed(colour=0xFF0000)
         embed.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-        # embed.set_thumbnail(url='https://a.ppy.sh/{}?1477662986.png'.format(r.get('user_id')))
+        embed.set_thumbnail(url='https://a.ppy.sh/{}?.jpg'.format(r.get('user_id')))
         embed.add_field(name="Username", value=r.get('username'))
+        embed.add_field(name='Profile link', value='https://osu.ppy.sh/u/'.format(r.get('user_id')))
         embed.add_field(name="Playcount", value=r.get('playcount'))
+        embed.add_field(name="Total score", value=r.get('total_score'))
+        embed.add_field(name="Ranked score", value=r.get('ranked_score'))
         embed.add_field(name="Global rank", value='#' + r.get('pp_rank'))
         embed.add_field(name="Country rank", value='#{} ({})'.format(r.get('pp_country_rank'), r.get('country')))
         embed.add_field(name="Accuracy", value='{}%'.format(round(float(r.get('accuracy')), 3)))
