@@ -179,14 +179,12 @@ class MusicPlayer:
             fmt = '```py\n{}: {}\n```'
             print(fmt.format(type(e).__name__, e))
         except Exception as e:
-            embed = discord.Embed(colour=0x0000FF)
-            embed.add_field(name="{}".format(type(e).__name__), value='{}'.format(e))
             fmt = '```py\n{}: {}\n```'
-            await self.bot.send_message(ctx.message.channel, embed=embed)
+            print(type(e).__name__, e)
         else:
             player.volume = state.volume
             song = VoiceEntry(ctx.message, player)
-            if (state.current != None):
+            if state.current:
                 await self.bot.say(embed=song.embed(title="Song added"))
             await state.songs.put(song)
 

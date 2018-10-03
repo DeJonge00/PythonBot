@@ -60,10 +60,12 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |biribiri    	|`biribiri,biri`                                        |Send pics of the only best girl
 |cat         	|`cat`                                                  |Pictures of my cats
 |cuddle      	|`cuddle`                                               |Send a cuddly gif
+|cute           |`cute`                                                 |For when you need a cute anime girl gif
 |ded         	|`ded`                                                  |Ded chat reminder (image)
 |heresy      	|`heresy`                                               |Send images worthy of the emperor (warhammer 40k)
 |happy          |`happy`                                                |Send a happy gif
 |lewd           |`lewd`                                                 |Send anti-lewd gif
+|love           |`love`                                                 |Send a confession of love through a gif
 |nonazi      	|`nonazi`                                               |Try to persuade Lizzy with anti-nazi-propaganda!
 |nyan           |`nyan`                                                 |Send an anime happy catgirl gif
 |otter          |`otter`                                                |Send a cute otter picture

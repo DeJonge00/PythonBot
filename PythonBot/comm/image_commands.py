@@ -3,6 +3,7 @@ from datetime import datetime
 import asyncio
 import constants
 import discord
+from random import randint
 import send_random
 from discord.ext import commands
 
@@ -45,7 +46,7 @@ class Images:
                 return
             await self.bot.send_typing(channel)
             self.image_timers[command][channel.id] = datetime.utcnow()
-        if pic_links:
+        if pic_links and not (pic_folder and randint(0, 1) <= 0):
             await send_random.embedded_pic(self.bot, channel, command, self.bot.user.avatar_url, pic_links)
         elif pic_folder:
             await send_random.file(self.bot, channel, pic_folder)
@@ -65,10 +66,15 @@ class Images:
     async def cat(self, ctx):
         await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cat', pic_folder='cat')
 
+    # {prefix}cute
+    @commands.command(pass_context=1, help="For if you need cute anime girls!")
+    async def cute(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cute', pic_links=constants.cute_gifs)
+
     # {prefix}cuddle
     @commands.command(pass_context=1, help="Cuddles everywhere!")
     async def cuddle(self, ctx):
-        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cuddle', pic_folder='cuddle')
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'cuddle', pic_links=constants.hug_gifs, pic_folder='cuddle')
 
     # {prefix}ded
     @commands.command(pass_context=1, help="Ded chat reminder!")
@@ -89,6 +95,11 @@ class Images:
     @commands.command(pass_context=1, help="LLEEEEEEEEWWDD!!!")
     async def lewd(self, ctx):
         await self.send_picture_template_command(ctx.message, ctx.message.channel, 'lewd', pic_links=constants.lewd_gifs)
+
+    # {prefix}love
+    @commands.command(pass_context=1, help="Everyone needs love in their life!")
+    async def love(self, ctx):
+        await self.send_picture_template_command(ctx.message, ctx.message.channel, 'love', pic_links=constants.love_gifs)
 
     # {prefix}nonazi
     @commands.command(pass_context=1, help="Try to persuade Lizzy with anti-nazi-propaganda!")

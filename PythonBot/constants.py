@@ -416,6 +416,25 @@ nyan_gifs = [
 
 ]
 
+hug_gifs = [
+    'https://i.giphy.com/media/EvYHHSntaIl5m/giphy.gif',
+    'https://i.giphy.com/media/UwaByp0aMg6BO/100.gif',
+    'https://i.giphy.com/media/VGACXbkf0AeGs/200w.gif',
+    'https://i.giphy.com/media/16bJmyPvRbCDu/200w.gif',
+    'https://i.giphy.com/media/lXiRKBj0SAA0EWvbG/200w.gif',
+    'https://i.giphy.com/media/W4NKtcOqK2kYo/200w.gif',
+    'https://i.giphy.com/media/1MI7djBqXTWrm/200w.gif',
+    'https://i.giphy.com/media/f4HpCDvF84oh2/giphy.gif',
+    'https://i.giphy.com/media/OWabwoEn7ezug/200w.gif',
+    'https://i.giphy.com/media/Hld9vKjLk3irC/200w.gif',
+    'https://i.giphy.com/media/gl8ymnpv4Sqha/200.gif',
+    'https://i.giphy.com/media/x90dwDUuUx9Ys/giphy.gif',
+    'https://i.giphy.com/media/xJlOdEYy0r7ZS/200w.gif',
+    'https://i.giphy.com/media/od5H3PmEG5EVq/200w.gif',
+    'https://i.giphy.com/media/224NKXmu23A8U/giphy.gif',
+    'https://i.giphy.com/media/SllyDum3ydw6Q/giphy.gif'
+]
+
 happy_gifs = [
     'https://media.giphy.com/media/IbY1pcwcQZCmY/giphy.gif',
     'https://78.media.tumblr.com/6679afd9790a301108d08a945acbf9e1/tumblr_mff6qkwbvT1qk3jbxo1_400.gif',
@@ -426,7 +445,14 @@ happy_gifs = [
     'https://i.imgur.com/FfhDGkV.gifv',
     'https://orig00.deviantart.net/e2ab/f/2017/107/1/5/miyuki_dancing_thing_by_mrsneakyphotoshop-db67cbs.gif',
     'https://media1.giphy.com/media/7oUdj7cAkXVfi/giphy.gif',
-    'https://media1.giphy.com/media/CNUb51EbTxuRG/giphy.gif'
+    'https://media1.giphy.com/media/CNUb51EbTxuRG/giphy.gif',
+    'https://i.giphy.com/media/f4V2mqvv0wT9m/200w.gif',
+    'https://i.giphy.com/media/3Cm8cxtSHqu6Q/200w.gif',
+    'https://i.giphy.com/media/Kd9QFPgCafsM8/200.gif',
+    'https://i.giphy.com/media/CByLCmn5AlPLq/200w.gif',
+    'https://i.giphy.com/media/Akg8CMogTLCPm/200w.gif',
+    'https://i.giphy.com/media/JXibbAa7ysN9K/200w.gif',
+    'https://i.giphy.com/media/vkb4aEjq5TqqQ/200w.gif'
 ]
 
 lewd_gifs = [
@@ -460,7 +486,8 @@ plsno_gifs = [
     'https://78.media.tumblr.com/6775a17c70ab8a47d1dc1d9914d8d26f/tumblr_o2ggoakPw01v57tj1o1_500.gif',
     'https://78.media.tumblr.com/1e4c2bf39c5e47dfe278704297afd794/tumblr_o27gp9yxN91s5rcozo3_1280.gif',
     'https://78.media.tumblr.com/24110fa8b9b728fdfd7a745a59ad80db/tumblr_o21c35LffG1s5rcozo1_500.gif',
-    'https://78.media.tumblr.com/2e8fb3fb2c14a3f760022bd0c0876661/tumblr_o1sesxkEYo1v57tj1o1_500.gif'
+    'https://78.media.tumblr.com/2e8fb3fb2c14a3f760022bd0c0876661/tumblr_o1sesxkEYo1v57tj1o1_500.gif',
+    'https://i.giphy.com/media/6tAQ7cXxTMsFi/200w.gif'
 ]
 
 sad_gifs = [
@@ -472,7 +499,9 @@ sad_gifs = [
     'https://media1.giphy.com/media/Y4z9olnoVl5QI/giphy.gif',
     'https://media.giphy.com/media/UYSAu81IYBw4M/giphy.gif',
     'https://media.giphy.com/media/kagNnBcY3ucPS/giphy.gif',
-    'https://media1.giphy.com/media/13AsVQz5fUV916/giphy.gif'
+    'https://media1.giphy.com/media/13AsVQz5fUV916/giphy.gif',
+    'https://66.media.tumblr.com/be1eaf17333424d1d35577a18df3abea/tumblr_inline_ns8suoHVFH1qafrh6_400.gif',
+    'https://i.giphy.com/media/h6C6f4phY7MU8/200w.gif'
 ]
 
 otters = [
@@ -511,4 +540,20 @@ otters = [
     '3.png',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbRHm_uRzWah2JAJcn5iqCnkx7c6vg9275agP6CEG8TuoSjxLn',
     'https://i.redd.it/71wfgbtwukh11.jpg'
+]
+
+cute_gifs = [
+    'https://i.giphy.com/media/56eqTNkZX51aE/200w.gif',
+    'https://i.giphy.com/media/ErZ8hv5eO92JW/giphy.gif',
+    'https://i.giphy.com/media/vkb4aEjq5TqqQ/200w.gif',
+    'https://i.giphy.com/media/12XYXZMDDqHChy/giphy.gif',
+    'https://i.giphy.com/media/R1c7rUJA7uMoM/200w.gif',
+    'https://i.giphy.com/media/Gcgy6Wbu4PrsA/200w.gif',
+    'https://i.giphy.com/media/CCmXp18hhZAZy/200w.gif',
+    'https://i.giphy.com/media/4dpa8NfcR4U92/200w.gif'
+]
+
+love_gifs = [
+    'https://i.giphy.com/media/j5O4lz9WEtfvG/200w.gif',
+    'https://i.giphy.com/media/6zI0KUEik37Jm/200.gif'
 ]

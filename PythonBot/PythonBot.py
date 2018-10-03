@@ -56,7 +56,7 @@ def initCogs(bot):
 
 
 class PythonBot(Bot):
-    def __init__(self, music=True, rpggame=True):
+    def __init__(self, music=True, rpggame=False):
         self.praise = datetime.datetime.utcnow()
 
         self.spamlist = []
