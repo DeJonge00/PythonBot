@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 import asyncio
-import re
+import logging
+import sys
+import traceback
 
+import datetime
 import discord
-
+import re
 from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-import datetime
 import dbconnect
 import log
-import logging
 import message_handler
-
 from secret import secrets
 
 # Basic configs
@@ -430,6 +430,15 @@ def init_bot():
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
         await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
+
+    @bot.event
+    async def on_command_error(exception, context):
+        if context.message.author.id == constants.NYAid:
+            m = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+            m = '**{}:** {}```py\n{}```'.format(type(exception).__name__, exception, m)
+            await bot.send_message(context.message.channel, '*Exeption intensifies*\n' + m)
+        else:
+            bot.on_command_error(exception, context)
 
     return bot
 
