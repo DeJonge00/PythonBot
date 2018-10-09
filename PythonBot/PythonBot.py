@@ -56,7 +56,7 @@ def initCogs(bot):
 
 
 class PythonBot(Bot):
-    def __init__(self, music=True, rpggame=False):
+    def __init__(self, music=True, rpggame=True):
         self.praise = datetime.datetime.utcnow()
 
         self.spamlist = []
@@ -409,8 +409,11 @@ def init_bot():
         if reaction.emoji == "\N{BROKEN HEART}":
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
+                return
         if bot.musicplayer:
             await bot.musicplayer.handle_reaction(reaction)
+        if bot.RPGGAME:
+            await bot.rpggame.handle_reaction(reaction)
 
     @bot.event
     async def on_member_ban(member: discord.Member):

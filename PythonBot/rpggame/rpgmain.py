@@ -30,6 +30,7 @@ class RPGGame:
         self.logger = logging.getLogger(__name__)
         self.boss_parties = {}
         self.players = {}
+        self.top_lists = {}
         self.game_init()
         print('RPGGame started')
 
@@ -897,7 +898,8 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg leave'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID and data not in [j for i in self.boss_parties.values() for j in i]:
+        if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID and data not in [j for i in self.boss_parties.values() for
+                                                                               j in i]:
             await self.bot.say('You arent even in a bossraid anywhere...')
             return
 
@@ -976,6 +978,55 @@ class RPGGame:
             return 'maxhealth'
         return "exp"
 
+    def top_board(self, page=0, group='exp'):
+        users_per_page = 10
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.add_field(name="RPG top players", value="Page " + str(page + 1), inline=False)
+        dbcon.update_players(self.players.values())
+        player_list = dbcon.get_top_players(self.bot, group, (page + 1) * users_per_page)
+        if len(player_list) < (users_per_page * page):
+            raise ValueError(math.ceil(len(player_list) / users_per_page))
+        top_end = (users_per_page * (page + 1))
+        if top_end > len(player_list):
+            top_end = len(player_list)
+        top_start = (users_per_page * page)
+        result = ""
+
+        players = player_list[top_start:top_end]
+
+        for i in range(len(players)):
+            name, player_score = players[i]
+            rank = page * users_per_page + i + 1
+            if group == "money":
+                result += "Rank {}:\n\t**{}**, {}{}\n".format(rank, name,
+                                                              rpggameactivities.money_sign, player_score)
+            elif group == "bosstier":
+                result += "Rank {}:\n\t**{}**, tier {}\n".format(rank, name, player_score)
+            elif group in ["critical", "weaponskill", "damage", "maxhealth"]:
+                result += "Rank {}:\n\t**{}**, {}\n".format(rank, name, player_score)
+            else:
+                result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(rank, name, player_score,
+                                                                    RPGPlayer.get_level_by_exp(player_score))
+        embed.add_field(name="Ranks and names", value=result)
+        return embed
+
+    async def handle_reaction(self, reaction: discord.Reaction):
+        if reaction.message.id in [x[0] for x in self.top_lists.values()]:
+            _, page, group = self.top_lists.get(reaction.message.server.id)
+            if reaction.emoji == '\N{LEFTWARDS BLACK ARROW}':
+                page = page - 1
+            if reaction.emoji == "\N{BLACK RIGHTWARDS ARROW}":
+                page = page + 1
+            for m in await self.bot.get_reaction_users(reaction):
+                if m.id != self.bot.user.id:
+                    await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
+            try:
+                embed = self.top_board(page, group)
+                await self.bot.edit_message(reaction.message, embed=embed)
+                self.top_lists[reaction.message.server.id] = (reaction.message.id, page, group)
+            except ValueError:
+                pass
+
     # {prefix}rpg top <exp|money|bosstier> <amount>
     @rpg.command(pass_context=1, aliases=["Top", "T", 't'], help="Show the people with the most experience!")
     async def top(self, ctx, *args):
@@ -999,36 +1050,16 @@ class RPGGame:
             n = 0
             group = "exp"
 
-        # Construct return message
-        users_per_page = 10
-        embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        embed.add_field(name="RPG top players", value="Page " + str(n + 1), inline=False)
-        dbcon.update_players(self.players.values())
-        player_list = dbcon.get_top_players(self.bot, group, (n + 1) * users_per_page)
-        if len(player_list) < (users_per_page * n):
-            await self.bot.say("There are only {} pages...".format(math.ceil(len(player_list) / users_per_page)))
+        try:
+            embed = self.top_board(page=n, group=group)
+        except ValueError as e:
+            await self.bot.say("There are only {} pages...".format(str(e)))
             return
-        top_end = (users_per_page * (n + 1))
-        if top_end > len(player_list):
-            top_end = len(player_list)
-        top_start = (users_per_page * n)
-        result = ""
-
-        players = player_list[top_start:top_end]
-
-        for i in range(len(players)):
-            name, player_score = players[i]
-            if group == "money":
-                result += "Rank {}:\n\t**{}**, {}{}\n".format(i + 1, name, rpggameactivities.money_sign, player_score)
-            elif group == "bosstier":
-                result += "Rank {}:\n\t**{}**, tier {}\n".format(i + 1, name, player_score)
-            elif group in ["critical", "weaponskill", "damage", "maxhealth"]:
-                result += "Rank {}:\n\t**{}**, {}\n".format(i + 1, name, player_score)
-            else:
-                result += "Rank {}:\n\t**{}**, {}xp (L{})\n".format(i + 1, name, player_score,
-                                                                    RPGPlayer.get_level_by_exp(player_score))
-        embed.add_field(name="Ranks and names", value=result)
-        await self.bot.send_message(ctx.message.channel, embed=embed)
+        m = await self.bot.send_message(ctx.message.channel, embed=embed)
+        await self.bot.add_reaction(m, '\N{LEFTWARDS BLACK ARROW}')
+        await self.bot.add_reaction(m, "\N{BLACK RIGHTWARDS ARROW}")
+        await self.bot.add_reaction(m, "\N{BROKEN HEART}")
+        self.top_lists[ctx.message.server.id] = (m.id, n, group)
 
     # {prefix}rpg wander #
     @rpg.command(pass_context=1, aliases=["Wander", "w", "W"], help="Wander in the beautiful country")

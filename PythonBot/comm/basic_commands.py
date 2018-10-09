@@ -420,6 +420,8 @@ class Basics:
             result = '*Pong*'
         t = datetime.utcnow()
         m = await self.bot.say(':ping_pong: ' + result)
+        if not m:
+            return
         t = (m.timestamp - t)
         time = ''
         if t.seconds > 0:
