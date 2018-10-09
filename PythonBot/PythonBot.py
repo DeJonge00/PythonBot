@@ -81,6 +81,12 @@ class PythonBot(Bot):
     def prep_str_for_print(s: str):
         return s.encode("ascii", "replace").decode("ascii")
 
+    @staticmethod
+    def pretty_error_str(exception):
+        m = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+        m = '**{}:** {}```py\n{}```'.format(type(exception).__name__, exception, m)
+        return m
+
     async def delete_message(self, message):
         if not message.channel.is_private:
             try:
@@ -115,6 +121,12 @@ class PythonBot(Bot):
     async def send_typing(self, destination):
         try:
             super().send_typing(destination=destination)
+        except discord.Forbidden:
+            pass
+
+    async def remove_reaction(self, message, emoji, member):
+        try:
+            super().remove_reaction(message, emoji, member)
         except discord.Forbidden:
             pass
 
@@ -437,11 +449,10 @@ def init_bot():
     @bot.event
     async def on_command_error(exception, context):
         if context.message.author.id == constants.NYAid:
-            m = ''.join(traceback.format_exception(type(exception), exception, exception.__traceback__))
-            m = '**{}:** {}```py\n{}```'.format(type(exception).__name__, exception, m)
+            m = bot.pretty_error_str(exception)
             await bot.send_message(context.message.channel, '*Exeption intensifies*\n' + m)
         else:
-            bot.on_command_error(exception, context)
+            await bot.on_command_error(exception, context)
 
     return bot
 

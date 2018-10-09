@@ -75,11 +75,12 @@ class RPGGame:
                     text = ''
 
         # Min and max damage
-        max_char, _, max_dam, _ = max(report_actions, key=lambda item: item[2])
-        stats = '**{}** did the most damage ({})'.format(max_char.name, max_dam)
-        min_char, _, min_dam, _ = min(report_actions, key=lambda item: item[2])
-        if min_dam != max_dam:
-            stats += '\n**{}** did the least damage ({})'.format(min_char.name, min_dam)
+        if len(report_actions) > 0:
+            max_char, _, max_dam, _ = max(report_actions, key=lambda item: item[2])
+            stats = '**{}** did the most damage ({})'.format(max_char.name, max_dam)
+            min_char, _, min_dam, _ = min(report_actions, key=lambda item: item[2])
+            if min_dam != max_dam:
+                stats += '\n**{}** did the least damage ({})'.format(min_char.name, min_dam)
 
         battle.append(text)
         return battle, stats
@@ -341,7 +342,10 @@ class RPGGame:
                         len(self.boss_parties.get(p))))
 
             if time.minute == 0:
-                await self.boss_battle()
+                try:
+                    await self.boss_battle()
+                except Exception as e:
+                    print(self.bot.pretty_error_str(e))
                 self.bot.rpgshop.weapons = {}
                 self.bot.rpgshop.armors = {}
 
