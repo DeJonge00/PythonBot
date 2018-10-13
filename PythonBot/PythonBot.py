@@ -301,6 +301,13 @@ class PythonBot(Bot):
                 print(member.server + " | No permission to delete messages")
         return True
 
+    async def on_command_error(self, exception, context):
+        if context.message.author.id == constants.NYAid:
+            m = self.pretty_error_str(exception)
+            await self.send_message(context.message.channel, '*Exeption intensifies*\n' + m)
+        else:
+            await super().on_command_error(exception, context)
+
 
 def init_bot():
     bot = PythonBot()
@@ -445,14 +452,6 @@ def init_bot():
     async def on_server_remove(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
         await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
-
-    @bot.event
-    async def on_command_error(exception, context):
-        if context.message.author.id == constants.NYAid:
-            m = bot.pretty_error_str(exception)
-            await bot.send_message(context.message.channel, '*Exeption intensifies*\n' + m)
-        else:
-            await bot.on_command_error(exception, context)
 
     return bot
 

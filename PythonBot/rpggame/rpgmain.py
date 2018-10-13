@@ -201,8 +201,13 @@ class RPGGame:
                 embed = discord.Embed(colour=RPG_EMBED_COLOR)
 
         embed.add_field(name="Result", value=result)
-
-        await self.bot.send_message(channel, embed=embed)
+        try:
+            await self.bot.send_message(channel, embed=embed)
+        except discord.HTTPException:
+            try:
+                await self.bot.send_message(channel, '\n'.join(battle_report_text + [result]))
+            except discord.HTTPException as e:
+                self.bot.pretty_error_str(e)
 
         # Switch teams to original positions
         if i % 2 == 1:
@@ -225,43 +230,46 @@ class RPGGame:
 
     async def boss_battle(self):
         print("Boss time!")
-        for serverid in self.boss_parties:
-            party = self.boss_parties.get(serverid)
-            if len(party) > 0:
-                channel = self.bot.get_channel(dbcon.get_rpg_channel(str(serverid)))
-                if not channel:
-                    print("No channel for {}".format(serverid))
-                    return
+        try:
+            for serverid in self.boss_parties:
+                party = self.boss_parties.get(serverid)
+                if len(party) > 0:
+                    channel = self.bot.get_channel(dbcon.get_rpg_channel(str(serverid)))
+                    if not channel:
+                        print("No channel for {}".format(serverid))
+                        return
 
-                # Determine bossbattle difficulty
-                lvl = max([x.get_bosstier() for x in party])
-                bosses = []
-                while (3 * len(bosses)) < len(party):
-                    (name, elem, pic) = random.choice(rpgc.bosses)
-                    bosses.append(RPGMonster(name=name, health=int(52 * lvl * lvl), damage=int(lvl * lvl * 1.1),
-                                             ws=int(lvl * lvl * 0.6), element=elem))
+                    # Determine bossbattle difficulty
+                    lvl = max([x.get_bosstier() for x in party])
+                    bosses = []
+                    while (3 * len(bosses)) < len(party):
+                        (name, elem, pic) = random.choice(rpgc.bosses)
+                        bosses.append(RPGMonster(name=name, health=int(52 * lvl * lvl), damage=int(lvl * lvl * 1.1),
+                                                 ws=int(lvl * lvl * 0.6), element=elem))
 
-                winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
+                    winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
 
-                if winner == 1:
-                    # Reward the winners with exp, money and a bosstier
-                    for p in party:
-                        reward = 32 * lvl * lvl * len(bosses) / len(party)
-                        p.add_exp(reward)
-                        p.add_bosstier()
-                        for pet in p.pets:
-                            pet.add_exp(0.13 * reward if p.role == rpgc.names.get('role')[2][0] else 0.1 * reward)
+                    if winner == 1:
+                        # Reward the winners with exp, money and a bosstier
+                        for p in party:
+                            reward = 32 * lvl * lvl * len(bosses) / len(party)
+                            p.add_exp(reward)
+                            p.add_bosstier()
+                            for pet in p.pets:
+                                pet.add_exp(0.13 * reward if p.role == rpgc.names.get('role')[2][0] else 0.1 * reward)
 
-                    # Chance to reward a player with a new pet
-                    if random.randint(0, 100) < 35:
-                        petwinner = random.choice(party)
-                        petname = 'Pet ' + bosses[0].name
-                        pet = RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
-                                     weaponskill=petwinner.get_bosstier())
-                        if pet and petwinner.add_pet(pet):
-                            await self.bot.send_message(channel,
-                                                        '{} found a baby {}, a new pet!'.format(petwinner.name,
-                                                                                                petname))
+                        # Chance to reward a player with a new pet
+                        if random.randint(0, 100) < 35:
+                            petwinner = random.choice(party)
+                            petname = 'Pet ' + bosses[0].name
+                            pet = RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
+                                         weaponskill=petwinner.get_bosstier())
+                            if pet and petwinner.add_pet(pet):
+                                await self.bot.send_message(channel,
+                                                            '{} found a baby {}, a new pet!'.format(petwinner.name,
+                                                                                                    petname))
+        except Exception as e:
+            print(self.bot.pretty_error_str(e))
         # Reset players busy status and clear past bossraid info
         for p in self.players.values():
             if p.busydescription == rpgchar.BUSY_DESC_BOSSRAID:
@@ -342,10 +350,7 @@ class RPGGame:
                         len(self.boss_parties.get(p))))
 
             if time.minute == 0:
-                try:
-                    await self.boss_battle()
-                except Exception as e:
-                    print(self.bot.pretty_error_str(e))
+                await self.boss_battle()
                 self.bot.rpgshop.weapons = {}
                 self.bot.rpgshop.armors = {}
 
@@ -902,7 +907,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg leave'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID and data not in [j for i in self.boss_parties.values() for
+        if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID or data not in [j for i in self.boss_parties.values() for
                                                                                j in i]:
             await self.bot.say('You arent even in a bossraid anywhere...')
             return
