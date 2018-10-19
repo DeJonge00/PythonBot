@@ -57,8 +57,8 @@ def initCogs(bot):
 
 class PythonBot(Bot):
     def __init__(self, music=True, rpggame=True):
+        self.running = True
         self.praise = datetime.datetime.utcnow()
-
         self.spamlist = []
         self.spongelist = []
 
@@ -253,7 +253,6 @@ class PythonBot(Bot):
 
     async def timeLoop(self):
         await self.wait_until_ready()
-        self.running = True
         while self.running:
             time = datetime.datetime.utcnow()
 
@@ -262,9 +261,9 @@ class PythonBot(Bot):
             if self.MUSIC:
                 await self.musicplayer.music_loop(time)
 
-            endtime = datetime.datetime.utcnow()
-            # print("Sleeping for " + str(60-(endtime).second) + "s")
-            await asyncio.sleep(60 - endtime.second)
+            end_time = datetime.datetime.utcnow()
+            # print("Sleeping for " + str(60-(end_time).second) + "s")
+            await asyncio.sleep(60 - end_time.second)
 
     async def quit(self):
         self.running = False
@@ -408,16 +407,13 @@ def init_bot():
                 else:
                     m += " nick from: " + before.nick + " to: " + after.nick
         for r in before.roles:
-            if not r in after.roles:
+            if r not in after.roles:
                 m += " -role: " + r.name
                 changed = True
         for r in after.roles:
-            if not r in before.roles:
+            if r not in before.roles:
                 m += " +role: " + r.name
                 changed = True
-        if before.avatar != after.avatar:
-            m += " +avatar changed"
-            changed = True
         if changed:
             await log.error(m, filename=before.server.name, serverid=before.server.id)
 
@@ -446,7 +442,8 @@ def init_bot():
     @bot.event
     async def on_server_join(server: discord.Server):
         user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "I joined a new server named '{}', senpai!".format(server.name))
+        m = "I joined a new server named '{}' with {} members, senpai!".format(server.name, server.member_count)
+        await bot.send_message(user, m)
 
     @bot.event
     async def on_server_remove(server: discord.Server):

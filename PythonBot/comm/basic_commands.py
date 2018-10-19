@@ -263,7 +263,11 @@ class Basics:
             await self.bot.say('I can only send emoji in servers')
             return
         m = ''
-        for _ in range(10):
+        l = len(ctx.message.server.emojis)
+        if not l:
+            await self.bot.say('Your server doesnt have custom emoji for me to use...')
+            return
+        for _ in range(min(l, 10)):
             m += str(random.choice(ctx.message.server.emojis)) + ' '
         await self.bot.say(m)
 
