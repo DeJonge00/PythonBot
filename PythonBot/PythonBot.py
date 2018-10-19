@@ -279,7 +279,7 @@ class PythonBot(Bot):
 
     async def on_member_message(self, member, func_name, text, do_log=True) -> bool:
         if do_log:
-            await log.error(member.server.name + " | Member " + str(member.name) + " just " + text,
+            await log.error(member.server.name + " | Member " + str(member) + " just " + text,
                             filename=member.server.name, serverid=member.server.id)
         response = dbconnect.get_message(func_name, member.server.id)
         if not response:
@@ -294,10 +294,7 @@ class PythonBot(Bot):
         m = await self.send_message(channel, embed=embed)
         if REMOVE_JOIN_MESSAGE:
             await asyncio.sleep(30)
-            try:
-                await self.delete_message(m)
-            except discord.Forbidden:
-                print(member.server + " | No permission to delete messages")
+            await self.delete_message(m)
         return True
 
     async def on_command_error(self, exception, context):
