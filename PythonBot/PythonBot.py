@@ -15,6 +15,7 @@ import dbconnect
 import log
 import message_handler
 from secret import secrets
+import embedded_list_creator
 
 # Basic configs
 pi = 3.14159265358979323846264
@@ -145,8 +146,20 @@ class PythonBot(Bot):
                 len(split) <= 1 or self.command_allowed_in('channel', split[0], channelid))
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
-                          cannot_be_private=False, must_be_private=False, must_be_nsfw=False):
-
+                          cannot_be_private=False, must_be_private=False, must_be_nsfw=False, owner_check=False,
+                          checks=[]):
+        if owner_check and message.author.id not in [constants.KAPPAid, constants.NYAid]:
+            await self.bot.send_message(message.channel, "Hahahaha, no")
+            await log.message(message, 'Command "{}" used, but ownerright needed'.format(command))
+            return False
+        elif checks:
+            perms = message.channel.permissions_for(message.author)
+            check_names = [constants.permissions.get(y) for y in checks]
+            if not any([x[1] for x in list(perms) if x[0] in check_names]):
+                await self.bot.send_message(message.channel, "Hahahaha, no")
+                m = 'Command "{}" used, but either of [{}] needed'.format(command, ' '.join(check_names))
+                await log.message(message, m)
+                return False
         if message.channel.is_private:
             if cannot_be_private:
                 await self.send_message(message.channel, 'This command cannot be used in private channels')
@@ -297,18 +310,12 @@ class PythonBot(Bot):
             await self.delete_message(m)
         return True
 
-    async def on_command_error(self, exception, context):
-        if context.message.author.id == constants.NYAid:
-            m = self.pretty_error_str(exception)
-            await self.send_message(context.message.channel, '*Exeption intensifies*\n' + m)
-        else:
-            await super().on_command_error(exception, context)
-
 
 def init_bot():
     bot = PythonBot()
     logging.basicConfig()
     initCogs(bot)
+    bot.embed_list = embedded_list_creator.EmbedList(bot)
     bot.dont_delete_commands_servers = dbconnect.get_do_not_delete_commands()
     bot.commands_banned_in['server'] = dbconnect.get_banned_commands('server')
     bot.commands_banned_in['channel'] = dbconnect.get_banned_commands('channel')
@@ -426,6 +433,8 @@ def init_bot():
             await bot.musicplayer.handle_reaction(reaction)
         if bot.RPGGAME:
             await bot.rpggame.handle_reaction(reaction)
+        if bot.embed_list:
+            await bot.embed_list.handle_reaction(reaction)
 
     @bot.event
     async def on_member_ban(member: discord.Member):

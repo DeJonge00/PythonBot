@@ -83,3 +83,32 @@ def set_banned_commands(type: str, commands: {str: [str]}):
             c.execute("INSERT INTO {0}_banned_commands VALUES (%s, %s)".format(type), (identifier, command))
     conn.commit()
     conn.close()
+
+
+# Self-assignable roles
+def get_roles(serverid: str):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "roles")
+    c = conn.cursor()
+    c.execute("SELECT roleid FROM selfassignable WHERE serverid = %s", (serverid,))
+    roles = c.fetchall()
+    conn.commit()
+    conn.close()
+    return [r[0] for r in roles]
+
+
+INSERT = True
+REMOVE = False
+
+
+def change_role(serverid: str, roleid: str):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "roles")
+    c = conn.cursor()
+    if c.execute("SELECT roleid FROM selfassignable WHERE serverid = %s AND roleid = %s", (serverid, roleid,)) == 0:
+        c.execute("INSERT INTO selfassignable (serverid, roleid) VALUES (%s, %s)", (serverid, roleid))
+        action = INSERT
+    else:
+        c.execute("DELETE FROM selfassignable WHERE serverid = %s AND roleid = %s", (serverid, roleid,))
+        action = REMOVE
+    conn.commit()
+    conn.close()
+    return action

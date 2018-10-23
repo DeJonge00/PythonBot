@@ -46,7 +46,8 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |quote          |`quote`                                                |Fetch a random quote from the internet
-|role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
+|role        	|`role` `config` `{rolename}`                           |Add or remove a role to the list of self-assignable roles
+|role           |`role` `add,remove` `{rolename}`                       |Add or reemove the role `{rolename}` from yourself, if it is in the self-assignable roles list
 |serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
 |urban       	|`urban,us,urbandictionary` `{query}`                   |Search urbandictionary for `{query}`
 |userinfo    	|`userinfo,user,info` `{user}`                          |Get `{user}`'s information

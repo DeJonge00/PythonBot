@@ -110,21 +110,14 @@ class Admin:
     # {prefix}reload <module>
     @commands.command(pass_context=1, hidden=True)
     async def reload(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='spam'):
+        if not await self.bot.pre_command(message=ctx.message, command='spam', owner_check=True):
             return
-        if not (ctx.message.author.id in [constants.NYAid, constants.KAPPAid]):
-            await self.bot.say("Hahahaha, no")
-            return
-
         self.load_cogs(self.bot, ' '.join(args))
 
     # {prefix}spam <amount> <user>
     @commands.command(pass_context=1, hidden=True, help="Spam a user messages")
     async def spam(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='spam'):
-            return
-        if not (ctx.message.author.id == constants.NYAid):
-            await self.bot.say("Hahahaha, no")
+        if not await self.bot.pre_command(message=ctx.message, command='spam', owner_check=True):
             return
         if len(ctx.message.mentions) > 0:
             user = ctx.message.mentions[0]
@@ -139,10 +132,7 @@ class Admin:
     # {prefix}spongespam <user>
     @commands.command(pass_context=1, hidden=True, help="Add a user to the spongespam list")
     async def spongespam(self, ctx):
-        if not await self.bot.pre_command(message=ctx.message, command='spongespam'):
-            return
-        if not (ctx.message.author.id == constants.NYAid):
-            await self.bot.say("Hahahaha, no")
+        if not await self.bot.pre_command(message=ctx.message, command='spongespam', owner_check=True):
             return
         if len(ctx.message.mentions) > 0:
             if ctx.message.mentions[0].id in self.bot.spongelist:
@@ -161,10 +151,7 @@ class Admin:
     # {prefix}quit
     @commands.command(pass_context=1, hidden=True, help="Lets me go to sleep")
     async def quit(self, ctx):
-        if not await self.bot.pre_command(message=ctx.message, command='quit'):
-            return
-        if not ((ctx.message.author.id == constants.NYAid) | (ctx.message.author.id == constants.KAPPAid)):
-            await self.bot.say("Hahahaha, no")
+        if not await self.bot.pre_command(message=ctx.message, command='quit', owner_check=True):
             return
         await self.bot.send_message(ctx.message.channel, "ZZZzzz...")
         await self.quitBot()
