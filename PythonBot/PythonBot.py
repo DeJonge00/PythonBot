@@ -91,7 +91,7 @@ class PythonBot(Bot):
     async def _get_prefix(self, message):
         try:
             return dbconnect.get_prefix(message.server.id)
-        except KeyError:
+        except (KeyError, AttributeError):
             return await super(PythonBot, self)._get_prefix(message)
 
     async def delete_message(self, message):
@@ -348,6 +348,7 @@ def init_bot():
             await log.log("direct message", message.author.name, message.content, "dm")
             for pic in message.attachments:
                 await log.message(message, "pic", pic["url"])
+            await message_handler.talk(bot, message)
         else:
             if message.content and message.server.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)

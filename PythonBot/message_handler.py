@@ -109,12 +109,17 @@ async def new(bot, message: discord.Message):
             message.content[0].isalpha() and message.content[1].isalpha())):
         return
 
-    if message.server.id not in constants.bot_talk_blacklist and (bot.user in message.mentions or (len(
+    if message.server.id not in constants.bot_talk_blacklist:
+        await talk(bot, message)
+
+
+async def talk(bot, message: discord.Message):
+    if (bot.user in message.mentions or (len(
             set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
                 {'biri', 'biribiri'})) > 0)) and await bot.pre_command(message=message, command='talk',
                                                                        delete_message=False):
-        if 'prefix' in message.content:
-            await bot.send_message(message.channel, 'My prefix is {}, darling'.format(bot._get_prefix(message)))
+        if 'prefix' in message.content.lower():
+            await bot.send_message(message.channel, 'My prefix is \'{}\', darling'.format(await bot._get_prefix(message)))
             return
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \
                 any(word in message.content.lower() for word in ['heart', 'pls', 'love']):
