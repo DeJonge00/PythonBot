@@ -11,7 +11,6 @@ import hashlib
 
 import dbconnect as dbcon
 from rpggame import rpgdbconnect as rpgdbcon
-from secret.secrets import prefix
 
 EMBED_COLOR = 0x008909
 
@@ -264,11 +263,11 @@ class Basics:
             await self.bot.say('I can only send emoji in servers')
             return
         m = ''
-        l = len(ctx.message.server.emojis)
-        if not l:
+        emoji_amount = len(ctx.message.server.emojis)
+        if not emoji_amount:
             await self.bot.say('Your server doesnt have custom emoji for me to use...')
             return
-        for _ in range(min(l, 10)):
+        for _ in range(min(emoji_amount, 10)):
             m += str(random.choice(ctx.message.server.emojis)) + ' '
         await self.bot.say(m)
 
@@ -463,7 +462,8 @@ class Basics:
     @commands.group(pass_context=1, help="Add or remove self-assignable roles!", aliases=['iam'])
     async def role(self, ctx):
         if not ctx.invoked_subcommand:
-            await self.bot.say('Use `{}role` `config,add,remove` `<rolename>` for this command'.format(prefix))
+            await self.bot.say('Use `{}role` `config,add,remove` `<rolename>` for this command'.format(
+                self.bot._get_prefix(ctx.message)))
 
     @role.command(pass_context=1)
     async def config(self, ctx, *args):
@@ -577,7 +577,8 @@ class Basics:
         else:
             n = 0
         roles = sorted([x.name for x in ctx.message.server.roles if x.id in dbcon.get_roles(ctx.message.server.id)])
-        await self.bot.embed_list.make_list(items=roles, title='Assignable roles', page=n, items_per_page=10, channel=ctx.message.channel)
+        await self.bot.embed_list.make_list(items=roles, title='Assignable roles', page=n, items_per_page=10,
+                                            channel=ctx.message.channel)
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!", aliases=['serverstats'])

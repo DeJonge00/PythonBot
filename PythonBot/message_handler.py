@@ -5,7 +5,6 @@ import log
 import random
 import send_random
 import string
-from secret.secrets import prefix
 
 NicknameAutoChange = False
 
@@ -115,7 +114,7 @@ async def new(bot, message: discord.Message):
                 {'biri', 'biribiri'})) > 0)) and await bot.pre_command(message=message, command='talk',
                                                                        delete_message=False):
         if 'prefix' in message.content:
-            await bot.send_message(message.channel, 'My prefix is {}, darling'.format(prefix))
+            await bot.send_message(message.channel, 'My prefix is {}, darling'.format(bot._get_prefix(message)))
             return
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \
                 any(word in message.content.lower() for word in ['heart', 'pls', 'love']):

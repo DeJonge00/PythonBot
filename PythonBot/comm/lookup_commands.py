@@ -1,8 +1,9 @@
-from discord.ext import commands
 import discord
-import requests, re
-from secret.secrets import prefix, osu_api_key
-import asyncio
+import re
+import requests
+from discord.ext import commands
+
+from secret.secrets import osu_api_key
 
 
 # Normal commands

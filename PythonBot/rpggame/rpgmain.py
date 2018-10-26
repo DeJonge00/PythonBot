@@ -17,7 +17,7 @@ from rpggame.rpgcharacter import RPGCharacter
 from rpggame.rpgmonster import RPGMonster
 from rpggame.rpgpet import RPGPet
 from rpggame.rpgplayer import RPGPlayer
-from secret.secrets import prefix, font_path
+from secret.secrets import font_path
 
 RPG_EMBED_COLOR = 0x710075
 STANDARD_BATTLE_TURNS = 50
@@ -34,10 +34,11 @@ class RPGGame:
         self.game_init()
         print('RPGGame started')
 
-    async def check_role(self, role: str) -> bool:
+    async def check_role(self, role: str, message: discord.Message) -> bool:
         if role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say("You are still Undead. "
-                               "Please select a class with '{}rpg role' in order to start to play!".format(prefix))
+                               "Please select a class with '{}rpg role' in order to start to play!".format(
+                self.bot._get_prefix(message)))
             return False
         return True
 
@@ -459,6 +460,7 @@ class RPGGame:
         print("RPGStats saved")
 
     async def send_help_message(self, ctx):
+        prefix = self.bot._get_prefix(ctx.message)
         await self.bot.say(
             "Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(
                 prefix))
@@ -554,7 +556,7 @@ class RPGGame:
     @commands.group(pass_context=1, aliases=["Rpg", "b&d", "B&d", "bnd", "Bnd"],
                     help="Get send an overview of the rpg game's commands")
     async def rpg(self, ctx):
-        if ctx.invoked_subcommand is None and ctx.message.content == '{}rpg'.format(prefix):
+        if ctx.invoked_subcommand is None and ctx.message.content == '{}rpg'.format(self.bot._get_prefix(ctx.message)):
             if not await self.bot.pre_command(message=ctx.message, command='rpg help'):
                 return
             await self.send_help_message(ctx)
@@ -572,7 +574,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg adventure'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if not await self.check_role(data.role):
+        if not await self.check_role(data.role, ctx.message):
             return
         if len(args) > 0:
             try:
@@ -605,7 +607,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg battle'):
             return
         attacker = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if not await self.check_role(attacker.role):
+        if not await self.check_role(attacker.role, ctx.message):
             return
         try:
             errors = {'no_mention': "You need to tag someone to battle with!"}
@@ -641,7 +643,8 @@ class RPGGame:
         data = self.get_player_data(user.id, name=user.display_name)
         if data.role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say("{}, that player is still Undead. Please select a class with "
-                               "'{}rpg role' in order to start to play!".format(ctx.message.author.mention, prefix))
+                               "'{}rpg role' in order to start to play!".format(ctx.message.author.mention,
+                                                                                self.bot._get_prefix(ctx.message)))
             return
 
         # Requested info is of weapon
@@ -765,7 +768,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg join'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if not await self.check_role(data.role):
+        if not await self.check_role(data.role, ctx.message):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.BUSY_DESC_NONE:
@@ -781,7 +784,7 @@ class RPGGame:
             return
         if len(party) <= 0 and not dbcon.get_rpg_channel(ctx.message.server.id):
             await self.bot.say('Be sure to set the channel for bossfights with "{}rpg setchannel, '
-                               'or you will not be able to see the results!'.format(prefix))
+                               'or you will not be able to see the results!'.format(self.bot._get_prefix(ctx.message)))
         party.append(data)
         data.set_busy(rpgchar.BUSY_DESC_BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say(
@@ -871,7 +874,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg levelup'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if not await self.check_role(data.role):
+        if not await self.check_role(data.role, ctx.message):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.levelups <= 0:
@@ -908,7 +911,7 @@ class RPGGame:
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
         if data.busydescription != rpgchar.BUSY_DESC_BOSSRAID or data not in [j for i in self.boss_parties.values() for
-                                                                               j in i]:
+                                                                              j in i]:
             await self.bot.say('You arent even in a bossraid anywhere...')
             return
 
@@ -1076,7 +1079,7 @@ class RPGGame:
         if not await self.bot.pre_command(message=ctx.message, command='rpg wander'):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if not await self.check_role(data.role):
+        if not await self.check_role(data.role, ctx.message):
             return
         if len(args) > 0:
             try:
