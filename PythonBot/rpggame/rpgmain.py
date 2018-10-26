@@ -38,7 +38,7 @@ class RPGGame:
         if role not in [x[0] for x in rpgc.names.get("role")]:
             await self.bot.say("You are still Undead. "
                                "Please select a class with '{}rpg role' in order to start to play!".format(
-                self.bot._get_prefix(message)))
+                await self.bot._get_prefix(message)))
             return False
         return True
 
@@ -82,6 +82,8 @@ class RPGGame:
             min_char, _, min_dam, _ = min(report_actions, key=lambda item: item[2])
             if min_dam != max_dam:
                 stats += '\n**{}** did the least damage ({})'.format(min_char.name, min_dam)
+        else:
+            stats = None
 
         battle.append(text)
         return battle, stats
@@ -460,7 +462,7 @@ class RPGGame:
         print("RPGStats saved")
 
     async def send_help_message(self, ctx):
-        prefix = self.bot._get_prefix(ctx.message)
+        prefix = await self.bot._get_prefix(ctx.message)
         await self.bot.say(
             "Your '{}rpg' has been heard, you will be send the commands list for the rpg game".format(
                 prefix))
@@ -556,7 +558,7 @@ class RPGGame:
     @commands.group(pass_context=1, aliases=["Rpg", "b&d", "B&d", "bnd", "Bnd"],
                     help="Get send an overview of the rpg game's commands")
     async def rpg(self, ctx):
-        if ctx.invoked_subcommand is None and ctx.message.content == '{}rpg'.format(self.bot._get_prefix(ctx.message)):
+        if ctx.invoked_subcommand is None and ctx.message.content == '{}rpg'.format(await self.bot._get_prefix(ctx.message)):
             if not await self.bot.pre_command(message=ctx.message, command='rpg help'):
                 return
             await self.send_help_message(ctx)
@@ -784,7 +786,7 @@ class RPGGame:
             return
         if len(party) <= 0 and not dbcon.get_rpg_channel(ctx.message.server.id):
             await self.bot.say('Be sure to set the channel for bossfights with "{}rpg setchannel, '
-                               'or you will not be able to see the results!'.format(self.bot._get_prefix(ctx.message)))
+                               'or you will not be able to see the results!'.format(await self.bot._get_prefix(ctx.message)))
         party.append(data)
         data.set_busy(rpgchar.BUSY_DESC_BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say(

@@ -17,14 +17,14 @@ class RPGGameActivities:
 
     async def check_role(self, role: str, message: discord.Message) -> bool:
         if role not in [x[0] for x in rpgc.names.get("role")]:
-            prefix = self.bot._get_prefix(message)
+            prefix = await self.bot._get_prefix(message)
             await self.bot.say("You are still Undead. "
                                "Please select a class with '{}rpg role' in order to start to play!".format(prefix))
             return False
         return True
 
     async def send_shop_help_message(self, url: str, message: discord.Message):
-        prefix = self.bot._get_prefix(message)
+        prefix = await self.bot._get_prefix(message)
         embed = discord.Embed(colour=SHOP_EMBED_COLOR)
         embed.set_author(name="Shop commands", icon_url=url)
         embed.add_field(name="Items",
@@ -43,7 +43,7 @@ class RPGGameActivities:
     # {prefix}shop
     @commands.group(pass_context=1, help="Shop for valuable items!")
     async def shop(self, ctx):
-        prefix = self.bot._get_prefix(ctx.message)
+        prefix = await self.bot._get_prefix(ctx.message)
         if ctx.invoked_subcommand is None and (
                 ctx.message.content in ['{}shop help'.format(prefix), '{}shop'.format(prefix)]):
             if not await self.bot.pre_command(message=ctx.message, command='shop help'):

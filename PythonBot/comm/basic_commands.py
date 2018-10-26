@@ -463,7 +463,7 @@ class Basics:
     async def role(self, ctx):
         if not ctx.invoked_subcommand:
             await self.bot.say('Use `{}role` `config,add,remove` `<rolename>` for this command'.format(
-                self.bot._get_prefix(ctx.message)))
+                await self.bot._get_prefix(ctx.message)))
 
     @role.command(pass_context=1)
     async def config(self, ctx, *args):
