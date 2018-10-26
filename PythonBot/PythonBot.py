@@ -468,4 +468,13 @@ def init_bot():
 
 
 # Start the bot
-init_bot().run(secrets.bot_token)
+bot = init_bot()
+while bot.running:
+    try:
+        bot.run(secrets.bot_token)
+    except Exception as e:
+        tr = traceback.format_exc()
+        print(e, tr)
+        with open('logs/errors.txt', 'r') as f:
+            f.write(tr)
+

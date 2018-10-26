@@ -200,4 +200,4 @@ class Mod:
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        print('test')
+        raise ValueError

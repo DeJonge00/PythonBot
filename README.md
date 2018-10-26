@@ -1,6 +1,7 @@
 # Discord Python Bot "Biribiri"
 #### Notes
-The default prefix for Biribiri is the character `>`\
+The default prefix for Biribiri is the character `>`, this can be changed with the `prefix` command.\
+If you forgot the prefix you set, you can mention Biribiri with the word `prefix`.\
 \
 `words`: literally the word(s) in the brackets (choices separated by a `,`)\
 `{words}`: variable string, describing any word(s) you need\
@@ -124,7 +125,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			        |---										            |---                                                                                |---
 |toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default          |manage_channels, manage_messages
 |togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. Use command name `all` to disable all commands. All commands are enabled by default      |manage_channels, manage_messages
-
+|prefix                 |`prefix` `{prefix text}`                               |Changes the prefix to `{prefix text}`, ignoring trailing spaces
 
 ### MusicPlayer
 

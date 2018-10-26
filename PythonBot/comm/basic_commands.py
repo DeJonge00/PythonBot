@@ -631,7 +631,7 @@ class Basics:
             params = {'term': q}
             r = requests.get('http://api.urbandictionary.com/v0/define', params=params).json().get('list')
             if len(r) <= 0:
-                embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
+                embed.add_field(name="Definition", value="I'm afraid there are no results for '{}'".format(q))
                 await self.bot.say(embed=embed)
             r = r[0]
             embed.add_field(name="Urban Dictionary Query", value=r.get('word'))
@@ -639,7 +639,7 @@ class Basics:
             if len(definition) > 500:
                 definition = definition[:500] + '...'
             embed.add_field(name="Definition", value=definition, inline=False)
-            example = r.get('example')
+            example = r.get('example').replace('[', '').replace(']', '')
             if len(definition) < 500:
                 if len(example) + len(definition) > 500:
                     example = example[:500 - len(definition)]
