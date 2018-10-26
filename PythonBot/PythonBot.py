@@ -88,6 +88,12 @@ class PythonBot(Bot):
         m = '**{}:** {}```py\n{}```'.format(type(exception).__name__, exception, m)
         return m
 
+    async def _get_prefix(self, message):
+        try:
+            return dbconnect.get_prefix(message.server.id)
+        except KeyError:
+            return await super(PythonBot, self)._get_prefix(message)
+
     async def delete_message(self, message):
         if not message.channel.is_private:
             try:
@@ -148,18 +154,19 @@ class PythonBot(Bot):
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False, must_be_nsfw=False, owner_check=False,
                           checks=[]):
-        if owner_check and message.author.id not in [constants.KAPPAid, constants.NYAid]:
-            await self.bot.send_message(message.channel, "Hahahaha, no")
-            await log.message(message, 'Command "{}" used, but ownerright needed'.format(command))
-            return False
-        elif checks:
-            perms = message.channel.permissions_for(message.author)
-            check_names = [constants.permissions.get(y) for y in checks]
-            if not any([x[1] for x in list(perms) if x[0] in check_names]):
+        if message.author.id not in [constants.KAPPAid, constants.NYAid]:
+            if owner_check:
                 await self.bot.send_message(message.channel, "Hahahaha, no")
-                m = 'Command "{}" used, but either of [{}] needed'.format(command, ' '.join(check_names))
-                await log.message(message, m)
+                await log.message(message, 'Command "{}" used, but owner rights needed'.format(command))
                 return False
+            elif checks:
+                perms = message.channel.permissions_for(message.author)
+                check_names = [constants.permissions.get(y) for y in checks]
+                if not any([x[1] for x in list(perms) if x[0] in check_names]):
+                    await self.bot.send_message(message.channel, "Hahahaha, no")
+                    m = 'Command "{}" used, but either of [{}] needed'.format(command, ' '.join(check_names))
+                    await log.message(message, m)
+                    return False
         if message.channel.is_private:
             if cannot_be_private:
                 await self.send_message(message.channel, 'This command cannot be used in private channels')

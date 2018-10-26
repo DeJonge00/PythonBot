@@ -1,14 +1,14 @@
 import discord
 from discord.ext import commands
 import constants
+import dbconnect as dbcon
 
 
 class Config:
-    def __init__(self, my_bot: discord.Client):
+    def __init__(self, my_bot):
         self.bot = my_bot
         print('Config started')
 
-    # {prefix}botstats
     @commands.command(pass_context=1, help="Toggle whether commands will be deleted here",
                       aliases=['tdc'])
     async def toggledeletecommands(self, ctx):
@@ -83,3 +83,16 @@ class Config:
         else:
             cs.append(name)
             await self.bot.say('{} now banned from this {}'.format(text, args[0]))
+
+    @commands.command(pass_context=1, help="Change my prefix", aliases=['setprefix', 'changeprefix'])
+    async def prefix(self, ctx, *args):
+        c = [discord.Permissions.administrator, discord.Permissions.manage_server, discord.Permissions.manage_channels]
+        if not await self.bot.pre_command(message=ctx.message, command='prefix', cannot_be_private=True, checks=c):
+            return
+
+        if not (0 < len(args) <= 10):
+            await self.bot.say('My prefix has to be between 1 and 10 characters')
+            return
+
+        dbcon.set_prefix(ctx.message.server.id, ' '.join(args))
+        await self.bot.say('The prefix for this server is now \'{}\''.format(dbcon.get_prefix(ctx.message.server.id)))

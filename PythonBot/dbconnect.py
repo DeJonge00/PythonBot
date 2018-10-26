@@ -85,9 +85,35 @@ def set_banned_commands(type: str, commands: {str: [str]}):
     conn.close()
 
 
+# Prefix
+def get_prefix(serverid: str):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "prefix")
+    c = conn.cursor()
+    c.execute("SELECT prefix FROM prefix WHERE serverid = %s", (serverid,))
+    results = c.fetchone()
+    conn.commit()
+    conn.close()
+    if not results:
+        raise KeyError
+    return results[0]
+
+
+def set_prefix(serverid: str, prefix: str):
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "prefix", charset="utf8",
+                           use_unicode=True)
+    c = conn.cursor()
+    if c.execute("SELECT prefix FROM prefix WHERE serverid = %s", (serverid,)) == 0:
+        c.execute("INSERT INTO prefix (serverid, prefix) VALUES (%s, %s)", (serverid, prefix))
+    else:
+        c.execute("UPDATE prefix SET prefix = %s WHERE serverid = %s", (prefix, serverid,))
+    conn.commit()
+    conn.close()
+
+
 # Self-assignable roles
 def get_roles(serverid: str):
-    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "roles")
+    conn = pymysql.connect(secrets.DBAddress, secrets.DBName, secrets.DBPassword, "roles", charset="utf8",
+                           use_unicode=True)
     c = conn.cursor()
     c.execute("SELECT roleid FROM selfassignable WHERE serverid = %s", (serverid,))
     roles = c.fetchall()
