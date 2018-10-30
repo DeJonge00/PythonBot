@@ -16,6 +16,27 @@ class RPGArmor:
     def __str__(self):
         return "{}: mh+{}, hr+{}, m+{}%".format(self.name, self.maxhealth, self.healthregen, self.money)
 
+    def as_dict(self):
+        return {
+            'name': self.name,
+            'cost': self.cost,
+            'element': self.element,
+            'maxhealth': self.maxhealth,
+            'healthregen': self.healthregen,
+            'money': self.money
+        }
+
+
+def dict_to_armor(weapon: dict):
+    return RPGArmor(
+        name=weapon.get('name'),
+        cost=weapon.get('cost'),
+        element=weapon.get('element'),
+        maxhealth=weapon.get('maxhealth'),
+        healthregen=weapon.get('healthregen'),
+        money=weapon.get('money')
+    )
+
 
 def generateArmor(cost: int):
     name = str(random.choice(rpgc.prefixes))

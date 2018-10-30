@@ -1,5 +1,5 @@
 import constants
-import dbconnect
+from database import dbconnect
 import discord
 import os
 import re

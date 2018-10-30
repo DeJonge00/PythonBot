@@ -9,8 +9,7 @@ import wikipedia
 from discord.ext import commands
 import hashlib
 
-import dbconnect as dbcon
-from rpggame import rpgdbconnect as rpgdbcon
+from database import rpg as rpgdbcon, dbconnect as dbcon
 
 EMBED_COLOR = 0x008909
 
@@ -706,7 +705,7 @@ class Basics:
         try:
             s = await self.bot.ask_one_from_multiple(ctx.message, s, 'Which result would you want to see?')
         except ValueError:
-            pass
+            return
 
         page = wikipedia.WikipediaPage(s)
         embed.add_field(name="Title", value=page.title)

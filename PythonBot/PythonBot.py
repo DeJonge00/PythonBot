@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-import sys
 import traceback
 
 import datetime
@@ -11,7 +10,7 @@ from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-import dbconnect
+from database import dbconnect
 import log
 import message_handler
 from secret import secrets

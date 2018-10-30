@@ -2,24 +2,6 @@ import math
 
 from rpggame import rpgconstants as rpgc
 
-# Busydescription status
-BUSY_DESC_NONE = 0
-BUSY_DESC_ADVENTURE = 1
-BUSY_DESC_TRAINING = 2
-BUSY_DESC_BOSSRAID = 3
-BUSY_DESC_WANDERING = 4
-BUSY_DESC_WORKING = 5
-
-# Min and max busy time
-minadvtime = 5
-maxadvtime = 120
-mintrainingtime = 10
-maxtrainingtime = 60
-minwandertime = 30
-maxwandertime = 360
-minworkingtime = 30
-maxworkingtime = 120
-
 # Player starting stats
 DEFAULT_HEALTH = 100
 DEFAULT_ARMOR = 0
@@ -67,6 +49,11 @@ class RPGCharacter:
 
     def get_max_health(self):
         return self.maxhealth
+
+    def get_health(self):
+        if self.health > self.maxhealth:
+            self.health = self.maxhealth
+        return self.health
 
     def get_damage(self, element=rpgc.element_none):
         return self.damage

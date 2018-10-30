@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord
 import random
 import math
-from rpggame import rpgcharacter as rpgchar, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
+from rpggame import rpgplayer as rpgp, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
 
 money_sign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
@@ -232,7 +232,7 @@ class RPGGameActivities:
         try:
             a = int(args[1])
         except (ValueError, IndexError):
-            a = math.ceil(rpgchar.mintrainingtime / training.cost)
+            a = math.ceil(rpgp.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if not await self.check_role(player.role, ctx.message):
@@ -240,20 +240,20 @@ class RPGGameActivities:
         if player.role == rpgc.names.get("role")[-1][0] and training.name == 'maxhealth':
             await self.bot.say("{}, awww. So cute. A cat trying to fight a dummy".format(ctx.message.author.mention))
             return
-        if player.busydescription != rpgchar.BUSY_DESC_NONE:
+        if player.busydescription != rpgp.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
         c = ctx.message.channel
         if c.is_private:
             c = ctx.message.author
         time = math.ceil(a * training.cost)
-        if not (rpgchar.mintrainingtime <= time <= int(rpgchar.maxtrainingtime + (0.5 * player.extratime))):
+        if not (rpgp.mintrainingtime <= time <= int(rpgp.maxtrainingtime + (0.5 * player.extratime))):
             await self.bot.say(
-                "You can train between {} and {} points".format(math.ceil(rpgchar.mintrainingtime / training.cost),
-                                                                math.floor(int(rpgchar.maxtrainingtime + (
+                "You can train between {} and {} points".format(math.ceil(rpgp.mintrainingtime / training.cost),
+                                                                math.floor(int(rpgp.maxtrainingtime + (
                                                                         0.5 * player.extratime)) / training.cost)))
             return
-        player.set_busy(rpgchar.BUSY_DESC_TRAINING, time, c.id)
+        player.set_busy(rpgp.BUSY_DESC_TRAINING, time, c.id)
         player.buy_training(training, amount=a)
         await self.bot.say(
             "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
@@ -267,7 +267,7 @@ class RPGGameActivities:
         try:
             time = int(args[0])
         except (ValueError, IndexError):
-            time = rpgchar.mintrainingtime
+            time = rpgp.mintrainingtime
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
         if not await self.check_role(player.role, ctx.message):
@@ -276,7 +276,7 @@ class RPGGameActivities:
             await self.bot.say(
                 "{}, I'm sorry, but we need someone with more... height...".format(ctx.message.author.mention))
             return
-        if player.busydescription != rpgchar.BUSY_DESC_NONE:
+        if player.busydescription != rpgp.BUSY_DESC_NONE:
             await self.bot.say("Please make sure you finish your other shit first")
             return
         c = ctx.message.channel
@@ -284,12 +284,12 @@ class RPGGameActivities:
             c = ctx.message.author
 
         # Set busy time
-        if not (rpgchar.minworkingtime <= time <= (rpgchar.maxworkingtime + player.extratime)):
-            await self.bot.say("You can work between {} and {} minutes".format(rpgchar.minworkingtime, (
-                    rpgchar.maxworkingtime + player.extratime)))
+        if not (rpgp.minworkingtime <= time <= (rpgp.maxworkingtime + player.extratime)):
+            await self.bot.say("You can work between {} and {} minutes".format(rpgp.minworkingtime, (
+                    rpgp.maxworkingtime + player.extratime)))
             return
 
-        player.set_busy(rpgchar.BUSY_DESC_WORKING, math.ceil(time), c.id)
+        player.set_busy(rpgp.BUSY_DESC_WORKING, math.ceil(time), c.id)
         money = time * pow((player.get_level()) + 1, 1 / 2) * 120
         if player.role == rpgc.names.get('role')[0][0]:  # role == Peasant
             money *= 1.15
