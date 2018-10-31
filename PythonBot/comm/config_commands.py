@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import constants
-from database import dbconnect as dbcon
+from database import general as dbcon
 
 
 class Config:

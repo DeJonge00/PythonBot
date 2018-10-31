@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-from database import dbconnect
+from database import general
 import log
 import message_handler
 from secret import secrets
@@ -89,7 +89,7 @@ class PythonBot(Bot):
 
     async def _get_prefix(self, message):
         try:
-            return dbconnect.get_prefix(message.server.id)
+            return general.get_prefix(message.server.id)
         except (KeyError, AttributeError):
             return await super(PythonBot, self)._get_prefix(message)
 
@@ -288,9 +288,9 @@ class PythonBot(Bot):
         self.running = False
         for key in self.commands_counters.keys():
             print('Command "{}" was used {} times'.format(key, self.commands_counters.get(key)))
-        dbconnect.set_do_not_delete_commands(self.dont_delete_commands_servers)
-        dbconnect.set_banned_commands('server', self.commands_banned_in.get('server'))
-        dbconnect.set_banned_commands('channel', self.commands_banned_in.get('channel'))
+        general.set_do_not_delete_commands(self.dont_delete_commands_servers)
+        general.set_banned_commands('server', self.commands_banned_in.get('server'))
+        general.set_banned_commands('channel', self.commands_banned_in.get('channel'))
         if self.RPGGAME:
             self.rpggame.quit()
         if self.MUSIC:
@@ -300,7 +300,7 @@ class PythonBot(Bot):
         if do_log:
             await log.error(member.server.name + " | Member " + str(member) + " just " + text,
                             filename=member.server.name, serverid=member.server.id)
-        response = dbconnect.get_message(func_name, member.server.id)
+        response = general.get_message(func_name, member.server.id)
         if not response:
             return False
         channel, mes = response
@@ -322,9 +322,9 @@ def init_bot():
     logging.basicConfig()
     initCogs(bot)
     bot.embed_list = embedded_list_creator.EmbedList(bot)
-    bot.dont_delete_commands_servers = dbconnect.get_do_not_delete_commands()
-    bot.commands_banned_in['server'] = dbconnect.get_banned_commands('server')
-    bot.commands_banned_in['channel'] = dbconnect.get_banned_commands('channel')
+    bot.dont_delete_commands_servers = general.get_do_not_delete_commands()
+    bot.commands_banned_in['server'] = general.get_banned_commands('server')
+    bot.commands_banned_in['channel'] = general.get_banned_commands('channel')
     bot.loop.create_task(bot.timeLoop())
 
     @bot.event

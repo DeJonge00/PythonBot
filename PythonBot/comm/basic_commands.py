@@ -9,7 +9,7 @@ import wikipedia
 from discord.ext import commands
 import hashlib
 
-from database import rpg as rpgdbcon, dbconnect as dbcon
+from database import rpg as rpgdbcon, general as dbcon
 
 EMBED_COLOR = 0x008909
 
