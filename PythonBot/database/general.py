@@ -55,8 +55,7 @@ def toggle_banned_command(id_type: str, iden: str, command: str):
 
 # Prefix
 def get_prefix(server_id: str):
-    r = get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id})
-    return r.get('prefix') if r else None
+    r = get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id}).get('prefix')
 
 
 def set_prefix(server_id: str, prefix: str):
@@ -64,12 +63,17 @@ def set_prefix(server_id: str, prefix: str):
 
 
 # Self-assignable roles
-def get_roles(server_id: str, role_id: str):
+def get_roles(server_id: str):
+    r = get_table(SELF_ASSIGNABLE_ROLES_TABLE).find({SERVER_ID: server_id})
+    return list(r) if r else []
+
+
+def get_role(server_id: str, role_id: str):
     r = get_table(SELF_ASSIGNABLE_ROLES_TABLE).find_one({SERVER_ID: server_id})
     return r.get(role_id, False) if r else False
 
 
 def toggle_role(server_id: str, role_id: str):
-    v = not get_roles(server_id, role_id)
+    v = not get_role(server_id, role_id)
     get_table(SELF_ASSIGNABLE_ROLES_TABLE).update({SERVER_ID: server_id}, {'$set': {role_id: v}}, upsert=True)
     return v

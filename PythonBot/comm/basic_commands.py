@@ -10,7 +10,7 @@ from discord.ext import commands
 import hashlib
 
 from database import rpg as rpgdbcon, general as dbcon
-
+from database.pats import increment_pats
 EMBED_COLOR = 0x008909
 
 
@@ -79,7 +79,7 @@ class Basics:
         if not await self.bot.pre_command(message=ctx.message, command='cookie'):
             return
 
-        n = rpgdbcon.increment_pats('cookie', 'all')
+        n = increment_pats('cookie', 'all')
         s = '' if n == 1 else 's'
         m = "has now been clicked {} time{} in total".format(n, s)
         if n % 100 == 0:
@@ -398,7 +398,7 @@ class Basics:
             return
         self.patTimes[ctx.message.author.id] = time
 
-        n = rpgdbcon.increment_pats(ctx.message.author.id, target.id)
+        n = increment_pats(ctx.message.author.id, target.id)
         s = '' if n == 1 else 's'
         m = "{} has pat {} {} time{} now".format(ctx.message.author.mention, target.mention, n, s)
         if n % 100 == 0:
@@ -485,7 +485,7 @@ class Basics:
             except ValueError:
                 return
         m = 'The role {} is now {}self-assignable'
-        if dbcon.change_role(ctx.message.server.id, role.id):
+        if dbcon.toggle_role(ctx.message.server.id, role.id):
             m = m.format(role.name, '')
         else:
             m = m.format(role.name, 'not ')
@@ -508,7 +508,7 @@ class Basics:
                 role = await self.bot.ask_one_from_multiple(ctx.message, roles, question='Which role did you mean?')
             except ValueError:
                 return
-        if role.id not in dbcon.get_roles(ctx.message.server.id):
+        if not dbcon.get_role(ctx.message.server.id, role.id):
             await self.bot.say('That role is not self-assignable')
             return
 

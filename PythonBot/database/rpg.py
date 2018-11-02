@@ -2,6 +2,7 @@ import pymongo
 
 from database.common import get_table as get_database_and_table
 from rpgplayer import RPGPlayer, dict_to_player, BUSY_DESC_BOSSRAID, BUSY_DESC_NONE
+import rpgconstants as rpgc
 
 RPG_DATABASE = 'rpg'
 CHANNEL_ID = 'channelid'
@@ -64,6 +65,20 @@ def reset_busy(user_id: str):
 def decrement_busy_counters():
     get_table(RPG_PLAYER_TABLE).update_many({'busy.description': {'$not': {'$eq': BUSY_DESC_NONE}}},
                                             {'$inc': {'busy.time': -1}})
+
+
+def do_health_regen():
+    t = get_table(RPG_PLAYER_TABLE)
+    r = t.find({'stats.health': {'$lt': 'stats.maxhealth'}})
+    if not r:
+        return
+    for player in r:
+        if player.get('busy').get('description') == BUSY_DESC_NONE:
+            percentage = 0.025 if player.get('role') == rpgc.names.get('role')[4][0] else 0.01
+        else:
+            percentage = 0.05 if player.get('role') == rpgc.names.get('role')[4][0] else 0.03
+        health = min(player.get('stats').get('maxhealth'), player.get('stats').get('maxhealth') * (1 + percentage))
+        t.update({USER_ID: player.get(USER_ID)}, {'stats.health': health})
 
 
 def add_stats(playerid: str, stat: str, amount: int):

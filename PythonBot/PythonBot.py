@@ -62,14 +62,6 @@ class PythonBot(Bot):
         self.spamlist = []
         self.spongelist = []
 
-        # List of server ids (str)
-        self.dont_delete_commands_servers = []
-
-        # Dict of
-        #    'server': Dict of 'serverid': ['command_name']
-        # or 'channel': Dict of 'channelid': ['command_name']
-        self.commands_banned_in = {}
-
         self.commands_counters = {}
 
         self.MUSIC = music
@@ -136,19 +128,22 @@ class PythonBot(Bot):
         except discord.Forbidden:
             pass
 
-    def command_allowed_in(self, type: str, command_name: str, identifier: str):
-        return command_name == 'togglecommand' or not any(
-            {command_name, 'all'}.intersection(set(self.commands_banned_in.get(type, {}).get(identifier, []))))
+    @staticmethod
+    def command_allowed_in(type: str, identifier: str, command_name: str):
+        return command_name == 'togglecommand' or not general.get_banned_command(type, identifier, command_name) \
+               or not general.get_banned_command(type, identifier, 'all')
 
-    def command_allowed_in_server(self, command_name: str, serverid: str):
+    @staticmethod
+    def command_allowed_in_server(serverid: str, command_name: str):
         split = command_name.split(' ')
-        return self.command_allowed_in('server', command_name, serverid) and (
-                len(split) <= 1 or self.command_allowed_in('server', split[0], serverid))
+        return PythonBot.command_allowed_in('server', command_name, serverid) and (
+                len(split) <= 1 or PythonBot.command_allowed_in('server', split[0], serverid))
 
-    def command_allowed_in_channel(self, command_name: str, channelid: str):
+    @staticmethod
+    def command_allowed_in_channel(channelid: str, command_name: str):
         split = command_name.split(' ')
-        return self.command_allowed_in('channel', command_name, channelid) and (
-                len(split) <= 1 or self.command_allowed_in('channel', split[0], channelid))
+        return PythonBot.command_allowed_in('channel', command_name, channelid) and (
+                len(split) <= 1 or PythonBot.command_allowed_in('channel', split[0], channelid))
 
     async def pre_command(self, message: discord.Message, command: str, is_typing=True, delete_message=True,
                           cannot_be_private=False, must_be_private=False, must_be_nsfw=False, owner_check=False,
@@ -186,7 +181,7 @@ class PythonBot(Bot):
             if not self.command_allowed_in_channel(command, message.channel.id):
                 await log.message(message, 'Command "{}" used, but is channelbanned'.format(command))
                 return False
-            if delete_message and message.server.id not in self.dont_delete_commands_servers:
+            if delete_message and not general.get_do_not_delete_commands(message.server.id):
                 await self.delete_message(message)
 
         await log.message(message, 'Command "{}" used'.format(command))
@@ -288,9 +283,6 @@ class PythonBot(Bot):
         self.running = False
         for key in self.commands_counters.keys():
             print('Command "{}" was used {} times'.format(key, self.commands_counters.get(key)))
-        general.set_do_not_delete_commands(self.dont_delete_commands_servers)
-        general.set_banned_commands('server', self.commands_banned_in.get('server'))
-        general.set_banned_commands('channel', self.commands_banned_in.get('channel'))
         if self.RPGGAME:
             self.rpggame.quit()
         if self.MUSIC:
@@ -322,9 +314,6 @@ def init_bot():
     logging.basicConfig()
     initCogs(bot)
     bot.embed_list = embedded_list_creator.EmbedList(bot)
-    bot.dont_delete_commands_servers = general.get_do_not_delete_commands()
-    bot.commands_banned_in['server'] = general.get_banned_commands('server')
-    bot.commands_banned_in['channel'] = general.get_banned_commands('channel')
     bot.loop.create_task(bot.timeLoop())
 
     @bot.event
@@ -476,4 +465,3 @@ while bot.running:
         print(e, tr)
         with open('logs/errors.txt', 'r') as f:
             f.write(tr)
-

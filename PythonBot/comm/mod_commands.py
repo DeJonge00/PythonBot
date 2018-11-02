@@ -88,9 +88,9 @@ class Mod:
         else:
             await self.bot.say('Pls give me smth...')
             return
+        name = 'temp/newpp.png'
         try:
             # TODO: Fix saving pic first
-            name = 'temp/newpp.png'
             Image.open(BytesIO(requests.get(url).content)).save(name)
             if not await self.bot.pre_command(message=ctx.message, command='newpp'):
                 return
