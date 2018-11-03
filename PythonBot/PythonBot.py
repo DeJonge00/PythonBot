@@ -36,6 +36,8 @@ def initCogs(bot):
     bot.add_cog(Images(bot))
     from comm.lookup_commands import Lookup
     bot.add_cog(Lookup(bot))
+    from comm.trivia import Trivia
+    bot.add_cog(Trivia(bot))
     if bot.MUSIC:
         from musicPlayer import MusicPlayer
         bot.musicplayer = MusicPlayer(bot)
