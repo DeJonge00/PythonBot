@@ -187,10 +187,7 @@ class PythonBot(Bot):
         await log.message(message, 'Command "{}" used'.format(command))
         if is_typing:
             await self.send_typing(message.channel)
-        if self.commands_counters.get(command):
-            self.commands_counters[command] += 1
-        else:
-            self.commands_counters[command] = 1
+        dbcon.command_counter(command, message)
         return True
 
     @staticmethod

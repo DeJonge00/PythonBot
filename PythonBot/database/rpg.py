@@ -39,7 +39,7 @@ def get_player(player_id: str, player_name: str):
 
 
 def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('userid'), x.get('busy')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
+    return [(x.get('name'), x.get('userid'), x.get('busy'), x.get('stats').get('health')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
 
 
 def get_done_players():
@@ -51,14 +51,18 @@ def update_player(player: RPGPlayer):
 
 
 def reset_busy(user_id: str):
+    set_busy(user_id, 0, '', BUSY_DESC_NONE)
+
+
+def set_busy(user_id: str, time: int, channel: str, description: str):
     get_table(RPG_PLAYER_TABLE).update(
         {USER_ID: user_id},
         {'$set':
             {'busy':
                 {
-                    'time': 0,
-                    'channel': 0,
-                    'description': BUSY_DESC_NONE
+                    'time': time,
+                    'channel': channel,
+                    'description': description
                 }}})
 
 
@@ -78,7 +82,7 @@ def do_health_regen():
         else:
             percentage = 0.05 if player.get('role') == rpgc.names.get('role')[4][0] else 0.03
         health = min(player.get('stats').get('maxhealth'), player.get('stats').get('maxhealth') * (1 + percentage))
-        t.update({USER_ID: player.get(USER_ID)}, {'stats.health': health})
+        t.update({USER_ID: player.get(USER_ID)}, {'$set': {'stats.health': health}})
 
 
 def add_stats(playerid: str, stat: str, amount: int):

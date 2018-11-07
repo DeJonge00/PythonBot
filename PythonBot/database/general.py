@@ -1,4 +1,5 @@
 import common
+from discord import Message
 
 GENERAL_DATABASE = 'general'
 WELCOME_TABLE = 'welcome'
@@ -7,6 +8,7 @@ DO_NOT_DELETE_TABLE = 'delete_comm'
 BANNED_COMMANDS_TABLE = 'banned_comm'
 PREFIX_TABLE = 'prefix'
 SELF_ASSIGNABLE_ROLES_TABLE = 'selfassignable'
+COMMAND_COUNTER_TABLE = 'count_comm'
 
 SERVER_ID = 'serverid'
 USER_ID = 'userid'
@@ -60,6 +62,15 @@ def get_prefix(server_id: str):
 
 def set_prefix(server_id: str, prefix: str):
     get_table(PREFIX_TABLE).update({SERVER_ID: server_id}, {'$set': {'prefix': prefix}}, upsert=True)
+
+
+# Command Counter
+def command_counter(name: str, message: Message):
+    get_table(COMMAND_COUNTER_TABLE).insert_one({
+        'command': name,
+        'timestamp': message.timestamp.timestamp(),
+        'location': "{}/{}/{}".format(message.server.name, message.channel.name, message.author.name)
+    })
 
 
 # Self-assignable roles
