@@ -34,11 +34,11 @@ class RPGGame:
         self.game_init()
         print('RPGGame started')
 
-    async def check_role(self, role: str, message: discord.Message) -> bool:
+    async def check_role(self, role: str, message: discord.Message, error='You') -> bool:
         if role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say("You are still Undead. "
+            await self.bot.say("{} are still Undead. "
                                "Please select a class with '{}rpg role' in order to start to play!".format(
-                await self.bot._get_prefix(message)))
+                error, await self.bot._get_prefix(message)))
             return False
         return True
 
@@ -373,7 +373,7 @@ class RPGGame:
             if random.randint(0, 14) <= 0:
                 await self.adventure_secret(dbcon.get_player(u[0], u[0]), self.bot.get_channel(u[1].get('channel')))
 
-        for u in dbcon.get_done_players():  # (userid, busydict)
+        for u in dbcon.get_busy_players():  # (userid, busydict)
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
             if u[1].get('description') == BUSY_DESC_ADVENTURE:
                 action_type = "adventure"
@@ -422,6 +422,8 @@ class RPGGame:
             i *= 0.5
         data.add_money(int(i))
         data.add_exp(1)
+        dbcon.add_stats(message.author.id, 'money', int(i))
+        dbcon.add_stats(message.author.id, 'exp', 1)
 
     async def send_help_message(self, ctx):
         prefix = await self.bot._get_prefix(ctx.message)
@@ -606,10 +608,7 @@ class RPGGame:
             user = ctx.message.author
 
         data = self.get_player_data(user.id, name=user.display_name)
-        if data.role not in [x[0] for x in rpgc.names.get("role")]:
-            await self.bot.say("{}, that player is still Undead. Please select a class with "
-                               "'{}rpg role' in order to start to play!".format(ctx.message.author.mention,
-                                                                                self.bot._get_prefix(ctx.message)))
+        if not await self.check_role(data.role, ctx.message, error='That player'):
             return
 
         # Requested info is of weapon
@@ -920,6 +919,7 @@ class RPGGame:
         if data.role == rpgc.names.get('role')[-1][0]:
             data.health = 100
         data.role = role
+        dbcon.update_player(data)
         await self.bot.say("{}, you now have the role of {}".format(ctx.message.author.mention, role))
 
     @staticmethod

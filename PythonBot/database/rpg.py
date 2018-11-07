@@ -38,8 +38,8 @@ def get_player(player_id: str, player_name: str):
     return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, username=player_name)
 
 
-def get_busy_players(busydesc):
-    return [(x.get('userid'), x.get('busy')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': busydesc})]
+def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
+    return [(x.get('userid'), x.get('busy')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
 
 
 def get_done_players():

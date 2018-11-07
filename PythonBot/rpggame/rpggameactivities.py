@@ -15,14 +15,6 @@ class RPGGameActivities:
         self.armors = {}
         print('RPGGameActivities started')
 
-    async def check_role(self, role: str, message: discord.Message) -> bool:
-        if role not in [x[0] for x in rpgc.names.get("role")]:
-            prefix = await self.bot._get_prefix(message)
-            await self.bot.say("You are still Undead. "
-                               "Please select a class with '{}rpg role' in order to start to play!".format(prefix))
-            return False
-        return True
-
     async def send_shop_help_message(self, url: str, message: discord.Message):
         prefix = await self.bot._get_prefix(message)
         embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -56,7 +48,7 @@ class RPGGameActivities:
         if not await self.bot.pre_command(message=ctx.message, command='shop armor'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if not await self.check_role(player.role, ctx.message):
+        if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
             await self.bot.say("{}, A cat cannot possibly wear human armor...".format(ctx.message.author.mention))
@@ -104,7 +96,7 @@ class RPGGameActivities:
         if not await self.bot.pre_command(message=ctx.message, command='shop item'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if not await self.check_role(player.role, ctx.message):
+        if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if len(args) <= 0:
             embed = discord.Embed(colour=SHOP_EMBED_COLOR)
@@ -166,7 +158,7 @@ class RPGGameActivities:
         if not await self.bot.pre_command(message=ctx.message, command='shop weapon'):
             return
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if not await self.check_role(player.role, ctx.message):
+        if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
             await self.bot.say("{}, how would you even use a weapon as a cat?".format(ctx.message.author.mention))
@@ -235,7 +227,7 @@ class RPGGameActivities:
             a = math.ceil(rpgp.mintrainingtime / training.cost)
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if not await self.check_role(player.role, ctx.message):
+        if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0] and training.name == 'maxhealth':
             await self.bot.say("{}, awww. So cute. A cat trying to fight a dummy".format(ctx.message.author.mention))
@@ -270,7 +262,7 @@ class RPGGameActivities:
             time = rpgp.mintrainingtime
 
         player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
-        if not await self.check_role(player.role, ctx.message):
+        if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
             await self.bot.say(
