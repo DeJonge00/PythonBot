@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-from database import general
+from database import general as dbcon
 import log
 import message_handler
 from secret import secrets
@@ -81,7 +81,7 @@ class PythonBot(Bot):
 
     async def _get_prefix(self, message):
         try:
-            return general.get_prefix(message.server.id)
+            return dbcon.get_prefix(message.server.id)
         except (KeyError, AttributeError):
             return await super(PythonBot, self)._get_prefix(message)
 
@@ -130,8 +130,8 @@ class PythonBot(Bot):
 
     @staticmethod
     def command_allowed_in(type: str, identifier: str, command_name: str):
-        return command_name == 'togglecommand' or not general.get_banned_command(type, identifier, command_name) \
-               or not general.get_banned_command(type, identifier, 'all')
+        return command_name == 'togglecommand' or not dbcon.get_banned_command(type, identifier, command_name) \
+               or not dbcon.get_banned_command(type, identifier, 'all')
 
     @staticmethod
     def command_allowed_in_server(serverid: str, command_name: str):
@@ -181,7 +181,7 @@ class PythonBot(Bot):
             if not self.command_allowed_in_channel(command, message.channel.id):
                 await log.message(message, 'Command "{}" used, but is channelbanned'.format(command))
                 return False
-            if delete_message and not general.get_do_not_delete_commands(message.server.id):
+            if delete_message and dbcon.get_delete_commands(message.server.id):
                 await self.delete_message(message)
 
         await log.message(message, 'Command "{}" used'.format(command))
@@ -292,12 +292,11 @@ class PythonBot(Bot):
         if do_log:
             await log.error(member.server.name + " | Member " + str(member) + " just " + text,
                             filename=member.server.name, serverid=member.server.id)
-        response = general.get_message(func_name, member.server.id)
-        if not response:
+        channel, mes = dbcon.get_message(func_name, member.server.id)
+        if not channel or not mes:
             return False
-        channel, mes = response
         embed = discord.Embed(colour=0xFF0000)
-        embed.add_field(name="User {}!".format(self.prep_str_for_print(text)), value=mes.format(member.mention))
+        embed.add_field(name="User {}!".format(self.prep_str_for_print(text)), value=mes.format(member.name))
         channel = self.get_channel(channel)
         if not channel:
             print('CHANNEL NOT FOUND')

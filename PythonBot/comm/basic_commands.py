@@ -9,8 +9,9 @@ import wikipedia
 from discord.ext import commands
 import hashlib
 
-from database import rpg as rpgdbcon, general as dbcon
+from database import general as dbcon
 from database.pats import increment_pats
+
 EMBED_COLOR = 0x008909
 
 
@@ -461,8 +462,8 @@ class Basics:
     @commands.group(pass_context=1, help="Add or remove self-assignable roles!", aliases=['iam'])
     async def role(self, ctx):
         if not ctx.invoked_subcommand:
-            await self.bot.say('Use `{}role` `config,add,remove` `<rolename>` for this command'.format(
-                await self.bot._get_prefix(ctx.message)))
+            await self.bot.say('Use `{0}role` `config,add,remove` `<rolename>` or `{0}role list` for this command'
+                               .format(await self.bot._get_prefix(ctx.message)))
 
     @role.command(pass_context=1)
     async def config(self, ctx, *args):
@@ -492,7 +493,7 @@ class Basics:
         await self.bot.say(m)
 
     @role.command(pass_context=1)
-    async def add(self, ctx, *args):
+    async def add(self, ctx, *args):  # TODO Switch to toggle
         if not await self.bot.pre_command(message=ctx.message, command='role add', cannot_be_private=True,
                                           checks=[discord.Permissions.manage_roles]):
             return
@@ -509,7 +510,7 @@ class Basics:
             except ValueError:
                 return
         if not dbcon.get_role(ctx.message.server.id, role.id):
-            await self.bot.say('That role is not self-assignable')
+            await self.bot.say('The role {} is not self-assignable'.format(role.name))
             return
 
         if len(ctx.message.mentions) > 0:
@@ -545,7 +546,7 @@ class Basics:
             except ValueError:
                 return
         if role.id not in dbcon.get_roles(ctx.message.server.id):
-            await self.bot.say('That role is not self-assignable')
+            await self.bot.say('The role {} is not self-assignable'.format(role.name))
             return
         if len(ctx.message.mentions) > 0:
             try:

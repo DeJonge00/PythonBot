@@ -3,7 +3,7 @@ import common
 GENERAL_DATABASE = 'general'
 WELCOME_TABLE = 'welcome'
 GOODBYE_TABLE = 'goodbye'
-DO_NOT_DELETE_TABLE = 'no_delete'
+DO_NOT_DELETE_TABLE = 'delete_comm'
 BANNED_COMMANDS_TABLE = 'banned_comm'
 PREFIX_TABLE = 'prefix'
 SELF_ASSIGNABLE_ROLES_TABLE = 'selfassignable'
@@ -26,17 +26,17 @@ def get_message(table: str, server_id: str):
     r = get_table(table).find_one({SERVER_ID: server_id})
     if not r:
         return None, None
-    return r.get('channel', None), r.get('message', None)
+    return r.get('channelid', None), r.get('message', None)
 
 
 # Do not delete commands table
-def get_do_not_delete_commands(server_id: str):
+def get_delete_commands(server_id: str):
     r = get_table(DO_NOT_DELETE_TABLE).find_one({SERVER_ID: server_id})
     return r.get('delete_commands', True) if r else True
 
 
-def toggle_do_not_delete_commands(server_id: [str]):
-    v = not get_do_not_delete_commands(server_id)
+def toggle_delete_commands(server_id: [str]):
+    v = not get_delete_commands(server_id)
     get_table(DO_NOT_DELETE_TABLE).update({SERVER_ID: server_id}, {'$set': {'delete_commands': v}}, upsert=True)
     return v
 
@@ -55,11 +55,11 @@ def toggle_banned_command(id_type: str, iden: str, command: str):
 
 # Prefix
 def get_prefix(server_id: str):
-    r = get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id}).get('prefix')
+    return get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id}).get('prefix')
 
 
 def set_prefix(server_id: str, prefix: str):
-    get_table(PREFIX_TABLE).update({SERVER_ID: server_id}, {'prefix': prefix}, upsert=True)
+    get_table(PREFIX_TABLE).update({SERVER_ID: server_id}, {'$set': {'prefix': prefix}}, upsert=True)
 
 
 # Self-assignable roles

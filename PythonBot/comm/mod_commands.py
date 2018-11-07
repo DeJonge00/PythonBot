@@ -1,5 +1,5 @@
 import constants
-from database import general
+from database import general as dbcon
 import discord
 import os
 import re
@@ -165,9 +165,9 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        general.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
-            await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
+            await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<username>"))
             return
         await self.bot.say("Goodbye message for this server has been reset")
 
@@ -186,9 +186,9 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        general.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
-            await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
+            await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<username>"))
             return
         await self.bot.say("Welcome message for this server has been reset")
 

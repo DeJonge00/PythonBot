@@ -17,11 +17,11 @@ def test_welcome_goodbye():
 
 
 def test_do_not_delete():
-    print(get_do_not_delete_commands('serverid'))
-    print(toggle_do_not_delete_commands('serverid'))
-    print(get_do_not_delete_commands('serverid'))
-    print(toggle_do_not_delete_commands('serverid'))
-    print(get_do_not_delete_commands('serverid'))
+    print(get_delete_commands('serverid'))
+    print(toggle_delete_commands('serverid'))
+    print(get_delete_commands('serverid'))
+    print(toggle_delete_commands('serverid'))
+    print(get_delete_commands('serverid'))
 
     get_table(DO_NOT_DELETE_TABLE).drop()
 

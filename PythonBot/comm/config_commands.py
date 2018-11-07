@@ -20,11 +20,11 @@ class Config:
             await self.bot.say("Hahahaha, no")
             return
 
-        if ctx.message.server.id in self.bot.dont_delete_commands_servers:
-            self.bot.dont_delete_commands_servers.remove(ctx.message.server.id)
+        dbcon.toggle_delete_commands(ctx.message.server.id)
+
+        if dbcon.get_delete_commands(ctx.message.server.id):
             await self.bot.say('Commands will now be deleted in this server')
         else:
-            self.bot.dont_delete_commands_servers.append(ctx.message.server.id)
             await self.bot.say('Commands will now not be deleted in this server')
 
     @commands.command(pass_context=1, help="Toggle whether a specific commands can be used here", aliases=['tc'])
@@ -95,4 +95,4 @@ class Config:
             return
 
         dbcon.set_prefix(ctx.message.server.id, ' '.join(args))
-        await self.bot.say('The prefix for this server is now \'{}\''.format(dbcon.get_prefix(ctx.message.server.id)))
+        await self.bot.say('The prefix for this server is now \'{}\''.format(await self.bot._get_prefix(ctx.message)))
