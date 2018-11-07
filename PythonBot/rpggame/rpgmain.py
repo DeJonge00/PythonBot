@@ -102,7 +102,7 @@ class RPGGame:
             healthrep = self.add_health_rep(p1 + p2)
         return result, healthrep
 
-    async def send_battle_report(self, battle_report_text, channel, battle_report_stats, healthrep, result):
+    async def send_battle_report(self, embed, battle_report_text, channel, battle_report_stats, healthrep, result):
         for i in range(len(battle_report_text) - 1):
             embed.add_field(name="Battle report", value=battle_report_text[i], inline=False)
             await self.bot.send_message(channel, embed=embed)
@@ -214,7 +214,7 @@ class RPGGame:
 
         battle_report_text, battle_report_stats = self.construct_battle_report(len(title), battle_report)
         result, healthrep = self.calculate_battle_result(p1, p2)
-        await self.send_battle_report(battle_report_text, channel, battle_report_stats, healthrep, result)
+        await self.send_battle_report(embed, battle_report_text, channel, battle_report_stats, healthrep, result)
 
         # Switch teams to original positions
         if i % 2 == 1:
@@ -824,14 +824,14 @@ class RPGGame:
 
     async def add_levelup(self, data, channel, reward):
         if reward == 1:
-            data.set_max_health(data.maxhealth + 80)
-            await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth))
+            dbcon.add_stats(data.userid, 'stats.maxhealth', 80)
+            await self.bot.send_message(channel, "Your base maximum health is now {}".format(data.maxhealth + 80))
         elif reward == 2:
-            data.extratime += 1
-            await self.bot.send_message(channel, "You can now do things {} minutes longer".format(data.extratime))
+            dbcon.add_stats(data.userid, 'extratime', 1)
+            await self.bot.send_message(channel, "You can now do things {} minutes longer".format(data.extratime + 1))
         elif reward == 3:
-            data.damage += 30
-            await self.bot.send_message(channel, "Your base damage is now {}".format(data.damage))
+            dbcon.add_stats(data.userid, 'stats.damage', 30)
+            await self.bot.send_message(channel, "Your base damage is now {}".format(data.damage + 30))
         else:
             await self.bot.send_message(channel, "Dunno what you mean tbh")
             return False

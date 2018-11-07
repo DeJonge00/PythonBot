@@ -73,16 +73,18 @@ def decrement_busy_counters():
 
 def do_health_regen():
     t = get_table(RPG_PLAYER_TABLE)
-    r = t.find({'stats.health': {'$lt': 'stats.maxhealth'}})
+    r = t.find({})
     if not r:
         return
     for player in r:
-        if player.get('busy').get('description') == BUSY_DESC_NONE:
-            percentage = 0.025 if player.get('role') == rpgc.names.get('role')[4][0] else 0.01
-        else:
-            percentage = 0.05 if player.get('role') == rpgc.names.get('role')[4][0] else 0.03
-        health = min(player.get('stats').get('maxhealth'), player.get('stats').get('maxhealth') * (1 + percentage))
-        t.update({USER_ID: player.get(USER_ID)}, {'$set': {'stats.health': health}})
+        player = dict_to_player(player)
+        if player.get_health() < player.get_max_health():
+            if player.busydescription == BUSY_DESC_NONE:
+                percentage = 0.025 if player.role == rpgc.names.get('role')[4][0] else 0.01
+            else:
+                percentage = 0.05 if player.role == rpgc.names.get('role')[4][0] else 0.03
+            health = min(player.get_max_health(), int(player.get_health() + player.get_max_health() * percentage))
+            t.update({USER_ID: player.userid}, {'$set': {'stats.health': health}})
 
 
 def add_stats(playerid: str, stat: str, amount: int):

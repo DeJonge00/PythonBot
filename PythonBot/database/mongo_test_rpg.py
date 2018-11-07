@@ -106,7 +106,3 @@ def test_pats():
     print(r)
 
     common.get_table(pats.PAT_DATABASE, pats.PAT_TABLE).drop()
-
-
-if __name__ == '__main__':
-    test_get_done_players()

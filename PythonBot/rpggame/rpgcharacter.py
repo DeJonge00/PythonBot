@@ -51,8 +51,8 @@ class RPGCharacter:
         return self.maxhealth
 
     def get_health(self):
-        if self.health > self.maxhealth:
-            self.health = self.maxhealth
+        if self.health > self.get_max_health():
+            self.health = self.get_max_health()
         return self.health
 
     def get_damage(self, element=rpgc.element_none):
