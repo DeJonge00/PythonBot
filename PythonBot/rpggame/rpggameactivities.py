@@ -3,6 +3,7 @@ import discord
 import random
 import math
 from rpggame import rpgplayer as rpgp, rpgconstants as rpgc, rpgweapon as rpgw, rpgarmor as rpga
+from database import rpg as dbcon
 
 money_sign = "¥"
 SHOP_EMBED_COLOR = 0x00969b
@@ -88,6 +89,7 @@ class RPGGameActivities:
         t = "You have acquired the {} for {}{}".format(armor.name, money_sign, armor.cost)
         if pa.cost > 3:
             t += "\nYou sold your old armor for {}{}".format(money_sign, int(math.floor(0.25 * pa.cost)))
+        dbcon.update_player(player)
         await self.bot.say(t)
 
     # {prefix}shop item
@@ -148,6 +150,7 @@ class RPGGameActivities:
         if player.buy_item(item, amount=a):
             await self.bot.say(
                 "{} bought {} {} for {}{}".format(ctx.message.author.mention, a, item.name, money_sign, a * item.cost))
+            dbcon.update_player(player)
         else:
             await self.bot.say("{} does not have enough money to buy {} {}\nThe maximum you can afford is {}".format(
                 ctx.message.author.mention, a, item.name, math.floor(player.money / item.cost)))
@@ -198,6 +201,7 @@ class RPGGameActivities:
         t = "You have acquired the {} for {}{}".format(weapon.name, money_sign, weapon.cost)
         if pw.cost > 3:
             t += "\nYou sold your old weapon for {}{}".format(money_sign, int(math.floor(0.25 * pw.cost)))
+        dbcon.update_player(player)
         await self.bot.say(t)
 
     # {prefix}train
@@ -247,6 +251,7 @@ class RPGGameActivities:
             return
         player.set_busy(rpgp.BUSY_DESC_TRAINING, time, c.id)
         player.buy_training(training, amount=a)
+        dbcon.update_player(player)
         await self.bot.say(
             "{}, you are now training your {} for {} minutes".format(ctx.message.author.mention, training.name,
                                                                      int(math.ceil(a * training.cost))))
@@ -281,11 +286,11 @@ class RPGGameActivities:
                     rpgp.maxworkingtime + player.extratime)))
             return
 
-        player.set_busy(rpgp.BUSY_DESC_WORKING, math.ceil(time), c.id)
+        dbcon.set_busy(player.userid, math.ceil(time), c.id, rpgp.BUSY_DESC_WORKING)
         money = time * pow((player.get_level()) + 1, 1 / 2) * 120
         if player.role == rpgc.names.get('role')[0][0]:  # role == Peasant
             money *= 1.15
-        player.add_money(money)
+        dbcon.add_stats(player.userid, 'money', money)
         work = random.choice([
             'cleaning the stables',
             'sharpening the noble\'s weapon',
