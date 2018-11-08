@@ -306,19 +306,19 @@ class RPGGame:
 
         if stat.lower() == "health":
             amount *= max(1, int(player.get_level() / 4))
-            player.add_health(amount)
+            dbcon.add_stats(player.userid, 'stats.health', amount)
         elif stat.lower() == "weaponskill":
             amount *= max(1, int(math.pow(player.get_level(), 0.25)))
-            player.weaponskill += amount
+            dbcon.add_stats(player.userid, 'stats.weaponskill', amount)
         elif stat.lower() == "money":
             amount *= max(1, int(math.sqrt(player.get_level())))
-            player.money += amount
+            dbcon.add_stats(player.userid, 'money', amount)
         elif stat.lower() == "exp":
             amount *= max(1, int(math.sqrt(player.get_level() / 2)))
-            player.exp += amount
+            dbcon.add_stats(player.userid, 'exp', amount)
         elif stat.lower() == "damage":
             amount *= max(1, int(math.pow(player.get_level(), 0.4)))
-            player.damage += amount
+            dbcon.add_stats(player.userid, 'stats.damage', amount)
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
         embed.add_field(name="Adventure secret found", value="{}, {}\n{} +{}".format(player.name, name, stat, amount))
         await self.bot.send_message(channel, embed=embed)
@@ -421,8 +421,6 @@ class RPGGame:
                   * max(0, min(80, int((len(message.content) - 3) / 1.5))))  # Textbonus
         if data.busydescription in [BUSY_DESC_TRAINING, BUSY_DESC_BOSSRAID]:
             i *= 0.5
-        data.add_money(int(i))
-        data.add_exp(1)
         dbcon.add_stats(message.author.id, 'money', int(i))
         dbcon.add_stats(message.author.id, 'exp', 1)
 
@@ -752,7 +750,6 @@ class RPGGame:
             await self.bot.say('Be sure to set the channel for bossfights with "{}rpg setchannel, '
                                'or you will not be able to see the results!'.format(
                 await self.bot._get_prefix(ctx.message)))
-        party.append(data)
         data.set_busy(BUSY_DESC_BOSSRAID, 1, ctx.message.server.id)
         await self.bot.say(
             "{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(
@@ -761,7 +758,7 @@ class RPGGame:
     # {prefix}rpg king
     @rpg.command(pass_context=1, aliases=["King", "k", "K"], help="The great king's game!")
     async def king(self, ctx, *args):
-        kingname = "OMEGA dank L0rD on the ServEr to get all the loli traps"
+        kingname = "Neko Overlord Ruling with an Iron Paw"
         if not await self.bot.pre_command(message=ctx.message, command='rpg king'):
             return
         if ctx.message.channel.is_private:
