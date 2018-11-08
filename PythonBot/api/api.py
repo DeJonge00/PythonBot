@@ -2,7 +2,7 @@ from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from secret.secrets import api_username, api_password, APIAddress, APIPort
-from database import general
+from database import general, rpg
 
 route_start = ''
 ASC = 1
@@ -25,12 +25,27 @@ def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 
 
-# ----- /containers -----
+# ----- /commands -----
 @api.route(route_start + '/commands', methods=['GET'])
 @auth.login_required
-def get_containers():  # Returns one instance for every id, sorted by timestamp
-    r = general.get_table(general.COMMAND_COUNTER_TABLE).find({}, {'_id': 0}).sort({'timestamp': DESC}).limit(100)
-    return jsonify(r)
+def get_command_counters():
+    r = general.get_table(general.COMMAND_COUNTER_TABLE).find({}, {'_id': 0}).sort('timestamp', DESC).limit(100)
+    return jsonify(list(r))
+
+
+# ----- /rpg -----
+@api.route(route_start + '/rpg/players', methods=['GET'])
+@auth.login_required
+def get_rpg_players():
+    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find({}, {'_id': 0}).sort('exp', DESC).limit(25)
+    return jsonify(list(r))
+
+
+@api.route(route_start + '/rpg/players/<str:name>', methods=['GET'])
+@auth.login_required
+def get_rpg_player(name: str):
+    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find({'name': name}, {'_id': 0}).sort('exp', DESC).limit(25)
+    return jsonify(list(r))
 
 
 # ----- Standard errors -----
