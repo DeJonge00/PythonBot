@@ -428,6 +428,8 @@ def init_bot():
         if bot.embed_list:
             await bot.embed_list.handle_reaction(reaction)
 
+        await message_handler.reaction(bot, reaction)
+
     @bot.event
     async def on_member_ban(member: discord.Member):
         await log.error(member.server.name + " | User " + str(member) + " banned", filename=member.server.name,

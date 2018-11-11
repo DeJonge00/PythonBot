@@ -9,10 +9,13 @@ BANNED_COMMANDS_TABLE = 'banned_comm'
 PREFIX_TABLE = 'prefix'
 SELF_ASSIGNABLE_ROLES_TABLE = 'selfassignable'
 COMMAND_COUNTER_TABLE = 'count_comm'
+STARBOARD_CHANNEL_TABLE = 'starchannels'
+STARBARD_MESSAGES_TABLE = 'starmessages'
 
 SERVER_ID = 'serverid'
 USER_ID = 'userid'
 CHANNEL_ID = 'channelid'
+MESSAGE_ID = 'messageid'
 
 
 def get_table(table):
@@ -29,6 +32,29 @@ def get_message(table: str, server_id: str):
     if not r:
         return None, None
     return r.get('channelid', None), r.get('message', None)
+
+
+# Starboard
+def set_star_channel(server_id: str, channel_id: str):
+    table = get_table(STARBOARD_CHANNEL_TABLE)
+    table.update({SERVER_ID: server_id}, {'$set': {CHANNEL_ID: channel_id}}, upsert=True)
+
+
+def get_star_channel(server_id: str):
+    r = get_table(STARBOARD_CHANNEL_TABLE).find({SERVER_ID: server_id})
+    if not r:
+        print("Starboard channel not specified for server")
+        return None
+    return r[0].get(CHANNEL_ID)
+
+
+def get_star_message(message_id: str):
+    r = get_table(STARBARD_MESSAGES_TABLE).find_one({MESSAGE_ID: message_id}, {'embed_id': 1})
+    return r.get('embed_id') if r else None
+
+
+def update_star_message(message_id: str, embed_id: str):
+    get_table(STARBARD_MESSAGES_TABLE).update_one({MESSAGE_ID: message_id}, {'$set': {'embed_id': embed_id}}, upsert=True)
 
 
 # Do not delete commands table
