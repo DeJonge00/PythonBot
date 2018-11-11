@@ -41,11 +41,13 @@ def get_rpg_players():
     return jsonify(list(r))
 
 
-@api.route(route_start + '/rpg/players/<str:name>', methods=['GET'])
+@api.route(route_start + '/rpg/players/<int:user_id>', methods=['GET'])
 @auth.login_required
-def get_rpg_player(name: str):
-    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find({'name': name}, {'_id': 0}).sort('exp', DESC).limit(25)
-    return jsonify(list(r))
+def get_rpg_player(user_id: int):
+    print(user_id)
+    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find_one({'userid': str(user_id)}, {'_id': 0})
+    print(r)
+    return jsonify(r)
 
 
 # ----- Standard errors -----
