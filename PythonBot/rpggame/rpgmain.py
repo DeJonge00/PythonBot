@@ -735,10 +735,6 @@ class RPGGame:
         if not await self.check_role(data.role, ctx.message):
             return
         data = self.get_player_data(ctx.message.author.id, name=ctx.message.author.display_name)
-        if data.busydescription != BUSY_DESC_NONE:
-            await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(
-                ctx.message.author.mention))
-            return
         if ctx.message.channel.is_private:
             await self.bot.say("This command cannot work in a private channel")
             return
@@ -746,14 +742,18 @@ class RPGGame:
         if data in party:
             await self.bot.say("{}, you are already in the boss raid party...".format(ctx.message.author.mention))
             return
+        if data.busydescription != BUSY_DESC_NONE:
+            await self.bot.say("{}, finish your current task first, then you can join the boss raid party!".format(
+                ctx.message.author.mention))
+            return
         if len(party) <= 0 and not dbcon.get_rpg_channel(ctx.message.server.id):
             await self.bot.say('Be sure to set the channel for bossfights with "{}rpg setchannel, '
                                'or you will not be able to see the results!'.format(
                 await self.bot._get_prefix(ctx.message)))
-        data.set_busy(BUSY_DESC_BOSSRAID, 1, ctx.message.server.id)
+        dbcon.set_busy(data.userid, 61, ctx.message.server.id, BUSY_DESC_BOSSRAID)
         await self.bot.say(
             "{}, prepare yourself! You and your party of {} will be fighting the boss at the hour mark!".format(
-                ctx.message.author.mention, len(party)))
+                ctx.message.author.mention, len(party) + 1))
 
     # {prefix}rpg king
     @rpg.command(pass_context=1, aliases=["King", "k", "K"], help="The great king's game!")
@@ -858,6 +858,7 @@ class RPGGame:
                 try:
                     num = int(r.content)
                     if await self.add_levelup(data, ctx.message.channel, num):
+                        dbcon.add_stats(data.userid, 'levelups', -1)
                         data.levelups -= 1
                     await self.bot.delete_message(r)
                 except ValueError:
@@ -865,7 +866,7 @@ class RPGGame:
         else:
             try:
                 if await self.add_levelup(data, ctx.message.channel, int(args[0])):
-                    data.levelups -= 1
+                    dbcon.add_stats(data.userid, 'levelups', -1)
             except ValueError:
                 await self.bot.say("Thats not even a number...")
                 return

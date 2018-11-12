@@ -25,11 +25,11 @@ def set_rpg_channel(server_id: str, channel_id: str):
 
 
 def get_rpg_channel(server_id: str):
-    r = get_table(RPG_CHANNEL_TABLE).find({SERVER_ID: server_id})
+    r = get_table(RPG_CHANNEL_TABLE).find_one({SERVER_ID: server_id})
     if not r:
         print("Channel not specified for server")
         return None
-    return r[0].get(CHANNEL_ID)
+    return r.get(CHANNEL_ID)
 
 
 # Rpg
@@ -114,9 +114,9 @@ def set_king(user_id: str, server_id: str):
 
 
 def get_king(server_id: str):
-    r = get_table(RPG_KING_TABLE).find({SERVER_ID: server_id})
-    return r[0] if r else None
+    r = get_table(RPG_KING_TABLE).find_one({SERVER_ID: server_id})
+    return r if r else None
 
 
 def is_king(user_id: str):
-    return bool(get_table(RPG_KING_TABLE).find({USER_ID: user_id}))
+    return bool(get_table(RPG_KING_TABLE).find_one({USER_ID: user_id}))
