@@ -96,3 +96,13 @@ class Config:
 
         dbcon.set_prefix(ctx.message.server.id, ' '.join(args))
         await self.bot.say('The prefix for this server is now \'{}\''.format(await self.bot._get_prefix(ctx.message)))
+
+    @commands.command(pass_context=1, help="Change my prefix", aliases=['star'])
+    async def starboard(self, ctx, *args):
+        c = [discord.Permissions.administrator, discord.Permissions.manage_server, discord.Permissions.manage_channels]
+        if not await self.bot.pre_command(message=ctx.message, command='starboard', cannot_be_private=True, checks=c):
+            return
+
+        dbcon.set_star_channel(ctx.message.server.id, ctx.message.channel.id)
+
+        await self.bot.say('React with ★ to see your messages get saved in this channel')

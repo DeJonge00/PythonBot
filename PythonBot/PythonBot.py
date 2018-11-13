@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-from database import general as dbcon
+from database import general as dbcon, rpg as dbconrpg
 import log
 import message_handler
 from secret import secrets
@@ -346,7 +346,7 @@ def init_bot():
         # Send message to rpggame for exp
         if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
                 message.content[0].isalpha() and message.content[1].isalpha())):
-            await bot.rpggame.handle(message)
+            bot.rpggame.handle(message)
 
     # @bot.event
     # async def on_message_edit(before, after):
@@ -393,6 +393,10 @@ def init_bot():
         if before.name != after.name:
             m += " name from: " + before.name + " to: " + after.name
             changed = True
+            if bot.RPGGAME:
+                dbconrpg.set_name(after.id, after.name)
+        if before.avatar_url != after.avatar_url and bot.RPGGAME:
+            dbconrpg.set_picture(after.id, after.avatar_url)
         if before.nick != after.nick:
             changed = True
             if not before.nick:
@@ -427,6 +431,8 @@ def init_bot():
             await bot.rpggame.handle_reaction(reaction)
         if bot.embed_list:
             await bot.embed_list.handle_reaction(reaction)
+
+        await message_handler.reaction(bot, reaction)
 
     @bot.event
     async def on_member_ban(member: discord.Member):

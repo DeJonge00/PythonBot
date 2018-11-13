@@ -10,8 +10,9 @@ DEFAULT_WEAPONSKILL = 1
 
 
 class RPGCharacter:
-    def __init__(self, name, health, maxhealth, damage, weaponskill, critical, element=rpgc.element_none):
+    def __init__(self, name, picture_url, health, maxhealth, damage, weaponskill, critical, element=rpgc.element_none):
         self.name = name
+        self.picture_url = picture_url
         self.health = health
         self.maxhealth = maxhealth
         self.damage = damage

@@ -25,21 +25,22 @@ def set_rpg_channel(server_id: str, channel_id: str):
 
 
 def get_rpg_channel(server_id: str):
-    r = get_table(RPG_CHANNEL_TABLE).find({SERVER_ID: server_id})
+    r = get_table(RPG_CHANNEL_TABLE).find_one({SERVER_ID: server_id})
     if not r:
         print("Channel not specified for server")
         return None
-    return r[0].get(CHANNEL_ID)
+    return r.get(CHANNEL_ID)
 
 
 # Rpg
-def get_player(player_id: str, player_name: str):
+def get_player(player_id: str, player_name: str, picture_url: str):
     r = list(get_table(RPG_PLAYER_TABLE).find({USER_ID: player_id}))
-    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, username=player_name)
+    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url=picture_url, username=player_name)
 
 
 def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('name'), x.get('userid'), x.get('busy'), x.get('stats').get('health')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
+    return [(x.get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats').get('health')) for x in
+            get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
 
 
 def get_done_players():
@@ -96,6 +97,26 @@ def add_pet_stats(playerid: str, stat: str, amount: int):
         get_table(RPG_PLAYER_TABLE).update({USER_ID: playerid}, {'$inc': {'pets.{}.{}'.format(x, stat): amount}})
 
 
+def set_stat(player_id: str, stat: str, value):
+    get_table(RPG_PLAYER_TABLE).update_one({USER_ID: player_id}, {'$set': {stat: value}})
+
+
+def set_picture(player_id: str, url: str):
+    set_stat(player_id, 'stats.picture_url', url)
+
+
+def set_name(player_id: str, name: str):
+    set_stat(player_id, 'stats.name', name)
+
+
+def set_kingtimer(player_id: str, time: float):
+    set_stat(player_id, 'kingtimer', time)
+
+
+def set_health(player_id: str, hp: int):
+    set_stat(player_id, 'stats.health', hp)
+
+
 def get_top_players(group: str, start: int, amount: int):
     ps = get_table(RPG_PLAYER_TABLE).find().sort(group, pymongo.ASCENDING).skip(start).limit(amount)
     return [(x.get('stats').get('name'), x.get(group)) for x in ps]
@@ -114,9 +135,9 @@ def set_king(user_id: str, server_id: str):
 
 
 def get_king(server_id: str):
-    r = get_table(RPG_KING_TABLE).find({SERVER_ID: server_id})
-    return r[0] if r else None
+    r = get_table(RPG_KING_TABLE).find_one({SERVER_ID: server_id})
+    return r if r else None
 
 
 def is_king(user_id: str):
-    return bool(get_table(RPG_KING_TABLE).find({USER_ID: user_id}))
+    return bool(get_table(RPG_KING_TABLE).find_one({USER_ID: user_id}))
