@@ -670,7 +670,7 @@ class RPGGame:
             name += " 's informations"
         draw.text((nameoffset, topoffset), name + ":", color, font=font)
         draw.text((nameoffset, topoffset + following), str(data.role), color, font=font)
-        if data.levelups > 0:
+        if data.get_level() > data.level:
             stats = "Level up available!"
         else:
             if data.exp > 1000000000:
@@ -681,7 +681,7 @@ class RPGGame:
                 shortexp = str(int(data.exp / 1000)) + "K"
             else:
                 shortexp = str(int(data.exp))
-            stats = "lvl {} ({} xp)".format(data.get_level(), shortexp)
+            stats = "lvl {} ({} xp)".format(data.level, shortexp)
         draw.text((statoffset, topoffset + following), stats, color, font=font)
         draw.text((nameoffset, topoffset + 2 * following), "Boss Tier:", color, font=font)
         draw.text((statoffset, topoffset + 2 * following), "{}".format(data.get_bosstier()), color, font=font)
@@ -813,7 +813,7 @@ class RPGGame:
         dbcon.set_kingtimer(data.userid, now)
         dbcon.set_kingtimer(king.userid, now)
         dbcon.set_health(winner.userid, winner.get_max_health())
-        dbcon.add_stats(winner.userid, 'levelups', 1)
+        dbcon.add_stats(winner.userid, 'level', -1)
 
     async def add_levelup(self, data, channel, reward):
         if reward == 1:
@@ -841,12 +841,12 @@ class RPGGame:
         if not await self.check_role(data.role, ctx.message):
             return
 
-        if data.levelups <= 0:
+        if data.get_level() <= data.level:
             await self.bot.say("You have no level-ups available")
             return
 
         if len(args) <= 0:
-            while data.levelups > 0:
+            while data.get_level() > data.level:
                 m = await self.bot.say("Available rewards are:\n1)\t+80 hp\n2)\t+1 minute busytime\n3)\t+30 damage")
                 r = await self.bot.wait_for_message(timeout=60, author=ctx.message.author, channel=ctx.message.channel)
                 await self.bot.delete_message(m)
@@ -855,15 +855,15 @@ class RPGGame:
                 try:
                     num = int(r.content)
                     if await self.add_levelup(data, ctx.message.channel, num):
-                        dbcon.add_stats(data.userid, 'levelups', -1)
-                        data.levelups -= 1
+                        dbcon.add_stats(data.userid, 'level', 1)
+                        data.level += 1
                     await self.bot.delete_message(r)
                 except ValueError:
                     return
             return
         try:
             if await self.add_levelup(data, ctx.message.channel, int(args[0])):
-                dbcon.add_stats(data.userid, 'levelups', -1)
+                dbcon.add_stats(data.userid, 'level', 1)
         except ValueError:
             await self.bot.say("Thats not even a number...")
 

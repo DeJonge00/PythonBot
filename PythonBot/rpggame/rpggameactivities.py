@@ -48,7 +48,7 @@ class RPGGameActivities:
     async def armor(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='shop armor'):
             return
-        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        player = dbcon.get_player(ctx.message.author.id, ctx.message.author.display_name, ctx.message.author.avatar_url)
         if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
@@ -97,7 +97,7 @@ class RPGGameActivities:
     async def item(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='shop item'):
             return
-        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        player = dbcon.get_player(ctx.message.author.id, ctx.message.author.display_name, ctx.message.author.avatar_url)
         if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if len(args) <= 0:
@@ -160,7 +160,7 @@ class RPGGameActivities:
     async def weapon(self, ctx, *args):
         if not await self.bot.pre_command(message=ctx.message, command='shop weapon'):
             return
-        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        player = dbcon.get_player(ctx.message.author.id, ctx.message.author.display_name, ctx.message.author.avatar_url)
         if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:
@@ -230,7 +230,7 @@ class RPGGameActivities:
         except (ValueError, IndexError):
             a = math.ceil(rpgp.mintrainingtime / training.cost)
 
-        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        player = dbcon.get_player(ctx.message.author.id, ctx.message.author.display_name, ctx.message.author.avatar_url)
         if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0] and training.name == 'maxhealth':
@@ -266,7 +266,7 @@ class RPGGameActivities:
         except (ValueError, IndexError):
             time = rpgp.mintrainingtime
 
-        player = self.bot.rpggame.get_player_data(ctx.message.author.id, ctx.message.author.display_name)
+        player = dbcon.get_player(ctx.message.author.id, ctx.message.author.display_name, ctx.message.author.avatar_url)
         if not await self.bot.rpggame.check_role(player.role, ctx.message):
             return
         if player.role == rpgc.names.get("role")[-1][0]:

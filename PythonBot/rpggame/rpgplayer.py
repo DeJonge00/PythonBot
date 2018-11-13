@@ -33,7 +33,7 @@ maxworkingtime = 120
 class RPGPlayer(rpgcharacter.RPGCharacter):
     def __init__(self, userid: str, username: str,
                  picture_url='https://i.pinimg.com/originals/97/7b/b8/977bb8f6f1fc78778f3225ed83b1b4ba.jpg', exp=0,
-                 levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
+                 level=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
                  armor=RPGArmor(), pets: [RPGPet] = [], health=rpgcharacter.DEFAULT_HEALTH,
                  maxhealth=rpgcharacter.DEFAULT_HEALTH,
                  damage=rpgcharacter.DEFAULT_DAMAGE, weaponskill=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0,
@@ -42,7 +42,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         self.userid = userid
         self.role = role
         self.exp = exp
-        self.levelups = levelups
+        self.level = level
         self.money = money
         self.weapon = weapon
         self.armor = armor
@@ -70,7 +70,6 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             return
         lvl = self.get_level()
         self.exp += n
-        self.levelups += max(0, self.get_level() - lvl)
 
     def add_health(self, n: int, death=True, element=rpgc.element_none):
         super().add_health(n)
@@ -202,7 +201,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
             'userid': self.userid,
             'role': self.role,
             'exp': self.exp,
-            'levelups': self.levelups,
+            'level': self.level,
             'money': self.money,
             'weapon': self.weapon.as_dict(),
             'armor': self.armor.as_dict(),
@@ -227,7 +226,7 @@ def dict_to_player(player: dict):
                               'https://i.pinimg.com/originals/97/7b/b8/977bb8f6f1fc78778f3225ed83b1b4ba.jpg'),
         username=stats.get('name'),
         exp=player.get('exp'),
-        levelups=player.get('levelups'),
+        level=player.get('level', 0),
         money=player.get('money'),
         role=player.get('role'),
         weapon=dict_to_weapon(player.get('weapon')),
