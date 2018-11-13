@@ -39,7 +39,8 @@ def get_player(player_id: str, player_name: str):
 
 
 def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('name'), x.get('userid'), x.get('busy'), x.get('stats').get('health')) for x in get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
+    return [(x.get('name'), x.get('userid'), x.get('busy'), x.get('stats').get('health')) for x in
+            get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
 
 
 def get_done_players():
@@ -94,6 +95,18 @@ def add_stats(playerid: str, stat: str, amount: int):
 def add_pet_stats(playerid: str, stat: str, amount: int):
     for x in range(len(list(get_table(RPG_PLAYER_TABLE).find({USER_ID: playerid}))[0].get('pets', []))):
         get_table(RPG_PLAYER_TABLE).update({USER_ID: playerid}, {'$inc': {'pets.{}.{}'.format(x, stat): amount}})
+
+
+def set(player_id: str, stat: str, value: str):
+    get_table(RPG_PLAYER_TABLE).update_one({USER_ID: player_id}, {'$set': {stat: value}})
+
+
+def set_picture(player_id: str, url: str):
+    set(player_id, 'stats.picture_url', url)
+
+
+def set_name(player_id: str, name: str):
+    set(player_id, 'stats.name', name)
 
 
 def get_top_players(group: str, start: int, amount: int):

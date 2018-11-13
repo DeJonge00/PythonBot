@@ -652,11 +652,8 @@ class RPGGame:
             im = Image.open("rpggame/{}.png".format(data.role.lower()))
         except:
             im = Image.open("rpggame/undead.png")
-        if ctx.message.channel.is_private:
-            url = ctx.message.author.avatar_url
-        else:
-            url = ctx.message.server.get_member(str(data.userid)).avatar_url
-        pp = Image.open(BytesIO(requests.get(url).content))
+
+        pp = Image.open(BytesIO(requests.get(data.picture_url).content))
         pp = pp.resize((60, 60))
         im.paste(pp, (235, 5))
 

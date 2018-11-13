@@ -297,6 +297,13 @@ class RPGGameActivities:
             'assisting the smith',
             'scaring crows',
             'a lewdly clothed maid',
-            'collecting herbs'
+            'collecting herbs',
+            'writing tales and songs',
+            'guarding the city gates',
+            'gathering military intelligence',
+            'summoning demons',
+            'brewing potions',
+            'chopping wood',
+            'mining valuable ore'
         ])
         await self.bot.say("{}, you are now {} for {} minutes".format(ctx.message.author.mention, work, time))

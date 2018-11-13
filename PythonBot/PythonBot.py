@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 
 import constants
 import customHelpFormatter
-from database import general as dbcon
+from database import general as dbcon, rpg as dbconrpg
 import log
 import message_handler
 from secret import secrets
@@ -393,6 +393,10 @@ def init_bot():
         if before.name != after.name:
             m += " name from: " + before.name + " to: " + after.name
             changed = True
+            if bot.RPGGAME:
+                dbconrpg.set_name(after.id, after.name)
+        if before.avatar_url != after.avatar_url and bot.RPGGAME:
+            dbconrpg.set_picture(after.id, after.avatar_url)
         if before.nick != after.nick:
             changed = True
             if not before.nick:

@@ -26,11 +26,14 @@ maxwandertime = 360
 minworkingtime = 30
 maxworkingtime = 120
 
+
 # TODO Add busystatus class
 
 
 class RPGPlayer(rpgcharacter.RPGCharacter):
-    def __init__(self, userid: str, username: str, picture_url: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
+    def __init__(self, userid: str, username: str,
+                 picture_url='https://i.pinimg.com/originals/97/7b/b8/977bb8f6f1fc78778f3225ed83b1b4ba.jpg', exp=0,
+                 levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
                  armor=RPGArmor(), pets: [RPGPet] = [], health=rpgcharacter.DEFAULT_HEALTH,
                  maxhealth=rpgcharacter.DEFAULT_HEALTH,
                  damage=rpgcharacter.DEFAULT_DAMAGE, weaponskill=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0,
@@ -220,7 +223,8 @@ def dict_to_player(player: dict):
     busy = player.get('busy')
     player = RPGPlayer(
         userid=player.get('userid'),
-        picture_url=stats.get('picture_url', ''),
+        picture_url=stats.get('picture_url',
+                              'https://i.pinimg.com/originals/97/7b/b8/977bb8f6f1fc78778f3225ed83b1b4ba.jpg'),
         username=stats.get('name'),
         exp=player.get('exp'),
         levelups=player.get('levelups'),
