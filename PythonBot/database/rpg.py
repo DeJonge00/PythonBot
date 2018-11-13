@@ -33,13 +33,13 @@ def get_rpg_channel(server_id: str):
 
 
 # Rpg
-def get_player(player_id: str, player_name: str):
+def get_player(player_id: str, player_name: str, picture_url: str):
     r = list(get_table(RPG_PLAYER_TABLE).find({USER_ID: player_id}))
-    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url='', username=player_name)
+    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url=picture_url, username=player_name)
 
 
 def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('name'), x.get('userid'), x.get('busy'), x.get('stats').get('health')) for x in
+    return [(x.get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats').get('health')) for x in
             get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
 
 
@@ -97,16 +97,24 @@ def add_pet_stats(playerid: str, stat: str, amount: int):
         get_table(RPG_PLAYER_TABLE).update({USER_ID: playerid}, {'$inc': {'pets.{}.{}'.format(x, stat): amount}})
 
 
-def set(player_id: str, stat: str, value: str):
+def set_stat(player_id: str, stat: str, value):
     get_table(RPG_PLAYER_TABLE).update_one({USER_ID: player_id}, {'$set': {stat: value}})
 
 
 def set_picture(player_id: str, url: str):
-    set(player_id, 'stats.picture_url', url)
+    set_stat(player_id, 'stats.picture_url', url)
 
 
 def set_name(player_id: str, name: str):
-    set(player_id, 'stats.name', name)
+    set_stat(player_id, 'stats.name', name)
+
+
+def set_kingtimer(player_id: str, time: float):
+    set_stat(player_id, 'kingtimer', time)
+
+
+def set_health(player_id: str, hp: int):
+    set_stat(player_id, 'stats.health', hp)
 
 
 def get_top_players(group: str, start: int, amount: int):

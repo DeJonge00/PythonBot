@@ -346,7 +346,7 @@ def init_bot():
         # Send message to rpggame for exp
         if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
                 message.content[0].isalpha() and message.content[1].isalpha())):
-            await bot.rpggame.handle(message)
+            bot.rpggame.handle(message)
 
     # @bot.event
     # async def on_message_edit(before, after):
