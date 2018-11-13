@@ -35,7 +35,7 @@ def get_rpg_channel(server_id: str):
 # Rpg
 def get_player(player_id: str, player_name: str):
     r = list(get_table(RPG_PLAYER_TABLE).find({USER_ID: player_id}))
-    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, username=player_name)
+    return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url='', username=player_name)
 
 
 def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):

@@ -30,7 +30,7 @@ maxworkingtime = 120
 
 
 class RPGPlayer(rpgcharacter.RPGCharacter):
-    def __init__(self, userid: str, username: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
+    def __init__(self, userid: str, username: str, picture_url: str, exp=0, levelups=0, money=0, role=DEFAULT_ROLE, weapon=RPGWeapon(),
                  armor=RPGArmor(), pets: [RPGPet] = [], health=rpgcharacter.DEFAULT_HEALTH,
                  maxhealth=rpgcharacter.DEFAULT_HEALTH,
                  damage=rpgcharacter.DEFAULT_DAMAGE, weaponskill=rpgcharacter.DEFAULT_WEAPONSKILL, critical=0,
@@ -50,7 +50,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         self.bosstier = bosstier
         self.kingtimer = kingtimer
         self.extratime = extratime
-        super(RPGPlayer, self).__init__(username, health, maxhealth, damage, weaponskill, critical)
+        super(RPGPlayer, self).__init__(username, picture_url, health, maxhealth, damage, weaponskill, critical)
 
     @staticmethod
     def get_level_by_exp(exp: int):
@@ -189,6 +189,7 @@ class RPGPlayer(rpgcharacter.RPGCharacter):
         return {
             'stats': {
                 'name': self.name,
+                'picture_url': self.picture_url,
                 'health': self.get_health(),
                 'maxhealth': self.maxhealth,
                 'damage': self.damage,
@@ -219,6 +220,7 @@ def dict_to_player(player: dict):
     busy = player.get('busy')
     player = RPGPlayer(
         userid=player.get('userid'),
+        picture_url=stats.get('picture_url', ''),
         username=stats.get('name'),
         exp=player.get('exp'),
         levelups=player.get('levelups'),

@@ -20,7 +20,7 @@ def test_rpg_channel():
 
 
 def test_rpg_player():
-    player = RPGPlayer(userid='1', username='owo', health=10)
+    player = RPGPlayer(userid='1', picture_url='', username='owo', health=10)
 
     try:
         rpg.get_player(player.userid, player.name)
@@ -36,7 +36,7 @@ def test_rpg_player():
 
 
 def test_top_list():
-    players = [RPGPlayer(userid=str(x), username=str(x), exp=x).as_dict() for x in range(400)]
+    players = [RPGPlayer(userid=str(x), picture_url='', username=str(x), exp=x).as_dict() for x in range(400)]
     rpg.get_table(rpg.RPG_PLAYER_TABLE).insert_many(players)
 
     print('0-10')
@@ -51,7 +51,7 @@ def test_top_list():
 
 
 def test_boss_parties():
-    players = [RPGPlayer(userid=str(x), username=str(x)) for x in range(400)]
+    players = [RPGPlayer(userid=str(x), picture_url='', username=str(x)) for x in range(400)]
     for p in players:
         p.set_busy(BUSY_DESC_BOSSRAID, 10, randint(0, 10))
     rpg.get_table(rpg.RPG_PLAYER_TABLE).insert_many([x.as_dict() for x in players])
@@ -63,7 +63,7 @@ def test_boss_parties():
 
 
 def test_add_stat():
-    player = RPGPlayer(userid='1', username='owo', pets=[RPGPet(name=str(x)) for x in range(2)])
+    player = RPGPlayer(userid='1', picture_url='', username='owo', pets=[RPGPet(name=str(x)) for x in range(2)])
     rpg.update_player(player)
     exp = player.exp
     rpg.add_stats(player.userid, 'exp', 10)
@@ -77,7 +77,7 @@ def test_add_stat():
 
 
 def test_decrement_busy_counters():
-    players = [RPGPlayer(userid=str(x), username=str(x)) for x in range(10)]
+    players = [RPGPlayer(userid=str(x), picture_url='', username=str(x)) for x in range(10)]
     for p in players:
         p.set_busy(BUSY_DESC_ADVENTURE, 20, randint(0, 10))
     rpg.get_table(rpg.RPG_PLAYER_TABLE).insert_many([x.as_dict() for x in players])
@@ -90,7 +90,7 @@ def test_decrement_busy_counters():
 
 
 def test_get_done_players():
-    players = [RPGPlayer(userid=str(x), username=str(x)) for x in range(10)]
+    players = [RPGPlayer(userid=str(x), picture_url='', username=str(x)) for x in range(10)]
     for p in players:
         p.set_busy(BUSY_DESC_ADVENTURE, randint(0, 2), '1')
     rpg.get_table(rpg.RPG_PLAYER_TABLE).insert_many([x.as_dict() for x in players])

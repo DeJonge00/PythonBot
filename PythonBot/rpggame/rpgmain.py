@@ -141,12 +141,10 @@ class RPGGame:
                 self.bot.pretty_error_str(e)
 
     async def resolve_battle(self, battle_name: str, channel: discord.Channel, p1: [RPGCharacter],
-                             p2: [RPGMonster], thumbnail=None):
+                             p2: [RPGMonster]):
 
         # Gather report header information
         embed = discord.Embed(colour=RPG_EMBED_COLOR)
-        if thumbnail:
-            embed.set_thumbnail(url=thumbnail)
         title = ""
         if len(p1) == 1:
             title += "{} ({}hp, {})".format(p1[0].name, p1[0].get_health(),
@@ -214,7 +212,6 @@ class RPGGame:
 
         battle_report_text, battle_report_stats = self.construct_battle_report(len(title), battle_report)
         result, healthrep = self.calculate_battle_result(p1, p2)
-        await self.send_battle_report(embed, battle_report_text, channel, battle_report_stats, healthrep, result)
 
         # Switch teams to original positions
         if i % 2 == 1:
@@ -224,6 +221,12 @@ class RPGGame:
 
         winner = sum([(x.get_health() / x.get_max_health()) for x in p1]) > sum(
             [(x.get_health() / x.get_max_health()) for x in p2])
+        if winner:
+            embed.set_thumbnail(url=p1[0].picture_url)
+        else:
+            embed.set_thumbnail(url=p2[0].picture_url)
+
+        await self.send_battle_report(embed, battle_report_text, channel, battle_report_stats, healthrep, result)
 
         # Return who won
         # Winning means having dealt a higher percentage of damage
@@ -250,10 +253,11 @@ class RPGGame:
                     pic = None
                     while (3 * len(bosses)) < len(party):
                         (name, elem, pic) = random.choice(rpgc.bosses)
-                        bosses.append(RPGMonster(name=name, health=int(52 * lvl * lvl), damage=int(lvl * lvl * 1.1),
+                        bosses.append(RPGMonster(name=name, picture_url=pic, health=int(52 * lvl * lvl),
+                                                 damage=int(lvl * lvl * 1.1),
                                                  ws=int(lvl * lvl * 0.6), element=elem))
 
-                    winner = await self.resolve_battle("Bossbattle", channel, party, bosses, thumbnail=pic)
+                    winner = await self.resolve_battle("Bossbattle", channel, party, bosses)
 
                     if winner == 1:
                         # Reward the winners with exp, money and a bosstier
@@ -268,8 +272,8 @@ class RPGGame:
                         if random.randint(0, 100) < 35:
                             petwinner = random.choice(party)
                             petname = 'Pet ' + bosses[0].name
-                            pet = RPGPet(name=petname, damage=petwinner.get_bosstier() * 10,
-                                         weaponskill=petwinner.get_bosstier())
+                            pet = RPGPet(name=petname, picture_url=bosses[0].picture_url,
+                                         damage=petwinner.get_bosstier() * 10, weaponskill=petwinner.get_bosstier())
                             if pet and petwinner.add_pet(pet):
                                 await self.bot.send_message(channel,
                                                             '{} found a baby {}, a new pet!'.format(petwinner.name,
@@ -287,9 +291,9 @@ class RPGGame:
         (name, elem, pic) = random.choice(rpgc.monsters)
         lvl = player.get_level()
         winner = await self.resolve_battle("Adventure encounter", channel, [player], [
-            RPGMonster(name=name, health=(int(10 + math.floor(player.exp / 75))),
+            RPGMonster(name=name, picture_url=pic, health=(int(10 + math.floor(player.exp / 75))),
                        damage=int(math.floor(7 * lvl)), ws=int(math.floor(1 + (0.085 * (player.exp ** 0.62)))),
-                       element=elem)], thumbnail=pic)
+                       element=elem)])
 
         # Reward victory
         if winner == 1:
@@ -587,8 +591,7 @@ class RPGGame:
             return
 
         defender = self.get_player_data(defender.id, name=defender.display_name)
-        await self.resolve_battle("Mockbattle", ctx.message.channel, [attacker], [defender],
-                                  thumbnail=ctx.message.author.avatar_url)
+        await self.resolve_battle("Mockbattle", ctx.message.channel, [attacker], [defender])
 
     # {prefix}rpg info [weapon|w|armor|a] <user>
     @rpg.command(pass_context=1, aliases=["Info", "I", 'i', 'stats', "Stats", 'status', "Status"],
