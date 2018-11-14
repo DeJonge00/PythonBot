@@ -290,7 +290,7 @@ class RPGGameActivities:
         money = time * pow((player.get_level()) + 1, 1 / 2) * 120
         if player.role == rpgc.names.get('role')[0][0]:  # role == Peasant
             money *= 1.15
-        dbcon.add_stats(player.userid, 'money', money)
+        dbcon.add_stats(player.userid, 'money', int(money))
         work = random.choice([
             'cleaning the stables',
             'sharpening the noble\'s weapon',

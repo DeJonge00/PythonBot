@@ -1,5 +1,5 @@
 import common
-from discord import Message
+from discord import Message, Server, Channel
 
 GENERAL_DATABASE = 'general'
 WELCOME_TABLE = 'welcome'
@@ -11,6 +11,7 @@ SELF_ASSIGNABLE_ROLES_TABLE = 'selfassignable'
 COMMAND_COUNTER_TABLE = 'count_comm'
 STARBOARD_CHANNEL_TABLE = 'starchannels'
 STARBARD_MESSAGES_TABLE = 'starmessages'
+SERVER_TABLE = 'servers'
 
 SERVER_ID = 'serverid'
 USER_ID = 'userid'
@@ -54,7 +55,8 @@ def get_star_message(message_id: str):
 
 
 def update_star_message(message_id: str, embed_id: str):
-    get_table(STARBARD_MESSAGES_TABLE).update_one({MESSAGE_ID: message_id}, {'$set': {'embed_id': embed_id}}, upsert=True)
+    get_table(STARBARD_MESSAGES_TABLE).update_one({MESSAGE_ID: message_id}, {'$set': {'embed_id': embed_id}},
+                                                  upsert=True)
 
 
 # Do not delete commands table
@@ -114,3 +116,34 @@ def toggle_role(server_id: str, role_id: str):
     v = not get_role(server_id, role_id)
     get_table(SELF_ASSIGNABLE_ROLES_TABLE).update({SERVER_ID: server_id}, {'$set': {role_id: v}}, upsert=True)
     return v
+
+
+# Bot information
+def server_as_dict(s: Server):
+    return {
+        'name': s.name,
+        SERVER_ID: s.id,
+        'members': s.member_count,
+        'bots': len([x for x in s.members if x.bot]),
+        'icon': s.icon_url,
+        'channels': {
+            'text': [channel_as_dict(c) for c in s.channels if str(c.type) == 'text'],
+            'voice': [channel_as_dict(c) for c in s.channels if str(c.type) == 'voice']
+        }
+    }
+
+
+def channel_as_dict(c: Channel):
+    return {
+        'name': c.name,
+        CHANNEL_ID: c.id,
+        'type': str(c.type)
+    }
+
+
+def update_server_list(servers: [Server]):
+    servers = [server_as_dict(s) for s in servers]
+
+    t = get_table(SERVER_TABLE)
+    for s in servers:
+        t.replace_one({SERVER_ID: s.get(SERVER_ID)}, s, upsert=True)

@@ -56,7 +56,7 @@ def initCogs(bot):
 
 
 class PythonBot(Bot):
-    def __init__(self, music=True, rpggame=True):
+    def __init__(self, music=True, rpggame=True, api=True):
         self.running = True
         self.praise = datetime.datetime.utcnow()
         self.spamlist = []
@@ -66,6 +66,7 @@ class PythonBot(Bot):
 
         self.MUSIC = music
         self.RPGGAME = rpggame
+        self.API = api
         super(PythonBot, self).__init__(command_prefix=secrets.prefix, pm_help=1,
                                         formatter=customHelpFormatter.customHelpFormatter())
 
@@ -322,6 +323,8 @@ def init_bot():
         if not hasattr(bot, 'uptime'):
             bot.uptime = datetime.datetime.utcnow()
         await bot.change_presence(game=discord.Game(name='with lolis <3'), status=discord.Status.do_not_disturb)
+
+        dbcon.update_server_list(bot.servers)
 
     # Handle incoming events
     @bot.event

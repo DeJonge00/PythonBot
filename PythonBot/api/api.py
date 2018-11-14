@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from secret.secrets import api_username, api_password, APIAddress, APIPort
 from database import general, rpg
+from datetime import datetime
 
 route_start = ''
 ASC = 1
@@ -29,7 +30,18 @@ def unauthorized():
 @api.route(route_start + '/commands', methods=['GET'])
 @auth.login_required
 def get_command_counters():
-    r = general.get_table(general.COMMAND_COUNTER_TABLE).find({}, {'_id': 0}).sort('timestamp', DESC).limit(100)
+    t = datetime.now().timestamp() - (24 * 60 * 60)  # Limit to 2 weeks of data
+    r = general.get_table(general.COMMAND_COUNTER_TABLE).find({'timestamp': {'$gt': t}}, {'_id': 0}).sort('timestamp',
+                                                                                                          DESC).limit(
+        1000)
+    return jsonify(list(r))
+
+
+# ----- /servers -----
+@api.route(route_start + '/servers', methods=['GET'])
+@auth.login_required
+def get_server_list():
+    r = general.get_table(general.SERVER_TABLE).find({}, {'_id': 0}).sort('members', DESC).limit(1000)
     return jsonify(list(r))
 
 
