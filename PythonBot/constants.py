@@ -414,7 +414,8 @@ nyan_gifs = [
     'https://78.media.tumblr.com/5b96155c7221911a5b29b0b2cc6e9ba3/tumblr_o1xktlVpr81s5rcozo1_500.gif',
     'https://78.media.tumblr.com/f1e74179eb27765ef7c5e08536e150e7/tumblr_nli7wyrwXz1t2yvn6o1_500.gif',
     'https://g.redditmedia.com/ifqUar76e3MkwUo_OcfYNLcMWDbaDEI02uGI40mvrcw.gif?fm=mp4&mp4-fragmented='
-    'false&s=ac60f643b3bbe357831fa49a9edb4470'
+    'false&s=ac60f643b3bbe357831fa49a9edb4470',
+    'https://g.redditmedia.com/iLfpgefmEwf5cIUYK3wDoD47c2zYkLAq7tTK_zABEJ8.gif?fit=crop&crop=faces%2Centropy&arh=2&w=640&fm=mp4&mp4-fragmented=false&s=b8c730e9b1fad6522fc0cfd6b75b87e8'
 
 ]
 

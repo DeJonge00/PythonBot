@@ -96,8 +96,7 @@ def set_prefix(server_id: str, prefix: str):
 def command_counter(name: str, message: Message):
     get_table(COMMAND_COUNTER_TABLE).insert_one({
         'command': name,
-        'timestamp': message.timestamp.timestamp(),
-        'location': "{}/{}/{}".format(message.server.name, message.channel.name, message.author.name)
+        'timestamp': message.timestamp.timestamp()
     })
 
 
