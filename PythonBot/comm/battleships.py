@@ -53,3 +53,28 @@ class Battleships:
         if not await self.bot.pre_command(message=ctx.message, command='battleship guess', must_be_private=True):
             return
 
+        if len(args) < 1:
+            await self.bot.say('Use this command with `{0}battleship guess <coordinate>`, for example: `{0}bs g b4`'
+                               .format(self.bot._get_prefix(ctx.message)))
+            return
+
+        try:
+            await self.games.get(ctx.message.author.id).guess(ctx.message.author.id, args[0])
+        except AttributeError:
+            await self.bot.say('You haven\t started a game with anyone...')
+            return
+
+    @battleship.command(pass_context=1, help="Quit your current game", aliases=["q", 'stop'])
+    async def quit(self, ctx):
+        if not await self.bot.pre_command(message=ctx.message, command='battleship guess', must_be_private=True):
+            return
+
+        try:
+            game = self.games.get(ctx.message.author.id)
+        except AttributeError:
+            await self.bot.say('You haven\'t started a game with anyone...')
+            return
+
+        game.quit()
+        await game.send_message(game.p1, 'The battleship game has been aborted')
+        await game.send_message(game.p2, 'The battleship game has been aborted')

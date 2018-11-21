@@ -31,7 +31,9 @@ def initCogs(bot):
     from comm.minesweeper import Minesweeper
     bot.add_cog(Minesweeper(bot))
     from comm.battleships import Battleships
-    bot.add_cog(Battleships(bot))
+    b = Battleships(bot)
+    bot.add_cog(b)
+    bot.battleships = b
     from comm.hangman import Hangman
     bot.add_cog(Hangman(bot))
     from comm.image_commands import Images
