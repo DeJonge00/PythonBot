@@ -12,6 +12,7 @@ COMMAND_COUNTER_TABLE = 'count_comm'
 STARBOARD_CHANNEL_TABLE = 'starchannels'
 STARBARD_MESSAGES_TABLE = 'starmessages'
 SERVER_TABLE = 'servers'
+CHANNEL_TABLE = 'channels'
 
 SERVER_ID = 'serverid'
 USER_ID = 'userid'
@@ -85,7 +86,8 @@ def toggle_banned_command(id_type: str, iden: str, command: str):
 
 # Prefix
 def get_prefix(server_id: str):
-    return get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id}).get('prefix')
+    r = get_table(PREFIX_TABLE).find_one({SERVER_ID: server_id})
+    return r.get('prefix') if r else None
 
 
 def set_prefix(server_id: str, prefix: str):
@@ -127,8 +129,8 @@ def server_as_dict(s: Server):
         'bots': len([x for x in s.members if x.bot]),
         'icon': s.icon_url,
         'channels': {
-            'text': [channel_as_dict(c) for c in s.channels if str(c.type) == 'text'],
-            'voice': [channel_as_dict(c) for c in s.channels if str(c.type) == 'voice']
+            'text': [c.id for c in s.channels if str(c.type) == 'text'],
+            'voice': [c.id for c in s.channels if str(c.type) == 'voice']
         }
     }
 
@@ -142,8 +144,10 @@ def channel_as_dict(c: Channel):
 
 
 def update_server_list(servers: [Server]):
-    servers = [server_as_dict(s) for s in servers]
-
-    t = get_table(SERVER_TABLE)
+    server_table = get_table(SERVER_TABLE)
+    channel_table = get_table(CHANNEL_TABLE)
     for s in servers:
-        t.replace_one({SERVER_ID: s.get(SERVER_ID)}, s, upsert=True)
+        server_table.replace_one({SERVER_ID: s.id}, server_as_dict(s), upsert=True)
+        for c in s.channels:
+            if str(c.type) in ['text', 'voice']:
+                channel_table.replace_one({CHANNEL_ID: c.id}, channel_as_dict(c), upsert=True)

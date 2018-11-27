@@ -363,13 +363,13 @@ def init_bot():
     async def on_member_join(member: discord.Member):
         if member.bot:
             return
-        await bot.on_member_message(member, "on_member_join", 'joined')
+        await bot.on_member_message(member, dbcon.WELCOME_TABLE, 'joined')
 
     @bot.event
     async def on_member_remove(member: discord.Member):
         if member.bot:
             return
-        await bot.on_member_message(member, "on_member_remove", 'left')
+        await bot.on_member_message(member, dbcon.GOODBYE_TABLE, 'left')
 
     # @bot.event
     # async def on_voice_state_update(before, after):

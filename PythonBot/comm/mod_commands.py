@@ -165,7 +165,7 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        dbcon.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message(dbcon.GOODBYE_TABLE, ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
             await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<username>"))
             return
@@ -186,7 +186,7 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        dbcon.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message(dbcon.WELCOME_TABLE, ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
             await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<username>"))
             return
