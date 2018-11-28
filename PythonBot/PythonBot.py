@@ -82,7 +82,8 @@ class PythonBot(Bot):
 
     async def _get_prefix(self, message):
         try:
-            return dbcon.get_prefix(message.server.id)
+            p = dbcon.get_prefix(message.server.id)
+            return p if p else await super(PythonBot, self)._get_prefix(message)
         except (KeyError, AttributeError):
             return await super(PythonBot, self)._get_prefix(message)
 

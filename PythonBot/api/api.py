@@ -6,6 +6,7 @@ from database import general, rpg
 from datetime import datetime
 import requests
 from secret.secrets import prefix
+import json
 
 route_start = ''
 ASC = 1
@@ -43,7 +44,8 @@ def resolve_channels(servers):
     c_table = general.get_table(general.CHANNEL_TABLE)
     for server in servers:
         for channel_type in ['text', 'voice']:
-            server['channels'][channel_type] = [c_table.find_one({general.CHANNEL_ID: x}, {'_id': 0}) for x in server.get('channels').get(channel_type)]
+            server['channels'][channel_type] = [c_table.find_one({general.CHANNEL_ID: x}, {'_id': 0}) for x in
+                                                server.get('channels').get(channel_type)]
     return servers
 
 
@@ -94,6 +96,24 @@ def get_server_config(server_id: int):
         'star': general.get_star_channel(server_id),
         'prefix': server_prefix
     })
+
+
+@api.route(route_start + '/servers/<int:server_id>/config', methods=['POST'])
+@auth.login_required
+def set_server_config(server_id: int):
+    server_id = str(server_id)
+    config_data = json.loads(request.data)
+    if config_data.get('prefix'):
+        general.set_prefix(server_id, config_data.get('prefix'))
+    if config_data.get('star'):
+        general.set_star_channel(server_id, config_data.get('star'))
+    if config_data.get('welcome'):
+        w = config_data.get('welcome')
+        general.set_message(general.WELCOME_TABLE, server_id, w.get('id'), w.get('text'))
+    if config_data.get('goodbye'):
+        g = config_data.get('goodbye')
+        general.set_message(general.GOODBYE_TABLE, server_id, g.get('id'), g.get('text'))
+    return jsonify({'Status': 'Success'})
 
 
 # ----- /rpg -----
