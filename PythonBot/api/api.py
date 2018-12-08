@@ -154,6 +154,8 @@ def get_discord_user_guilds():
     if not auth_token:
         return jsonify({'Error': 'No auth given'})
     r = requests.get(discord_url + 'users/@me/guilds', headers={'Authorization': 'Bearer ' + auth_token})
+    if r.status_code is not 200:
+        return jsonify(r.json())
     player_servers = [x.get('id') for x in r.json()]
     bot_servers = general.get_table(general.SERVER_TABLE).find({general.SERVER_ID: {'$in': player_servers}}, {'_id': 0})
     bot_servers = resolve_channels(list(bot_servers))
