@@ -52,6 +52,11 @@ class RPGCharacter:
                     return n + (amount * m[1])
         return n
 
+    def get_health(self):
+        if self.health > self.get_max_health():
+            self.health = self.get_max_health()
+        return self.health
+
     @staticmethod
     def elemental_effect(n, a_elem, d_elem):
         if a_elem != rpgc.element_none:

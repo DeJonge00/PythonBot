@@ -55,6 +55,19 @@ def get_busy_players(bot: Client):
     return players
 
 
+def get_all_players(bot: Client):
+    conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
+                           password=secrets.DBPassword,
+                           database="rpg", charset="utf8", use_unicode=True)
+    c = conn.cursor()
+    c.execute("SELECT playerid FROM busy")
+    t = c.fetchall()
+    conn.commit()
+    conn.close()
+    players = [get_single_player(bot, p) for p in [x[0] for x in t]]
+    return players
+
+
 TYPE_WEAPON = 0
 TYPE_ARMOR = 1
 TYPE_PET = 2
@@ -62,7 +75,8 @@ TYPE_PET = 2
 
 def get_single_player(bot: discord.Client, player_id: str):
     player = None
-    username = {str(x.id): str(x.name) for x in bot.get_all_members() if str(x.id) == str(player_id)}.get(str(player_id), str(player_id))
+    username = {str(x.id): str(x.name) for x in bot.get_all_members() if str(x.id) == str(player_id)}.get(
+        str(player_id), str(player_id))
 
     conn = pymysql.connect(host=secrets.DBAddress, port=secrets.DBPort, user=secrets.DBName,
                            password=secrets.DBPassword, database="rpg", charset="utf8", use_unicode=True)
@@ -235,7 +249,9 @@ def get_top_players(bot: discord.Client, group: str, amount: int):
         if group in ['money', 'bosstier']:
             c.execute("SELECT playerid, {0} FROM players ORDER BY {0} DESC LIMIT {1}".format(group, amount))
         else:
-            c.execute("SELECT characterid, {0} FROM characters WHERE characterid > 1000000 ORDER BY {0} DESC LIMIT {1}".format(group, amount))
+            c.execute(
+                "SELECT characterid, {0} FROM characters WHERE characterid > 1000000 ORDER BY {0} DESC LIMIT {1}".format(
+                    group, amount))
         a = c.fetchall()
         result = []
         for i in range(len(a)):
