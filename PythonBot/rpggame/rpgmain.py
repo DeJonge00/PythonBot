@@ -652,9 +652,12 @@ class RPGGame:
         except:
             im = Image.open("rpggame/undead.png")
 
-        pp = Image.open(BytesIO(requests.get(data.picture_url).content))
-        pp = pp.resize((60, 60))
-        im.paste(pp, (235, 5))
+        try:
+            pp = Image.open(BytesIO(requests.get(data.picture_url).content))
+            pp = pp.resize((60, 60))
+            im.paste(pp, (235, 5))
+        except OSError:
+            pass
 
         draw = ImageDraw.Draw(im)
         font = ImageFont.truetype(font_path, 12)

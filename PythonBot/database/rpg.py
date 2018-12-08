@@ -118,7 +118,7 @@ def set_health(player_id: str, hp: int):
 
 
 def get_top_players(group: str, start: int, amount: int):
-    ps = get_table(RPG_PLAYER_TABLE).find().sort(group, pymongo.ASCENDING).skip(start).limit(amount)
+    ps = get_table(RPG_PLAYER_TABLE).find().sort(group, pymongo.DESCENDING).skip(start).limit(amount)
     return [(x.get('stats').get('name'), x.get(group)) for x in ps]
 
 

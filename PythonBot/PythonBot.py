@@ -207,7 +207,7 @@ class PythonBot(Bot):
         m = await self.say(m)
         r = await self.wait_for_message(timeout=60, author=message.author, channel=message.channel)
 
-        if message.server.id not in self.dont_delete_commands_servers:
+        if dbcon.get_delete_commands(message.server.id):
             await self.delete_message(m)
             if r:
                 await self.delete_message(r)
