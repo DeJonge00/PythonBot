@@ -66,6 +66,10 @@ def get_delete_commands(server_id: str):
     return r.get('delete_commands', True) if r else True
 
 
+def set_delete_commands(server_id: str, state: bool):
+    get_table(DO_NOT_DELETE_TABLE).update({SERVER_ID: server_id}, {'$set': {'delete_commands': state}}, upsert=True)
+
+
 def toggle_delete_commands(server_id: [str]):
     v = not get_delete_commands(server_id)
     get_table(DO_NOT_DELETE_TABLE).update({SERVER_ID: server_id}, {'$set': {'delete_commands': v}}, upsert=True)
@@ -99,7 +103,9 @@ def command_counter(name: str, message: Message):
     get_table(COMMAND_COUNTER_TABLE).insert_one({
         'command': name,
         'timestamp': message.timestamp.timestamp(),
-        'location': "{}/{}/{}".format(message.server.name, message.channel.name, message.author.name)
+        'server': message.server.name,
+        'channel': message.channel.name,
+        'author': message.author.name
     })
 
 

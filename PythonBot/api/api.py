@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, abort
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from secret.secrets import api_username, api_password, APIAddress, APIPort
@@ -27,6 +27,10 @@ def get_password(username):
 @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+
+
+def page_from_query():
+    return int(request.args.get('page', 1)), int(request.args.get('limit', 0))
 
 
 # ----- /commands -----
@@ -113,6 +117,9 @@ def set_server_config(server_id: int):
     if config_data.get('goodbye'):
         g = config_data.get('goodbye')
         general.set_message(general.GOODBYE_TABLE, server_id, g.get('id'), g.get('text'))
+    if config_data.get('delete_commands'):
+        b = True if config_data.get('delete_commands') == 'true' else False
+        general.set_delete_commands(server_id, b)
     return jsonify({'Status': 'Success'})
 
 
@@ -120,8 +127,24 @@ def set_server_config(server_id: int):
 @api.route(route_start + '/rpg/players', methods=['GET'])
 @auth.login_required
 def get_rpg_players():
-    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find({}, {'_id': 0}).sort('exp', DESC).limit(25)
+    try:
+        page, per_page = page_from_query()
+    except ValueError:
+        return abort(400, {'error': 'invalid parameters'})
+    if not per_page:
+        per_page = 25
+    skip, amount = per_page * (page - 1), per_page
+    if amount <= 0 or skip < 0:
+        return abort(404)
+    r = rpg.get_table(rpg.RPG_PLAYER_TABLE).find({}, {'_id': 0}).sort('exp', DESC).skip(skip).limit(amount)
     return jsonify(list(r))
+
+
+@api.route(route_start + '/rpg/players/count', methods=['GET'])
+@auth.login_required
+def get_rpg_players_count():
+    c = rpg.get_table(rpg.RPG_PLAYER_TABLE).count({})
+    return jsonify({'count': c})
 
 
 @api.route(route_start + '/rpg/players/<int:user_id>', methods=['GET'])
