@@ -1,9 +1,12 @@
-import discord, constants, sqlite3, os, requests, dbconnect, re
-from discord.ext import commands
-from random import randint
+import constants
+from database import general as dbcon
+import discord
+import os
+import re
+import requests
 from PIL import Image
+from discord.ext import commands
 from io import BytesIO
-from datetime import datetime
 
 
 # Mod commands
@@ -85,9 +88,9 @@ class Mod:
         else:
             await self.bot.say('Pls give me smth...')
             return
+        name = 'temp/newpp.png'
         try:
             # TODO: Fix saving pic first
-            name = 'temp/newpp.png'
             Image.open(BytesIO(requests.get(url).content)).save(name)
             if not await self.bot.pre_command(message=ctx.message, command='newpp'):
                 return
@@ -162,9 +165,9 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        dbconnect.set_message('on_member_remove', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message(dbcon.GOODBYE_TABLE, ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
-            await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<user mention>"))
+            await self.bot.say("Goodbye message for this server is now: " + " ".join(args).format("<username>"))
             return
         await self.bot.say("Goodbye message for this server has been reset")
 
@@ -183,9 +186,9 @@ class Mod:
         if re.match('.*{.+}.*', " ".join(args)):
             await self.bot.say("Something went terribly wrong...")
             return
-        dbconnect.set_message('on_member_join', ctx.message.server.id, ctx.message.channel.id, " ".join(args))
+        dbcon.set_message(dbcon.WELCOME_TABLE, ctx.message.server.id, ctx.message.channel.id, " ".join(args))
         if len(args) > 0:
-            await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<user mention>"))
+            await self.bot.say("Welcome message for this server is now: " + " ".join(args).format("<username>"))
             return
         await self.bot.say("Welcome message for this server has been reset")
 
@@ -197,4 +200,4 @@ class Mod:
         if not (ctx.message.author.id == constants.NYAid or ctx.message.author.id == constants.KAPPAid):
             await self.bot.say("Hahahaha, no")
             return
-        print('test')
+        raise ValueError

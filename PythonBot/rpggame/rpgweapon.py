@@ -4,8 +4,7 @@ from rpggame import rpgconstants as rpgc
 
 
 class RPGWeapon:
-    def __init__(self, weaponid=None, name='Training Sword', cost=0, element=1, damage=0, weaponskill=0, critical=0):
-        self.weaponid = weaponid
+    def __init__(self, name='Training Sword', cost=0, element=1, damage=0, weaponskill=0, critical=0):
         self.name = name
         self.cost = cost
         self.element = element
@@ -15,6 +14,27 @@ class RPGWeapon:
 
     def __str__(self):
         return "{}: d+{}, ws+{}, c+{}".format(self.name, self.damage, self.weaponskill, self.critical)
+
+    def as_dict(self):
+        return {
+            'name': self.name,
+            'cost': self.cost,
+            'element': self.element,
+            'damage': self.damage,
+            'weaponskill': self.weaponskill,
+            'critical': self.critical
+        }
+
+
+def dict_to_weapon(weapon: dict):
+    return RPGWeapon(
+        name=weapon.get('name'),
+        cost=weapon.get('cost'),
+        element=weapon.get('element'),
+        damage=weapon.get('damage'),
+        weaponskill=weapon.get('weaponskill'),
+        critical=weapon.get('critical')
+    )
 
 
 def generate_weapon(cost: int):

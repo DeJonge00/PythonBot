@@ -1,6 +1,4 @@
-import discord, log, string
-from discord.ext import commands
-from discord.ext.commands import Bot
+import string
 
 RIGHT = 0
 WRONG = 1

@@ -72,7 +72,8 @@ class VoiceState:
         while True:
             try:
                 self.play_next_song.clear()
-                if self.repeat:
+                if self.repeat and self.current:
+                    # TODO Fix this owo (current = None)
                     self.current = VoiceEntry(self.current.message,
                                               await self.voice.create_ytdl_player(self.current.player.download_url,
                                                                                   before_options=constants.ytdl_before,

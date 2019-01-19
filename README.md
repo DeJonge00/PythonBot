@@ -1,6 +1,7 @@
 # Discord Python Bot "Biribiri"
 #### Notes
-The default prefix for Biribiri is the character `>`\
+The default prefix for Biribiri is the character `>`, this can be changed with the `prefix` command.\
+If you forgot the prefix you set, you can mention Biribiri with the word `prefix`.\
 \
 `words`: literally the word(s) in the brackets (choices separated by a `,`)\
 `{words}`: variable string, describing any word(s) you need\
@@ -46,7 +47,8 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |lottery     	|`lottery` `{description}`                              |Set up a lottery, ends when creator adds the correct reaction
 |pat         	|`pat` `{user}`                                         |Pat a user, keeps track of pats
 |quote          |`quote`                                                |Fetch a random quote from the internet
-|role        	|`role` `{role}` `{user}`                               |Add or remove `{role}` to `{user}` (needs permissions with exceptions of `muted` and `nsfw`)
+|role        	|`role` `config` `{rolename}`                           |Add or remove a role to the list of self-assignable roles
+|role           |`role` `add,remove` `{rolename}`                       |Add or reemove the role `{rolename}` from yourself, if it is in the self-assignable roles list
 |serverinfo  	|`serverinfo,serverstats`                               |Get the server's information
 |urban       	|`urban,us,urbandictionary` `{query}`                   |Search urbandictionary for `{query}`
 |userinfo    	|`userinfo,user,info` `{user}`                          |Get `{user}`'s information
@@ -132,7 +134,7 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |---			        |---										            |---                                                                                |---
 |toggledeletecommands   |`toggledeletecommands,tdc`                             |Toggles whether commands will be deleted. Commands are deleted by default          |manage_channels, manage_messages
 |togglecommand          |`togglecommand,tc` `server,channel` `{command name}`   |Toggles whether the command `{command name}` can be used in the current `server,channel`. Use command name `all` to disable all commands. All commands are enabled by default      |manage_channels, manage_messages
-
+|prefix                 |`prefix` `{prefix text}`                               |Changes the prefix to `{prefix text}`, ignoring trailing spaces
 
 ### MusicPlayer
 

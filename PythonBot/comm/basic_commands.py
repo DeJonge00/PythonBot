@@ -9,8 +9,8 @@ import wikipedia
 from discord.ext import commands
 import hashlib
 
-from rpggame import rpgdbconnect as dbcon
-from secret.secrets import prefix
+from database import general as dbcon
+from database.pats import increment_pats
 
 EMBED_COLOR = 0x008909
 
@@ -80,7 +80,7 @@ class Basics:
         if not await self.bot.pre_command(message=ctx.message, command='cookie'):
             return
 
-        n = dbcon.increment_pats('cookie', 'all')
+        n = increment_pats('cookie', 'all')
         s = '' if n == 1 else 's'
         m = "has now been clicked {} time{} in total".format(n, s)
         if n % 100 == 0:
@@ -263,11 +263,11 @@ class Basics:
             await self.bot.say('I can only send emoji in servers')
             return
         m = ''
-        l = len(ctx.message.server.emojis)
-        if not l:
+        emoji_amount = len(ctx.message.server.emojis)
+        if not emoji_amount:
             await self.bot.say('Your server doesnt have custom emoji for me to use...')
             return
-        for _ in range(min(l, 10)):
+        for _ in range(min(emoji_amount, 10)):
             m += str(random.choice(ctx.message.server.emojis)) + ' '
         await self.bot.say(m)
 
@@ -399,7 +399,7 @@ class Basics:
             return
         self.patTimes[ctx.message.author.id] = time
 
-        n = dbcon.increment_pats(ctx.message.author.id, target.id)
+        n = increment_pats(ctx.message.author.id, target.id)
         s = '' if n == 1 else 's'
         m = "{} has pat {} {} time{} now".format(ctx.message.author.mention, target.mention, n, s)
         if n % 100 == 0:
@@ -459,51 +459,126 @@ class Basics:
         await self.bot.say(m)
 
     # {prefix}role <name>
-    @commands.command(pass_context=1, help="Add or remove roles!")
-    async def role(self, ctx, *args):
-        if not await self.bot.pre_command(message=ctx.message, command='role'):
+    @commands.group(pass_context=1, help="Add or remove self-assignable roles!", aliases=['iam'])
+    async def role(self, ctx):
+        if not ctx.invoked_subcommand:
+            await self.bot.say('Use `{0}role` `config,add,remove` `<rolename>` or `{0}role list` for this command'
+                               .format(await self.bot._get_prefix(ctx.message)))
+
+    @role.command(pass_context=1)
+    async def config(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='role config', cannot_be_private=True,
+                                          checks=[discord.Permissions.manage_roles]):
             return
-        if len(args) <= 0:
-            await self.bot.say("Usage: {0}role <rolename without spaces> [user] "
-                               "(And don't you dare confuse this with {0}rpg role haha".format(prefix))
+        if not args:
+            await self.bot.say('Give me a role to add or remove to the self-assignable roles')
             return
+        roles = [x for x in ctx.message.server.roles if
+                 x.name.lower().startswith(self.bot.prep_str_for_print(' '.join(args).lower()))]
+        if not roles:
+            await self.bot.say('There is no role with that name')
+            return
+        if len(roles) == 1:
+            role = roles[0]
         else:
-            rolename = args[0].lower()
-        authorhasperms = ctx.message.channel.permissions_for(ctx.message.author).manage_roles or (
-                ctx.message.server.owner.id == ctx.message.author.id)
-
-        try:
-            user = await self.bot.get_member_from_message(message=ctx.message, args=args)
-            if user != ctx.message.author and not authorhasperms:
-                await self.bot.say("You do not have the permissions to give other people roles")
+            try:
+                role = await self.bot.ask_one_from_multiple(ctx.message, roles, question='Which role did you mean?')
+            except ValueError:
                 return
-        except ValueError:
+        m = 'The role {} is now {}self-assignable'
+        if dbcon.toggle_role(ctx.message.server.id, role.id):
+            m = m.format(role.name, '')
+        else:
+            m = m.format(role.name, 'not ')
+        await self.bot.say(m)
+
+    @role.command(pass_context=1)
+    async def add(self, ctx, *args):  # TODO Switch to toggle
+        if not await self.bot.pre_command(message=ctx.message, command='role add', cannot_be_private=True,
+                                          checks=[discord.Permissions.manage_roles]):
+            return
+        roles = [x for x in ctx.message.server.roles if
+                 x.name.lower().startswith(self.bot.prep_str_for_print(' '.join(args).lower().split('@')[0]))]
+        if not roles:
+            await self.bot.say('There is no role with that name')
+            return
+        if len(roles) == 1:
+            role = roles[0]
+        else:
+            try:
+                role = await self.bot.ask_one_from_multiple(ctx.message, roles, question='Which role did you mean?')
+            except ValueError:
+                return
+        if not dbcon.get_role(ctx.message.server.id, role.id):
+            await self.bot.say('The role {} is not self-assignable'.format(role.name))
+            return
+
+        if len(ctx.message.mentions) > 0:
+            try:
+                user = await self.bot.ask_one_from_multiple(ctx.message, ctx.message.mentions,
+                                                            question='Which user did you mean?')
+            except ValueError:
+                return
+        else:
             user = ctx.message.author
-
-        if not (authorhasperms or rolename in ['nsfw', 'muted']):
-            await self.bot.say("You lack the permissions for that")
-            return
-
-        role = None
-        for r in ctx.message.server.roles:
-            if r.name.lower().replace(' ', '') == rolename:
-                role = r
-                break
-        if not role:
-            await self.bot.say("Role {} not found".format(role))
-            return
-
         try:
-            if role in user.roles:
-                await self.bot.remove_roles(user, role)
-                await self.bot.say("Role {} succesfully removed".format(role.name))
-                return
-            else:
-                await self.bot.add_roles(user, role)
-                await self.bot.say("Role {} succesfully added".format(role.name))
-                return
+            await self.bot.add_roles(user, role)
         except discord.Forbidden:
-            await self.bot.say("I dont have the perms for that sadly...")
+            await self.bot.say('I don\'t have the permissions to add roles...')
+            return
+        await self.bot.say("Role {} successfully added".format(role.name))
+
+    @role.command(pass_context=1)
+    async def remove(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='role remove', cannot_be_private=True,
+                                          checks=[discord.Permissions.manage_roles]):
+            return
+        roles = [x for x in ctx.message.server.roles if
+                 x.name.lower().startswith(self.bot.prep_str_for_print(' '.join(args).lower().split('@')[0]))]
+        if not roles:
+            await self.bot.say('There is no role with that name')
+            return
+        if len(roles) == 1:
+            role = roles[0]
+        else:
+            try:
+                role = await self.bot.ask_one_from_multiple(ctx.message, roles, question='Which role did you mean?')
+            except ValueError:
+                return
+        if role.id not in dbcon.get_roles(ctx.message.server.id):
+            await self.bot.say('The role {} is not self-assignable'.format(role.name))
+            return
+        if len(ctx.message.mentions) > 0:
+            try:
+                user = await self.bot.ask_one_from_multiple(ctx.message, ctx.message.mentions,
+                                                            question='Which user did you mean?')
+            except ValueError:
+                return
+        else:
+            user = ctx.message.author
+        try:
+            await self.bot.remove_roles(user, role)
+        except discord.Forbidden:
+            await self.bot.say('I don\'t have the permissions to remove roles...')
+            return
+        await self.bot.say("Role {} successfully removed".format(role.name))
+
+    @role.command(pass_context=1)
+    async def list(self, ctx, *args):
+        if not await self.bot.pre_command(message=ctx.message, command='role list', cannot_be_private=True,
+                                          checks=[discord.Permissions.manage_roles]):
+            return
+        if args:
+            try:
+                n = int(args[0]) - 1
+            except ValueError:
+                await self.bot.say('That\'s not a number...')
+                return
+        else:
+            n = 0
+        roles = sorted([x.name for x in ctx.message.server.roles if x.id in dbcon.get_roles(ctx.message.server.id)])
+        await self.bot.embed_list.make_list(items=roles, title='Assignable roles', page=n, items_per_page=10,
+                                            channel=ctx.message.channel)
 
     # {prefix}serverinfo
     @commands.command(pass_context=1, help="Get the server's information!", aliases=['serverstats'])
@@ -556,7 +631,7 @@ class Basics:
             params = {'term': q}
             r = requests.get('http://api.urbandictionary.com/v0/define', params=params).json().get('list')
             if len(r) <= 0:
-                embed.add_field(name="Definition", value="ERROR ERROR ... CANT HANDLE AWESOMENESS LEVEL")
+                embed.add_field(name="Definition", value="I'm afraid there are no results for '{}'".format(q))
                 await self.bot.say(embed=embed)
             r = r[0]
             embed.add_field(name="Urban Dictionary Query", value=r.get('word'))
@@ -564,7 +639,7 @@ class Basics:
             if len(definition) > 500:
                 definition = definition[:500] + '...'
             embed.add_field(name="Definition", value=definition, inline=False)
-            example = r.get('example')
+            example = r.get('example').replace('[', '').replace(']', '')
             if len(definition) < 500:
                 if len(example) + len(definition) > 500:
                     example = example[:500 - len(definition)]
@@ -631,7 +706,7 @@ class Basics:
         try:
             s = await self.bot.ask_one_from_multiple(ctx.message, s, 'Which result would you want to see?')
         except ValueError:
-            pass
+            return
 
         page = wikipedia.WikipediaPage(s)
         embed.add_field(name="Title", value=page.title)

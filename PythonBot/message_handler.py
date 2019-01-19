@@ -5,7 +5,7 @@ import log
 import random
 import send_random
 import string
-from secret.secrets import prefix
+from database import general as dbcon
 
 NicknameAutoChange = False
 
@@ -110,12 +110,18 @@ async def new(bot, message: discord.Message):
             message.content[0].isalpha() and message.content[1].isalpha())):
         return
 
-    if message.server.id not in constants.bot_talk_blacklist and (bot.user in message.mentions or (len(
+    if message.server.id not in constants.bot_talk_blacklist:
+        await talk(bot, message)
+
+
+async def talk(bot, message: discord.Message):
+    if (bot.user in message.mentions or (len(
             set(message.content.lower().translate(str.maketrans('', '', string.punctuation)).split(" ")).intersection(
                 {'biri', 'biribiri'})) > 0)) and await bot.pre_command(message=message, command='talk',
                                                                        delete_message=False):
-        if 'prefix' in message.content:
-            await bot.send_message(message.channel, 'My prefix is {}, darling'.format(prefix))
+        if 'prefix' in message.content.lower():
+            await bot.send_message(message.channel,
+                                   'My prefix is \'{}\', darling'.format(await bot._get_prefix(message)))
             return
         if (message.author.id in [constants.NYAid, constants.LOLIid, constants.WIZZid]) and \
                 any(word in message.content.lower() for word in ['heart', 'pls', 'love']):
@@ -143,3 +149,38 @@ async def new_pic(bot, message):
         return
     for pic in message.attachments:
         await log.message(message, "pic", pic["url"])
+
+
+STAR_EMBED_COLOR = 0xf9e000
+STAR_EMOJI = '⭐'
+
+
+def construct_embed_message(message: discord.Message, stars: int):
+    m = 'A message received {} stars in {}'.format(stars, message.channel.mention)
+    e = discord.Embed(colour=STAR_EMBED_COLOR)
+    e.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
+    if message.content:
+        e.add_field(name='Message contents', value=message.content)
+    if message.attachments:
+        e.set_image(url=message.attachments[0].get('url'))
+    e.set_footer(text='Message send at ' + message.timestamp.strftime("%Y-%m-%d %H:%M:%S"))
+    return m, e
+
+
+async def reaction(bot: discord.Client, reaction: discord.Reaction):
+    if reaction.emoji == STAR_EMOJI:
+        channel = dbcon.get_star_channel(reaction.message.server.id)
+        if not channel:
+            return
+        channel = bot.get_channel(channel)
+
+        stars = sum([x.count for x in reaction.message.reactions if x.emoji == STAR_EMOJI])
+        embed_id = dbcon.get_star_message(reaction.message.id)
+        m, e = construct_embed_message(reaction.message, stars)
+
+        if embed_id:
+            await bot.edit_message(await bot.get_message(channel, embed_id), new_content=m, embed=e)
+            return
+
+        i = (await bot.send_message(channel, content=m, embed=e)).id
+        dbcon.update_star_message(reaction.message.id, i)
