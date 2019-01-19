@@ -101,6 +101,15 @@ Biribiri is still in development, comments and improvements are welcome (`{prefi
 |               |`minesweeper,ms` `{x}` `{y}`                           |Guess a non-mine at coordinates (x,y)
 |               |`minesweeper,ms` `quit`                                |Forfeit the current game
 
+### Trivia
+
+|Name			|Command, aliases and usage					            |Description
+|---			|---										            |---
+|trivia       	|`trivia,tr` `new`                                      |Create a new trivia game
+|               |`trivia, tr` `categories, cat`                         |Display question categories for Trivia
+|               |`trivia, tr` `join`                                    |Join an upcoming turn by turn Trivia game on the channel
+|               |`trivia, tr` `quit`                                    |Quit the game you're currently playing                                           
+
 ### Misc
 
 |Name			|Command, aliases and usage					            |Description
