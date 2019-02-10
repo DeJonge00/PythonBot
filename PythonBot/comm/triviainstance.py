@@ -147,7 +147,7 @@ class TriviaInstance:
                 return
             await self.bot.say("Parameters completed! Each person that now wants to join the game has 60 "
                                "seconds to use {}trivia join on this channel "
-                               "to participate to the upcoming game").format(prefix)
+                               "to participate to the upcoming game".format(prefix))
             await self.set_questions_nb(int(question_answer.content))
             await self.allow_join()
 
@@ -180,9 +180,12 @@ class TriviaInstance:
         await self.display_leaderboard()
 
     async def stat_time_game(self):
+        await self.bot.say("In this mode, the first one that answers correctly wins a point but each player"
+                           " has only one try per question, be careful!")
         questions = self.init_game()
         question_nb = 1
         for question in questions:
+            failed_players = []
             answers_list = question['incorrect_answers']
             answers_list.append(question['correct_answer'])
             random.shuffle(answers_list)
@@ -194,6 +197,9 @@ class TriviaInstance:
             await self.display_question(question, question_nb, answers)
             if question['type'] == "multiple":
                 def is_correct_multiple_answer(msg):
+                    if msg.author in failed_players:
+                        return False
+                    failed_players.append(msg.author)
                     if is_acceptable_answer(msg) and self.is_answer_correct(question, msg.content, answers_list):
                         return True
                     return False
@@ -202,6 +208,9 @@ class TriviaInstance:
                                                                 timeout=60.0)
             else:
                 def is_correct_boolean_answer(msg):
+                    if msg.author in failed_players:
+                        return False
+                    failed_players.append(msg.author)
                     if is_boolean_answer(msg) and msg.content.lower() == question['correct_answer']:
                         return True
                     return False
