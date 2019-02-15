@@ -1,4 +1,4 @@
-import common
+import database.common as common
 from discord import Message, Server, Channel
 
 GENERAL_DATABASE = 'general'
