@@ -219,6 +219,7 @@ class TriviaInstance:
                                                                 check=is_correct_boolean_answer, timeout=60.0)
             if player_answer is None:
                 await self.bot.say("Looks like everyone was scared to answer that question")
+                question_nb += 1
                 continue
 
             await self.bot.say("Correct! " + player_answer.author.mention + " wins 1 point!")
