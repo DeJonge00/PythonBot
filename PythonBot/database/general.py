@@ -1,4 +1,4 @@
-import common
+import database.common as common
 from discord import Message, Server, Channel
 
 GENERAL_DATABASE = 'general'
@@ -43,11 +43,11 @@ def set_star_channel(server_id: str, channel_id: str):
 
 
 def get_star_channel(server_id: str):
-    r = get_table(STARBOARD_CHANNEL_TABLE).find({SERVER_ID: server_id})
+    r = get_table(STARBOARD_CHANNEL_TABLE).find_one({SERVER_ID: server_id})
     if not r:
         print("Starboard channel not specified for server")
         return None
-    return r[0].get(CHANNEL_ID)
+    return r.get(CHANNEL_ID) if r else None
 
 
 def get_star_message(message_id: str):

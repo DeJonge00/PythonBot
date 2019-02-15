@@ -397,6 +397,7 @@ class RPGGame:
                                                  " you want to participate".format(len(boss_parties.get(p))))
 
     async def game_tick(self, time):
+        print(time.strftime("%H:%M:%S"))
         try:
             if time.minute == 55:
                 await self.do_boss_raids_warning()
