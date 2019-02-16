@@ -352,7 +352,11 @@ class RPGGame:
             if busy.get('description') == BUSY_DESC_WANDERING:
                 await self.do_wander(userid, name, pic_url, busy)
 
-            if busy.get('time') > 0 or busy.get('description') == BUSY_DESC_NONE:
+            if busy.get('time') > 0:
+                return
+
+            if busy.get('description') == BUSY_DESC_NONE:
+                dbcon.reset_busy(userid)
                 return
 
             # Send done message
@@ -398,8 +402,9 @@ class RPGGame:
                                                  " you want to participate".format(len(boss_parties.get(p))))
 
     async def game_tick(self, time):
-        print(time.strftime("%H:%M:%S"))
         try:
+            if time.minute % 5 == 0:
+                print(time.strftime("%H:%M:%S"))
             if time.minute == 55:
                 await self.do_boss_raids_warning()
             if time.minute == 0:
