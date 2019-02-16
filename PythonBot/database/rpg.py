@@ -38,13 +38,13 @@ def get_player(player_id: str, player_name: str, picture_url: str):
     return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url=picture_url, username=player_name)
 
 
-def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats').get('health')) for x in
-            get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
+def get_busy_players():
+    return [(x.get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats').get('health'))
+            for x in get_done_players()]
 
 
 def get_done_players():
-    return get_table(RPG_PLAYER_TABLE).find({'busy.time': 0})
+    return get_table(RPG_PLAYER_TABLE).find({'busy.time': {'$lte': 0}})
 
 
 def update_player(player: RPGPlayer):
