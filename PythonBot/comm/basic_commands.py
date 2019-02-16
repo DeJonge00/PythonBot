@@ -202,7 +202,7 @@ class Basics:
             await self.bot.say('Sorry, emoji not found...')
             return
         ext = 'gif' if requests.get(
-            'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
+            'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'png'
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         embed.set_image(url="https://discordapp.com/api/emojis/{}.{}".format(emojiid, ext))
