@@ -1,0 +1,11 @@
+setuptools
+discord
+pillow 
+wikipedia 
+urbanpyctionary 
+youtube-dl
+pymysql
+opuslib 
+PyNaCl 
+urbandictionary
+pymongo
