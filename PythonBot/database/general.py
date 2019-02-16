@@ -100,8 +100,9 @@ def set_prefix(server_id: str, prefix: str):
 
 # Command Counter
 def command_counter(name: str, message: Message):
-    server = message.server.name
-    if not server:
+    if message.server:
+        server = message.server.name
+    else:
         server = "Direct Message"
     get_table(COMMAND_COUNTER_TABLE).insert_one({
         'command': name,

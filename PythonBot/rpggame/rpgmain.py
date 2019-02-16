@@ -352,11 +352,12 @@ class RPGGame:
             if busy.get('description') == BUSY_DESC_WANDERING:
                 await self.do_wander(userid, name, pic_url, busy)
 
-            if busy.get('time') > 0:
+            if busy.get('time') > 0 or busy.get('description') == BUSY_DESC_NONE:
                 return
 
             # Send done message
             embed = discord.Embed(colour=RPG_EMBED_COLOR)
+            embed.set_author(name=self.bot.user.name)
             if busy.get('description') == BUSY_DESC_ADVENTURE:
                 action_type = "adventure"
                 action_name = "adventuring"
