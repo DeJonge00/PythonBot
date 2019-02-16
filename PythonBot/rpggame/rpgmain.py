@@ -343,53 +343,56 @@ class RPGGame:
             await self.adventure_secret(dbcon.get_player(user_id, name, pic_url),
                                         self.bot.get_channel(busy.get('channel')))
 
+    async def do_busy_per_person(self, name, userid, pic_url, busy, health):
+        if busy.get('description') == BUSY_DESC_ADVENTURE:
+            await self.do_adventure(userid, name, pic_url, busy)
+        if busy.get('description') == BUSY_DESC_WANDERING:
+            await self.do_wander(userid, name, pic_url, busy)
+
+        if busy.get('time') > 0:
+            return
+
+        if busy.get('description') == BUSY_DESC_NONE:
+            dbcon.reset_busy(userid)
+            return
+
+        # Send done message
+        embed = discord.Embed(colour=RPG_EMBED_COLOR)
+        embed.set_author(name=self.bot.user.name)
+        if busy.get('description') == BUSY_DESC_ADVENTURE:
+            action_type = "adventure"
+            action_name = "adventuring"
+        elif busy.get('description') == BUSY_DESC_TRAINING:
+            action_type = action_name = "training"
+        elif busy.get('description') == BUSY_DESC_WANDERING:
+            action_type = action_name = "wandering"
+        elif busy.get('description') == BUSY_DESC_WORKING:
+            action_type = "work"
+            action_name = "working"
+        else:
+            action_type = action_name = "Unknown"
+        if health > 0:
+            embed.add_field(name="Ended {}".format(action_type),
+                            value="You are now done {}".format(action_name))
+        else:
+            # TODO No trigger after dying in adventure
+            embed.add_field(name="You Died".format(action_type),
+                            value="You were killed on one of your adventures".format(action_name))
+            embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGA"
+                                    "a--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v146"
+                                    "6191557/production/designs/549487_1.jpg")
+        c = await self.bot.get_user_info(userid)
+        if c:
+            await self.bot.send_message(c, embed=embed)
+        else:
+            print("Channel not found, {} is done with {}".format(name, busy.get('desription')))
+        dbcon.reset_busy(userid)
+
     async def do_busy(self):
         dbcon.decrement_busy_counters()
-
-        for name, userid, pic_url, busy, health in dbcon.get_busy_players():
-            if busy.get('description') == BUSY_DESC_ADVENTURE:
-                await self.do_adventure(userid, name, pic_url, busy)
-            if busy.get('description') == BUSY_DESC_WANDERING:
-                await self.do_wander(userid, name, pic_url, busy)
-
-            if busy.get('time') > 0:
-                return
-
-            if busy.get('description') == BUSY_DESC_NONE:
-                dbcon.reset_busy(userid)
-                return
-
-            # Send done message
-            embed = discord.Embed(colour=RPG_EMBED_COLOR)
-            embed.set_author(name=self.bot.user.name)
-            if busy.get('description') == BUSY_DESC_ADVENTURE:
-                action_type = "adventure"
-                action_name = "adventuring"
-            elif busy.get('description') == BUSY_DESC_TRAINING:
-                action_type = action_name = "training"
-            elif busy.get('description') == BUSY_DESC_WANDERING:
-                action_type = action_name = "wandering"
-            elif busy.get('description') == BUSY_DESC_WORKING:
-                action_type = "work"
-                action_name = "working"
-            else:
-                action_type = action_name = "Unknown"
-            if health > 0:
-                embed.add_field(name="Ended {}".format(action_type),
-                                value="You are now done {}".format(action_name))
-            else:
-                # TODO No trigger after dying in adventure
-                embed.add_field(name="You Died".format(action_type),
-                                value="You were killed on one of your adventures".format(action_name))
-                embed.set_thumbnail(url="https://res.cloudinary.com/teepublic/image/private/s--_1_FlGA"
-                                        "a--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v146"
-                                        "6191557/production/designs/549487_1.jpg")
-            c = await self.bot.get_user_info(userid)
-            if c:
-                await self.bot.send_message(c, embed=embed)
-            else:
-                print("Channel not found, {} is done with {}".format(name, busy.get('desription')))
-            dbcon.reset_busy(userid)
+        pl = dbcon.get_busy_players()
+        for name, userid, pic_url, busy, health in pl:
+            await self.do_busy_per_person(name, userid, pic_url, busy, health)
 
     async def do_boss_raids_warning(self):
         boss_parties = dbcon.get_boss_parties()
