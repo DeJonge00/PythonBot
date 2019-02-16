@@ -211,7 +211,7 @@ class TriviaInstance:
                     if msg.author in failed_players:
                         return False
                     failed_players.append(msg.author)
-                    if is_boolean_answer(msg) and msg.content.lower() == question['correct_answer']:
+                    if is_boolean_answer(msg) and msg.content.lower() == question['correct_answer'].lower():
                         return True
                     return False
 
