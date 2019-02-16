@@ -93,11 +93,15 @@ def get_server_config(server_id: int):
     if not server_prefix:
         server_prefix = prefix
 
+    starchannel = general.get_star_channel(server_id)
+    if not starchannel:
+        starchannel = "None"
+
     return jsonify({
         'welcome': welcome,
         'goodbye': goodbye,
         'delete_commands': general.get_delete_commands(server_id),
-        'star': general.get_star_channel(server_id),
+        'star': starchannel,
         'prefix': server_prefix
     })
 
