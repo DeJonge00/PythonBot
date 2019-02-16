@@ -40,11 +40,8 @@ def get_player(player_id: str, player_name: str, picture_url: str):
 
 def get_busy_players():
     return [(x.get('stats').get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats')
-             .get('health')) for x in get_done_players()]
-
-
-def get_done_players():
-    return get_table(RPG_PLAYER_TABLE).find({'busy.time': {'$lte': 0}, 'busy.description': {'$not': {'$eq': 0}}})
+             .get('health')) for x in get_table(RPG_PLAYER_TABLE).find({"$or": [{'busy.time': {'$lte': 0}},
+                                                     {'busy.description': {'$not': {'$eq': 0}}}]})]
 
 
 def update_player(player: RPGPlayer):
