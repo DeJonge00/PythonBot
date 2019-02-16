@@ -274,14 +274,16 @@ class TriviaInstance:
         embed = discord.Embed(colour=0x4C4CFF)
         p = 0
         long_ass_string = ""
-        while p < 10 and p < len(self.players):
-            plural = ""
-            if self.players[p].score > 1:
-                plural = "s"
-            long_ass_string += "{}: {} point{}.\n".format(self.players[p].playerid, self.players[p].score, plural)
-            p += 1
-        embed.add_field(name="Trivia Leaderboard", value=long_ass_string)
-        await self.bot.say(embed=embed)
+        if len(self.players) > 0:
+            self.players.sort(key=lambda x: x.score, reverse=True)
+            while p < 10 and p < len(self.players):
+                plural = ""
+                if self.players[p].score > 1:
+                    plural = "s"
+                long_ass_string += "{}: {} point{}.\n".format(self.players[p].playerid, self.players[p].score, plural)
+                p += 1
+            embed.add_field(name="Trivia Leaderboard", value=long_ass_string)
+            await self.bot.say(embed=embed)
 
     async def is_timeout(self, msg):
         if msg is None:
