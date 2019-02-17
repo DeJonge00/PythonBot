@@ -1150,6 +1150,7 @@ class RPGGame:
                 return
             pet = data.pets[num_to_remove]
             data.pets.remove(pet)
+            dbcon.update_player(data)
             await self.bot.say('Your pet named {} was released into the wild'.format(pet.name))
             return
 
