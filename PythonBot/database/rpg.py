@@ -128,7 +128,7 @@ def get_boss_parties():
 
 
 def set_king(user_id: str, server_id: str):
-    get_table(RPG_KING_TABLE).update({SERVER_ID: server_id}, {'$set': {USER_ID: user_id}})
+    get_table(RPG_KING_TABLE).update({SERVER_ID: server_id}, {'$set': {USER_ID: user_id}}, upsert=True)
 
 
 def get_king(server_id: str):
