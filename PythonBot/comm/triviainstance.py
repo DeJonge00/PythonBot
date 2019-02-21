@@ -79,14 +79,14 @@ class TriviaInstance:
     async def player_quit(self, author):
         for player in self.players:
             if player.playerid == author:
-                player.quit_game()
+                self.players.remove(player)
                 await self.bot.say(player.playerid.mention + " left the game!")
                 return
         await self.bot.say(author.mention + " you are currently not in any party on this channel.")
 
     async def allow_join(self):
         self.joinable = True
-        await asyncio.sleep(60.0)
+        await asyncio.sleep(30.0)
         self.joinable = False
         await self.bot.say("Game starting!")
         await self.set_questions_nb(self.questions_nb * len(self.players))
@@ -149,7 +149,7 @@ class TriviaInstance:
                                                               author=self.game_creator, check=is_natural, timeout=30.0)
             if await self.is_timeout(question_answer):
                 return
-            await self.bot.say("Parameters completed! Each person that now wants to join the game has 60 "
+            await self.bot.say("Parameters completed! Each person that now wants to join the game has 30 "
                                "seconds to use {}trivia join on this channel "
                                "to participate to the upcoming game".format(prefix))
             await self.set_questions_nb(int(question_answer.content))
@@ -179,8 +179,7 @@ class TriviaInstance:
             # skip player turn and his question if he left the game
             if player_index >= len(self.players):
                 player_index = 0
-            if self.players[player_index].isplaying:
-                await self.ask_target_question(self.players[player_index], question, question_number)
+            await self.ask_target_question(self.players[player_index], question, question_number)
             player_index += 1
             question_number += 1
         await self.bot.say("Game is over! Here's the leaderboard:")
@@ -253,10 +252,10 @@ class TriviaInstance:
 
     async def ask_target_question(self, player, question, question_nb):
         def is_multiple_acceptable(msg):
-            return is_acceptable_answer(msg) and player.isplaying
+            return is_acceptable_answer(msg)
 
         def is_boolean_acceptable(msg):
-            return is_boolean_answer(msg) and player.isplaying
+            return is_boolean_answer(msg)
 
         answers_list = question['incorrect_answers']
         answers_list.append(question['correct_answer'])
@@ -293,9 +292,9 @@ class TriviaInstance:
         if len(self.players) > 0:
             self.players.sort(key=lambda x: x.score, reverse=True)
             while p < 10 and p < len(self.players):
-                plural = ""
-                if self.players[p].score > 1:
-                    plural = "s"
+                plural = "s"
+                if self.players[p].score == 1:
+                    plural = ""
                 long_ass_string += "{}: {} point{}.\n".format(self.players[p].playerid, self.players[p].score, plural)
                 p += 1
             embed.add_field(name="Trivia Leaderboard", value=long_ass_string)
@@ -303,7 +302,7 @@ class TriviaInstance:
 
     async def is_timeout(self, msg):
         if msg is None:
-            await self.bot.say("game creation timed out :sob:")
+            await self.bot.say("Game creation timed out :sob:")
             return True
         return False
 
@@ -346,11 +345,7 @@ def is_natural_nbr(msg):
 class TriviaPlayer:
     def __init__(self, playerid):
         self.playerid = playerid
-        self.isplaying = True
         self.score = 0
 
     def add_point(self):
         self.score += 1
-
-    def quit_game(self):
-        self.isplaying = False
