@@ -80,6 +80,7 @@ class Trivia:
     def delete_instance(self, channel):
         try:
             del self.game_instances[channel]
+            return
         except KeyError as e:
             print(e)
 

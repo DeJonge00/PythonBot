@@ -7,6 +7,7 @@ import asyncio
 
 # this game has been made with the open trivia db API : https://opentdb.com/
 # All data provided by the API is available under the Creative Commons Attribution-ShareAlike 4.0 International License.
+MAX_QUESTIONS = 1001
 
 
 class TriviaInstance:
@@ -319,7 +320,7 @@ class TriviaInstance:
 def is_natural(msg):
     try:
         nbr = int(msg.content)
-        return 0 < nbr < 1001
+        return 0 < nbr < MAX_QUESTIONS
     except Exception:
         return False
 
