@@ -100,10 +100,14 @@ def set_prefix(server_id: str, prefix: str):
 
 # Command Counter
 def command_counter(name: str, message: Message):
+    if message.server:
+        server = message.server.name
+    else:
+        server = "Direct Message"
     get_table(COMMAND_COUNTER_TABLE).insert_one({
         'command': name,
         'timestamp': message.timestamp.timestamp(),
-        'server': message.server.name,
+        'server': server,
         'channel': message.channel.name,
         'author': message.author.name
     })
@@ -111,8 +115,8 @@ def command_counter(name: str, message: Message):
 
 # Self-assignable roles
 def get_roles(server_id: str):
-    r = get_table(SELF_ASSIGNABLE_ROLES_TABLE).find({SERVER_ID: server_id})
-    return list(r) if r else []
+    r = get_table(SELF_ASSIGNABLE_ROLES_TABLE).find_one({SERVER_ID: server_id})
+    return [i for i in r.keys() if r[i] == True] if r else []
 
 
 def get_role(server_id: str, role_id: str):

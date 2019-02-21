@@ -100,6 +100,13 @@ class PythonBot(Bot):
 
     async def send_message(self, destination, content=None, *, tts=False, embed=None):
         try:
+            if content:
+                try:
+                    server = destination.server
+                except AttributeError:
+                    server = None
+                await log.message_content(content, destination, server, self.user, datetime.datetime.now(), [],
+                                          "send message:")
             return await super().send_message(destination, content=content, tts=tts, embed=embed)
         except discord.Forbidden:
             if embed:
@@ -112,6 +119,7 @@ class PythonBot(Bot):
                 else:
                     m = m.format('direct message', destination.name, content)
                 await log.error(m, filename=str(destination))
+
 
     async def send_file(self, destination, fp, *, filename=None, content=None, tts=False):
         try:

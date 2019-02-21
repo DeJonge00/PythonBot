@@ -202,7 +202,7 @@ class Basics:
             await self.bot.say('Sorry, emoji not found...')
             return
         ext = 'gif' if requests.get(
-            'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'jpg'
+            'https://cdn.discordapp.com/emojis/{}.gif'.format(emojiid)).status_code == 200 else 'png'
         embed = discord.Embed(colour=0x000000)
         embed.set_author(name=ctx.message.author.display_name, icon_url=ctx.message.author.avatar_url)
         embed.set_image(url="https://discordapp.com/api/emojis/{}.{}".format(emojiid, ext))
@@ -577,6 +577,12 @@ class Basics:
         else:
             n = 0
         roles = sorted([x.name for x in ctx.message.server.roles if x.id in dbcon.get_roles(ctx.message.server.id)])
+        if len(roles) <= 0:
+            if n == 0:
+                await self.bot.say("There are no self-assignable roles on this server")
+                return
+            await self.bot.say("There are not that many pages of self-assignable roles")
+            return
         await self.bot.embed_list.make_list(items=roles, title='Assignable roles', page=n, items_per_page=10,
                                             channel=ctx.message.channel)
 

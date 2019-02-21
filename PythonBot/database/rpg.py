@@ -38,13 +38,10 @@ def get_player(player_id: str, player_name: str, picture_url: str):
     return dict_to_player(r[0]) if r else RPGPlayer(userid=player_id, picture_url=picture_url, username=player_name)
 
 
-def get_busy_players(desc={'$ne': BUSY_DESC_NONE}):
-    return [(x.get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats').get('health')) for x in
-            get_table(RPG_PLAYER_TABLE).find({'busy.description': desc})]
-
-
-def get_done_players():
-    return get_table(RPG_PLAYER_TABLE).find({'busy.time': 0})
+def get_busy_players():
+    return [(x.get('stats').get('name'), x.get('userid'), x.get('picture_url'), x.get('busy'), x.get('stats')
+             .get('health')) for x in get_table(RPG_PLAYER_TABLE).find({"$or": [{'busy.time': {'$lt': 0}},
+                                                     {'busy.description': {'$not': {'$eq': 0}}}]})]
 
 
 def update_player(player: RPGPlayer):
@@ -131,7 +128,7 @@ def get_boss_parties():
 
 
 def set_king(user_id: str, server_id: str):
-    get_table(RPG_KING_TABLE).update({SERVER_ID: server_id}, {'$set': {USER_ID: user_id}})
+    get_table(RPG_KING_TABLE).update({SERVER_ID: server_id}, {'$set': {USER_ID: user_id}}, upsert=True)
 
 
 def get_king(server_id: str):
