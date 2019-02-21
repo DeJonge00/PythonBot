@@ -49,22 +49,32 @@ class Trivia:
             # get game parameters, then start and play it until the end
             await self.game_instances[ctx.message.channel].get_params(ctx)
             # goobye fren
-            try:
-                del self.game_instances[ctx.message.channel]
-            except KeyError as e:
-                print(e)
+            self.delete_instance(ctx.message.channel)
 
-        if args[0] == "join":
-            if ctx.message.channel in self.game_instances:
-                await self.game_instances[ctx.message.channel].player_turn_join(ctx.message.author)
-            else:
-                await self.bot.say(ctx.message.author.mention + " there's currently no running game on this channel.")
+        if args[0] == "join" and await self.is_game_running(ctx.message.channel, ctx.message.author):
+            await self.game_instances[ctx.message.channel].player_turn_join(ctx.message.author)
 
-        if args[0] == "quit":
-            if ctx.message.channel in self.game_instances:
-                await self.game_instances[ctx.message.channel].player_quit(ctx.message.author)
+        if args[0] == "quit" and await self.is_game_running(ctx.message.channel, ctx.message.author):
+            await self.game_instances[ctx.message.channel].player_quit(ctx.message.author)
+
+        if args[0] == "cancel" and await self.is_game_running(ctx.message.channel, ctx.message.author):
+            if self.game_instances[ctx.message.channel].game_creator == ctx.message.author:
+                self.game_instances[ctx.message.channel].stop_playing()
+                self.delete_instance(ctx.message.channel)
             else:
-                await self.bot.say(ctx.message.author.mention + " there's currently no running game on this channel.")
+                await self.bot.say(ctx.message.author.mention + " only the game creator can cancel the game")
+
+    def delete_instance(self, channel):
+        try:
+            del self.game_instances[channel]
+        except KeyError as e:
+            print(e)
+
+    async def is_game_running(self, channel, author):
+        if channel in self.game_instances:
+            return True
+        await self.bot.say(author.mention + " there's currently no running game on this channel.")
+        return False
 
     async def display_categories(self):
         display_cat = "Triva categories are: \n"
