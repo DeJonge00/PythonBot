@@ -2,6 +2,7 @@ import logging
 import os
 import os.path
 import random
+import traceback
 
 import datetime
 import discord
@@ -24,6 +25,9 @@ from secret.secrets import font_path
 RPG_EMBED_COLOR = 0x710075
 STANDARD_BATTLE_TURNS = 50
 BATTLE_TURNS = {"Bossbattle": 200}
+
+logging.basicConfig(filename='logs/1rpg_main_errors.log', level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 
 class RPGGame:
@@ -392,7 +396,11 @@ class RPGGame:
         dbcon.decrement_busy_counters()
         pl = dbcon.get_busy_players()
         for name, userid, pic_url, busy, health in pl:
-            await self.do_busy_per_person(name, userid, pic_url, busy, health)
+            try:
+                await self.do_busy_per_person(name, userid, pic_url, busy, health)
+            except Exception:
+                print(traceback.format_exc())
+                self.logger.error(traceback.format_exc())
 
     async def do_boss_raids_warning(self):
         boss_parties = dbcon.get_boss_parties()
@@ -415,9 +423,9 @@ class RPGGame:
                 self.bot.rpgshop.weapons = {}
                 self.bot.rpgshop.armors = {}
 
-        except Exception as e:
-            print(e)
-            self.logger.exception(e)
+        except Exception:
+            print(traceback.format_exc())
+            self.logger.error(traceback.format_exc())
         await self.do_busy()
 
         dbcon.do_health_regen()
