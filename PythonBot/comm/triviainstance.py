@@ -7,6 +7,7 @@ import asyncio
 
 # this game has been made with the open trivia db API : https://opentdb.com/
 # All data provided by the API is available under the Creative Commons Attribution-ShareAlike 4.0 International License.
+MAX_QUESTIONS = 1001
 
 
 class TriviaInstance:
@@ -23,6 +24,7 @@ class TriviaInstance:
         self.channel = channel
         self.game_creator = author
         self.joinable = False
+        self.keep_playing = True
 
     def set_category(self, new_category):
         self.category = new_category
@@ -35,6 +37,9 @@ class TriviaInstance:
 
     def set_mode(self, new_mode):
         self.mode = new_mode
+
+    def stop_playing(self):
+        self.keep_playing = False
 
     def init_game(self):
         question_url = "https://opentdb.com/api.php"
@@ -75,14 +80,14 @@ class TriviaInstance:
     async def player_quit(self, author):
         for player in self.players:
             if player.playerid == author:
-                player.quit_game()
+                self.players.remove(player)
                 await self.bot.say(player.playerid.mention + " left the game!")
                 return
         await self.bot.say(author.mention + " you are currently not in any party on this channel.")
 
     async def allow_join(self):
         self.joinable = True
-        await asyncio.sleep(60.0)
+        await asyncio.sleep(30.0)
         self.joinable = False
         await self.bot.say("Game starting!")
         await self.set_questions_nb(self.questions_nb * len(self.players))
@@ -114,29 +119,29 @@ class TriviaInstance:
             " type 'any' for random.".format(prefix))
         category = await self.bot.wait_for_message(channel=self.channel,
                                                    author=self.game_creator, check=is_cat, timeout=30.0)
-        if category.content.lower() != "any":
-            self.set_category(int(category.content))
         if await self.is_timeout(category):
             return
+        if category.content.lower() != "any":
+            self.set_category(int(category.content))
 
         # DIFFICULTY
         await self.bot.say(
             "Specify a difficulty: 'easy', 'medium', 'hard' or 'any'.")
         difficulty = await self.bot.wait_for_message(channel=self.channel,
                                                      author=self.game_creator, check=is_dif, timeout=30.0)
-        if difficulty.content.lower() != "any":
-            self.set_difficulty(difficulty.content)
         if await self.is_timeout(difficulty):
             return
+        if difficulty.content.lower() != "any":
+            self.set_difficulty(difficulty.content)
 
         # QUESTION TYPE
         await self.bot.say("Specify a question type: 'boolean', 'multiple' or 'any'.")
         new_type = await self.bot.wait_for_message(channel=self.channel,
                                                    author=self.game_creator, check=is_type, timeout=30.0)
-        if new_type.content.lower() != "any":
-            self.set_type(new_type.content.lower())
         if await self.is_timeout(new_type):
             return
+        if new_type.content.lower() != "any":
+            self.set_type(new_type.content.lower())
 
         # TURN MODE
         if self.mode == "turn":
@@ -145,7 +150,7 @@ class TriviaInstance:
                                                               author=self.game_creator, check=is_natural, timeout=30.0)
             if await self.is_timeout(question_answer):
                 return
-            await self.bot.say("Parameters completed! Each person that now wants to join the game has 60 "
+            await self.bot.say("Parameters completed! Each person that now wants to join the game has 30 "
                                "seconds to use {}trivia join on this channel "
                                "to participate to the upcoming game".format(prefix))
             await self.set_questions_nb(int(question_answer.content))
@@ -169,13 +174,15 @@ class TriviaInstance:
             await self.bot.say("No one joined the game, cancelling...")
             return
         for question in questions:
+            if not self.keep_playing:
+                await self.bot.say("Game cancelled by {}.".format(self.game_creator.mention))
+                return
             # skip player turn and his question if he left the game
             if player_index >= len(self.players):
                 player_index = 0
-            if self.players[player_index].isplaying:
-                await self.ask_target_question(self.players[player_index], question, question_number)
-                question_number += 1
-                player_index += 1
+            await self.ask_target_question(self.players[player_index], question, question_number)
+            player_index += 1
+            question_number += 1
         await self.bot.say("Game is over! Here's the leaderboard:")
         await self.display_leaderboard()
 
@@ -185,6 +192,9 @@ class TriviaInstance:
         questions = self.init_game()
         question_nb = 1
         for question in questions:
+            if not self.keep_playing:
+                await self.bot.say("Game cancelled by {}.".format(self.game_creator.mention))
+                return
             failed_players = []
             answers_list = question['incorrect_answers']
             answers_list.append(question['correct_answer'])
@@ -242,6 +252,12 @@ class TriviaInstance:
         await self.bot.say(embed=embed)
 
     async def ask_target_question(self, player, question, question_nb):
+        def is_multiple_acceptable(msg):
+            return is_acceptable_answer(msg)
+
+        def is_boolean_acceptable(msg):
+            return is_boolean_answer(msg)
+
         answers_list = question['incorrect_answers']
         answers_list.append(question['correct_answer'])
         random.shuffle(answers_list)
@@ -250,17 +266,17 @@ class TriviaInstance:
                                                           answers_list[2], answers_list[3])
         else:
             answers = '\n'.join(answers_list)
-        await self.display_question(question, question_nb, answers)
         await self.bot.say(player.playerid.mention + " this question is for you:")
+        await self.display_question(question, question_nb, answers)
         if question['type'] == "multiple":
             player_answer = await self.bot.wait_for_message(channel=self.channel,
-                                                            author=player.playerid, check=is_acceptable_answer,
+                                                            author=player.playerid, check=is_multiple_acceptable,
                                                             timeout=60.0)
         else:
             player_answer = await self.bot.wait_for_message(channel=self.channel, author=player.playerid,
-                                                            check=is_boolean_answer, timeout=60.0)
+                                                            check=is_boolean_acceptable, timeout=60.0)
         if player_answer is None:
-            await self.bot.say("The question was apparently too complicated for " + player.playerid.mention)
+            await self.bot.say("The question was apparently too complicated.")
             return
         if self.is_answer_correct(question, player_answer.content.lower(), answers_list):
             player.add_point()
@@ -277,9 +293,9 @@ class TriviaInstance:
         if len(self.players) > 0:
             self.players.sort(key=lambda x: x.score, reverse=True)
             while p < 10 and p < len(self.players):
-                plural = ""
-                if self.players[p].score > 1:
-                    plural = "s"
+                plural = "s"
+                if self.players[p].score == 1:
+                    plural = ""
                 long_ass_string += "{}: {} point{}.\n".format(self.players[p].playerid, self.players[p].score, plural)
                 p += 1
             embed.add_field(name="Trivia Leaderboard", value=long_ass_string)
@@ -287,7 +303,7 @@ class TriviaInstance:
 
     async def is_timeout(self, msg):
         if msg is None:
-            await self.bot.say("game creation timed out :sob:")
+            await self.bot.say("Game creation timed out :sob:")
             return True
         return False
 
@@ -304,7 +320,7 @@ class TriviaInstance:
 def is_natural(msg):
     try:
         nbr = int(msg.content)
-        return 0 < nbr < 6000
+        return 0 < nbr < MAX_QUESTIONS
     except Exception:
         return False
 
@@ -330,11 +346,7 @@ def is_natural_nbr(msg):
 class TriviaPlayer:
     def __init__(self, playerid):
         self.playerid = playerid
-        self.isplaying = True
         self.score = 0
 
     def add_point(self):
         self.score += 1
-
-    def quit_game(self):
-        self.isplaying = False
