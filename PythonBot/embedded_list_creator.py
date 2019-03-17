@@ -10,7 +10,8 @@ class EmbedList:
         self.bot = bot
         self.lists = {}
 
-    async def make_list(self, items: [], title: str, channel: discord.Channel=None, message: discord.Message=None, page=0, items_per_page=10):
+    async def make_list(self, items: [], title: str, channel: discord.TextChannel = None,
+                        message: discord.Message = None, page=0, items_per_page=10):
         embed = discord.Embed(colour=EMBED_COLOR)
         if page == -1:
             page = math.floor(len(items) / items_per_page)
@@ -27,7 +28,7 @@ class EmbedList:
             result += '{})  {}\n'.format(rank, items[i])
         embed.add_field(name="{}, page {}".format(title, page + 1), value=result)
         if message:
-            message = await self.bot.edit_message(message, embed=embed)
+            message = await message.edit(embed=embed)
         else:
             message = await self.bot.send_message(channel, embed=embed)
             await self.add_list_emoji(message)
@@ -47,7 +48,7 @@ class EmbedList:
     async def handle_reaction(self, reaction: discord.Reaction):
         if reaction.message.id not in self.lists.keys():
             return
-        for m in await self.bot.get_reaction_users(reaction):
+        for m in await reaction.users():
             if m.id != self.bot.user.id:
                 await self.bot.remove_reaction(reaction.message, reaction.emoji, m)
 
@@ -56,9 +57,9 @@ class EmbedList:
             if reaction.emoji == "⏮":
                 await self.make_list(items=items, title=title, page=0, message=reaction.message)
             if reaction.emoji == '⬅':
-                await self.make_list(items=items, title=title, page=page-1, message=reaction.message)
+                await self.make_list(items=items, title=title, page=page - 1, message=reaction.message)
             if reaction.emoji == '➡':
-                await self.make_list(items=items, title=title, page=page+1, message=reaction.message)
+                await self.make_list(items=items, title=title, page=page + 1, message=reaction.message)
             if reaction.emoji == "⏭":
                 await self.make_list(items=items, title=title, page=-1, message=reaction.message)
         except ValueError:
