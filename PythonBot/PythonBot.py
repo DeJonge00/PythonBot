@@ -142,8 +142,8 @@ class PythonBot(Bot):
 
     @staticmethod
     def command_allowed_in(type: str, identifier: str, command_name: str):
-        return command_name == 'togglecommand' or not dbcon.get_banned_command(type, identifier, command_name) \
-               or not dbcon.get_banned_command(type, identifier, 'all')
+        return command_name == 'togglecommand' or not (dbcon.get_banned_command(type, identifier, command_name) \
+               or dbcon.get_banned_command(type, identifier, 'all'))
 
     @staticmethod
     def command_allowed_in_server(serverid: str, command_name: str):
@@ -470,14 +470,14 @@ def init_bot():
 
     return bot
 
-
-# Start the bot
-bot = init_bot()
-while bot.running:
-    try:
-        bot.run(secrets.bot_token)
-    except Exception as e:
-        tr = traceback.format_exc()
-        print(e, tr)
-        with open('logs/errors.txt', 'r') as f:
-            f.write(tr)
+if __name__ == '__main__':
+    # Start the bot
+    bot = init_bot()
+    while bot.running:
+        try:
+            bot.run(secrets.bot_token)
+        except Exception as e:
+            tr = traceback.format_exc()
+            print(e, tr)
+            with open('logs/errors.txt', 'r') as f:
+                f.write(tr)

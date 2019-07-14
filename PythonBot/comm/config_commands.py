@@ -42,7 +42,7 @@ class Config:
             await self.bot.say(
                 'The response commands are (un)banned with either of {}'.format(', '.join(response_names)))
             return
-        if len(args) <= 1 or not (args[0] in ['server', 'channel'] and len(ctx.message.channel_mentions) > 0):
+        if len(args) <= 1 or not (args[0].lower() in ['server', 'channel']):
             await self.bot.say('Please give me either "server" or "channel" followed by the name of the command')
             return
 
@@ -64,24 +64,18 @@ class Config:
             name = comm.name
             text = 'Command "{}" is'.format(name)
 
-        # Lookup spot in the bot commands_banned_in dictionary
-        if not self.bot.commands_banned_in.get(args[0]):
-            self.bot.commands_banned_in[args[0]] = {}
-        cs = self.bot.commands_banned_in.get(args[0])
-        identifier = ctx.message.server.id if args[0] == 'server' else ctx.message.channel.id
-        if not cs.get(identifier):
-            cs[identifier] = []
-        cs = cs.get(identifier)
+        # Check whether to ban locally or globally
+        id_type = args[0].lower()
+        identifier = ctx.message.server.id if id_type == 'server' else ctx.message.channel.id
 
         # Add or remove command
         if name == 'togglecommand':
             await self.bot.say('Wow... just wow')
             return
-        if name in cs:
-            cs.remove(name)
+        result = dbcon.toggle_banned_command(id_type, identifier, name)
+        if not result:
             await self.bot.say('{} now unbanned from this {}'.format(text, args[0]))
         else:
-            cs.append(name)
             await self.bot.say('{} now banned from this {}'.format(text, args[0]))
 
     @commands.command(pass_context=1, help="Change my prefix", aliases=['setprefix', 'changeprefix'])
