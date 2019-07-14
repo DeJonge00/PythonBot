@@ -64,7 +64,9 @@ qa = [
     "Do not question the unquestionable",
     "All day, every day. Just don't involve me...",
     'Only if you vote for me at https://discordbots.org/bot/244410964693221377 <3',
-    "With blackjack and hookers?"
+    "With blackjack and hookers?",
+    "Square!! No, no wait... 6! Yes, 6!",
+    "You can't handle the truth! :angry:"
 ]
 
 response = [
@@ -155,7 +157,15 @@ response = [
     "I considered telling you my secret, but now I won't anymore...",
     "Sorry, it is time for a nap now",
     "I see your mom raised you well, for the most part",
-    "It feels like fate, but we can't..."
+    "It feels like fate, but we can't...",
+    "How do you want to do this?",
+    "I'll add that to my theme song lyrics",
+    "I counter with a shield spell!",
+    "Subscribe to my channel! Jk, I'm way too shy for that...",
+    "*Falcon Punch!*",
+    "Even a broken clock is right twice a day hahaha",
+    "All work and no play makes Jack a dull boy",
+    "Oh, I just cannot wait to be king :musical_note:"
 ]
 
 # random responses
@@ -577,16 +587,17 @@ permissions = {
     Permissions.manage_messages: 'manage_messages',
     Permissions.manage_nicknames: 'manage_nicknames',
     Permissions.manage_roles: 'manage_roles',
-    Permissions.manage_server: 'manage_server',
+    Permissions.manage_guild: 'manage_guild',
     Permissions.manage_webhooks: 'manage_webhooks',
     Permissions.mention_everyone: 'mention_everyone',
     Permissions.move_members: 'move_members',
     Permissions.mute_members: 'mute_members',
+    Permissions.priority_speaker: 'priority_speaker',
     Permissions.read_message_history: 'read_message_history',
     Permissions.read_messages: 'read_messages',
     Permissions.send_messages: 'send_messages',
     Permissions.send_tts_messages: 'send_tts_messages',
     Permissions.speak: 'speak',
     Permissions.use_voice_activation: 'use_voice_activation',
-    Permissions.view_audit_logs: 'view_audit_logs'
+    Permissions.view_audit_log: 'view_audit_log'
 }

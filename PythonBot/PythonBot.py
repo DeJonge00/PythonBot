@@ -22,39 +22,39 @@ REMOVE_JOIN_MESSAGE = False
 REMOVE_LEAVE_MESSAGE = False
 
 
-def initCogs(bot):
-    # Add commands
-    from comm.admin_commands import Admin
-    bot.add_cog(Admin(bot))
-    from comm.basic_commands import Basics
-    bot.add_cog(Basics(bot))
-    from comm.minesweeper import Minesweeper
-    bot.add_cog(Minesweeper(bot))
-    from comm.hangman import Hangman
-    bot.add_cog(Hangman(bot))
-    from comm.image_commands import Images
-    bot.add_cog(Images(bot))
-    from comm.lookup_commands import Lookup
-    bot.add_cog(Lookup(bot))
-    from comm.trivia import Trivia
-    bot.add_cog(Trivia(bot))
-    if bot.MUSIC:
-        from musicPlayer import MusicPlayer
-        bot.musicplayer = MusicPlayer(bot)
-        bot.add_cog(bot.musicplayer)
-    if bot.RPGGAME:
-        from rpggame.rpgmain import RPGGame
-        from rpggame.rpggameactivities import RPGGameActivities
-        bot.rpggame = RPGGame(bot)
-        bot.rpgshop = RPGGameActivities(bot)
-        bot.add_cog(bot.rpggame)
-        bot.add_cog(bot.rpgshop)
-    from comm.mod_commands import Mod
-    bot.add_cog(Mod(bot))
-    from comm.config_commands import Config
-    bot.add_cog(Config(bot))
-    from comm.misc_commands import Misc
-    bot.add_cog(Misc(bot))
+# def initCogs(bot):
+#     # Add commands
+#     from comm.admin_commands import Admin
+#     bot.add_cog(Admin(bot))
+#     from comm.basic_commands import Basics
+#     bot.add_cog(Basics(bot))
+#     from comm.minesweeper import Minesweeper
+#     bot.add_cog(Minesweeper(bot))
+#     from comm.hangman import Hangman
+#     bot.add_cog(Hangman(bot))
+#     from comm.image_commands import Images
+#     bot.add_cog(Images(bot))
+#     from comm.lookup_commands import Lookup
+#     bot.add_cog(Lookup(bot))
+#     from comm.trivia import Trivia
+#     bot.add_cog(Trivia(bot))
+#     if bot.MUSIC:
+#         from musicPlayer import MusicPlayer
+#         bot.musicplayer = MusicPlayer(bot)
+#         bot.add_cog(bot.musicplayer)
+#     if bot.RPGGAME:
+#         from rpggame.rpgmain import RPGGame
+#         from rpggame.rpggameactivities import RPGGameActivities
+#         bot.rpggame = RPGGame(bot)
+#         bot.rpgshop = RPGGameActivities(bot)
+#         bot.add_cog(bot.rpggame)
+#         bot.add_cog(bot.rpgshop)
+#     from comm.mod_commands import Mod
+#     bot.add_cog(Mod(bot))
+#     from comm.config_commands import Config
+#     bot.add_cog(Config(bot))
+#     from comm.misc_commands import Misc
+#     bot.add_cog(Misc(bot))
 
 
 class PythonBot(Bot):
@@ -82,61 +82,77 @@ class PythonBot(Bot):
         m = '**{}:** {}```py\n{}```'.format(type(exception).__name__, exception, m)
         return m
 
-    async def _get_prefix(self, message):
+    async def get_prefix(self, message):
         try:
-            p = dbcon.get_prefix(message.server.id)
-            return p if p else await super(PythonBot, self)._get_prefix(message)
+            p = dbcon.get_prefix(message.guild.id)
+            return p if p else await super(PythonBot, self).get_prefix(message)
         except (KeyError, AttributeError):
-            return await super(PythonBot, self)._get_prefix(message)
+            return await super(PythonBot, self).get_prefix(message)
 
-    async def delete_message(self, message):
+    @staticmethod
+    async def delete_message(message: discord.Message):
         if not message.channel.is_private:
             try:
-                return await super().delete_message(message)
+                return await message.delete()
             except discord.Forbidden:
                 m = '{} | {} | No permissions to delete message \'{}\''
-                m = m.format(message.server.name, message.channel.name, message.content)
-                await log.error(m, filename=message.server.name)
+                m = m.format(message.guild.name, message.channel.name, message.content)
+                await log.error(m, filename=message.guild.name)
 
-    async def send_message(self, destination, content=None, *, tts=False, embed=None):
+    async def send_message(self, destination, file=None, content=None, *, tts=False, embed=None):
         try:
-            if content:
+            if content or file:
                 try:
-                    server = destination.server
+                    guild = destination.guild
                 except AttributeError:
-                    server = None
-                await log.message_content(content, destination, server, self.user, datetime.datetime.now(), [],
-                                          "send message:")
-            return await super().send_message(destination, content=content, tts=tts, embed=embed)
+                    guild = None
+                text = "send message:" if content else "send a file"
+                await log.message_content(content, destination, guild, self.user, datetime.datetime.now(), [], text)
+            return await destination.send(content=content, tts=tts, embed=embed)
         except discord.Forbidden:
             if embed:
-                m = 'Sorry, it seems I cannot send embedded messages in this channel...'
-                await self.send_message(destination, content=m)
+                m = 'Sorry, it seems I cannot send embedded or messages in this channel...'
+                await destination.send(content=m)
             else:
                 m = '{} | {} | No permissions to send message \'{}\''
-                if isinstance(destination, discord.Channel):
-                    m = m.format(destination.server.name, destination.name, content)
+                if isinstance(destination, discord.abc.GuildChannel):
+                    m = m.format(destination.guild.name, destination.name, content)
                 else:
                     m = m.format('direct message', destination.name, content)
                 await log.error(m, filename=str(destination))
 
+    @staticmethod
+    async def add_reaction(message: discord.Message, emoji: str):
+        try:
+            await message.add_reaction(emoji=emoji)
+        except discord.Forbidden:
+            await log.message(message, "Adding reaction failed")
+
+    @staticmethod
+    async def remove_reaction(message: discord.Message, emoji: str, member: discord.Member):
+        try:
+            await message.remove_reaction(emoji=emoji, member=member)
+        except discord.Forbidden:
+            await log.message(message, "Removing reaction failed")
 
     async def send_file(self, destination, fp, *, filename=None, content=None, tts=False):
         try:
-            return await super().send_file(destination, fp, filename=filename, content=content, tts=tts)
+            return await destination.send(fp, filename=filename, content=content, tts=tts)
         except discord.Forbidden:
             m = 'Sorry, it seems I cannot send files in this channel...'
             await self.send_message(destination, content=m)
 
-    async def send_typing(self, destination):
+    @staticmethod
+    async def send_typing(destination):
         try:
-            super().send_typing(destination=destination)
+            destination.trigger_typing()
         except discord.Forbidden:
             pass
 
-    async def remove_reaction(self, message, emoji, member):
+    @staticmethod
+    async def remove_reaction(message: discord.Message, emoji, member):
         try:
-            super().remove_reaction(message, emoji, member)
+            await message.remove_reaction(emoji, member)
         except discord.Forbidden:
             pass
 
@@ -162,14 +178,14 @@ class PythonBot(Bot):
                           checks=[]):
         if message.author.id not in [constants.KAPPAid, constants.NYAid]:
             if owner_check:
-                await self.bot.send_message(message.channel, "Hahahaha, no")
+                await self.send_message(message.channel, "Hahahaha, no")
                 await log.message(message, 'Command "{}" used, but owner rights needed'.format(command))
                 return False
             elif checks:
                 perms = message.channel.permissions_for(message.author)
                 check_names = [constants.permissions.get(y) for y in checks]
                 if not any([x[1] for x in list(perms) if x[0] in check_names]):
-                    await self.bot.send_message(message.channel, "Hahahaha, no")
+                    await self.send_message(message.channel, "Hahahaha, no")
                     m = 'Command "{}" used, but either of [{}] needed'.format(command, ' '.join(check_names))
                     await log.message(message, m)
                     return False
@@ -184,16 +200,16 @@ class PythonBot(Bot):
                 await log.message(message, 'Command "{}" used, but must be private'.format(command))
                 return False
             if must_be_nsfw and not message.channel.name.startswith('nsfw'):
-                await self.bot.send_message(message.channel, 'This command cannot be used outside NSFW channels')
+                await self.send_message(message.channel, 'This command cannot be used outside NSFW channels')
                 await log.message(message, 'Command "{}" used, but must be an NSFW channel'.format(command))
                 return False
-            if not self.command_allowed_in_server(command, message.server.id):
+            if not self.command_allowed_in_server(command, message.guild.id):
                 await log.message(message, 'Command "{}" used, but is serverbanned'.format(command))
                 return False
             if not self.command_allowed_in_channel(command, message.channel.id):
                 await log.message(message, 'Command "{}" used, but is channelbanned'.format(command))
                 return False
-            if delete_message and dbcon.get_delete_commands(message.server.id):
+            if delete_message and dbcon.get_delete_commands(message.guild.id):
                 await self.delete_message(message)
 
         await log.message(message, 'Command "{}" used'.format(command))
@@ -211,28 +227,30 @@ class PythonBot(Bot):
         return new_s
 
     async def ask_one_from_multiple(self, message: discord.Message, group: list, question='', errors: dict = {}):
-        m = question
+        message_text = question
         for x in range(min(len(group), 10)):
-            m += '\n{}) {}'.format(x + 1, str(group[x]))
-        m = await self.say(m)
-        r = await self.wait_for_message(timeout=60, author=message.author, channel=message.channel)
+            message_text += '\n{}) {}'.format(x + 1, str(group[x]))
+        message_text = await self.send_message(message.guild, message_text)
 
-        if dbcon.get_delete_commands(message.server.id):
-            await self.delete_message(m)
+        r = await self.wait_for('message', check=lambda m: m.author == message.author and m.channel == message.channel,
+                                timeout=60)
+
+        if dbcon.get_delete_commands(message.guild.id):
+            await self.delete_message(message_text)
             if r:
                 await self.delete_message(r)
 
         if not r:
             if errors:
                 error = errors.get('no_reaction') if errors.get('no_reaction') else 'Or not...'
-                await self.say(error)
+                await self.send_message(message.channel, error)
             raise ValueError
         try:
             num = int(r.content) - 1
             if not (0 <= num < min(10, len(group))):
                 raise ValueError
         except ValueError:
-            await self.say('That was not a valid number')
+            await self.send_message(message.channel, 'That was not a valid number')
             raise
         return group[num]
 
@@ -260,48 +278,48 @@ class PythonBot(Bot):
             users = [x for x in self.get_all_members() if PythonBot.prep_str(x.name).lower().startswith(name) or
                      PythonBot.prep_str(x.display_name).lower().startswith(name)]
         else:
-            users = [x for x in message.server.members if PythonBot.prep_str(x.name).lower().startswith(name) or
+            users = [x for x in message.guild.members if PythonBot.prep_str(x.name).lower().startswith(name) or
                      PythonBot.prep_str(x.display_name).lower().startswith(name)]
         users.sort(key=lambda s: len(s.name))
 
         if len(users) <= 0:
             if errors:
                 error = errors.get('no_users') if errors.get('no_users') else 'I could not find a user with that name'
-                await self.say(error)
+                await self.send_message(message.channel, error)
             raise ValueError
         if len(users) == 1:
             return users[0]
 
         return await self.ask_one_from_multiple(message, users, question='Which user did you mean?')
 
-    async def timeLoop(self):
-        await self.wait_until_ready()
-        while self.running:
-            time = datetime.datetime.utcnow()
-
-            if self.RPGGAME:
-                await self.rpggame.game_tick(time)
-            if self.MUSIC:
-                await self.musicplayer.music_loop(time)
-
-            end_time = datetime.datetime.utcnow()
-            # print("Sleeping for " + str(60-(end_time).second) + "s")
-            await asyncio.sleep(60 - end_time.second)
+    # async def timeLoop(self):
+    #     await self.wait_until_ready()
+    #     while self.running:
+    #         time = datetime.datetime.utcnow()
+    #
+    #         if self.RPGGAME:
+    #             await self.rpggame.game_tick(time)
+    #         if self.MUSIC:
+    #             await self.musicplayer.music_loop(time)
+    #
+    #         end_time = datetime.datetime.utcnow()
+    #         # print("Sleeping for " + str(60-(end_time).second) + "s")
+    #         await asyncio.sleep(60 - end_time.second)
 
     async def quit(self):
         self.running = False
         for key in self.commands_counters.keys():
             print('Command "{}" was used {} times'.format(key, self.commands_counters.get(key)))
-        if self.RPGGAME:
-            self.rpggame.quit()
-        if self.MUSIC:
-            await self.musicplayer.quit()
+        # if self.RPGGAME:
+        #     self.rpggame.quit()
+        # if self.MUSIC:
+        #     await self.musicplayer.quit()
 
-    async def on_member_message(self, member, func_name, text, do_log=True) -> bool:
+    async def on_member_message(self, member: discord.Member, func_name, text, do_log=True) -> bool:
         if do_log:
-            await log.error(member.server.name + " | Member " + str(member) + " just " + text,
-                            filename=member.server.name, serverid=member.server.id)
-        channel, mes = dbcon.get_message(func_name, member.server.id)
+            await log.error(member.guild.name + " | Member " + str(member) + " just " + text,
+                            filename=member.guild.name, serverid=member.guild.id)
+        channel, mes = dbcon.get_message(func_name, member.guild.id)
         if not channel or not mes:
             return False
         embed = discord.Embed(colour=0xFF0000)
@@ -320,9 +338,9 @@ class PythonBot(Bot):
 def init_bot():
     bot = PythonBot()
     logging.basicConfig()
-    initCogs(bot)
+    # initCogs(bot)
     bot.embed_list = embedded_list_creator.EmbedList(bot)
-    bot.loop.create_task(bot.timeLoop())
+    # bot.loop.create_task(bot.timeLoop())
 
     @bot.event
     async def on_ready():
@@ -333,9 +351,9 @@ def init_bot():
         print("Started at: " + datetime.datetime.utcnow().strftime("%H:%M:%S") + "\n")
         if not hasattr(bot, 'uptime'):
             bot.uptime = datetime.datetime.utcnow()
-        await bot.change_presence(game=discord.Game(name='with lolis <3'), status=discord.Status.do_not_disturb)
+        await bot.change_presence(activity=discord.Game(name='with lolis <3'), status=discord.Status.do_not_disturb)
 
-        dbcon.update_server_list(bot.servers)
+        dbcon.update_server_list(bot.guilds)
 
     # Handle incoming events
     @bot.event
@@ -348,8 +366,9 @@ def init_bot():
                 await log.message(message, "pic", pic["url"])
             await message_handler.talk(bot, message)
         else:
-            if message.content and message.server.id not in constants.bot_list_servers:
+            if message.content and message.guild.id not in constants.bot_list_servers:
                 await message_handler.new(bot, message)
+
         # Commands in the message
         try:
             await bot.process_commands(message)
@@ -357,10 +376,11 @@ def init_bot():
             await log.message(message, 'Forbidden Exception')
             pass
             await bot.send_message(message.channel, 'I\'m sorry, but my permissions do not allow that...')
-        # Send message to rpggame for exp
-        if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
-                message.content[0].isalpha() and message.content[1].isalpha())):
-            bot.rpggame.handle(message)
+
+        # # Send message to rpggame for exp
+        # if bot.RPGGAME and (len(message.content) < 2 or (message.content[:2] == '<@') or (
+        #         message.content[0].isalpha() and message.content[1].isalpha())):
+        #     bot.rpggame.handle(message)
 
     # @bot.event
     # async def on_message_edit(before, after):
@@ -400,7 +420,7 @@ def init_bot():
     async def on_member_update(before, after):
         if before.id == constants.NYAid and before.game != after.game:
             game_name = 'with lolis <3' if not after.game else after.game.name
-            await bot.change_presence(game=discord.Game(name=game_name), status=discord.Status.do_not_disturb)
+            await bot.change_presence(activity=after.game, status=discord.Status.do_not_disturb)
             return
         changed = False
         m = before.server.name + " | Member " + str(before) + " updated: "
@@ -439,10 +459,10 @@ def init_bot():
             if reaction.message.author.id == bot.user.id:
                 await bot.delete_message(reaction.message)
                 return
-        if bot.musicplayer:
-            await bot.musicplayer.handle_reaction(reaction)
-        if bot.RPGGAME:
-            await bot.rpggame.handle_reaction(reaction)
+        # if bot.musicplayer:
+        #     await bot.musicplayer.handle_reaction(reaction)
+        # if bot.RPGGAME:
+        #     await bot.rpggame.handle_reaction(reaction)
         if bot.embed_list:
             await bot.embed_list.handle_reaction(reaction)
 
@@ -454,25 +474,26 @@ def init_bot():
                         serverid=member.server.id)
 
     @bot.event
-    async def on_member_unban(server: discord.Server, user: discord.User):
+    async def on_member_unban(server: discord.Guild, user: discord.User):
         await log.error("User " + str(user) + " unbanned", filename=server.name, serverid=server.id)
 
     @bot.event
-    async def on_server_join(server: discord.Server):
-        user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
+    async def on_server_join(server: discord.Guild):
+        notify_channel = bot.get_guild(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
         m = "I joined a new server named '{}' with {} members, senpai!".format(server.name, server.member_count)
-        await bot.send_message(user, m)
+        await bot.send_message(notify_channel, m)
 
     @bot.event
-    async def on_server_remove(server: discord.Server):
-        user = bot.get_server(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
-        await bot.send_message(user, "A server named '{}' just removed me from service :(".format(server.name))
+    async def on_server_remove(server: discord.Guild):
+        notify_channel = bot.get_guild(constants.PRIVATESERVERid).get_channel(constants.SNOWFLAKE_GENERAL)
+        await bot.send_message(notify_channel, "A server named '{}' just removed me from service :(".format(server.name))
 
     return bot
 
 
 # Start the bot
-bot = init_bot()
+bot = discord.Client()
+bot.running = True
 while bot.running:
     try:
         bot.run(secrets.bot_token)

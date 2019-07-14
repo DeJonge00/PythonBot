@@ -1,5 +1,6 @@
 import database.common as common
-from discord import Message, Server, Channel
+from discord import Message, Guild, VoiceChannel, TextChannel
+from discord.abc import GuildChannel, PrivateChannel
 
 GENERAL_DATABASE = 'general'
 WELCOME_TABLE = 'welcome'
@@ -100,13 +101,13 @@ def set_prefix(server_id: str, prefix: str):
 
 # Command Counter
 def command_counter(name: str, message: Message):
-    if message.server:
-        server = message.server.name
+    if message.guild:
+        server = message.guild.name
     else:
         server = "Direct Message"
     get_table(COMMAND_COUNTER_TABLE).insert_one({
         'command': name,
-        'timestamp': message.timestamp.timestamp(),
+        'timestamp': message.created_at.timestamp(),
         'server': server,
         'channel': message.channel.name,
         'author': message.author.name
@@ -131,7 +132,7 @@ def toggle_role(server_id: str, role_id: str):
 
 
 # Bot information
-def server_as_dict(s: Server):
+def server_as_dict(s: Guild):
     return {
         'name': s.name,
         SERVER_ID: s.id,
@@ -145,19 +146,29 @@ def server_as_dict(s: Server):
     }
 
 
-def channel_as_dict(c: Channel):
+def textchannel_as_dict(c: TextChannel):
+    return channel_as_dict(c, 'text')
+
+
+def voicechannel_as_dict(c: VoiceChannel):
+    return channel_as_dict(c, 'voice')
+
+
+def channel_as_dict(c, ct: str):
     return {
         'name': c.name,
         CHANNEL_ID: c.id,
-        'type': str(c.type)
+        'type': ct
     }
 
 
-def update_server_list(servers: [Server]):
+def update_server_list(servers: [Guild]):
     server_table = get_table(SERVER_TABLE)
     channel_table = get_table(CHANNEL_TABLE)
     for s in servers:
         server_table.replace_one({SERVER_ID: s.id}, server_as_dict(s), upsert=True)
         for c in s.channels:
-            if str(c.type) in ['text', 'voice']:
-                channel_table.replace_one({CHANNEL_ID: c.id}, channel_as_dict(c), upsert=True)
+            if isinstance(c, TextChannel):
+                channel_table.replace_one({CHANNEL_ID: c.id}, textchannel_as_dict(c), upsert=True)
+            elif isinstance(c, VoiceChannel):
+                channel_table.replace_one({CHANNEL_ID: c.id}, voicechannel_as_dict(c), upsert=True)
